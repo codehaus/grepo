@@ -12,6 +12,7 @@
         and furthermore is used to generate and maintain the static grepo project site.
     </description>
 
+<!--
     <modules>
         <module>../grepo-core</module>
         <module>../grepo-query-commons</module>
@@ -19,6 +20,7 @@
         <module>../grepo-query-jpa</module>
         <module>../grepo-procedure</module>
     </modules>
+ -->
 
     <properties>
         <!-- build properties -->
