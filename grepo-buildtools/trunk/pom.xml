@@ -6,7 +6,7 @@
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>grepo-buildtools</name>
-    <url>http://maven.apache.org</url>
+    <url>http://grepo.codehaus.org</url>
     <description>
         This module provides a jar file containing several development resources like
         checkstyle, pmd configuration files etc...
