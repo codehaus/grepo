@@ -24,7 +24,7 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @param <T> The main entity type.
  */
-public interface GenericDao<T> {
+public interface GenericRepository<T> {
     /**
      * @return Returns the class of the main entity type.
      */

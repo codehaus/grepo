@@ -28,10 +28,10 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @author dguggi
  * @param <T> The main entity type.
  */
-public abstract class AbstractGenericDao<T> implements GenericDao<T> {
+public abstract class AbstractGenericRepository<T> implements GenericRepository<T> {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(AbstractGenericDao.class);
+    private static final Log LOG = LogFactory.getLog(AbstractGenericRepository.class);
 
     /** The transaction template to use. */
     private TransactionTemplate transactionTemplate;
@@ -54,14 +54,14 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
     /**
      * Default constructor.
      */
-    public AbstractGenericDao() {
+    public AbstractGenericRepository() {
         super();
     }
 
     /**
      * @param entityType The main entity type to set.
      */
-    public AbstractGenericDao(Class<T> entityType) {
+    public AbstractGenericRepository(Class<T> entityType) {
         super();
         this.entityType = entityType;
     }

@@ -20,7 +20,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericDao;
+import org.codehaus.grepo.query.commons.repository.GenericRepository;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.util.StopWatch;
 
@@ -45,7 +45,7 @@ public class GenericQueryIntroductionInterceptor implements IntroductionIntercep
         StopWatch watch = null;
         Object result = null;
 
-        GenericDao<?> genericDao = (GenericDao<?>)invocation.getThis();
+        GenericRepository<?> genericDao = (GenericRepository<?>)invocation.getThis();
         QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
             .getArguments(), genericDao.getEntityType());
 
@@ -88,7 +88,7 @@ public class GenericQueryIntroductionInterceptor implements IntroductionIntercep
      */
     @SuppressWarnings("unchecked")
     public final boolean implementsInterface(Class intf) {
-        return intf.isInterface() && GenericDao.class.isAssignableFrom(intf);
+        return intf.isInterface() && GenericRepository.class.isAssignableFrom(intf);
     }
 
 }
