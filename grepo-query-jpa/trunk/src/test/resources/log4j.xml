@@ -35,7 +35,7 @@
     <category name="org.jbpm">
         <priority value="DEBUG" />
     </category>
-    <category name="com.bearingpoint">
+    <category name="org.codehaus.grepo">
         <priority value="INFO" />
     </category>
 
