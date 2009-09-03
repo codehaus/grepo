@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * @author dguggi
  */
-public class AbstractRepositoryTest extends AbstractTransactionalSpringTest {
+public class AbstractHibernateRepositoryTest extends AbstractTransactionalSpringTest {
 
     /** The session factory. */
     @Autowired

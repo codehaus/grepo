@@ -19,7 +19,7 @@ package org.codehaus.grepo.query.hibernate.generator;
 import junit.framework.Assert;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.query.hibernate.AbstractRepositoryTest;
+import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +30,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class GeneratorRepositoryTest extends AbstractRepositoryTest {
+public class GeneratorRepositoryTest extends AbstractHibernateRepositoryTest {
     /** The dao to test. */
     @Autowired
-    private GeneratorRepository dao; //NOPMD
+    private GeneratorTestRepository repo; //NOPMD
 
     /** before. */
     @Before
@@ -45,7 +45,7 @@ public class GeneratorRepositoryTest extends AbstractRepositoryTest {
     /** Tests with hql generator. */
     @Test
     public void testWithHQLGenerator() {
-        Assert.assertNotNull(dao.getWithHQLGenerator("username"));
+        Assert.assertNotNull(repo.getWithHQLGenerator("username"));
     }
 
     /**
@@ -53,7 +53,7 @@ public class GeneratorRepositoryTest extends AbstractRepositoryTest {
      */
     @Test
     public void testWithHQLGeneratorUsingDynParams() {
-        Assert.assertNotNull(dao.getWithHQLGeneratorUsingDynParams());
+        Assert.assertNotNull(repo.getWithHQLGeneratorUsingDynParams());
     }
 
     /**
@@ -61,7 +61,7 @@ public class GeneratorRepositoryTest extends AbstractRepositoryTest {
      */
     @Test
     public void testWithNativeGenerator() {
-        Assert.assertNotNull(dao.getWithNativeGenerator("username"));
+        Assert.assertNotNull(repo.getWithNativeGenerator("username"));
     }
 
     /**
@@ -69,7 +69,7 @@ public class GeneratorRepositoryTest extends AbstractRepositoryTest {
      */
     @Test
     public void testWithNatvieGeneratorUsingDynParams() {
-        Assert.assertNotNull(dao.getWithNativeGeneratorUsingDynParams());
+        Assert.assertNotNull(repo.getWithNativeGeneratorUsingDynParams());
     }
 
     /**
@@ -77,6 +77,6 @@ public class GeneratorRepositoryTest extends AbstractRepositoryTest {
      */
     @Test
     public void testWithCriteriaGenerator() {
-        Assert.assertNotNull(dao.getWithCriteriaGenerator("username", "xyz"));
+        Assert.assertNotNull(repo.getWithCriteriaGenerator("username", "xyz"));
     }
 }

@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.query.hibernate.AbstractRepositoryTest;
+import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateScrollMode;
 import org.hibernate.NonUniqueResultException;
@@ -36,10 +36,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class ExecutorRepositoryTest extends AbstractRepositoryTest {
+public class ExecutorRepositoryTest extends AbstractHibernateRepositoryTest {
     /** The repo to test. */
     @Autowired
-    private ExecutorRepository repo; //NOPMD
+    private ExecutorTestRepository repo; //NOPMD
 
     /** before. */
     @Before

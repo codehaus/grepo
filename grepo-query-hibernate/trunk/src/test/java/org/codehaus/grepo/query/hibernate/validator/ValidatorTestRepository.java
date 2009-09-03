@@ -26,7 +26,7 @@ import org.codehaus.grepo.query.hibernate.TestEntity;
 /**
  * @author dguggi
  */
-public interface ValidatorRepository extends GenericRepository<TestEntity> {
+public interface ValidatorTestRepository extends GenericRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the entity.

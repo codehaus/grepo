@@ -30,7 +30,7 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 /**
  * @author dguggi
  */
-public interface QueryHibernateRepository extends GenericRepository<TestEntity> {
+public interface HibernateTestRepository extends GenericRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the entity.

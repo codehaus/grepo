@@ -8,9 +8,9 @@
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="converterDao" parent="abstractRepository">
+    <bean id="converterTestRepository" parent="abstractRepository">
         <property name="proxyInterfaces">
-            <value>org.codehaus.grepo.query.hibernate.converter.ConverterRepository</value>
+            <value>org.codehaus.grepo.query.hibernate.converter.ConverterTestRepository</value>
         </property>
         <property name="target">
             <bean parent="abstractRepositoryTarget">

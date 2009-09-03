@@ -21,7 +21,7 @@ import java.io.IOException;
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
 import org.codehaus.grepo.core.validator.TestResultValidator;
 import org.codehaus.grepo.core.validator.ValidationException;
-import org.codehaus.grepo.query.hibernate.AbstractRepositoryTest;
+import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,10 +32,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class ValidatorRepositoryTest extends AbstractRepositoryTest {
+public class ValidatorRepositoryTest extends AbstractHibernateRepositoryTest {
     /** The dao to test. */
     @Autowired
-    private ValidatorRepository dao;   //NOPMD
+    private ValidatorTestRepository repo;   //NOPMD
 
     /** before. */
     @Before
@@ -49,14 +49,14 @@ public class ValidatorRepositoryTest extends AbstractRepositoryTest {
     /** Test with result validator. */
     @Test
     public void testWithResultValidator() {
-        dao.getByUsername("username");
+        repo.getByUsername("username");
     }
 
     /** Tests with result validator and compatible exceptions. */
     @Test(expected = RuntimeException.class)
     public void testWithResultValidatorAndCompatibleException1() {
         TestResultValidator.setExceptionToBeThrown(new RuntimeException()); //NOPMD
-        dao.getByUsername("username");
+        repo.getByUsername("username");
     }
 
     /**
@@ -66,7 +66,7 @@ public class ValidatorRepositoryTest extends AbstractRepositoryTest {
     @Test(expected = IOException.class)
     public void testWithResultValidatorAndCompatibleException2() throws IOException {
         TestResultValidator.setExceptionToBeThrown(new IOException());
-        dao.getByUsernameThrowsIOException("username");
+        repo.getByUsernameThrowsIOException("username");
     }
 
     /**
@@ -75,6 +75,6 @@ public class ValidatorRepositoryTest extends AbstractRepositoryTest {
     @Test(expected = ValidationException.class)
     public void testWithResultValidatorAndIncompatibleException() {
         TestResultValidator.setExceptionToBeThrown(new IOException());
-        dao.getByUsername("username");
+        repo.getByUsername("username");
     }
 }

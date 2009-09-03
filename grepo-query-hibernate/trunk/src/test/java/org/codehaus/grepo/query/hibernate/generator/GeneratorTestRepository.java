@@ -25,7 +25,7 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 /**
  * @author dguggi
  */
-public interface GeneratorRepository extends GenericRepository<TestEntity> {
+public interface GeneratorTestRepository extends GenericRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the entity.

@@ -23,7 +23,7 @@ import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
 import org.codehaus.grepo.core.converter.ConversionException;
 import org.codehaus.grepo.core.converter.TestResultConverter;
 import org.codehaus.grepo.core.registry.RegistryException;
-import org.codehaus.grepo.query.hibernate.AbstractRepositoryTest;
+import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.codehaus.grepo.query.hibernate.TestEntityDto;
 import org.junit.Assert;
@@ -36,10 +36,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class ConverterRepositoryTest extends AbstractRepositoryTest {
+public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
     /** The repo to test. */
     @Autowired
-    private ConverterRepository repo;  //NOPMD
+    private ConverterTestRepository repo;  //NOPMD
 
     /** before. */
     @Before

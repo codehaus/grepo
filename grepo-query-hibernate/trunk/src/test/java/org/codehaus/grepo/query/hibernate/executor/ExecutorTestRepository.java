@@ -31,7 +31,7 @@ import org.hibernate.ScrollableResults;
 /**
  * @author dguggi
  */
-public interface ExecutorRepository extends GenericRepository<TestEntity> {
+public interface ExecutorTestRepository extends GenericRepository<TestEntity> {
     /**
      * @param type The type.
      * @return Returns the entity.

@@ -32,7 +32,7 @@ import org.hibernate.transform.ToListResultTransformer;
 /**
  * @author dguggi
  */
-public interface ConverterRepository extends GenericRepository<TestEntity> {
+public interface ConverterTestRepository extends GenericRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the flag.

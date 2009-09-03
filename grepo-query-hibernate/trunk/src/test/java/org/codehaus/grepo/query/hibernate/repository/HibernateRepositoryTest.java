@@ -22,7 +22,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.query.hibernate.AbstractRepositoryTest;
+import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,10 +33,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class QueryHibernateRepositoryTest extends AbstractRepositoryTest {
+public class HibernateRepositoryTest extends AbstractHibernateRepositoryTest {
     /** The dao to test. */
     @Autowired
-    private QueryHibernateRepository dao; //NOPMD
+    private HibernateTestRepository repo; //NOPMD
 
     /**
      * @param totalCount The total count.
@@ -60,43 +60,43 @@ public class QueryHibernateRepositoryTest extends AbstractRepositoryTest {
     /** Test with named query. */
     @Test
     public void testWithNamedQuery() {
-        Assert.assertNotNull(dao.getByUsername("username"));
+        Assert.assertNotNull(repo.getByUsername("username"));
     }
 
     /** Tests with specified query. */
     @Test
     public void testWithSpecifiedQuery() {
-        Assert.assertNotNull(dao.getByUsernameWithSpecifiedQuery("username"));
+        Assert.assertNotNull(repo.getByUsernameWithSpecifiedQuery("username"));
     }
 
     /** Tests with specified native query. */
     @Test
     public void testWithSpecifiedNativeQuery() {
-        Assert.assertNotNull(dao.getByUsernameWithSpecifiedNativeQuery("username"));
+        Assert.assertNotNull(repo.getByUsernameWithSpecifiedNativeQuery("username"));
     }
 
     /** Test with named query using named params. */
     @Test
     public void testWithNamedQueryUsingNamedParams() {
-        Assert.assertNotNull(dao.getByUsernameUsingNamedParams("username"));
+        Assert.assertNotNull(repo.getByUsernameUsingNamedParams("username"));
     }
 
     /** Tests with named native query. */
     @Test
     public void testWithNamedNativeQuery() {
-        Assert.assertNotNull(dao.getByUsernameWithNamedNativeQuery("username"));
+        Assert.assertNotNull(repo.getByUsernameWithNamedNativeQuery("username"));
     }
 
     /** Tests with named native query using named params. */
     @Test
     public void testWithNamedNativeQueryUsingNamedParams() {
-        Assert.assertNotNull(dao.getByUsernameWithNamedNativeQueryUsingNamedParams("username"));
+        Assert.assertNotNull(repo.getByUsernameWithNamedNativeQueryUsingNamedParams("username"));
     }
 
     /** Tests with specified query name. */
     @Test
     public void testWithSpecifiedQueryName() {
-        Assert.assertNotNull(dao.getByUsernameWithSpecifiedQueryName("username"));
+        Assert.assertNotNull(repo.getByUsernameWithSpecifiedQueryName("username"));
     }
 
     /** Tests paging. */
@@ -106,19 +106,19 @@ public class QueryHibernateRepositoryTest extends AbstractRepositoryTest {
 
         int usernameCounter = -1;
         for (int i = 0; i < 5; i++) {
-            List<TestEntity> list = dao.findByType(0, i * 2, 2);
+            List<TestEntity> list = repo.findByType(0, i * 2, 2);
             Assert.assertEquals(2, list.size());
             Assert.assertEquals("username" + (++usernameCounter), list.get(0).getUsername());
             Assert.assertEquals("username" + (++usernameCounter), list.get(1).getUsername());
         }
-        Assert.assertEquals(0, dao.findByType(0, 10, 2).size());
+        Assert.assertEquals(0, repo.findByType(0, 10, 2).size());
     }
 
     /** Tests default paging. */
     @Test
     public void testDefaultPaging() {
         createTestEntities(10);
-        Assert.assertNotNull(dao.getByTypeWithDefaultPaging(0));
+        Assert.assertNotNull(repo.getByTypeWithDefaultPaging(0));
     }
 
     /** Tests find by usernames with list. */
@@ -127,14 +127,14 @@ public class QueryHibernateRepositoryTest extends AbstractRepositoryTest {
         List<String> list = new ArrayList<String>();
         list.add("username");
         list.add("xyz");
-        List<TestEntity> result = dao.findByUsernames(list);
+        List<TestEntity> result = repo.findByUsernames(list);
         Assert.assertEquals(1, result.size());
     }
 
     /** Tests find by usernames with var-args. */
     @Test
     public void testFindByUsernamesWithVarArgs() {
-        List<TestEntity> result = dao.findByUsernames("username", "xyz");
+        List<TestEntity> result = repo.findByUsernames("username", "xyz");
         Assert.assertEquals(1, result.size());
     }
 

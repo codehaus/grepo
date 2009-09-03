@@ -19,7 +19,7 @@ package org.codehaus.grepo.query.hibernate;
 import org.codehaus.grepo.query.hibernate.converter.ConverterRepositoryTest;
 import org.codehaus.grepo.query.hibernate.executor.ExecutorRepositoryTest;
 import org.codehaus.grepo.query.hibernate.generator.GeneratorRepositoryTest;
-import org.codehaus.grepo.query.hibernate.repository.QueryHibernateRepositoryTest;
+import org.codehaus.grepo.query.hibernate.repository.HibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.validator.ValidatorRepositoryTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -31,7 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
     ConverterRepositoryTest.class, ExecutorRepositoryTest.class, GeneratorRepositoryTest.class,
-    QueryHibernateRepositoryTest.class, ValidatorRepositoryTest.class })
+    HibernateRepositoryTest.class, ValidatorRepositoryTest.class })
 public class AllTests {
 
 }
