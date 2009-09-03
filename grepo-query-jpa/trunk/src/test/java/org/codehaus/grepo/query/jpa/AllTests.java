@@ -16,7 +16,6 @@
 
 package org.codehaus.grepo.query.jpa;
 
-
 import org.codehaus.grepo.query.jpa.converter.ConverterRepositoryTest;
 import org.codehaus.grepo.query.jpa.executor.ExecutorRepositoryTest;
 import org.codehaus.grepo.query.jpa.generator.GeneratorRepositoryTest;
@@ -31,8 +30,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    ConverterRepositoryTest.class, ExecutorRepositoryTest.class, GeneratorRepositoryTest.class, JpaRepositoryTest.class,
-    ValidatorRepositoryTest.class })
+    ConverterRepositoryTest.class, ExecutorRepositoryTest.class, GeneratorRepositoryTest.class,
+    JpaRepositoryTest.class, ValidatorRepositoryTest.class })
 public class AllTests {
 
 }
