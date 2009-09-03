@@ -30,8 +30,8 @@ import org.junit.runners.Suite.SuiteClasses;
  */
 @RunWith(Suite.class)
 @SuiteClasses({
-    ConverterRepositoryTest.class, ExecutorRepositoryTest.class, GeneratorRepositoryTest.class, QueryHibernateRepositoryTest.class,
-    ValidatorRepositoryTest.class })
+    ConverterRepositoryTest.class, ExecutorRepositoryTest.class, GeneratorRepositoryTest.class,
+    QueryHibernateRepositoryTest.class, ValidatorRepositoryTest.class })
 public class AllTests {
 
 }
