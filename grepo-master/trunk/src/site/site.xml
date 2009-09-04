@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/DECORATION/1.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd"
-  name="grepo-master">
+  name="grepo">
 
     <skin>
         <groupId>org.apache.maven.skins</groupId>
@@ -46,7 +46,16 @@
              -->
         </menu>
 
+        <!--
         <menu ref="modules" />
+         -->
+         <menu name="Modules">
+            <item name="grepo-core" href="grepo-core/index.html" />
+            <item name="grepo-query-commons" href="grepo-query-commons/index.html" />
+            <item name="grepo-query-hibernate" href="grepo-query-hibernate/index.html" />
+            <item name="grepo-query-jpa" href="grepo-query-jpa/index.html" />
+            <item name="grepo-procedure" href="grepo-procedure/index.html" />
+         </menu>
 
         <menu ref="reports" />
 
