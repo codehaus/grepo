@@ -9,7 +9,7 @@
 What is grepo?
 
   The Generic Repository (grepo) is an open source (ASLv2) framework for Java which allows
-  to access (database) repositiories in a generic and consistent manner. Using grepo its
+  to access (database) repositiories in a generic and consistent manner. Using grepo it is
   generally no longer required to provide all the boilerplate code which is necessary in order
   to access (database) repositories from Java. All you have to do is to write appropriate
   database queries, procedures, functions etc...) code, an appropriately annotated Java
