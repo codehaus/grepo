@@ -8,5 +8,12 @@
 
 News and Status
 
-  This document contains the latest news and status regarding the gRepo project.
-  Here you'll find announcements related to gRepo.
+  This document contains the latest news and status regarding the grepo project.
+  Here you'll find announcements related to grepo.
+
+* 04 September 2009 - Initial grepo website deployed!
+
+  First version of grepo website deployed, but there are still serveral thing to do. Currently work is
+  focused on the <Getting Started> guides and 1.0-SNAPSHOT (unstable, downloadable) version.
+  SNAPSHOT (1.0) version should be available really soon. Check here or use the
+  {{{/mail-lists.html}Mailing Lists}} for updates.

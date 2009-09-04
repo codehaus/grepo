@@ -8,15 +8,14 @@ Downloads
 
 Download released versions
 
-* Get the latest unstable gRepo releases here
+* Unstable version
 
   Currently there are no unstable releases available.
 
-* Get the latest stable gRepo releases here
+* Latest stable version
 
   Currently there are no stable releases available.
 
+Getting the Source from SVN
 
-Getting the Development source from SVN
-
-  TODO: infos about SVN
+  {{{/source-repository.html}Here}} you can find information about how to access grepo's SVN repository.

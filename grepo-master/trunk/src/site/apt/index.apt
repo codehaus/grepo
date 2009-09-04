@@ -6,48 +6,60 @@
  2009-07-16
  -----
 
-What is gRepo?
+What is grepo?
 
-  gRepo stands for <"Generic Repository"> and allows to access databases/repositories in a
-  generic and consistent manner. Using gRepo you no longer have to write all the
-  boilerplate code required in order to access database(s) from Java. All you have to do,
-  is to write appropriate database (queries, procedures, functions etc.) code,
-  an appropriately annotated Java interface and very litte spring configuration (basically one
-  bean definition per DAO). Using the framework has the following advantages:
+  The Generic Repository (grepo) is an open source (ASLv2) framework for Java which allows
+  to access (database) repositiories in a generic and consistent manner. Using grepo its
+  generally no longer required to provide all the boilerplate code required, in order to
+  access repositories from Java. All you have to do is to write  appropriate database
+  (queries, procedures, functions etc...) code, an appropriately annotated Java interface
+  and very litte Spring configuration. Using the framework has the following advantages:
 
-  * Improves development time because no implementations are required for DAOs (Data Access Objects)
+  * Improves development time because no implementations are required for data access
+    objects (DAOs).
 
   * Simplifies development and code quality - you won't hear your colleague say
-    "Hey look, what I've found - I guess this is not the way we do this normally?!" anymore.
+    <"Hey look, what I've found - I guess this is not the way we do this normally?!"> anymore.
 
-  * Makes your DAO layer consistent - similar/equal data access operations are "implemented"
-    (and thus work) in the same way which in turn makes your DAO layer and software in general
+  * Makes your DAO-Layer consistent - similar/equal data access operations are "implemented"
+    (and thus work) in the same way which in turn makes software more stable and in general
     better maintainable.
 
 * Goals
 
-  gRepo was designed around the following goals:
+  grepo was designed around the following goals:
 
-  * <<Simplicity>> - The framework should be easy to use and understand. gRepo is designed around the
-	"Convention over Configuration" paradigm.
+  * <<Simplicity>> - The framework should be easy to use and understand and was designed
+    around the <"Convention over Configuration"> paradigm.
 
-  * <<Flexibility>> - The framework should be flexible enough, so it can be used for almost all database
-    access specific tasks. gRepo is easily configurable and extensible in order to also fit
-    custom/special needs.
+  * <<Flexibility>> - The framework should be flexible enough, so it can be used for almost
+    all database access specific tasks. grepo is easily configurable and extensible in order
+    to also fit custom/special needs.
 
-  * <<Consistency>> - The framework should assist in building a consistent DAO layer. gRepo allows to
-    define and configure rules and guidelines for the DAO layer. Those rules are then applied
-    and enforced by the framework - gRepo has a predefined set of rules which may be customized
-    for special needs.
+  * <<Consistency>> - The framework should assist in building consistent DAO-Layers. grepo
+    allows to define and configure rules and guidelines (coding conventions etc...) for the
+    DAO-Layer. Those rules are then applied and enforced by the framework - grepo has a
+    predefined set of rules which may be customized for custom/special needs.
 
+* Features
+
+  grepo has the follwing (main) features:
+
+  * generic support for executing database stored-procedures and functions
+
+  * generic support for Hibernate based DAOs
+
+  * generic support for Jpa based DAOs
+
+  * highly customizable
 
 Components
 
   The framework consists of the following main components:
 
-* gQuery
+* Generic Query (gquery)
 
-  gQuery stands for <"Generic Query"> and allows to access databases using SQL queries. Currently the
+  The <"Generic Query"> component allows to access databases using SQL queries. Currently the
   following ORM (Object Relational Mapping) tools/APIs are supported:
 
   * Native Hibernate API
@@ -56,19 +68,15 @@ Components
 
   []
 
-  The gQuery component defines a set of (default) rules for DAOs which may be customized/ extendeted
-  to fit special needs. The framework provides default implementations for both "read-only" and
-  "read-write" DAOs which may be used for basic CRUD operations. However it's up to you to provide your
-  own implementation(s) if desired. Furthermore gQuery offers the possiblility to define and execute
-  various queries (SQL, HQL, JPQL) and DAO methods without requiring custom implementations.
+  The gquery component defines a set of (default) rules for repositories which may be customized/extendeted
+  to fit custom/special needs. The framework provides default implementations for both "read-only" and
+  "read-write" repositories which may be used for basic CRUD operations. However it's up to you to provide your
+  own implementation(s) if desired. Furthermore gquery offers the possiblility to define and execute various
+  queries (SQL, HQL, JPQL) and DAO methods without requiring custom implementations.
 
-* gProcedure
+* Generic Procedure (gprocedure)
 
-  gProcedure stands for <"Generic Procedure"> and allows to access dabases using PLSQL (that is calling
-  stored procedures and/or functions) without requiring custom implementations.
-  The framework is build on top of the Spring's (JDBC) framework.
+  The <"Generic Procedure"> component allows to access dabases using PLSQL (that is calling stored procedures
+  and/or functions) without requiring custom implementations. gprocedure is build on top of the
+  Spring's (JDBC) framework.
 
-
-Releases
-
-  There is currently no release.

@@ -12,7 +12,6 @@
         and furthermore is used to generate and maintain the static grepo project site.
     </description>
 
-<!--
     <modules>
         <module>../grepo-core</module>
         <module>../grepo-query-commons</module>
@@ -20,7 +19,6 @@
         <module>../grepo-query-jpa</module>
         <module>../grepo-procedure</module>
     </modules>
- -->
 
     <properties>
         <!-- build properties -->
@@ -30,6 +28,17 @@
         <grepo.checkstyle.config.location>dev/config/checkstyle/grepo-style.xml</grepo.checkstyle.config.location>
         <grepo.pmd.config.location>/dev/config/pmd/grepo-ruleset.xml</grepo.pmd.config.location>
 
+        <grepo.jira.url>http://jira.codehaus.org/browse/GREPO</grepo.jira.url>
+        <grepo.license.url>http://svn.codehaus.org/grepo/grepo-buildtools/trunk/src/main/resources/license/ASLv2.txt</grepo.license.url>
+
+        <grepo.scm.connection.baseurl>scm:svn:http://svn.codehaus.org/grepo</grepo.scm.connection.baseurl>
+        <grepo.scm.developerConnection.baseurl>scm:svn:https://svn.codehaus.org/grepo</grepo.scm.developerConnection.baseurl>
+        <grepo.scm.fisheye.url>http://fisheye.codehaus.org/browse/grepo</grepo.scm.fisheye.url>
+
+        <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
+        <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
+        <grepo.maillist.archive.baseurl>http://archive.codehaus.org/lists</grepo.maillist.archive.baseurl>
+
         <!-- grepo module versions -->
         <grepo-buildtools.version>1.0-SNAPSHOT</grepo-buildtools.version>
         <grepo-core.version>1.0-SNAPSHOT</grepo-core.version>
@@ -37,6 +46,64 @@
         <grepo-query-hibernate.version>1.0-SNAPSHOT</grepo-query-hibernate.version>
         <grepo-query-jpa.version>1.0-SNAPSHOT</grepo-query-jpa.version>
     </properties>
+
+
+    <developers>
+        <developer>
+            <id>dguggi</id>
+            <name>Daniel Guggi</name>
+            <email>daniel.guggi@gmail.com</email>
+            <roles>
+                <role>Despot</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Apache Software License, Version 2.0</name>
+            <url>${grepo.license.url}</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>${grepo.scm.connection.baseurl}/${artifactId}/trunk</connection>
+        <developerConnection>${grepo.scm.developerConnection.baseurl}/${artifactId}/trunk</developerConnection>
+        <url>${grepo.scm.fisheye.url}</url>
+    </scm>
+
+    <issueManagement>
+        <system>JIRA</system>
+        <url>${grepo.jira.url}</url>
+    </issueManagement>
+
+    <mailingLists>
+        <mailingList>
+            <name>announce@grepo.codehaus.org</name>
+            <subscribe>${grepo.maillist.subscribe.baseurl}/announce@grepo.codehaus.org</subscribe>
+            <unsubscribe>${grepo.maillist.unsubscribe.baseurl}/announce@grepo.codehaus.org/unsubscribe</unsubscribe>
+            <archive>${grepo.maillist.archive.baseurl}/org.codehaus.grepo.announce</archive>
+        </mailingList>
+        <mailingList>
+            <name>user@grepo.codehaus.org</name>
+            <subscribe>${grepo.maillist.subscribe.baseurl}/user@grepo.codehaus.org</subscribe>
+            <unsubscribe>${grepo.maillist.unsubscribe.baseurl}/user@grepo.codehaus.org/unsubscribe</unsubscribe>
+            <archive>${grepo.maillist.archive.baseurl}/org.codehaus.grepo.user</archive>
+        </mailingList>
+        <mailingList>
+            <name>dev@grepo.codehaus.org</name>
+            <subscribe>${grepo.maillist.subscribe.baseurl}/dev@grepo.codehaus.org</subscribe>
+            <unsubscribe>${grepo.maillist.unsubscribe.baseurl}/dev@grepo.codehaus.org/unsubscribe</unsubscribe>
+            <archive>${grepo.maillist.archive.baseurl}/org.codehaus.grepo.dev</archive>
+        </mailingList>
+        <mailingList>
+            <name>scm@grepo.codehaus.org</name>
+            <subscribe>${grepo.maillist.subscribe.baseurl}/scm@grepo.codehaus.org</subscribe>
+            <unsubscribe>${grepo.maillist.unsubscribe.baseurl}/scm@grepo.codehaus.org/unsubscribe</unsubscribe>
+            <archive>${grepo.maillist.archive.baseurl}/org.codehaus.grepo.scm</archive>
+        </mailingList>
+    </mailingLists>
 
     <dependencies>
         <!-- add default testing deps to all submodules -->
@@ -285,6 +352,24 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <reportSets>
+                        <reportSet>
+                            <reports>
+                                <report>cim</report>
+                                <report>dependencies</report>
+                                <report>dependency-convergence</report>
+                                <report>dependency-management</report>
+                                <report>issue-tracking</report>
+                                <report>mailing-list</report>
+                                <report>plugin-management</report>
+                                <report>license</report>
+                                <report>plugins</report>
+                                <report>summary</report>
+                                <report>project-team</report>
+                                <report>scm</report>
+                            </reports>
+                        </reportSet>
+                    </reportSets>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
