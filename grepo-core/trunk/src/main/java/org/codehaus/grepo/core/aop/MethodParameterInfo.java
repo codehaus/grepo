@@ -78,7 +78,7 @@ public interface MethodParameterInfo {
      * @param index The parameter index.
      * @return Returns the parameter at the given index.
      */
-    public Object getParameter(int index);
+    Object getParameter(int index);
 
     /**
      * @param <T> The parameter type.
@@ -86,7 +86,7 @@ public interface MethodParameterInfo {
      * @param clazz The parameter type class.
      * @return Returns the parameter at the given index.
      */
-    public <T> T getParameter(int index, Class<T> clazz);
+    <T> T getParameter(int index, Class<T> clazz);
 
     /**
      * @return Returns the parameter annotations.
@@ -138,8 +138,8 @@ public interface MethodParameterInfo {
     boolean parameterHasAnnotation(int paramIndex, Class<? extends Annotation> clazz);
 
     /**
-     * Gets the parameter which is annotated with {@link Param} and {@link Param#value()} is equals to
-     * <code>queryParamName</code>.
+     * Gets the parameter which is annotated with {@link org.codehaus.grepo.core.annotation.Param} and
+     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equals to <code>queryParamName</code>.
      *
      * @param queryParamName The query param name.
      * @return Returns the parameter or null.
@@ -147,8 +147,8 @@ public interface MethodParameterInfo {
     Object getParameterByParamName(String queryParamName);
 
     /**
-     * gets the index of the parameter which is annotated with {@link Param} and {@link Param#value()} is equal to
-     * <code>paramName</code>.
+     * gets the index of the parameter which is annotated with {@link org.codehaus.grepo.core.annotation.Param} and
+     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equal to <code>paramName</code>.
      *
      * @param paramName The param name.
      * @return Returns the index of the parameter with the given <code>paramName</code> or <code>-1</code>.
@@ -156,8 +156,8 @@ public interface MethodParameterInfo {
     int getParameterIndexByParamName(String paramName);
 
     /**
-     * Gets the parameter which is annotated with {@link Param} and {@link Param#value()} is equals to
-     * <code>queryParamName</code>.
+     * Gets the parameter which is annotated with {@link org.codehaus.grepo.core.annotation.Param} and
+     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equals to <code>queryParamName</code>.
      *
      * @param <T> The parameter type.
      * @param queryParamName The query param name.

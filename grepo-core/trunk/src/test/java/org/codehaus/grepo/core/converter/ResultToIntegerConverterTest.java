@@ -21,7 +21,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * Tests the {@link ResultToIntegerConverter} converter.
+ * Tests the {@link org.codehaus.grepo.core.converter.ResultToIntegerConverter} converter.
  *
  * @author dguggi
  */

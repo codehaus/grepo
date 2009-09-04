@@ -21,7 +21,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * Tests the {@link ResultToLongConverter} converter.
+ * Tests the {@link org.codehaus.grepo.core.converter.ResultToLongConverter} converter.
  *
  * @author dguggi
  */

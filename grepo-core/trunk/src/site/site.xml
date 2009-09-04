@@ -11,12 +11,12 @@
     </skin>
     <bannerLeft>
         <name>Generic Repository</name>
-        <src>images/logo/grepo-logo-big-400x80.png
-        </src>
+        <src>images/logo/grepo-logo-big-400x80.png</src>
     </bannerLeft>
     <publishDate position="right" />
 
     <body>
+        <links></links>
 
         <menu ref="parent" />
 

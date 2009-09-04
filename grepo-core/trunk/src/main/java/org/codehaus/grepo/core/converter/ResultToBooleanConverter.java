@@ -20,11 +20,12 @@ import java.util.regex.Pattern;
 
 /**
  * This converter can convert instances of <code>java.lang.Number</code> objects to <code>java.lang.Boolean</code> - for
- * any other type <code>Boolean.FALSE</code> will be returned. <b>Note:</b> This converter will never return
- * <code>null</code>. If the input to be converted is <code>null</code> then <code>Boolean.FALSE</code> will be
- * returned. If input is of type <code>java.lang.String</code> then the input's value has to match
- * pattern <code>(t|true|1|yes)</code> in order to return <code>Boolean.TRUE</code> - for any other value
- * <code>Boolean.FALSE</code> will be returned.
+ * any other type <code>Boolean.FALSE</code> will be returned. <br>
+ * <br>
+ * <b>Note:</b> This converter will never return <code>null</code>. If the input to be converted is <code>null</code>
+ * then <code>Boolean.FALSE</code> will be returned. If input is of type <code>java.lang.String</code> then the input's
+ * value has to match pattern <code>(t|true|1|yes)</code> in order to return <code>Boolean.TRUE</code> - for any other
+ * value <code>Boolean.FALSE</code> will be returned.
  *
  * @author dguggi
  */

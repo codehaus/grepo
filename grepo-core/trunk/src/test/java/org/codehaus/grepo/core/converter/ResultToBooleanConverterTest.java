@@ -23,7 +23,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * Tests the {@link ResultToBooleanConverter} converter.
+ * Tests the {@link org.codehaus.grepo.core.converter.ResultToBooleanConverter} converter.
  *
  * @author dguggi
  */
