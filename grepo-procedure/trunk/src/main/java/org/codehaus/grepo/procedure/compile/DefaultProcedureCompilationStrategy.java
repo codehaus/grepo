@@ -28,7 +28,6 @@ import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.exception.ConfigurationException;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.StoredProcedureImpl;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**

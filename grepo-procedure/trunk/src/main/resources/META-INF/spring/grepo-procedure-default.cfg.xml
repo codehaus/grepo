@@ -12,7 +12,7 @@
     <import resource="classpath:META-INF/spring/grepo-core-default.cfg.xml" />
 
     <bean id="grepo.genericProcedureIntroductionInterceptor"
-        class="org.codehaus.grepo.procedure.aop.GenericProcedureIntroductionInterceptor">
+        class="org.codehaus.grepo.procedure.repository.GenericProcedureIntroductionInterceptor">
     </bean>
 
     <bean id="grepo.defaultProcedureCachingStrategy"

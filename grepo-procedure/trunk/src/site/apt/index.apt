@@ -1,16 +1,11 @@
  -----
- The Site
+ Overview
  -----
- The Maven Team
+ Daniel Guggi
+ -----
+ 2009-07-16
  -----
 
-Maven Site for your project
+grepo-query-procedure
 
- Congratulations! If you are looking at this page then you have successfully generated a
- template site employing the site archetype and you have run:
-  
-+-----+
-
-m2 site:site
-
-+-----+
+  Here you'll find information about the grepo-query-procedure module.

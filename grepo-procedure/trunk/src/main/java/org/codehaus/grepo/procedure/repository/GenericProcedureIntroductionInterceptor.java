@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.aop;
+package org.codehaus.grepo.procedure.repository;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
+import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfoImpl;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutor;
 import org.springframework.aop.IntroductionInterceptor;
 

@@ -19,7 +19,7 @@ package org.codehaus.grepo.procedure.aop;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 
 /**
- * Method parameter info for methods annotated with {@link GenericProcedure}.
+ * Method parameter info for methods annotated with {@link org.codehaus.grepo.procedure.annotation.GenericProcedure}.
  *
  * @author dguggi
  */
