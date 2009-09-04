@@ -15,7 +15,7 @@
         <priority value="WARN" />
     </category>
     <category name="org.springframework.jdbc">
-        <priority value="INFO" />
+        <priority value="WARN" />
     </category>
     <category name="org.springframework.orm.hibernate3">
         <priority value="WARN" />
@@ -23,15 +23,14 @@
     <category name="org.hibernate">
         <priority value="WARN" />
     </category>
+    <!--
     <category name="org.hibernate.SQL">
         <priority value="DEBUG" />
     </category>
     <category name="org.hibernate.type">
         <priority value="TRACE" />
     </category>
-    <category name="org.codehaus.grepo">
-        <priority value="TRACE" />
-    </category>
+     -->
     <category name="org.jbpm">
         <priority value="DEBUG" />
     </category>

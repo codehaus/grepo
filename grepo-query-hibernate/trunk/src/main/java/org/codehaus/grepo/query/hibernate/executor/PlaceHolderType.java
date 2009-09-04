@@ -301,14 +301,14 @@ public final class PlaceHolderType implements Type {
      * {@inheritDoc}
      */
     public int[] sqlTypes(Mapping mapping) throws MappingException {
-        return null;
+        return new int[0];
     }
 
     /**
      * {@inheritDoc}
      */
     public boolean[] toColumnNullness(Object value, Mapping mapping) {
-        return null;
+        return new boolean[0];
     }
 
     /**
