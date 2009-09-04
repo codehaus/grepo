@@ -18,7 +18,12 @@
     <body>
         <links></links>
 
+        <!--
         <menu ref="parent" />
+        -->
+        <menu name="Parent">
+            <item name="grepo" href="../index.html" />
+        </menu>
 
         <menu ref="reports" />
 
