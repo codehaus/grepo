@@ -19,7 +19,7 @@ package org.codehaus.grepo.query.commons.aop;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 
 /**
- * Method parameter info for methods annotated with {@link GenericQuery}.
+ * Method parameter info for methods annotated with {@link org.codehaus.grepo.query.commons.annotation.GenericQuery}.
  *
  * @author dguggi
  */

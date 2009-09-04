@@ -18,7 +18,6 @@ package org.codehaus.grepo.query.commons.executor;
 
 import org.codehaus.grepo.exception.GrepoException;
 
-
 /**
  * @author dguggi
  */

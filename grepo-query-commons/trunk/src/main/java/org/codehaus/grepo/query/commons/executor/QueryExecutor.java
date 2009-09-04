@@ -21,7 +21,7 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
 
 /**
  * A query executor is responsible for executing database queries for methods
- * annotated with {@link GenericQuery}.
+ * annotated with {@link org.codehaus.grepo.query.commons.annotation.GenericQuery}.
  *
  * @author dguggi
  *

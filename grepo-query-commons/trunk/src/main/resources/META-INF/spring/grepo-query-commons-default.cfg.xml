@@ -11,7 +11,7 @@
     <import resource="classpath:META-INF/spring/grepo-core-default.cfg.xml"/>
 
     <bean id="grepo.genericQueryIntroductionInterceptor"
-        class="org.codehaus.grepo.query.commons.aop.GenericQueryIntroductionInterceptor">
+        class="org.codehaus.grepo.query.commons.repository.GenericQueryIntroductionInterceptor">
     </bean>
 
     <bean id="grepo.defaultMethodNamePattern" class="java.util.regex.Pattern" factory-method="compile">

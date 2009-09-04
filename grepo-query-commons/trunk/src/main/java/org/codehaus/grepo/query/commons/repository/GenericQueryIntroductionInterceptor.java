@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.commons.aop;
+package org.codehaus.grepo.query.commons.repository;
 
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfoImpl;
 import org.springframework.aop.IntroductionInterceptor;
 import org.springframework.util.StopWatch;
 
