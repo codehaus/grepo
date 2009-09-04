@@ -57,16 +57,10 @@ public class TestEntity implements Serializable {
         this.firstname = firstname;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public Long getId() {
         return id;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setId(final Long id) {
         this.id = id;
     }
