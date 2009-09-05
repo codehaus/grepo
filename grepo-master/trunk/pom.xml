@@ -13,14 +13,12 @@
     </description>
 
     <!--
-    <modules>
-        <module>../grepo-core</module>
+        <modules> <module>../grepo-core</module>
         <module>../grepo-query-commons</module>
         <module>../grepo-query-hibernate</module>
         <module>../grepo-query-jpa</module>
-        <module>../grepo-procedure</module>
-    </modules>
-     -->
+        <module>../grepo-procedure</module> </modules>
+    -->
 
     <properties>
         <!-- build properties -->
@@ -48,7 +46,6 @@
         <grepo-query-hibernate.version>1.0-SNAPSHOT</grepo-query-hibernate.version>
         <grepo-query-jpa.version>1.0-SNAPSHOT</grepo-query-jpa.version>
     </properties>
-
 
     <developers>
         <developer>
@@ -106,6 +103,20 @@
             <archive>${grepo.maillist.archive.baseurl}/org.codehaus.grepo.scm</archive>
         </mailingList>
     </mailingLists>
+
+    <distributionManagement>
+        <repository>
+            <id>codehaus.org</id>
+            <name>grepo central repository</name>
+            <url>dav:https://dav.codehaus.org/repository/grepo/</url>
+        </repository>
+        <snapshotRepository>
+            <id>codehaus.org</id>
+            <name>grepo central development repository</name>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/grepo/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
 
     <dependencies>
         <!-- add default testing deps to all submodules -->
@@ -199,6 +210,14 @@
     </dependencyManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+
         <pluginManagement>
             <plugins>
                 <!-- configure compiler plugin -->
@@ -354,24 +373,24 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <reportSets>
-                        <reportSet>
-                            <reports>
-                                <report>cim</report>
-                                <report>dependencies</report>
-                                <report>dependency-convergence</report>
-                                <report>dependency-management</report>
-                                <report>issue-tracking</report>
-                                <report>mailing-list</report>
-                                <report>plugin-management</report>
-                                <report>license</report>
-                                <report>plugins</report>
-                                <report>summary</report>
-                                <report>project-team</report>
-                                <report>scm</report>
-                            </reports>
-                        </reportSet>
-                    </reportSets>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>cim</report>
+                            <report>dependencies</report>
+                            <report>dependency-convergence</report>
+                            <report>dependency-management</report>
+                            <report>issue-tracking</report>
+                            <report>mailing-list</report>
+                            <report>plugin-management</report>
+                            <report>license</report>
+                            <report>plugins</report>
+                            <report>summary</report>
+                            <report>project-team</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
