@@ -11,4 +11,27 @@
         This module provides a jar file containing several development resources like
         checkstyle, pmd configuration files etc...
     </description>
+
+    <distributionManagement>
+        <repository>
+            <id>codehaus.org</id>
+            <name>grepo central repository</name>
+            <url>dav:https://dav.codehaus.org/repository/grepo/</url>
+        </repository>
+        <snapshotRepository>
+            <id>codehaus.org</id>
+            <name>grepo central development repository</name>
+            <url>dav:https://dav.codehaus.org/snapshots.repository/grepo/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-webdav</artifactId>
+                <version>1.0-beta-2</version>
+            </extension>
+        </extensions>
+    </build>
 </project>
