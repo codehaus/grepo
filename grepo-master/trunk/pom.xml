@@ -13,11 +13,13 @@
     </description>
 
     <!--
-        <modules> <module>../grepo-core</module>
+    <modules>
+        <module>../grepo-core</module>
         <module>../grepo-query-commons</module>
         <module>../grepo-query-hibernate</module>
         <module>../grepo-query-jpa</module>
-        <module>../grepo-procedure</module> </modules>
+        <module>../grepo-procedure</module>
+    </modules>
     -->
 
     <properties>
