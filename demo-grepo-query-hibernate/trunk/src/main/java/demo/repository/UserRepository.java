@@ -91,4 +91,13 @@ public interface UserRepository extends ReadWriteHibernateRepository<User, Long>
     @GenericQuery
     @HibernateQueryOptions(criteriaGenerator = UserSearchCriteriaGenerator.class)
     List<User> findUsersByNameUsingCriteria(@Param("fn") String firstname, @Param("ln") String lastname);
+
+    /**
+     * Checks if a given email address already exists in database.
+     *
+     * @param email The email to check.
+     * @return Returns <code>true</code> if email exists and <code>false</code> otherwise.
+     */
+    @GenericQuery
+    boolean isExistingEmail(String email);
 }

@@ -158,4 +158,13 @@ public class UserRepositoryTest {
         list = repo.findUsersByNameUsingCriteria("notexists", "notexists");
         Assert.assertTrue(list.isEmpty());
     }
+
+    /**
+     * Tests {@link UserRepository#isExistingEmail(String)}.
+     */
+    @Test
+    public void testIsExistingEmail() {
+        Assert.assertTrue(repo.isExistingEmail("max@mustermann.com"));
+        Assert.assertFalse(repo.isExistingEmail("notexists"));
+    }
 }

@@ -27,4 +27,8 @@
     </sql-query>
      -->
 
+    <query name="demo.domain.User.ExistingEmail">
+        select count(id) from User where email = ?
+    </query>
+
 </hibernate-mapping>
