@@ -513,6 +513,96 @@ public class UserSearchCriteriaGenerator implements CriteriaGenerator {
         @Param("ln") String lastname);
 +--
 
+* Additional functionality
+
+** Paging
+
+  Hibernate offers <paging> functionality which can be used with grepo's <@MaxResults>
+  and <@FirstResult> annotations like this:
+
++--
+    @GenericQuery(query = "from User")
+    List<User> findUsers(@FirstResult int firstResult, @MaxResults int maxResults);
++--
+
+  It's also possible to use the <firstResult> and <maxResults> properties of the
+  <@GenericQuery> annotation.
+
+** Result conversion
+
+  The framework supports result conversion functionality. For this grepo uses implementations
+  of the <org.codehaus.grepo.core.converter.ResultConverter> interface. <ResultConverts> can
+  be used to convert the result of a query invokation. <ResultConverters> can be configured
+  for methods using grepo's <@GenericQuery> annotation, like this:
+
++--
+    @GenericQuery(resultConverter = MyResultConverter.class)
+    int getBySomething(String something);
++--
+
+  Hibernate also offers a similiar feature known as <result transformation>. You can use this
+  feature using grepo's <@HibernateQueryOption> annotation by configuring the <resultTransformer>
+  property accordingly.
+
+*** Implicit result conversion
+
+  Furthermore grepo supports so called implicit result conversion, which means that in some
+  cases (if necessary) the result will be converted automatically (without configuration). The
+  framework uses a <org.codehaus.grepo.core.converter.ResultConverterFindingService>. Grepo's
+  default implementation <org.codehaus.grepo.core.converter.ResultConverterFindingServiceImpl>
+  uses a registry (basically a <Map>) to map <types> to <ResultConverter> classes. The
+  <ResultConverterFindingService> checks if conversion is required (for instance if
+  query result is not compatible with method return type) and uses the <registry> in order to
+  retrieve the appropriate converter to use. In its default configuration grepo knows the
+  following <ResultConverters>:
+
+  * <org.codehaus.grepo.core.converter.ResultToBooleanConverter>: This implementation is used
+    to convert objects to instances of <java.lang.Boolean>.
+
+  * <org.codehaus.grepo.core.converter.ResultToLongConverter>: This implementation is used
+    to convert objects to instances of <java.lang.Long>.
+
+  * <org.codehaus.grepo.core.converter.ResultToIntegerConverter>: This implementation is used
+    to convert objects to instances of <java.lang.Integer>.
+
+  Suppose we need functionality for our demo application wich allows to register new users. As we have
+  seen the <email> property is unique and thus must not already exist in the database. We could
+  use the following method so we can check for existing email-addresses:
+
++--
+    @GenericQuery(query = "select count(id) from User where email = ?")
+    boolean isExistingEmail(String email);
++--
+
+  Note that the query returns <0> or <1> (because <email> is unique) and the methods return type
+  is <boolean>. Executing this method (and having grepo logger level set to <TRACE>) the
+  following will be logged:
+
++--
+...
+20:54:43,561 TRACE [DefaultHibernateRepository:91] - Query result is '0'
+20:54:43,561 TRACE [ResultConverterFindingStrategyImpl:99] - Found converter
+                   'org.codehaus.grepo.core.converter.ResultToBooleanConverter' for conversion from
+                   'java.lang.Long' (0) to 'boolean'
+20:54:43,562 TRACE [ResultConversionServiceImpl:52] - Doing conversion for result (class=java.lang.Long, value=0)
+                   with converter 'org.codehaus.grepo.core.converter.ResultToBooleanConverter'
+20:54:43,562 TRACE [ResultConversionServiceImpl:60] - Conversion result is 'false'
+...
++--
+
+** Result validation
+
+  The framework supports result validation functionality. For this grepo uses implementations
+  of the <org.codehaus.grepo.core.validator.ResultValidator> interface. <ResultValidators> can
+  be used to validate the result of a method invokation. Note that result validation is performed
+  after result conversion. <ResultValidators> can be configured for methods using grepo's
+  <@GenericQuery> annotation like this:
+
++--
+    @GenericQuery(resultValidator = MyResultValidator.class)
+    int getBySomething(String something);
++--
+
 * Transaction Handling
 
   You configure transaction handling for your repository objects (DAOs) as you would do
