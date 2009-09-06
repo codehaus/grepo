@@ -638,9 +638,10 @@ public class UserSearchCriteriaGenerator implements CriteriaGenerator {
 
 * A word about conventions
 
-  The grepo framework was designed around the convention over configuration paradigm. You
-  configure the grepo framework with your guidlines (if the default configuration does not
-  meet your needs) for your DAO-Layer and grepo will then apply those rules
+  The grepo framework was designed around the
+  {{{http://en.wikipedia.org/wiki/Convention_over_configuration}convention over configuration}}
+  paradigm. You configure the grepo framework with your guidlines (if the default configuration
+  does not meet your needs) for your DAO-Layer and grepo will then apply those rules
   transparently. For instance, we have seen that grepo can guarantee that all methods
   which execute <"list-queries"> have to start with the prfix "<list>" and also have to return
   an instance of <java.util.List>. If you want to break the rules you could for instance configure
