@@ -8,7 +8,7 @@
     <name>grepo</name>
     <url>http://grepo.codehaus.org</url>
     <description>
-        Parent module with provides the basic module configuration for other grepo modules
+        Parent module which provides the basic module configuration for other grepo modules
         and furthermore is used to generate and maintain the static grepo project site.
     </description>
 
@@ -30,10 +30,6 @@
 
         <grepo.jira.url>http://jira.codehaus.org/browse/GREPO</grepo.jira.url>
         <grepo.license.url>http://svn.codehaus.org/grepo/grepo-buildtools/trunk/src/main/resources/license/ASLv2.txt</grepo.license.url>
-
-        <grepo.scm.connection.baseurl>scm:svn:http://svn.codehaus.org/grepo</grepo.scm.connection.baseurl>
-        <grepo.scm.developerConnection.baseurl>scm:svn:https://svn.codehaus.org/grepo</grepo.scm.developerConnection.baseurl>
-        <grepo.scm.fisheye.url>http://fisheye.codehaus.org/browse/grepo</grepo.scm.fisheye.url>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
@@ -125,7 +121,8 @@
         </snapshotRepository>
         <site>
             <id>codehaus.org</id>
-            <url>dav:https://dav.codehaus.org/grepo/sitedeploytest/</url>
+            <name>grepo website</name>
+            <url>dav:https://dav.codehaus.org/grepo/</url>
         </site>
     </distributionManagement>
 
