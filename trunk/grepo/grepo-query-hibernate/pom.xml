@@ -17,12 +17,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <scm>
-        <connection>${grepo.scm.connection.baseurl}/${artifactId}/trunk</connection>
-        <developerConnection>${grepo.scm.developerConnection.baseurl}/${artifactId}/trunk</developerConnection>
-        <url>${grepo.scm.fisheye.url}</url>
-    </scm>
-
     <dependencies>
         <dependency>
             <groupId>org.codehaus.grepo</groupId>

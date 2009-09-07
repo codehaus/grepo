@@ -57,6 +57,14 @@
                 <role>Developer</role>
             </roles>
         </developer>
+        <developer>
+            <id>pkleindl</id>
+            <name>Patrik Kleindl</name>
+            <email>pkleindl@gmail.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
     </developers>
 
     <licenses>
@@ -67,9 +75,9 @@
     </licenses>
 
     <scm>
-        <connection>${grepo.scm.connection.baseurl}/${artifactId}/trunk</connection>
-        <developerConnection>${grepo.scm.developerConnection.baseurl}/${artifactId}/trunk</developerConnection>
-        <url>${grepo.scm.fisheye.url}</url>
+        <connection>scm:svn:http://svn.codehaus.org/grepo/trunk/grepo</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/grepo/trunk/grepo</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/grepo/trunk/grepo</url>
     </scm>
 
     <issueManagement>
@@ -115,6 +123,10 @@
             <name>grepo central development repository</name>
             <url>dav:https://dav.codehaus.org/snapshots.repository/grepo/</url>
         </snapshotRepository>
+        <site>
+            <id>codehaus.org</id>
+            <url>dav:https://dav.codehaus.org/grepo/sitedeploytest/</url>
+        </site>
     </distributionManagement>
 
 
