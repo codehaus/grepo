@@ -8,7 +8,7 @@
     <name>demo-grepo-query-hibernate</name>
     <url>http://grepo.codehaus.org</url>
     <description>
-        Demo project for gquery component of the grepo framework.
+        Demo project for gquery component of the grepo framework (hibernate).
     </description>
 
     <build>
