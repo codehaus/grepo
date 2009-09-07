@@ -20,7 +20,7 @@ Getting started with gquery (hibernate)
   The demo project for this guide can be checked out from our SVN repository as follows:
 
 +--
-$ svn checkout http://svn.codehaus.org/grepo/demo-grepo-query-hibernate/trunk demo-grepo-query-hibernate
+$ svn checkout http://svn.codehaus.org/grepo/trunk/demo-grepo-query-hibernate demo-grepo-query-hibernate
 +--
 
   The demo project is a maven project and we highly recommend that you use maven to set up the
