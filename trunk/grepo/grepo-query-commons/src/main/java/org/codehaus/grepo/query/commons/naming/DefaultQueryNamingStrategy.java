@@ -75,7 +75,7 @@ public class DefaultQueryNamingStrategy implements QueryNamingStrategy {
         }
 
         if (LOG.isTraceEnabled()) {
-            LOG.trace("Resolved hibernate named-query: " + queryName);
+            LOG.trace("Resolved named-query: " + queryName);
         }
 
         return queryName;
