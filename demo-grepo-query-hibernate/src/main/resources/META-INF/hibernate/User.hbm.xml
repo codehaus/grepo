@@ -13,7 +13,6 @@
         <property name="lastname" column="LASTNAME" />
         <property name="username" column="USERNAME" unique="true" not-null="true" />
         <property name="email" column="EMAIL" unique="true" />
-
     </class>
 
     <query name="demo.domain.User.ByUsername">

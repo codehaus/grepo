@@ -19,7 +19,7 @@ package demo.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.grepo.query.hibernate.executor.EntityNotFoundException;
+import org.codehaus.grepo.query.hibernate.executor.NoResultException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
@@ -95,7 +95,7 @@ public class UserRepositoryTest {
     /**
      * Tests {@link UserRepository#loadByUsername(String)}.
      */
-    @Test(expected = EntityNotFoundException.class)
+    @Test(expected = NoResultException.class)
     public void testLoadByUsername() {
         Assert.assertNotNull(repo.loadByUsername("max"));
         // this throws exception
