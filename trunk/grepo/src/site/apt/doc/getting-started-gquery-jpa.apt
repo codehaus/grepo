@@ -20,7 +20,7 @@ Getting started with gquery (jpa)
   The demo project for this guide can be checked out from our SVN repository as follows:
 
 +--
-$ svn checkout http://svn.codehaus.org/grepo/demo-grepo-query-jpa/trunk demo-grepo-query-jpa
+$ svn checkout http://svn.codehaus.org/grepo/trunk/demo-grepo-query-jpa demo-grepo-query-jpa
 +--
 
   The demo project is a maven project and we highly recommend that you use maven to set up the
@@ -62,7 +62,7 @@ $ mvn test
 16:22:50,975 TRACE [QueryExecutorFindingStrategyImpl:68] - Found queryExecutor
                    'org.codehaus.grepo.query.jpa.executor.LoadQueryExecutor' for execution of method 'loadByUsername'
 16:22:50,978 TRACE [AbstractGenericRepository:114] - Executing query using transaction template
-16:22:50,985 TRACE [DefaultQueryNamingStrategy:78] - Resolved hibernate named-query: demo.domain.User.ByUsername
+16:22:50,985 TRACE [DefaultQueryNamingStrategy:78] - Resolved named-query: demo.domain.User.ByUsername
 16:22:50,992 TRACE [AbstractJpaQueryExecutor:98] - Using query: org.hibernate.ejb.QueryImpl@4cf221f6
 16:22:50,995 TRACE [AbstractJpaQueryExecutor:399] - Setting parameter '1' to 'max'
 16:22:51,012 TRACE [DefaultJpaRepository:101] - Query result is 'demo.domain.User@5aaefcbb[id=1,username=max]'
@@ -117,9 +117,9 @@ $ mvn test
   could for instance configure the required <"grepo"> beans directly in your application
   context.
 
-  Furthermore you need to define a datasource and a hibernate session factory. This
-  configuration is "standard" Spring/Hibernate and is not grepo specific. In the demo project
-  the hsql datasource and session factory are configured in
+  Furthermore you need to define a datasource and a Jpa entity manager factory. This
+  configuration is "standard" Spring/Jpa and is not grepo specific. In the demo project
+  the hsql datasource and entity manager factory are configured in
   <src/main/resources/META-INF/spring/db-environment.xml>.
 
   The next step is to define a basic configuration (that is <abstract> Spring beans) for your
@@ -127,8 +127,8 @@ $ mvn test
 
 +--
 <bean id="abstractRepositoryTarget"
-    class="org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepositoryImpl" abstract="true">
-    <property name="sessionFactory" ref="sessionFactory" />
+    class="org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl" abstract="true">
+    <property name="entityManagerFactory" ref="entityManagerFactory" />
     <property name="executorFindingStrategy" ref="grepo.queryExecutorFindingStrategy" />
     <property name="resultConversionService" ref="grepo.resultConversionService" />
     <property name="executorFactory" ref="grepo.defaultQueryExecutorFactory" />
@@ -149,11 +149,11 @@ $ mvn test
   Its a good idea to define <abstract> beans because they make configuration of concrete repository beans
   simpler and furthermore you just have to modify the <abstract> beans if you need to change the basic
   configuration for your DAO-Layer in the future. Note that we use grepo's
-  <org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepositoryImpl>
+  <org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl>
   class. This class provides basic CRUD operations (and optionally transaction handling support)
   for your DAOs. For read-only repositories you could use
-  <org.codehaus.grepo.query.hibernate.repository.ReadOnlyHibernateRepositoryImpl>
-  or <org.codehaus.grepo.query.hibernate.repository.DefaultHibernateRepository>. If none of those
+  <org.codehaus.grepo.query.jpa.repository.ReadOnlyJpaRepositoryImpl>
+  or <org.codehaus.grepo.query.jpa.repository.DefaultJpaRepository>. If none of those
   implementations fits your needs, you could provide your own implementation of the
   <org.codehaus.grepo.query.commons.repository.GenericRepository> interface.
 
@@ -167,17 +167,17 @@ $ mvn test
 +--
 package demo.repository;
 
-import org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepository;
+import org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepository;
 import demo.domain.User;
 
-public interface UserRepository extends ReadWriteHibernateRepository<User, Long> {
+public interface UserRepository extends ReadWriteJpaRepository<User, Long> {
 }
 +--
 
   Note that we want a read-write repository and thus have to extend from
-  <org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepository>. For a read-only
+  <org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepository>. For a read-only
   repository we would exend from
-  <org.codehaus.grepo.query.hibernate.repository.ReadOnlyHibernateRepository> instead. The
+  <org.codehaus.grepo.query.jpa.repository.ReadOnlyJpaRepository> instead. The
   first generic type is the Java entity (<User>) and the second one is the type for the primary
   key property of the entity (<Long>).
 
@@ -215,7 +215,7 @@ public interface UserRepository extends ReadWriteHibernateRepository<User, Long>
 * Executing generic queries
 
   We can now add various methods to our <UserRepository> interface in order to execute queries
-  (either HQL or SQL). In our application we might want to load a user from database via
+  (either JPQL or SQL). In our application we might want to load a user from database via
   <username> property. Therefore we would add the following method to our <UserRepository> interface:
 
 +--
@@ -227,21 +227,21 @@ User getByUsername(String username);
   to fetch <User> entities from database by <username>. As you can see we use grepo's
   <@GenericQuery> annotation to tell the framework that the method has to be executed (or
   handeled) dynamically (remember that we didn't have to provide and implementation of our
-  <UserRepository> interface). The <query> property provides the HQL query to be executed when
+  <UserRepository> interface). The <query> property provides the JPQL query to be executed when
   the method gets invoked. We can also execute SQL queries:
 
 +--
 @GenericQuery(query = "select * from USERS where username = ?", isNativeQuery = true)
-@HibernateQueryOptions(entityClasses = @EntityClass(clazz = User.class))
+@JpaQueryOptions(resultClass = User.class)
 User getByUsername(String username);
 +--
 
-  Here we have to use grepo's <@HibernateQueryOptions> annotation to tell the framework that an
+  Here we have to use grepo's <@JpaQueryOptions> annotation to tell the framework that an
   instance of <User> has to be returned.
 
 ** Queries with named-parameters
 
-  We could also use Hibernate's named-parameter style for placeholders in our query (instead of
+  We could also use Jpa named-parameter style for placeholders in our query (instead of
   the JDBC style which uses question marks as placeholders):
 
 +--
@@ -262,7 +262,8 @@ User getByUsername(@Param("un") String username);
   * You can use one method parameter for multiple query parameters.
 
   * Using named-parameter queries you can provide a <java.util.Collection> as method parameter
-    and use it for <IN-Clauses> in your query. For instance:
+    and use it for <IN-Clauses> in your query (At least with the Hibernate entity manager).
+    For instance:
 
 +--
 @GenericQuery(query = "from User where username IN (:list)")
@@ -278,32 +279,25 @@ List<User> findByUsernames(@Param("list") Collection<String> usernames);
   is responsible for executing queries. In the default configuration grepo uses the following
   implementations of the <QueryExecutor> interface:
 
-  * <org.codehaus.grepo.query.hibernate.executor.GetQueryExecutor>: This implementation
-    executes a query using the <uniqueResult> method of the Hibernate API and thus
-    returns <null> or the instance. If multiple records were found, Hibernate throws
-    an unchecked exception.
+  * <org.codehaus.grepo.query.jpa.executor.GetQueryExecutor>: This implementation
+    executes a query using the <execute> method of the Jpa API and
+    returns <null> or the instance. If multiple records were found a <NonUniqueResultException>
+    will be thrown.
 
-  * <org.codehaus.grepo.query.hibernate.executor.LoadQueryExecutor>: Same as <GetQueryExecutor>
+  * <org.codehaus.grepo.query.jpa.executor.LoadQueryExecutor>: Same as <GetQueryExecutor>
     with the difference that this executor never returns <null> - if no records were
-    found then an <EntityNotFoundException> will be thrown.
+    found Jpa will throw an unchecked exception. Furthermore this executor uses
+    the <getSingleResult> method of the Jpa API.
 
-  * <org.codehaus.grepo.query.hibernate.executor.ListQueryExecutor>: This implementation
-    executes a query using the <list> method of the Hibernate API and thus returns instances
+  * <org.codehaus.grepo.query.jpa.executor.ListQueryExecutor>: This implementation
+    executes a query using the <getResultList> method of the Jpa API and thus returns instances
     of <java.util.List>. This executor never returns <null> - if no records were found an
     empty list is returned.
 
-  * <org.codehaus.grepo.query.hibernate.executor.UpdateQueryExecutor>: This implementation
+  * <org.codehaus.grepo.query.jpa.executor.UpdateQueryExecutor>: This implementation
     executes <update-> or <delete-queries>, that is queries that <update> or <delete> records
-    in database. It uses the <executeUpdate> method of the Hibernate API and thus returns
+    in database. It uses the <executeUpdate> method of the Jpa API and thus returns
     an <int> indicating how many records where affected by the (update- or delete-) operation.
-
-  * <org.codehaus.grepo.query.hibernate.executor.IterateQueryExecutor>: This implementation
-    executes a query using the <iterate> method of the Hibernate API and thus returns
-    an instance of <java.util.Iterator>.
-
-  * <org.codehaus.grepo.query.hibernate.executor.ScrollQueryExecutor>: This implementation
-    executes a query using the <scroll> method of the Hibernate API and thus returns
-    an instance of <org.hibernate.ScrollableResults>.
 
   So obviously grepo used the <ListQueryExecutor> for the <findByUsernames> and
   the <GetQueryExecutor> for the <getByUsername> method. But how did grepo know which
@@ -322,11 +316,11 @@ List<User> findByUsernames(@Param("list") Collection<String> usernames);
   * If the name of the method matches the pattern
 
 +--
-^(is|has|find|get|load|scroll|iterate|delete|update)
+^(is|has|find|get|load|delete|update)
 +--
 
     then the executor name is the matching prefix. This means that if the method starts with
-    <is, has, get, load, scroll, iterate, delete or update> this rule will be applied.
+    <is, has, get, load, delete or update> this rule will be applied.
 
   * If the method name does not match the pattern above, then <null> will be returned,
     meaning that the strategy didn't find the appropriate executor name for this method.
@@ -337,8 +331,8 @@ List<User> findByUsernames(@Param("list") Collection<String> usernames);
   this executor like this:
 
 +--
-@GenericQuery(queryExecutor = MyReallySpecialQueryExecutor.class)
-List<User> reallySpecialMethod();
+@GenericQuery(queryExecutor = MyCustomQueryExecutor.class)
+List<User> findUsingCustomExecutor();
 +--
 
   Using this approach is straight forward, because you tell grepo what executor has to be used and
@@ -348,7 +342,7 @@ List<User> reallySpecialMethod();
 
 ** Separating queries from Java code
 
-  You may not want to have the queries directly in your Java code. Grepo uses Hibernate's
+  You may not want to have the queries directly in your Java code. Grepo uses Jpa's
   concept of named queries to achieve that. This would make your repository methods even
   easier:
 
@@ -357,28 +351,27 @@ List<User> reallySpecialMethod();
 User getByUsername(String username);
 +--
 
-  In our mapping file (<src/main/resources/META-INF/hibernate/User.hbm.xml>) we would define
-  the the HQL query like this:
+  In our mapping file (<src/main/resources/META-INF/jpa/mapping.hbml.xml>) we would define
+  the the JPQL query like this:
 
 +--
-<query name="demo.domain.User.ByUsername">
-    from User where username = ?
-</query>
+<named-query name="demo.domain.User.ByUsername">
+    <query>from User where username = ?</query>
+</named-query>
 +--
 
   An appropriate SQL query would look like:
 
 +--
-<sql-query name="demo.domain.User.ByUsername">
-    <return class="User" />
-    select * from USERS where username = ?
-</sql-query>
+<named-native-query name="demo.domain.User.ByUsername" result-class="demo.domain.User">
+    <query>select * from USERS where username = ?</query>
+</named-native-query
 +--
 
 *** How it works
 
   You may now wonder how grepo is able to find the correct query to execute (you will most likely have
-  several named queries defined within your Hibernate session factory). The
+  several named queries defined within your Jpa entity manager factory). The
   answer is conventions. Grepo uses a <org.codehaus.grepo.query.commons.executor.QueryExecutorFactory>
   which is responsible for creating <QueryExecutor> instancess. Grepo's default implementation is
   <org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl> which uses a
@@ -395,22 +388,21 @@ User getByUsername(String username);
 User getByUsername(String username);
 
 
-<query name="myqueryname">
-    from User where username = ?
-</query>
+<named-query name="myqueryname">
+    <query>from User where username = ?</query>
+</named-query>
 +--
 
   * If the name of the method matches the pattern
 
 +--
-^(is|has|find|get|load|scroll|iterate|delete|update)
+^(is|has|find|get|load|delete|update)
 +--
 
     then the query name is composed of the fully qualified entity class name and the method name
-    (with removed prefix). This means that if he method starts with <is, has, get, load, scroll,
-    iterate, delete or update> this rule will be applied. The example above shows how the query
-    for the <getByUsername> method was resolved to <"demo.domain.User.ByUsername">. Note that the
-    matched prefix is removed.
+    (with removed prefix). This means that if he method starts with <is, has, get, load, delete or update>
+    this rule will be applied. The example above shows how the query for the <getByUsername> method was
+    resolved to <"demo.domain.User.ByUsername">. Note that the matched prefix is removed.
 
   * If the name of the method does not match the pattern above, then the query name is composed of
     the fully qualified entity class name and the complete method name (without removed prefix).
@@ -421,17 +413,17 @@ User getByUsername(String username);
   depending on the given method (input) parameters. In our application we may want a method which finds
   users via their <firstname> and/or <lastname>. For this we can either just implement the method ourselves
   (meaning not annotating the method with <@GenericQuery>) or we could write an implementation
-  of the <org.codehaus.grepo.query.hibernate.generator.HibernateQueryGenerator> interface. A simple
-  implementation which generates a HQL query looks like:
+  of the <org.codehaus.grepo.query.jpa.generator.JpaQueryGenerator> interface. A simple
+  implementation which generates a JPQL query looks like:
 
 +--
 package demo.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.hibernate.generator.AbstractHibernateQueryGenerator;
+import org.codehaus.grepo.query.jpa.generator.AbstractJpaQueryGenerator;
 
-public class UserSearchQueryGenerator extends AbstractHibernateQueryGenerator {
+public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
 
     public String generate(QueryMethodParameterInfo qmpi) {
         String firstname = qmpi.getParameterByParamName("fn", String.class);
@@ -460,53 +452,15 @@ List<User> findUsersByName(
 +--
 
   Note that it is required to generate queries with named-parameter style (as JDBC style does not
-  work). If you want to generate a SQL (native) query instead of HQL you would just use
-  <org.codehaus.grepo.query.hibernate.generator.AbstractHibernateNativeQueryGenerator> as the base
-  class for your generator. Furthermore you can also use the Hibernate Criteria API like this:
-
-+--
-package demo.repository;
-
-import org.apache.commons.lang.StringUtils;
-import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.hibernate.generator.CriteriaGenerator;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import demo.domain.User;
-
-public class UserSearchCriteriaGenerator implements CriteriaGenerator {
-
-    public DetachedCriteria generate(QueryMethodParameterInfo qmpi) {
-        String firstname = qmpi.getParameterByParamName("fn", String.class);
-        String lastname = qmpi.getParameterByParamName("ln", String.class);
-
-        DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-        if (StringUtils.isNotEmpty(firstname)) {
-            criteria.add(Restrictions.eq("firstname", firstname));
-        }
-        if (StringUtils.isNotEmpty(lastname)) {
-            criteria.add(Restrictions.eq("lastname", lastname));
-        }
-        return criteria;
-    }
-}
-+--
-
-  The method would be defined in the <UserRepository> as follows:
-
-+--
-@GenericQuery
-@HibernateQueryOptions(criteriaGenerator = UserSearchCriteriaGenerator.class)
-List<User> findUsersByName(
-    @Param("fn") String firstname,
-    @Param("ln") String lastname);
-+--
+  work). If you want to generate a SQL (native) query instead of JPQL you would just use
+  <org.codehaus.grepo.query.jpa.generator.AbstractJpaNativeQueryGenerator> as the base
+  class for your generator.
 
 * Additional functionality
 
 ** Paging
 
-  Hibernate offers <paging> functionality which can be used with grepo's <@MaxResults>
+  Jpa offers <paging> functionality which can be used with grepo's <@MaxResults>
   and <@FirstResult> annotations like this:
 
 +--
@@ -528,10 +482,6 @@ List<User> findUsers(@FirstResult int firstResult, @MaxResults int maxResults);
 @GenericQuery(resultConverter = MyResultConverter.class)
 int getBySomething(String something);
 +--
-
-  Hibernate also offers a similiar feature known as <result transformation>. You can use this
-  feature using grepo's <@HibernateQueryOption> annotation by configuring the <resultTransformer>
-  property accordingly.
 
 *** Implicit result conversion
 
@@ -568,13 +518,13 @@ boolean isExistingEmail(String email);
   following will be logged:
 
 +--
-20:54:43,561 TRACE [DefaultHibernateRepository:91] - Query result is '0'
-20:54:43,561 TRACE [ResultConverterFindingStrategyImpl:99] - Found converter
+14:22:25,651 TRACE [DefaultJpaRepository:101] - Query result is '0'
+14:22:25,653 TRACE [ResultConverterFindingStrategyImpl:99] - Found converter
                    'org.codehaus.grepo.core.converter.ResultToBooleanConverter' for conversion from
                    'java.lang.Long' (0) to 'boolean'
-20:54:43,562 TRACE [ResultConversionServiceImpl:52] - Doing conversion for result (class=java.lang.Long, value=0)
+14:22:25,653 TRACE [ResultConversionServiceImpl:52] - Doing conversion for result (class=java.lang.Long, value=0)
                    with converter 'org.codehaus.grepo.core.converter.ResultToBooleanConverter'
-20:54:43,562 TRACE [ResultConversionServiceImpl:60] - Conversion result is 'false'
+14:22:25,657 TRACE [ResultConversionServiceImpl:60] - Conversion result is 'false'
 +--
 
 ** Result validation
@@ -593,7 +543,7 @@ int getBySomething(String something);
 * Transaction Handling
 
   You configure transaction handling for your repository objects (DAOs) as you would do
-  normally with plain Spring/Hibernate. However grepo also optionally supports transaction
+  normally with plain Spring/Jpa. However grepo also optionally supports transaction
   handling using spring's transaction template (see <abstractRepositoryTarget> above).
   If you don't want grepo to handle transactions you just do not configure the
   <transactionTemplate> property. Additionally you can configure the <readOnlyTransactionTemplate>
@@ -604,8 +554,8 @@ int getBySomething(String something);
 
 +--
 <bean id="abstractRepositoryTarget"
-    class="org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepositoryImpl" abstract="true">
-    <property name="sessionFactory" ref="sessionFactory" />
+    class="org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl" abstract="true">
+    <property name="entityManagerFactory" ref="entityManagerFactory" />
     <property name="executorFindingStrategy" ref="grepo.queryExecutorFindingStrategy" />
     <property name="resultConversionService" ref="grepo.resultConversionService" />
     <property name="executorFactory" ref="grepo.defaultQueryExecutorFactory" />

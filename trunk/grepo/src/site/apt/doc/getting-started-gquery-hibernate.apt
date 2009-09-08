@@ -62,7 +62,7 @@ $ mvn test
 18:45:46,918 TRACE [QueryExecutorFindingStrategyImpl:68] - Found queryExecutor
                    'org.codehaus.grepo.query.hibernate.executor.LoadQueryExecutor' for execution of method 'loadByUsername'
 18:45:46,919 TRACE [AbstractGenericRepository:114] - Executing query using transaction template
-18:45:46,920 TRACE [DefaultQueryNamingStrategy:78] - Resolved hibernate named-query: demo.domain.User.ByUsername
+18:45:46,920 TRACE [DefaultQueryNamingStrategy:78] - Resolved named-query: demo.domain.User.ByUsername
 18:45:46,920 TRACE [AbstractHibernateQueryExecutor:152] - Using query: from User where username = ?
 18:45:46,921 TRACE [AbstractHibernateQueryExecutor:441] - Setting parameter '0' to 'max'
 18:45:46,923 TRACE [DefaultHibernateRepository:91] - Query result is 'demo.domain.User@6762ba99[id=1,username=max]'
@@ -337,8 +337,8 @@ List<User> findByUsernames(@Param("list") Collection<String> usernames);
   this executor like this:
 
 +--
-@GenericQuery(queryExecutor = MyReallySpecialQueryExecutor.class)
-List<User> reallySpecialMethod();
+@GenericQuery(queryExecutor = MyCustomQueryExecutor.class)
+List<User> findUsingCustomExecutor();
 +--
 
   Using this approach is straight forward, because you tell grepo what executor has to be used and
