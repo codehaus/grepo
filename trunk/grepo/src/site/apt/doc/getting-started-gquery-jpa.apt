@@ -426,15 +426,17 @@ import org.codehaus.grepo.query.jpa.generator.AbstractJpaQueryGenerator;
 public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
 
     public String generate(QueryMethodParameterInfo qmpi) {
-        String firstname = qmpi.getParameterByParamName("fn", String.class);
-        String lastname = qmpi.getParameterByParamName("ln", String.class);
+        String firstname = qmpi.getParameter(0, String.class);
+        String lastname = qmpi.getParameter(1, String.class);
 
         StringBuilder query = new StringBuilder("from User where 1=1");
         if (StringUtils.isNotEmpty(firstname)) {
             query.append(" AND firstname = :fn");
+            addDynamicNamedParam(new DynamicNamedJpaParam("fn", firstname));
         }
         if (StringUtils.isNotEmpty(lastname)) {
             query.append(" AND lastname = :ln");
+            addDynamicNamedParam(new DynamicNamedJpaParam("ln", lastname));
         }
 
         return query.toString();
