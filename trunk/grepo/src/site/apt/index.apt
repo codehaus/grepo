@@ -12,7 +12,7 @@ What is grepo?
   to access (database) repositiories in a generic and consistent manner. Using grepo it is
   generally no longer required to provide all the boilerplate code which is necessary in order
   to access (database) repositories from Java. All you have to do is to write appropriate
-  database queries, procedures, functions etc...) code, an appropriately annotated Java
+  database (queries, procedures, functions etc...) code, an appropriately annotated Java
   interface and very litte Spring configuration. Using the framework has the following
   advantages:
 
