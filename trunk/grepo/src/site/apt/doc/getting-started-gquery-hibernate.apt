@@ -117,7 +117,7 @@ $ mvn test
   could for instance configure the required <"grepo"> beans directly in your application
   context.
 
-  Furthermore you need to define a datasource and a hibernate session factory. This
+  Furthermore you need to define a datasource and a Hibernate session factory. This
   configuration is "standard" Spring/Hibernate and is not grepo specific. In the demo project
   the hsql datasource and session factory are configured in
   <src/main/resources/META-INF/spring/db-environment.xml>.
