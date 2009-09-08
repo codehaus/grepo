@@ -23,10 +23,10 @@ import org.codehaus.grepo.exception.GrepoException;
 /**
  * @author dguggi
  */
-public class EntityNotFoundException extends GrepoException {
+public class NoResultException extends GrepoException {
 
     /** SerialVersionUid. */
-    private static final long serialVersionUID = 3703482089206783842L;
+    private static final long serialVersionUID = -5557704370897123857L;
 
     /** A list of query parameters. */
     private List<Object> parameters;
@@ -35,7 +35,7 @@ public class EntityNotFoundException extends GrepoException {
      * @param msg The message to set.
      * @param parameters The parameters to set.
      */
-    public EntityNotFoundException(String msg, List<Object> parameters) {
+    public NoResultException(String msg, List<Object> parameters) {
         super(msg);
         this.parameters = parameters;
     }
@@ -47,5 +47,4 @@ public class EntityNotFoundException extends GrepoException {
     protected void setParameters(List<Object> parameters) {
         this.parameters = parameters;
     }
-
 }

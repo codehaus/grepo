@@ -8,7 +8,28 @@
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <import resource="classpath:META-INF/spring/grepo-query-commons-default.cfg.xml"/>
+    <import resource="classpath:META-INF/spring/grepo-core-default.cfg.xml"/>
+
+    <bean id="grepo.genericQueryIntroductionInterceptor"
+        class="org.codehaus.grepo.query.commons.repository.GenericQueryIntroductionInterceptor">
+    </bean>
+
+    <bean id="grepo.defaultMethodNamePattern" class="java.util.regex.Pattern" factory-method="compile">
+        <constructor-arg index="0" value="^(is|has|find|get|load|scroll|iterate|delete|update)" />
+    </bean>
+
+    <bean id="grepo.defaultQueryNamingStrategy"
+        class="org.codehaus.grepo.query.commons.naming.DefaultQueryNamingStrategy">
+        <property name="methodNamePattern" ref="grepo.defaultMethodNamePattern" />
+    </bean>
+
+    <bean id="grepo.defaultQueryExecutorNamingStrategy" class="org.codehaus.grepo.query.commons.executor.DefaultQueryExecutorNamingStrategy">
+        <property name="pattern" ref="grepo.defaultMethodNamePattern" />
+    </bean>
+
+    <bean id="grepo.defaultQueryExecutorFactory" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl">
+        <property name="queryNamingStrategy" ref="grepo.defaultQueryNamingStrategy" />
+    </bean>
 
     <bean id="grepo.queryExecutorFindingStrategy" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategyImpl">
         <property name="executorNamingStrategy" ref="grepo.defaultQueryExecutorNamingStrategy" />
