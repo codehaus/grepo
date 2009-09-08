@@ -1,18 +1,20 @@
  -----
- Getting started
+ Getting Started
  -----
  Daniel Guggi
  -----
  2009-09-06
  -----
 
-Getting started
+Getting Started
 
   This page contains a list of tutorials and howto guides which should help you get started
   with grepo.
 
-*-----------+-----------------------------------------------------------------------------------+
-||Date      || Article                                                                          |
-*-----------+-----------------------------------------------------------------------------------+
-|2009-09-06 | {{{getting-started-gquery-hibernate.html}Getting started with gquery (hibernate)}} |
-*-----------+-----------------------------------------------------------------------------------+
+*-----------+------------------------------------------------------------------------------------+
+||Date      || Article                                                                           |
+*-----------+------------------------------------------------------------------------------------+
+|2009-09-06 | {{{getting-started-gquery-hibernate.html}Getting Started with gquery (Hibernate)}} |
+*-----------+------------------------------------------------------------------------------------+
+|2009-09-08 | {{{getting-started-gquery-jpa.html}Getting Started with gquery (Jpa)}}             |
+*-----------+------------------------------------------------------------------------------------+

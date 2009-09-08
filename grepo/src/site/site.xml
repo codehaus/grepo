@@ -13,10 +13,14 @@
         <name>Generic Repository</name>
         <src>images/logo/grepo-logo-big-400x80.png</src>
     </bannerLeft>
-    <publishDate position="right" />
+    <publishDate position="left" />
 
     <body>
-        <links></links>
+        <links>
+            <item name="Spring" href="http://www.springsource.org/" />
+            <item name="Hibernate" href="https://www.hibernate.org/" />
+            <item name="Maven" href="http://maven.apache.org/" />
+        </links>
 
         <menu name="Main">
             <item name="Overview" href="index.html">
@@ -40,6 +44,7 @@
 
             <item name="Getting Started" href="doc/getting-started.html">
                 <item name="Generic Query (Hibernate)" href="doc/getting-started-gquery-hibernate.html" />
+                <item name="Generic Query (Jpa)" href="doc/getting-started-gquery-jpa.html" />
 <!--                <item name="Generic Procedure" href="doc/getting-started-gprocedure.html" />-->
             </item>
         </menu>

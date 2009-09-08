@@ -1,12 +1,12 @@
  -----
- Getting started with gquery (hibernate)
+ Getting Started with gquery (Hibernate)
  -----
  Daniel Guggi
  -----
  2009-09-05
  -----
 
-Getting started with gquery (hibernate)
+Getting Started with gquery (Hibernate)
 
   This is the getting started guide for the <Generic Query> (gquery) component of the grepo
   framework. It's not supposed to be a complete reference manual - the goal is to show a
@@ -33,7 +33,7 @@ $ mvn eclipse:eclipse
 +--
 
   You can now import the project in your eclipse workspace. Note that the demo project requires grepo artifacts
-  (currently in version 1.0-SNAPSHOT) which are available at our maven snapshot repository:
+  (currently in version 1.0.0-SNAPSHOT) which are available at our maven snapshot repository:
   {{{http://snapshots.repository.codehaus.org/org/codehaus/grepo}http://snapshots.repository.codehaus.org/}}
 
   After you have imported the project you should now be able to run the <UserRepositoryTest> JUnit test. You
@@ -285,7 +285,7 @@ List<User> findByUsernames(@Param("list") Collection<String> usernames);
 
   * <org.codehaus.grepo.query.hibernate.executor.LoadQueryExecutor>: Same as <GetQueryExecutor>
     with the difference that this executor never returns <null> - if no records were
-    found then an <EntityNotFoundException> will be thrown.
+    found then an <NoResultException> will be thrown.
 
   * <org.codehaus.grepo.query.hibernate.executor.ListQueryExecutor>: This implementation
     executes a query using the <list> method of the Hibernate API and thus returns instances
