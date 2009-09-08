@@ -29,7 +29,7 @@
         <grepo.pmd.config.location>/dev/config/pmd/grepo-ruleset.xml</grepo.pmd.config.location>
 
         <grepo.jira.url>http://jira.codehaus.org/browse/GREPO</grepo.jira.url>
-        <grepo.license.url>http://svn.codehaus.org/grepo/grepo-buildtools/trunk/src/main/resources/license/ASLv2.txt</grepo.license.url>
+        <grepo.license.url>http://svn.codehaus.org/grepo/trunk/grepo-buildtools/src/main/resources/license/ASLv2.txt</grepo.license.url>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
