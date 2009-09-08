@@ -11,14 +11,19 @@ News and Status
   This document contains the latest news and status regarding the grepo project.
   Here you'll find announcements related to grepo.
 
-* 06 September 2009 - Getting started guide gquery hibernate
+* 08 September 2009 - 1.0.0.RC1 and Getting Started with gquery (Jpa) guide available!
 
-  Getting started guide for gquery hibernate is now online. Furthermore grepo artifacts (jars)
-  are deployed to snapshot m2 repository. Getting started guide for gquery jpa and gprocedure
-  as well as realease candidate for <v1.0> will follow soon.
+  Release canditate <1.0.0.RC1> is available for {{{downloads.html}download}}. Also
+  the Getting Started guide for gquery (Jpa) is available.
+
+* 06 September 2009 - Getting Started with gquery (Hibernate) guide available!
+
+  Getting Started guide for gquery (Hibernate) is now online. Furthermore grepo artifacts (jars)
+  are deployed to snapshot m2 repository. Getting Started guide for gquery (Jpa) and gprocedure
+  as well as realease candidate for <1.0.0.RC1> will follow soon.
 
 * 04 September 2009 - Initial grepo website deployed!
 
   First version of grepo website deployed. Currently work is focused on the <Getting Started>
-  guides and 1.0-SNAPSHOT (unstable, downloadable) version. SNAPSHOT (1.0) version should be
+  guides and <1.0.0.RC1> (unstable, downloadable) version. <1.0.0.RC1> version should be
   available really soon. Check here or use the {{{../mail-lists.html}Mailing Lists}} for updates.

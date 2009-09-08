@@ -13,10 +13,14 @@
         <name>Generic Repository</name>
         <src>images/logo/grepo-logo-big-400x80.png</src>
     </bannerLeft>
-    <publishDate position="right" />
+    <publishDate position="left" />
 
     <body>
-        <links></links>
+        <links>
+            <item name="Spring" href="http://www.springsource.org/" />
+            <item name="Hibernate" href="https://www.hibernate.org/" />
+            <item name="Maven" href="http://maven.apache.org/" />
+        </links>
 
         <!--
         <menu ref="parent" />

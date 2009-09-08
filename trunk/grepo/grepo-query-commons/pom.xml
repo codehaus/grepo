@@ -4,7 +4,7 @@
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo-query-commons</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>grepo-query-commons</name>
     <url>http://grepo.codehaus.org</url>
     <description>
@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.codehaus.grepo</groupId>
         <artifactId>grepo</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
 
     <dependencies>
