@@ -35,7 +35,7 @@ public class LoadQueryExecutor extends GetQueryExecutor {
         if (result == null) {
             String msg = String.format("Unable to load entity of type '%s' (method='%s')", qmpi.getEntityType()
                 .getName(), qmpi.getMethodName());
-            throw new EntityNotFoundException(msg, qmpi.getParameters());
+            throw new NoResultException(msg, qmpi.getParameters());
         }
         return result;
     }

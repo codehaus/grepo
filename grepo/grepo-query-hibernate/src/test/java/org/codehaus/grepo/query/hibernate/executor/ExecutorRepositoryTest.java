@@ -103,8 +103,8 @@ public class ExecutorRepositoryTest extends AbstractHibernateRepositoryTest {
     /**
      * Tests the "load" executor with entity not found.
      */
-    @Test(expected = EntityNotFoundException.class)
-    public void testLoadExecutorEntityNotFound() {
+    @Test(expected = NoResultException.class)
+    public void testLoadExecutorNoResult() {
         repo.loadByUsername("notExisting");
     }
 
