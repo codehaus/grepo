@@ -28,7 +28,7 @@ What is grepo?
 
 * Goals
 
-  grepo was designed around the following goals:
+  The main goals of the framework are:
 
   * <<Simplicity>> - The framework should be easy to use and understand - grepo was designed
     around the {{{http://en.wikipedia.org/wiki/Convention_over_configuration}convention over configuration}}
@@ -45,7 +45,7 @@ What is grepo?
 
 * Features
 
-  grepo has the follwing main features:
+  The main features of the framework are:
 
   * generic support for Hibernate based DAOs
 
