@@ -523,7 +523,7 @@ boolean isExistingEmail(String email);
 14:22:25,651 TRACE [DefaultJpaRepository:101] - Query result is '0'
 14:22:25,653 TRACE [ResultConverterFindingStrategyImpl:99] - Found converter
                    'org.codehaus.grepo.core.converter.ResultToBooleanConverter' for conversion from
-                   'java.lang.Long' (0) to 'boolean'
+                   'java.lang.Long' to 'boolean'
 14:22:25,653 TRACE [ResultConversionServiceImpl:52] - Doing conversion for result (class=java.lang.Long, value=0)
                    with converter 'org.codehaus.grepo.core.converter.ResultToBooleanConverter'
 14:22:25,657 TRACE [ResultConversionServiceImpl:60] - Conversion result is 'false'
