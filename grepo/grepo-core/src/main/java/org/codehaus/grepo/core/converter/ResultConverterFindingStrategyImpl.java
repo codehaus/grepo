@@ -94,8 +94,8 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
         }
 
         if (converterToUse != null && LOG.isTraceEnabled()) {
-            String msg = String.format("Found converter '%s' for conversion from '%s' (%s) to '%s'", converterToUse
-                .getName(), (resultIsNull ? "null" : result.getClass().getName()), result, methodReturnType.getName());
+            String msg = String.format("Found converter '%s' for conversion from '%s' to '%s'", converterToUse
+                .getName(), (resultIsNull ? "null" : result.getClass().getName()), methodReturnType.getName());
             LOG.trace(msg);
         }
 
