@@ -26,8 +26,8 @@ import org.codehaus.grepo.core.aop.MethodParameterInfo;
 public interface QueryMethodParameterInfo extends MethodParameterInfo {
 
     /**
-     * @return Returns the entity type.
+     * @return Returns the entity class.
      */
-    Class<?> getEntityType();
+    Class<?> getEntityClass();
 
 }

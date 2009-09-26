@@ -28,39 +28,35 @@ import org.codehaus.grepo.core.aop.MethodParameterInfoImpl;
  */
 public class QueryMethodParameterInfoImpl extends MethodParameterInfoImpl implements QueryMethodParameterInfo {
 
-    /** The entityType of the target dao. */
-    private Class<?> entityType;
+    /** The entityClass of the target repository. */
+    private Class<?> entityClass;
 
     /**
      * @param method The method.
      * @param parameters The parameters.
-     * @param entityType The entityType.
+     * @param entityClass The entity class.
      */
-    public QueryMethodParameterInfoImpl(Method method, Collection<Object> parameters, Class<?> entityType) {
+    public QueryMethodParameterInfoImpl(Method method, Collection<Object> parameters, Class<?> entityClass) {
         super(method, parameters);
-        this.entityType = entityType;
+        this.entityClass = entityClass;
     }
 
     /**
      * @param method The method.
      * @param parameters The parameters.
-     * @param entityType The entityType.
+     * @param entityClass The entity class.
      */
-    public QueryMethodParameterInfoImpl(Method method, Object[] parameters, Class<?> entityType) {
+    public QueryMethodParameterInfoImpl(Method method, Object[] parameters, Class<?> entityClass) {
         super(method, parameters);
-        this.entityType = entityType;
+        this.entityClass = entityClass;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Class<?> getEntityType() {
-        return entityType;
+    public Class<?> getEntityClass() {
+        return entityClass;
     }
 
-    protected void setEntityType(Class<?> entityType) {
-        this.entityType = entityType;
+    protected void setEntityClass(Class<?> entityClass) {
+        this.entityClass = entityClass;
     }
-
 
 }

@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.query.commons.repository;
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
@@ -23,17 +24,16 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfoImpl;
-import org.springframework.aop.IntroductionInterceptor;
 
 /**
  * Connects the Spring AOP magic with the Hibernate DAO magic.
  *
  * @author dguggi
  */
-public class GenericQueryIntroductionInterceptor implements IntroductionInterceptor {
+public class GenericQueryMethodInterceptor implements MethodInterceptor {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericQueryIntroductionInterceptor.class);
+    private static final Log LOG = LogFactory.getLog(GenericQueryMethodInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -48,7 +48,7 @@ public class GenericQueryIntroductionInterceptor implements IntroductionIntercep
 
         GenericRepository<?> genericDao = (GenericRepository<?>)invocation.getThis();
         QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
-            .getArguments(), genericDao.getEntityType());
+            .getArguments(), genericDao.getEntityClass());
 
         if (LOG.isTraceEnabled()) {
             LOG.trace(String.format("Invoking method '%s'", qmpi.getMethodName()));
@@ -81,15 +81,6 @@ public class GenericQueryIntroductionInterceptor implements IntroductionIntercep
         }
 
         return result;
-    }
-
-    /**
-     * @param intf The interface to check.
-     * @return Returns true if the given interface is implemented by <code>GenericExecutor</code>.
-     */
-    @SuppressWarnings("unchecked")
-    public final boolean implementsInterface(Class intf) {
-        return intf.isInterface() && GenericRepository.class.isAssignableFrom(intf);
     }
 
 }

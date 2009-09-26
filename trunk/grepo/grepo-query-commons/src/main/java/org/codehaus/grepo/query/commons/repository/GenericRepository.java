@@ -26,9 +26,9 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  */
 public interface GenericRepository<T> {
     /**
-     * @return Returns the class of the main entity type.
+     * @return Returns the entity class.
      */
-    Class<T> getEntityType();
+    Class<T> getEntityClass();
 
     /**
      * @param qmpi The query method parameter info.
@@ -37,5 +37,5 @@ public interface GenericRepository<T> {
      * @throws Exception In case of errors.
      */
     @SuppressWarnings("PMD")
-    Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) throws Exception;
+    Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) throws Exception;  // NOPMD
 }
