@@ -10,33 +10,33 @@
 
     <import resource="classpath:META-INF/spring/grepo-core-default.cfg.xml"/>
 
-    <bean id="grepo.genericQueryIntroductionInterceptor"
-        class="org.codehaus.grepo.query.commons.repository.GenericQueryIntroductionInterceptor">
+    <bean id="grepo.genericQueryMethodInterceptor"
+        class="org.codehaus.grepo.query.commons.repository.GenericQueryMethodInterceptor">
     </bean>
 
-    <bean id="grepo.defaultMethodNamePattern" class="java.util.regex.Pattern" factory-method="compile">
+    <bean id="grepo.methodNamePattern" class="java.util.regex.Pattern" factory-method="compile">
         <constructor-arg index="0" value="^(is|has|find|get|load|delete|update)" />
     </bean>
 
-    <bean id="grepo.defaultQueryNamingStrategy"
-        class="org.codehaus.grepo.query.commons.naming.DefaultQueryNamingStrategy">
-        <property name="methodNamePattern" ref="grepo.defaultMethodNamePattern" />
+    <bean id="grepo.queryNamingStrategy"
+        class="org.codehaus.grepo.query.commons.naming.QueryNamingStrategyImpl">
+        <property name="methodNamePattern" ref="grepo.methodNamePattern" />
     </bean>
 
-    <bean id="grepo.defaultQueryExecutorNamingStrategy" class="org.codehaus.grepo.query.commons.executor.DefaultQueryExecutorNamingStrategy">
-        <property name="pattern" ref="grepo.defaultMethodNamePattern" />
+    <bean id="grepo.queryExecutorNamingStrategy" class="org.codehaus.grepo.query.commons.executor.QueryExecutorNamingStrategyImpl">
+        <property name="pattern" ref="grepo.methodNamePattern" />
     </bean>
 
-    <bean id="grepo.defaultQueryExecutorFactory" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl">
-        <property name="queryNamingStrategy" ref="grepo.defaultQueryNamingStrategy" />
+    <bean id="grepo.queryExecutorFactory" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl">
+        <property name="queryNamingStrategy" ref="grepo.queryNamingStrategy" />
     </bean>
 
     <bean id="grepo.queryExecutorFindingStrategy" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategyImpl">
-        <property name="executorNamingStrategy" ref="grepo.defaultQueryExecutorNamingStrategy" />
-        <property name="executorRegistry" ref="grepo.defaultQueryExecutorRegistry" />
+        <property name="executorNamingStrategy" ref="grepo.queryExecutorNamingStrategy" />
+        <property name="executorRegistry" ref="grepo.queryExecutorRegistry" />
     </bean>
 
-    <bean id="grepo.defaultQueryExecutorRegistry" class="org.codehaus.grepo.query.commons.executor.QueryExecutorRegistry">
+    <bean id="grepo.queryExecutorRegistry" class="org.codehaus.grepo.query.commons.executor.QueryExecutorRegistry">
         <property name="registryMap">
             <util:map map-class="java.util.HashMap">
                 <entry key="find" value="org.codehaus.grepo.query.jpa.executor.ListQueryExecutor" />

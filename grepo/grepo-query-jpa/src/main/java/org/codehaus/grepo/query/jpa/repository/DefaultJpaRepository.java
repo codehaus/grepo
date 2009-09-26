@@ -27,7 +27,7 @@ import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
-import org.codehaus.grepo.query.commons.repository.AbstractGenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutor;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.transaction.TransactionStatus;
@@ -40,7 +40,7 @@ import org.springframework.util.CollectionUtils;
  *
  * @param <T> The main entity type.
  */
-public class DefaultJpaRepository<T> extends AbstractGenericRepository<T> {
+public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> {
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(DefaultJpaRepository.class);
 
@@ -49,7 +49,6 @@ public class DefaultJpaRepository<T> extends AbstractGenericRepository<T> {
 
     /** A map of jpa properties. */
     private Map<String, Object> jpaPropertyMap;
-
 
     /**
      * Default constructor.
@@ -85,10 +84,10 @@ public class DefaultJpaRepository<T> extends AbstractGenericRepository<T> {
      * @return Returns the result of query execution.
      */
     protected Object executeQuery(final QueryMethodParameterInfo qmpi, final GenericQuery genericQuery) {
-        Class<? extends QueryExecutor<?>> clazz = (Class<? extends QueryExecutor<?>>)getExecutorFindingStrategy()
+        Class<? extends QueryExecutor<?>> clazz = (Class<? extends QueryExecutor<?>>)getQueryExecutorFindingStrategy()
             .findExecutor(genericQuery.queryExecutor(), qmpi);
 
-        final JpaQueryExecutor executor = (JpaQueryExecutor)getExecutorFactory().createExecutor(clazz);
+        final JpaQueryExecutor executor = (JpaQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
 
         TransactionCallback callback = new TransactionCallback() {
             public Object doInTransaction(final TransactionStatus status) {
@@ -111,7 +110,7 @@ public class DefaultJpaRepository<T> extends AbstractGenericRepository<T> {
     }
 
     /**
-     * @return Returns <code>true</code> if the entity manager was newly created.
+     * @return Returns {@code true} if the entity manager was newly created.
      */
     @SuppressWarnings("PMD")
     protected CurrentEntityManagerHolder getCurrentEntityManager() {
@@ -119,7 +118,7 @@ public class DefaultJpaRepository<T> extends AbstractGenericRepository<T> {
         EntityManager em = getTransactionalEntityManager();
         if (em == null) {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("Creating new EntityManager for GenericDao execution");
+                LOG.trace("Creating new EntityManager for Generic Repository execution");
             }
             em = createEntityManager();
             isNewEm = true;
@@ -245,7 +244,6 @@ public class DefaultJpaRepository<T> extends AbstractGenericRepository<T> {
         public void setEntityManager(EntityManager entityManager) {
             this.entityManager = entityManager;
         }
-
 
     }
 }
