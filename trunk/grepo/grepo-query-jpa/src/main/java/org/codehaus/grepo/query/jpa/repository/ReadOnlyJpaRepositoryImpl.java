@@ -53,7 +53,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
             public Object doInTransaction(final TransactionStatus status) {
                 CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
                 try {
-                    return emHolder.getEntityManager().find(getEntityType(), id);
+                    return emHolder.getEntityManager().find(getEntityClass(), id);
                 } finally {
                     closeNewEntityManager(emHolder);
                 }
@@ -72,7 +72,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
             public Object doInTransaction(final TransactionStatus status) {
                 CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
                 try {
-                    return emHolder.getEntityManager().getReference(getEntityType(), id);
+                    return emHolder.getEntityManager().getReference(getEntityClass(), id);
                 } finally {
                     closeNewEntityManager(emHolder);
                 }
