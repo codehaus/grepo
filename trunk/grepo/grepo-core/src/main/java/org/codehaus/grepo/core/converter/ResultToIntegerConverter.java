@@ -17,8 +17,8 @@
 package org.codehaus.grepo.core.converter;
 
 /**
- * This converter can convert instances of type <code>java.lang.String</code> and <code>java.lang.Long</code> objects to
- * <code>java.lang.Integer</code> - for any other type null will be returned.
+ * This converter can convert instances of type {@code java.lang.String} and {@code java.lang.Number} objects to
+ * {@code java.lang.Integer} - for any other type {@code null} will be returned.
  *
  * @author dguggi
  */

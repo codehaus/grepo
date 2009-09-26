@@ -27,10 +27,11 @@ public interface ProcedureMethodParameterInfo extends MethodParameterInfo {
 
     /**
      * Retrieves the procedure parameter name at the specified parameter index. The name retrieved using the
-     * {@link Param}, {@link In} or {@link InOut} annotation
+     * {@link org.codehaus.grepo.core.annotation.Param}, {@link org.codehaus.grepo.procedure.annotation.In} or
+     * {@link org.codehaus.grepo.procedure.annotation.InOut} annotation
      *
      * @param index The parameter index.
-     * @return Returns the name of <code>null</code> if the parameter at the given <code>index</code> is not annotated.
+     * @return Returns the name of the parameter at the given {@code index} or {@code null}.
      */
     String getParameterName(int index);
 }

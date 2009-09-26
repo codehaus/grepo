@@ -221,7 +221,7 @@ public abstract class AbstractJpaQueryExecutor
     /**
      * @param queryDesc The query descriptor.
      * @param qmpi The query method parameter info.
-     * @return Returns <code>true</code> if named parameters found.
+     * @return Returns {@code true} if named parameters found.
      */
     protected boolean hasNamedParameters(JpaQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
         List<Object> params = qmpi.getAnnotatedParameters(Param.class);
@@ -402,7 +402,7 @@ public abstract class AbstractJpaQueryExecutor
 
     /**
      * @param resultClass The class to check.
-     * @return Returns <code>true</code> if the class is valid and <code>false</code> otherwise.
+     * @return Returns {@code true} if the class is valid and {@code false} otherwise.
      */
     protected static boolean isValidResultClass(Class<?> resultClass) {
         return (resultClass != null && resultClass != PlaceHolderResultClass.class);

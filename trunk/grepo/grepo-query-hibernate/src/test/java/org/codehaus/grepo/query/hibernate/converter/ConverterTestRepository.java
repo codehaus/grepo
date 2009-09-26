@@ -57,8 +57,8 @@ public interface ConverterTestRepository extends GenericRepository<TestEntity> {
 
     /**
      * Note: this is an invalid genric dao configuration because the method's return
-     * type is <code>String</code>, but the query will return an instance of
-     * <code>TestEntity</code> an no result-converter is specified.
+     * type is {@code String}, but the query will return an instance of
+     * {@code TestEntity} an no result-converter is specified.
      *
      * @param username The username
      * @return Returns a string.

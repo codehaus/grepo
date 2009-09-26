@@ -69,7 +69,7 @@ public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
     /**
      * @param qmpi The query method parameter info.
      * @param queryOptions The annotation.
-     * @return Returns the scroll mode to use or <code>null</code> if not specified.
+     * @return Returns the scroll mode to use or {@code null} if not specified.
      */
     private ScrollMode getScrollMode(QueryMethodParameterInfo qmpi, HibernateQueryOptions queryOptions) {
         ScrollMode retVal = null;

@@ -37,7 +37,7 @@ public interface QueryExecutor<T> {
     Object execute(QueryMethodParameterInfo qmpi, T obj);
 
     /**
-     * This method should return <code>true</code> if the execution of the
+     * This method should return {@code true} if the execution of the
      * queries requires read-only access.
      *
      * @return The flag.

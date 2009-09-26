@@ -203,7 +203,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> {
     }
 
     /**
-     * @return Returns <code>true</code> if jpa properties available.
+     * @return Returns {@code true} if jpa properties available.
      */
     protected boolean hasJpaProperties() {
         return !CollectionUtils.isEmpty(jpaPropertyMap);

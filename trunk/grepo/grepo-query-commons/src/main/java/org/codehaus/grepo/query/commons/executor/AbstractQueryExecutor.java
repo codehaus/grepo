@@ -115,7 +115,7 @@ public abstract class AbstractQueryExecutor<T> implements QueryExecutor<T> {
 
     /**
      * @param clazz The clazz to check.
-     * @return Returns <code>true</code> if the given <code>clazz</code> is valid and <code>false</code> otherwise.
+     * @return Returns {@code true} if the given {@code clazz} is valid and {@code false} otherwise.
      */
     protected static boolean isValidQueryGenerator(Class<? extends QueryGenerator<?>> clazz) {
         return (clazz != null && clazz != PlaceHolderQueryGenerator.class);
@@ -124,7 +124,7 @@ public abstract class AbstractQueryExecutor<T> implements QueryExecutor<T> {
     /**
      * @param clazz The clazz to check.
      * @param to The desired type.
-     * @return Returns <code>true</code> if the given <code>clazz</code> is valid and <code>false</code> otherwise.
+     * @return Returns {@code true} if the given {@code clazz} is valid and {@code false} otherwise.
      */
     protected static boolean validateQueryGenerator(Class<? extends QueryGenerator<?>> clazz,
             Class<? extends QueryGenerator<?>> to) {

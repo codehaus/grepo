@@ -20,13 +20,13 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Tests {@link ClassUtils}.
+ * Tests {@link org.codehaus.grepo.core.util.ClassUtils}.
  *
  * @author dguggi
  */
 public class ClassUtilsTest {
 
-    /** Tests {@link ClassUtils#isAssignableFrom(Class, Class)}. */
+    /** Tests {@link org.codehaus.grepo.core.util.ClassUtils#isAssignableFrom(Class, Class)}. */
     @Test
     public void testIsAssignableFrom() {
         Assert.assertTrue(ClassUtils.isAssignableFrom(Boolean.class, boolean.class));
@@ -49,7 +49,7 @@ public class ClassUtilsTest {
         Assert.assertTrue(ClassUtils.isAssignableFrom(byte.class, Byte.class));
     }
 
-    /** Tests {@link ClassUtils#isVoidType(Class)}. */
+    /** Tests {@link org.codehaus.grepo.core.util.ClassUtils#isVoidType(Class)}. */
     @Test
     public void testIsVoidType() {
         Assert.assertTrue(ClassUtils.isVoidType(void.class));

@@ -32,9 +32,9 @@ public final class GenericValidationUtils {
     private static final Log LOG = LogFactory.getLog(GenericValidationUtils.class);
 
     /**
-     * Checks if the given <code>clazz</code> is a valid {@link ResultValidator}.
+     * Checks if the given {@code clazz} is a valid {@link ResultValidator}.
      * @param clazz The class to check.
-     * @return Returns <code>true</code> if valid and <code>false</code> otherwise.
+     * @return Returns {@code true} if valid and {@code false} otherwise.
      */
     public static boolean isValidResultValidator(Class<? extends ResultValidator> clazz) {
         return (clazz != null && clazz != PlaceHolderResultValidator.class);
@@ -45,7 +45,7 @@ public final class GenericValidationUtils {
     }
 
     /**
-     * Validates the given <code>result</code> using the given {@link ResultValidator} <code>clazz</code>.
+     * Validates the given {@code result} using the given {@link ResultValidator} {@code clazz}.
      *
      * @param mpi The method parameter info.
      * @param clazz The validator clazz (must not be null).

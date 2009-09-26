@@ -94,7 +94,7 @@ public class QueryDescriptor<Q, P extends DynamicNamedParam> implements DynamicN
 
     /**
      * @param name The param name.
-     * @return Returns the value for the given <code>name</code> or null.
+     * @return Returns the value for the given {@code name} or {@code null}.
      */
     public P getDynamicNamedParam(String name) {
         return dynamicNamedParams.get(name);

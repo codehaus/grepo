@@ -31,19 +31,19 @@ public interface DynamicNamedParamsAware<P extends DynamicNamedParam> {
 
     /**
      * @param name The name of the param.
-     * @return Returns <code>true</code> if a parameter with the given <code>name</code> exists and <code>false</code>
+     * @return Returns {@code true} if a parameter with the given {@code name} exists and {@code false}
      *         otherwise.
      */
     boolean hasDynamicNamedParam(String name);
 
     /**
-     * @return Returns <code>true</code> if dynamic named params exist and <code>false</code> otherwise.
+     * @return Returns {@code true} if dynamic named params exist and {@code false} otherwise.
      */
     boolean hasDynamicNamedParams();
 
     /**
      * @param name The name of the param.
-     * @return Returns the param identified by <code>name</code> or <code>null</code>.
+     * @return Returns the param identified by {@code name} or {@code null}.
      */
     P getDynamicNamedParam(String name);
 }

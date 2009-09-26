@@ -19,8 +19,8 @@ package org.codehaus.grepo.core.converter;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 
 /**
- * Used to find a {@link ResultConverter} based on given <code>specifiedConverter</code> (from user), the
- * {@link MethodParameterInfo} and the <code>result</code> to be converted.
+ * Used to find a {@link ResultConverter} based on given {@code specifiedConverter} (from user), the
+ * {@link MethodParameterInfo} and the {@code result} to be converted.
  *
  * @author dguggi
  */
@@ -30,7 +30,7 @@ public interface ResultConverterFindingStrategy {
      * @param specifiedConverter The converter specified by the user.
      * @param mpi The method parameter info.
      * @param result The result to be converted.
-     * @return Returns the converter or null if no converter may be found.
+     * @return Returns the converter or {@code null} if no converter was found.
      */
     Class<? extends ResultConverter<?>> findConverter(Class<? extends ResultConverter<?>> specifiedConverter,
             MethodParameterInfo mpi, Object result);

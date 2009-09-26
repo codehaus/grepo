@@ -183,7 +183,7 @@ public class DefaultProcedureExecutor implements ProcedureExecutor {
     }
 
     /**
-     * Executes the given <code>callback</code> with either an normal or none transaction template.
+     * Executes the given {@code callback} with either an normal or none transaction template.
      *
      * @param callback The callback to execute.
      * @return Returns the result.

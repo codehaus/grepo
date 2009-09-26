@@ -45,7 +45,7 @@ public @interface GenericQuery {
 
     /**
      * Specifies whether or not the query is native. This attribute is only considered
-     * if <code>query</code> is not empty.
+     * if the {@code query} property is not empty.
      */
     boolean isNativeQuery() default false;
 

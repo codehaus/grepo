@@ -29,13 +29,13 @@ public interface ProcedureCachingStrategy {
      * Get a procedure from the cache.
      *
      * @param cacheName The cache name.
-     * @return Returns the procedure for the given <code>cacheName</code> or null.
+     * @return Returns the procedure for the given {@code cacheName} or {@code null}.
      */
     StoredProcedure getFromCache(String cacheName);
 
     /**
-     * Add the given <code>storedProcedure</code> to the cache with the given
-     * <code>cacheName</code>.
+     * Add the given {@code storedProcedure} to the cache with the given
+     * {@code cacheName}.
      *
      * @param storedProcedure The procedure to add.
      * @param cacheName The cache name.
@@ -43,7 +43,7 @@ public interface ProcedureCachingStrategy {
     void addToCache(StoredProcedure storedProcedure, String cacheName);
 
     /**
-     * Removes the procedure with the given <code>cacheName</code> from the cache.
+     * Removes the procedure with the given {@code cacheName} from the cache.
      *
      * @param cacheName The cache name.
      * @return Returns the stored procedure.

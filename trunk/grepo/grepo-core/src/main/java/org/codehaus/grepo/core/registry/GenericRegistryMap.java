@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * GenericRegistry using a <code>java.util.HashMap</code>.
+ * Generic registry using a backing hash map.
  *
  * @author dguggi
  * @param <K> The key type.

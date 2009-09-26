@@ -71,7 +71,7 @@ public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStr
 
     /**
      * @param clazz The class.
-     * @return Returns <code>true</code> if valid and <code>false</code> otherwise.
+     * @return Returns {@code true} if valid and {@code false} otherwise.
      */
     protected boolean validateQueryExecutor(Class<? extends QueryExecutor<?>> clazz) {
         return (clazz != null && clazz != PlaceHolderQueryExecutor.class);
