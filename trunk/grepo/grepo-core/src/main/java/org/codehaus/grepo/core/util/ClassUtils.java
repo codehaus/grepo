@@ -20,13 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Utility class improving java5's <code>Class.isAssignableFrom</code> method.
- * This method returns false for primitives and their wrapper objects
- * (which is not really correct, because of auto-boxing).
- *
  * @author dguggi
  */
-public final class ClassUtility {
+public final class ClassUtils {
 
     /**
      * Map of all nine java-primitives and their associated wrapper objects.
@@ -36,7 +32,7 @@ public final class ClassUtility {
         PRIMITIVE_TO_WRAPPER.put(long.class, Long.class);
         PRIMITIVE_TO_WRAPPER.put(boolean.class, Boolean.class);
         PRIMITIVE_TO_WRAPPER.put(int.class, Integer.class);
-        PRIMITIVE_TO_WRAPPER.put(short.class, Short.class); // @NOPMD
+        PRIMITIVE_TO_WRAPPER.put(short.class, Short.class);
         PRIMITIVE_TO_WRAPPER.put(float.class, Float.class);
         PRIMITIVE_TO_WRAPPER.put(double.class, Double.class);
         PRIMITIVE_TO_WRAPPER.put(byte.class, Byte.class);
@@ -45,6 +41,10 @@ public final class ClassUtility {
     }
 
     /**
+     * Improves java5's <code>Class.isAssignableFrom</code> method.
+     * This method returns false for primitives and their wrapper objects
+     * (which is not really correct, because of auto-boxing).
+     *
      * @param to The class one.
      * @param from The class two.
      * @return Returns true if <code>to</code> is assignable from <code>from</code>.
