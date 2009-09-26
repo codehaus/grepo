@@ -3,13 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo-core</artifactId>
-    <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>grepo-core</name>
+    <packaging>jar</packaging>
+    <name>Generic Repository: Core</name>
+    <description>Generic Repository: Core</description>
     <url>http://grepo.codehaus.org</url>
-    <description>
-        Grepo core module.
-    </description>
 
     <parent>
         <groupId>org.codehaus.grepo</groupId>

@@ -5,12 +5,9 @@
     <artifactId>grepo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>grepo</name>
+    <name>Generic Repository</name>
+    <description>Generic Repository</description>
     <url>http://grepo.codehaus.org</url>
-    <description>
-        Parent module which provides the basic module configuration for other grepo modules
-        and furthermore is used to generate and maintain the static grepo project site.
-    </description>
 
     <modules>
         <module>grepo-core</module>
@@ -27,9 +24,6 @@
 
         <grepo.checkstyle.config.location>dev/config/checkstyle/grepo-style.xml</grepo.checkstyle.config.location>
         <grepo.pmd.config.location>/dev/config/pmd/grepo-ruleset.xml</grepo.pmd.config.location>
-
-        <grepo.jira.url>http://jira.codehaus.org/browse/GREPO</grepo.jira.url>
-        <grepo.license.url>http://svn.codehaus.org/grepo/trunk/grepo-buildtools/src/main/resources/license/ASLv2.txt</grepo.license.url>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
@@ -63,10 +57,16 @@
         </developer>
     </developers>
 
+    <organization>
+        <name>Generic Repository Framework</name>
+        <url>http://grepo.codehaus.org</url>
+    </organization>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
-            <url>${grepo.license.url}</url>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
@@ -78,7 +78,7 @@
 
     <issueManagement>
         <system>JIRA</system>
-        <url>${grepo.jira.url}</url>
+        <url>http://jira.codehaus.org/browse/GREPO</url>
     </issueManagement>
 
     <mailingLists>
