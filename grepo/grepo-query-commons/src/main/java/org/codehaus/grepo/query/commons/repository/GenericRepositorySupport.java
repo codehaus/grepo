@@ -26,12 +26,13 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * @author dguggi
- * @param <T> The main entity type.
+ *
+ * @param <T> The entity class type.
  */
-public abstract class AbstractGenericRepository<T> implements GenericRepository<T> {
+public abstract class GenericRepositorySupport<T> implements GenericRepository<T> {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(AbstractGenericRepository.class);
+    private static final Log LOG = LogFactory.getLog(GenericRepositorySupport.class);
 
     /** The transaction template to use. */
     private TransactionTemplate transactionTemplate;
@@ -40,38 +41,40 @@ public abstract class AbstractGenericRepository<T> implements GenericRepository<
     private TransactionTemplate readOnlyTransactionTemplate;
 
     /** The executor finding strategy. */
-    private QueryExecutorFindingStrategy executorFindingStrategy;
+    private QueryExecutorFindingStrategy queryExecutorFindingStrategy;
 
     /** The result conversion service. */
     private ResultConversionService resultConversionService;
 
-    /** The executor factory. */
-    private QueryExecutorFactory executorFactory;
+    /** The query executor factory. */
+    private QueryExecutorFactory queryExecutorFactory;
 
-    /** The main entity type. */
-    private Class<T> entityType;
+    /** The entity class. */
+    private Class<T> entityClass;
 
     /**
      * Default constructor.
      */
-    public AbstractGenericRepository() {
+    public GenericRepositorySupport() {
         super();
     }
 
     /**
-     * @param entityType The main entity type to set.
+     * @param entityClass The entity class.
      */
-    public AbstractGenericRepository(Class<T> entityType) {
-        super();
-        this.entityType = entityType;
+    public GenericRepositorySupport(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 
-    public void setEntityType(Class<T> entityType) {
-        this.entityType = entityType;
+    /**
+     * {@inheritDoc}
+     */
+    public Class<T> getEntityClass() {
+        return entityClass;
     }
 
-    public Class<T> getEntityType() {
-        return entityType;
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 
     /**
@@ -135,12 +138,12 @@ public abstract class AbstractGenericRepository<T> implements GenericRepository<
         return transactionTemplate;
     }
 
-    protected QueryExecutorFindingStrategy getExecutorFindingStrategy() {
-        return executorFindingStrategy;
+    protected QueryExecutorFindingStrategy getQueryExecutorFindingStrategy() {
+        return queryExecutorFindingStrategy;
     }
 
-    public void setExecutorFindingStrategy(QueryExecutorFindingStrategy executorFindingStrategy) {
-        this.executorFindingStrategy = executorFindingStrategy;
+    public void setQueryExecutorFindingStrategy(QueryExecutorFindingStrategy queryExecutorFindingStrategy) {
+        this.queryExecutorFindingStrategy = queryExecutorFindingStrategy;
     }
 
     protected ResultConversionService getResultConversionService() {
@@ -151,12 +154,12 @@ public abstract class AbstractGenericRepository<T> implements GenericRepository<
         this.resultConversionService = resultConversionService;
     }
 
-    protected QueryExecutorFactory getExecutorFactory() {
-        return executorFactory;
+    protected QueryExecutorFactory getQueryExecutorFactory() {
+        return queryExecutorFactory;
     }
 
-    public void setExecutorFactory(QueryExecutorFactory executorFactory) {
-        this.executorFactory = executorFactory;
+    public void setQueryExecutorFactory(QueryExecutorFactory queryExecutorFactory) {
+        this.queryExecutorFactory = queryExecutorFactory;
     }
 
 }

@@ -31,27 +31,38 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @author dguggi
  */
-public class DefaultQueryNamingStrategy implements QueryNamingStrategy {
+public class QueryNamingStrategyImpl implements QueryNamingStrategy {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultQueryNamingStrategy.class);
+    private static final Log LOG = LogFactory.getLog(QueryNamingStrategyImpl.class);
 
     /** The pattern to match method names. */
     private Pattern methodNamePattern;
 
+    /** Flag to indicate wether the simple entity class name should be used for query-name generation. */
+    private boolean useSimpleEntityClassName = false;
+
     /**
      * Default constructor.
      */
-    public DefaultQueryNamingStrategy() {
+    public QueryNamingStrategyImpl() {
         super();
     }
 
     /**
      * @param methodNamePattern The pattern to set.
      */
-    public DefaultQueryNamingStrategy(Pattern methodNamePattern) {
-        super();
+    public QueryNamingStrategyImpl(Pattern methodNamePattern) {
         this.methodNamePattern = methodNamePattern;
+    }
+
+    /**
+     * @param methodNamePattern The pattern to set.
+     * @param useSimpleEntityClassName The flag to set.
+     */
+    public QueryNamingStrategyImpl(Pattern methodNamePattern, boolean useSimpleEntityClassName) {
+        this.methodNamePattern = methodNamePattern;
+        this.useSimpleEntityClassName = useSimpleEntityClassName;
     }
 
     /**
@@ -65,9 +76,9 @@ public class DefaultQueryNamingStrategy implements QueryNamingStrategy {
             // no query name was specified via annotation...
             Matcher m = methodNamePattern.matcher(qmpi.getMethodName());
             if (m.find()) {
-                queryName = qmpi.getEntityType().getName() + "." + qmpi.getMethodName().substring(m.end());
+                queryName = getEntityClassName(qmpi) + "." + qmpi.getMethodName().substring(m.end());
             } else {
-                queryName = qmpi.getEntityType().getName() + "." + qmpi.getMethodName();
+                queryName = getEntityClassName(qmpi) + "." + qmpi.getMethodName();
             }
         } else {
             // query name was specified via annotation
@@ -81,12 +92,34 @@ public class DefaultQueryNamingStrategy implements QueryNamingStrategy {
         return queryName;
     }
 
+    /**
+     * @param qmpi The query method parameter info.
+     * @return Returns the entity class name.
+     */
+    private String getEntityClassName(QueryMethodParameterInfo qmpi) {
+        String retVal = null;
+        if (useSimpleEntityClassName) {
+            retVal = qmpi.getEntityClass().getSimpleName();
+        } else {
+            retVal = qmpi.getEntityClass().getName();
+        }
+        return retVal;
+    }
+
     public Pattern getMethodNamePattern() {
         return methodNamePattern;
     }
 
     public void setMethodNamePattern(Pattern methodNamePattern) {
         this.methodNamePattern = methodNamePattern;
+    }
+
+    public boolean isUseSimpleEntityClassName() {
+        return useSimpleEntityClassName;
+    }
+
+    public void setUseSimpleEntityClassName(boolean useSimpleEntityClassName) {
+        this.useSimpleEntityClassName = useSimpleEntityClassName;
     }
 
 }

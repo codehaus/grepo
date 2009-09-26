@@ -28,9 +28,9 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @author dguggi
  */
-public class DefaultQueryExecutorNamingStrategy implements QueryExecutorNamingStrategy {
+public class QueryExecutorNamingStrategyImpl implements QueryExecutorNamingStrategy {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultQueryExecutorNamingStrategy.class);
+    private static final Log LOG = LogFactory.getLog(QueryExecutorNamingStrategyImpl.class);
 
     /** The pattern. */
     private Pattern pattern;
@@ -38,14 +38,14 @@ public class DefaultQueryExecutorNamingStrategy implements QueryExecutorNamingSt
     /**
      * Default constructor.
      */
-    public DefaultQueryExecutorNamingStrategy() {
+    public QueryExecutorNamingStrategyImpl() {
         super();
     }
 
     /**
      * @param pattern The pattern to set.
      */
-    public DefaultQueryExecutorNamingStrategy(Pattern pattern) {
+    public QueryExecutorNamingStrategyImpl(Pattern pattern) {
         this.pattern = pattern;
     }
 
