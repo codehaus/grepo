@@ -3,13 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo-query-jpa</artifactId>
-    <packaging>jar</packaging>
     <version>1.0.0-SNAPSHOT</version>
-    <name>grepo-query-jpa</name>
+    <packaging>jar</packaging>
+    <name>Generic Repository: Query Jpa</name>
+    <description>Generic Repository: Query Jpa</description>
     <url>http://grepo.codehaus.org</url>
-    <description>
-        Jpa grepo query module.
-    </description>
 
     <parent>
         <groupId>org.codehaus.grepo</groupId>
