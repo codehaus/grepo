@@ -26,7 +26,7 @@ import org.hibernate.type.Type;
 public interface ArgumentTypeFactory {
     /**
      * @param value The value to check.
-     * @return Returns the desired type for the given <code>arg</code>.
+     * @return Returns the desired type for the given {@code value}.
      */
     Type getArgumentType(Object value);
 }

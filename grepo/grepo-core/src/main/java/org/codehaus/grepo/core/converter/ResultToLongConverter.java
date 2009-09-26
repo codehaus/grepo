@@ -18,8 +18,8 @@ package org.codehaus.grepo.core.converter;
 
 
 /**
- * This converter can convert <code>java.lang.String</code> and <code>java.lang.Integer</code>
- * objects to <code>java.lang.Long</code> - for any other type null will be returned.
+ * This converter can convert {@code java.lang.String} and {@code java.lang.Number}
+ * objects to {@code java.lang.Long} - for any other type {@code null} will be returned.
  *
  * @author dguggi
  */

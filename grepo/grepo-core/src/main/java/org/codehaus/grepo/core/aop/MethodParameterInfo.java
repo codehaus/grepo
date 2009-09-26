@@ -50,13 +50,13 @@ public interface MethodParameterInfo {
     /**
      * @param <T> The annotation to check.
      * @param clazz The annotation class to check.
-     * @return Returns the annotation or <code>null</code> if none found.
+     * @return Returns the annotation or {@code null} if none found.
      */
     <T extends Annotation> T getMethodAnnotation(Class<T> clazz);
 
     /**
      * @param clazz The annotation class to check.
-     * @return Returns <code>true</code> if the method is annotated with the given annotation and <code>false</code>
+     * @return Returns {@code true} if the method is annotated with the given annotation and {@code false}
      *         otherwise.
      */
     boolean methodHasAnnotation(Class<? extends Annotation> clazz);
@@ -65,7 +65,7 @@ public interface MethodParameterInfo {
      * Checks if the method's declared exceptions are compatible with the given exception.
      *
      * @param exception The exception to check.
-     * @return Returns <code>true</code> if compatible and <code>false</code> otherwise.
+     * @return Returns {@code true} if compatible and {@code false} otherwise.
      */
     boolean isMethodCompatibleWithException(Throwable exception);
 
@@ -95,7 +95,7 @@ public interface MethodParameterInfo {
 
     /**
      * @param clazz The annotation class to check.
-     * @return Returns a list containing all parameters annotated with <code>clazz</code>.
+     * @return Returns a list containing all parameters annotated with {@code clazz}.
      */
     List<Object> getAnnotatedParameters(Class<? extends Annotation> clazz);
 
@@ -117,8 +117,8 @@ public interface MethodParameterInfo {
      * @param <T> The annotation type.
      * @param paramIndex The parameter index.
      * @param clazz The annotation clazz.
-     * @return Returns the annotation for the parameter at the given <code>index</code> or <code>null</code> if the
-     *         parameter at the given <code>index</code> is not annotated with <code>clazz</code>.
+     * @return Returns the annotation for the parameter at the given {@code index} or {@code null} if the
+     *         parameter at the given {@code index} is not annotated with {@code clazz}.
      */
     <T extends Annotation> T getParameterAnnotation(int paramIndex, Class<T> clazz);
 
@@ -132,37 +132,37 @@ public interface MethodParameterInfo {
     /**
      * @param paramIndex The parameter index.
      * @param clazz The annotation class.
-     * @return Returns <code>true</code> if the parameter at the given <code>index</code> is annotated with
-     *         <code>clazz</code> and <code>false</code> otherwise.
+     * @return Returns {@code true} if the parameter at the given {@code index} is annotated with
+     *         {@code clazz} and {@code false} otherwise.
      */
     boolean parameterHasAnnotation(int paramIndex, Class<? extends Annotation> clazz);
 
     /**
      * Gets the parameter which is annotated with {@link org.codehaus.grepo.core.annotation.Param} and
-     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equals to <code>queryParamName</code>.
+     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equals to {@code paramName}.
      *
-     * @param queryParamName The query param name.
-     * @return Returns the parameter or null.
+     * @param paramName The param name.
+     * @return Returns the parameter or {@code null}.
      */
-    Object getParameterByParamName(String queryParamName);
+    Object getParameterByParamName(String paramName);
 
     /**
      * gets the index of the parameter which is annotated with {@link org.codehaus.grepo.core.annotation.Param} and
-     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equal to <code>paramName</code>.
+     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equal to {@code paramName}.
      *
      * @param paramName The param name.
-     * @return Returns the index of the parameter with the given <code>paramName</code> or <code>-1</code>.
+     * @return Returns the index of the parameter with the given {@code paramName} or {@code -1}.
      */
     int getParameterIndexByParamName(String paramName);
 
     /**
      * Gets the parameter which is annotated with {@link org.codehaus.grepo.core.annotation.Param} and
-     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equals to <code>queryParamName</code>.
+     * {@link org.codehaus.grepo.core.annotation.Param#value()} is equals to {@code paramName}.
      *
      * @param <T> The parameter type.
-     * @param queryParamName The query param name.
+     * @param paramName The param name.
      * @param clazz The parameter clazz.
-     * @return Returns the parameter or null.
+     * @return Returns the parameter or {@code null}.
      */
-    <T> T getParameterByParamName(String queryParamName, Class<T> clazz);
+    <T> T getParameterByParamName(String paramName, Class<T> clazz);
 }

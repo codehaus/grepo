@@ -38,16 +38,16 @@ public interface GenericRegistry<K, V> {
 
     /**
      * @param key The key.
-     * @return Returns the value for the given <code>key</code>.
+     * @return Returns the value for the given {@code key}.
      */
     V get(K key);
 
     /**
      * @param key The key.
-     * @param throwExceptionIfNotFound Is set to <code>true</code> an exception will be thrown if not value was found
-     *            for the given <code>key</code>.
-     * @return Returns the value for the given <code>key</code>
-     * @throws RegistryException if <code>throwExceptionIfNotFound</code> is set to <code>true</code> and no value was
+     * @param throwExceptionIfNotFound Is set to {@code true} an exception will be thrown if not value was found
+     *            for the given {@code key}.
+     * @return Returns the value for the given {@code key}.
+     * @throws RegistryException if {@code throwExceptionIfNotFound} is set to {@code true} and no value was
      *             found.
      */
     V get(K key, boolean throwExceptionIfNotFound) throws RegistryException;

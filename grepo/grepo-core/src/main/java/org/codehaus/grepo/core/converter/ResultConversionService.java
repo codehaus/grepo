@@ -25,7 +25,7 @@ import org.codehaus.grepo.core.aop.MethodParameterInfo;
  */
 public interface ResultConversionService {
     /**
-     * Converts the given <code>result</code> using the given {@link ResultConverter} <code>clazz</code>.
+     * Converts the given {@code result} using the given {@link ResultConverter} {@code clazz}.
 
      * @param mpi The method parameter info.
      * @param clazz The converter class.

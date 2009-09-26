@@ -41,13 +41,13 @@ public final class ClassUtils {
     }
 
     /**
-     * Improves java5's <code>Class.isAssignableFrom</code> method.
+     * Improves java5's {@code Class.isAssignableFrom} method.
      * This method returns false for primitives and their wrapper objects
      * (which is not really correct, because of auto-boxing).
      *
      * @param to The class one.
      * @param from The class two.
-     * @return Returns true if <code>to</code> is assignable from <code>from</code>.
+     * @return Returns true if {@code to} is assignable from {@code from}.
      */
     public static boolean isAssignableFrom(Class<?> to, Class<?> from) {
         if (PRIMITIVE_TO_WRAPPER.get(to) == from || PRIMITIVE_TO_WRAPPER.get(from) == to) {
@@ -58,7 +58,7 @@ public final class ClassUtils {
 
     /**
      * @param clazz The class to check.
-     * @return Returns true if the given <code>clazz</code> is of void type.
+     * @return Returns {@code true} if the given {@code clazz} is of void type.
      */
     public static boolean isVoidType(Class<?> clazz) {
         return (clazz == void.class || clazz == Void.class);

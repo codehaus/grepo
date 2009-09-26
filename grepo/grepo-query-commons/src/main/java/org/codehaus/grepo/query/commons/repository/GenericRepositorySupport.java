@@ -87,7 +87,7 @@ public abstract class GenericRepositorySupport<T> implements GenericRepository<T
     }
 
     /**
-     * Executes the given <code>callback</code> with either an read-only, normal or none transaction template.
+     * Executes the given {@code callback} with either an read-only, normal or none transaction template.
      *
      * @param callback The callback to execute.
      * @param preferReadOnlyTransactionTemplate Flag to indicate if the read-only template should be prefered.

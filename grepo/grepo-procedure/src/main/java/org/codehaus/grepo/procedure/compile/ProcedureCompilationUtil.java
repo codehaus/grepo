@@ -50,8 +50,8 @@ public final class ProcedureCompilationUtil {
 
     /**
      * @param list The list to check.
-     * @return Returns <code>true</code> if all params in the <code>list</code> have a valid index specified and
-     *         <code>false</code> otherwise.
+     * @return Returns {@code true}  if all params in the {@code list} have a valid index specified and
+     *         {@code false} otherwise.
      */
     public static boolean allParamsHaveValidIndex(List<ProcedureParamDescriptor> list) {
         boolean retVal = true;
@@ -83,7 +83,7 @@ public final class ProcedureCompilationUtil {
     /**
      * @param list The list.
      * @param name The param name.
-     * @return Returns the param identified by <code>name</code> or <code>null</code>.
+     * @return Returns the param identified by {@code name} or {@code null}.
      */
     public static ProcedureParamDescriptor getParamWithName(List<ProcedureParamDescriptor> list, String name) {
         ProcedureParamDescriptor retVal = null;

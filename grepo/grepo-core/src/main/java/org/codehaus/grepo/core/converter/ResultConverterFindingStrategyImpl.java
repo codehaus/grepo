@@ -36,10 +36,10 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
     private ResultConverterRegistry converterRegistry;
 
     /**
-     * Checks if the given <code>clazz</code> is a valid {@link ResultConverter}.
+     * Checks if the given {@code clazz} is a valid {@link ResultConverter}.
      *
      * @param clazz The class to check.
-     * @return Returns <code>true</code> if valid and <code>false</code> otherwise.
+     * @return Returns {@code true} if valid and {@code false} otherwise.
      */
     public static boolean isValidResultConverter(Class<? extends ResultConverter<?>> clazz) {
         return (clazz != null && clazz != PlaceHolderResultConverter.class);

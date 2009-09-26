@@ -72,7 +72,7 @@ public class ConfigurationException extends GrepoException {
      *
      * @param from The from class.
      * @param to The to class.
-     * @return Returns <code>true</code> if assignable and <code>false</code> otherwise.
+     * @return Returns {@code true} if assignable and {@code false} otherwise.
      */
     public static ConfigurationException notAssignableException(Class<?> from, Class<?> to) {
         String msg = String.format("Class '%s' is not assignable from '%s'", to.getName(), from.getName());

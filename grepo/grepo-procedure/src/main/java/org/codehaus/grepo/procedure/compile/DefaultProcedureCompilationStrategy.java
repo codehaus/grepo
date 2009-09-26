@@ -162,7 +162,7 @@ public class DefaultProcedureCompilationStrategy implements ProcedureCompilation
      *
      * @param storedProcedure The procedure.
      * @param list A list of procedure parameters.
-     * @param forceSort If set to <code>true</code> The <code>list</code> will definitely be sorted.
+     * @param forceSort If set to {@code true}, the {@code list} will definitely be sorted.
      */
     protected void declareParameters(StoredProcedure storedProcedure, List<ProcedureParamDescriptor> list,
             boolean forceSort) {

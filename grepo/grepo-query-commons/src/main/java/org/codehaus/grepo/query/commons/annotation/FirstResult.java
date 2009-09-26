@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation used to set the <code>FirstResult</code> for a query.
+ * Annotation used to set the {@code FirstResult} for a query.
  *
  * @author dguggi
  */

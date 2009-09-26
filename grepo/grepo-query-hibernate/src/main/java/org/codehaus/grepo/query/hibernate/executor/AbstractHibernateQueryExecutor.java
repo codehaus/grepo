@@ -510,7 +510,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
 
     /**
      * @param queryOptions The query options.
-     * @return Returns <code>true</code> if a valid generator is specified within the annotation and <code>false</code>
+     * @return Returns {@code true} if a valid generator is specified within the annotation and {@code false}
      *         otherwise.
      */
     protected static boolean hasValidCriteriaGenerator(HibernateQueryOptions queryOptions) {
@@ -524,7 +524,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
 
     /**
      * @param queryOptions The query options.
-     * @return Returns <code>true</code> if a valid tranformer is specified within the annotation and <code>false</code>
+     * @return Returns {@code true} if a valid tranformer is specified within the annotation and {@code false}
      *         otherwise.
      */
     protected static boolean hasValidResultTransformer(HibernateQueryOptions queryOptions) {
@@ -538,7 +538,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
 
     /**
      * @param typeClass The type class.
-     * @return Returns <code>true</code> if the given class is a valid type-class and <code>false</code> otherwise.
+     * @return Returns {@code true} if the given class is a valid type-class and {@code false} otherwise.
      */
     protected static boolean isValidScalarType(Class<? extends Type> typeClass) {
         return (typeClass != null && typeClass != PlaceHolderType.class);
