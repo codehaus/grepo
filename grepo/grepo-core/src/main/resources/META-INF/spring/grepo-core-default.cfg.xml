@@ -21,13 +21,13 @@
         </property>
     </bean>
 
-    <bean id="grepo.defaultResultConverterFindingStrategy"
+    <bean id="grepo.resultConverterFindingStrategy"
         class="org.codehaus.grepo.core.converter.ResultConverterFindingStrategyImpl">
         <property name="converterRegistry" ref="grepo.resultConverterRegistry" />
     </bean>
 
     <bean id="grepo.resultConversionService" class="org.codehaus.grepo.core.converter.ResultConversionServiceImpl">
-        <property name="converterFindingStrategy" ref="grepo.defaultResultConverterFindingStrategy" />
+        <property name="converterFindingStrategy" ref="grepo.resultConverterFindingStrategy" />
     </bean>
 
 </beans>

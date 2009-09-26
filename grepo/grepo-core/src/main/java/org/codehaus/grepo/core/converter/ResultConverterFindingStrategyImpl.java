@@ -19,7 +19,7 @@ package org.codehaus.grepo.core.converter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
-import org.codehaus.grepo.core.util.ClassUtility;
+import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.exception.GrepoException;
 
 /**
@@ -64,7 +64,7 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
         boolean isValidUserConverter = isValidResultConverter(specifiedConverter);
 
         // check if conversion is required at all, no conversion is required/performed for void return-types
-        if (ClassUtility.isVoidType(methodReturnType)) {
+        if (ClassUtils.isVoidType(methodReturnType)) {
             // method has no (void) return type...
             if (isValidUserConverter) {
                 // ...but user has specified a converter, so log warning
@@ -85,7 +85,7 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
                     String msg = String.format("No result converter specified for result 'null', but method '%s' "
                         + "has primitive return type '%s'", mpi.getMethodName(), methodReturnType);
                     throw new ConversionException(msg);
-                } else if (!resultIsNull && !ClassUtility.isAssignableFrom(methodReturnType, result.getClass())) {
+                } else if (!resultIsNull && !ClassUtils.isAssignableFrom(methodReturnType, result.getClass())) {
                     // ... and conversion is required, so try to find appropriate build-in converter from registry,
                     // and throw an exception if no converter could be found...
                     converterToUse = converterRegistry.get(methodReturnType, true);

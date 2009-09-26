@@ -16,7 +16,6 @@
 
 package org.codehaus.grepo.exception;
 
-
 /**
  * General exception to be thrown when configuration errors are detected.
  *
