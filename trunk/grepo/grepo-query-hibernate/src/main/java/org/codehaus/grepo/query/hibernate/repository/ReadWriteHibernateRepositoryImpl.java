@@ -50,12 +50,12 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked") //NOPMD
+    @SuppressWarnings("unchecked")  //NOPMD
     public T get(final PK id, final LockMode lockMode) {
         TransactionCallback callback = new TransactionCallback() {
 
             public Object doInTransaction(TransactionStatus status) {
-                return getSession().get(getEntityType(), id, lockMode);
+                return getSession().get(getEntityClass(), id, lockMode);
             }
         };
         return (T)executeCallback(callback, false);
@@ -69,7 +69,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
         TransactionCallback callback = new TransactionCallback() {
 
             public Object doInTransaction(TransactionStatus status) {
-                return getSession().load(getEntityType(), id, lockMode);
+                return getSession().load(getEntityClass(), id, lockMode);
             }
         };
         return (T)executeCallback(callback, false);

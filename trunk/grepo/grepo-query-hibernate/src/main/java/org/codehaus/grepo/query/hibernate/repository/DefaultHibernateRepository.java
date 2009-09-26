@@ -22,7 +22,7 @@ import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
-import org.codehaus.grepo.query.commons.repository.AbstractGenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
 import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -34,7 +34,7 @@ import org.springframework.transaction.support.TransactionCallback;
  *
  * @param <T> The main entity type.
  */
-public class DefaultHibernateRepository<T> extends AbstractGenericRepository<T> {
+public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> {
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(DefaultHibernateRepository.class);
 
@@ -78,10 +78,10 @@ public class DefaultHibernateRepository<T> extends AbstractGenericRepository<T> 
      */
     protected Object executeQuery(final QueryMethodParameterInfo qmpi, GenericQuery genericQuery) {
         Class<? extends QueryExecutor<?>> clazz =
-            (Class<? extends QueryExecutor<?>>) getExecutorFindingStrategy().findExecutor(
+            (Class<? extends QueryExecutor<?>>) getQueryExecutorFindingStrategy().findExecutor(
                     genericQuery.queryExecutor(), qmpi);
 
-        final HibernateQueryExecutor executor = (HibernateQueryExecutor)getExecutorFactory().createExecutor(clazz);
+        final HibernateQueryExecutor executor = (HibernateQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
 
         TransactionCallback callback = new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {

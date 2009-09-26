@@ -52,7 +52,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     public T load(final PK id) {
         TransactionCallback callback = new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                return getSession().load(getEntityType(), id);
+                return getSession().load(getEntityClass(), id);
             }
         };
         return (T)executeCallback(callback, true);
@@ -65,7 +65,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     public T get(final PK id) {
         TransactionCallback callback = new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                return getSession().get(getEntityType(), id);
+                return getSession().get(getEntityClass(), id);
             }
         };
         return (T)executeCallback(callback, true);
@@ -83,6 +83,5 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
         };
         executeCallback(callback, true);
     }
-
 
 }
