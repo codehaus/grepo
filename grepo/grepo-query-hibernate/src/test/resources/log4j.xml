@@ -8,6 +8,7 @@
             <param name="ConversionPattern" value="%d{ABSOLUTE} %-5p [%c{1}:%L] - %m%n" />
         </layout>
     </appender>
+
     <category name="org.apache">
         <priority value="WARN" />
     </category>
@@ -30,13 +31,10 @@
     <category name="org.hibernate.type">
         <priority value="TRACE" />
     </category>
-     -->
-    <category name="org.jbpm">
-        <priority value="DEBUG" />
-    </category>
     <category name="org.codehaus.grepo">
-        <priority value="INFO" />
+        <priority value="TRACE" />
     </category>
+     -->
 
     <root>
         <priority value="ERROR" />
