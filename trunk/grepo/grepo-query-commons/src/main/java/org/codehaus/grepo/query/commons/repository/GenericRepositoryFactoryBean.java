@@ -345,11 +345,11 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         }
     }
 
-    protected ApplicationContext getApplicationContext() {
+    public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
-    protected Class<?> getProxyInterface() {
+    public Class<?> getProxyInterface() {
         return proxyInterface;
     }
 
@@ -357,7 +357,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.proxyInterface = proxyInterface;
     }
 
-    protected MethodInterceptor getMethodInterceptor() {
+    public MethodInterceptor getMethodInterceptor() {
         return methodInterceptor;
     }
 
@@ -365,7 +365,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.methodInterceptor = methodInterceptor;
     }
 
-    protected Class<?> getTargetClass() {
+    public Class<?> getTargetClass() {
         return targetClass;
     }
 
@@ -373,7 +373,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.targetClass = targetClass;
     }
 
-    protected Class<T> getEntityClass() {
+    public Class<T> getEntityClass() {
         return entityClass;
     }
 
@@ -381,7 +381,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.entityClass = entityClass;
     }
 
-    protected TransactionTemplate getTransactionTemplate() {
+    public TransactionTemplate getTransactionTemplate() {
         return transactionTemplate;
     }
 
@@ -389,7 +389,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.transactionTemplate = transactionTemplate;
     }
 
-    protected TransactionTemplate getReadOnlyTransactionTemplate() {
+    public TransactionTemplate getReadOnlyTransactionTemplate() {
         return readOnlyTransactionTemplate;
     }
 
@@ -397,7 +397,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.readOnlyTransactionTemplate = readOnlyTransactionTemplate;
     }
 
-    protected boolean isAutoDetectGrepoBeans() {
+    public boolean isAutoDetectGrepoBeans() {
         return autoDetectGrepoBeans;
     }
 
@@ -405,7 +405,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.autoDetectGrepoBeans = autoDetectGrepoBeans;
     }
 
-    protected ResultConversionService getResultConversionService() {
+    public ResultConversionService getResultConversionService() {
         return resultConversionService;
     }
 
@@ -413,7 +413,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.resultConversionService = resultConversionService;
     }
 
-    protected QueryExecutorFactory getQueryExecutorFactory() {
+    public QueryExecutorFactory getQueryExecutorFactory() {
         return queryExecutorFactory;
     }
 
@@ -421,7 +421,7 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.queryExecutorFactory = queryExecutorFactory;
     }
 
-    protected QueryExecutorFindingStrategy getQueryExecutorFindingStrategy() {
+    public QueryExecutorFindingStrategy getQueryExecutorFindingStrategy() {
         return queryExecutorFindingStrategy;
     }
 
