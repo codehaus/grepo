@@ -26,13 +26,13 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 
 /**
- * Default implementation of {@link InputGenerationStrategy}.
+ * Default implementation of {@link ProcedureInputGenerationStrategy}.
  *
  * @author dguggi
  */
-public class DefaultInputGenerationStrategy implements InputGenerationStrategy {
+public class ProcedureInputGenerationStrategyImpl implements ProcedureInputGenerationStrategy {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultInputGenerationStrategy.class);
+    private static final Log LOG = LogFactory.getLog(ProcedureInputGenerationStrategyImpl.class);
 
     /**
      * {@inheritDoc}

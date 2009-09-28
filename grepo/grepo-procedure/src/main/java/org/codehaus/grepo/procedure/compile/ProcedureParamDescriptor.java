@@ -23,7 +23,7 @@ import org.springframework.jdbc.core.SqlParameter;
  *
  * @author dguggi
  */
-public class ProcedureParamDescriptor implements Comparable<ProcedureParamDescriptor> {
+public class ProcedureParamDescriptor {
 
     /** The name for the parameter. */
     private String name;
@@ -89,19 +89,6 @@ public class ProcedureParamDescriptor implements Comparable<ProcedureParamDescri
 
     public void setType(ProcedureParamType type) {
         this.type = type;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public int compareTo(ProcedureParamDescriptor o) {
-        if (index < o.getIndex()) {
-            return -1;
-        } else if (index == o.getIndex()) {
-            return 0;
-        } else {
-            return 1;
-        }
     }
 
 }

@@ -14,31 +14,24 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.input;
 
-import org.codehaus.grepo.exception.GrepoException;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 
 /**
+ * Generates an input map for a procedure call.
+ *
  * @author dguggi
  */
-public class ProcedureCachingException extends GrepoException {
-
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -7080155530255854352L;
-
+public interface ProcedureInputGenerationStrategy {
     /**
-     * @param msg The message.
-     * @param cause The cause.
+     * @param dataSource The data source.
+     * @param pmpi The procedure method parameter info.
+     * @return Returns the created input map.
      */
-    public ProcedureCachingException(String msg, Throwable cause) {
-        super(msg, cause);
-    }
-
-    /**
-     * @param msg The message.
-     */
-    public ProcedureCachingException(String msg) {
-        super(msg);
-    }
-
+    Map<String, Object> generate(DataSource dataSource, ProcedureMethodParameterInfo pmpi);
 }

@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.procedure.repository;
 
+import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
@@ -23,18 +24,16 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfoImpl;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutor;
-import org.springframework.aop.IntroductionInterceptor;
 
 /**
  * Intercepts method calls of methods which are annotated with {@link GenericProcedure}.
  *
  * @author dguggi
  */
-public class GenericProcedureIntroductionInterceptor implements IntroductionInterceptor {
+public class GenericProcedureMethodInterceptor implements MethodInterceptor {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericProcedureIntroductionInterceptor.class);
+    private static final Log LOG = LogFactory.getLog(GenericProcedureMethodInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -43,7 +42,7 @@ public class GenericProcedureIntroductionInterceptor implements IntroductionInte
         StopWatch watch = null;
         Object result = null;
 
-        ProcedureExecutor executor = (ProcedureExecutor)invocation.getThis();
+        GenericProcedureRepository executor = (GenericProcedureRepository)invocation.getThis();
         ProcedureMethodParameterInfo pmpi = new ProcedureMethodParameterInfoImpl(invocation.getMethod(), invocation
             .getArguments());
 
@@ -75,14 +74,6 @@ public class GenericProcedureIntroductionInterceptor implements IntroductionInte
         }
 
         return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("unchecked")
-    public final boolean implementsInterface(Class intf) {
-        return intf.isInterface() && ProcedureExecutor.class.isAssignableFrom(intf);
     }
 
 }

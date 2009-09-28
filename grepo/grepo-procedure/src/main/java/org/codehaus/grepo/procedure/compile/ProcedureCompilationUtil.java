@@ -206,7 +206,7 @@ public final class ProcedureCompilationUtil {
 
         Out outAnnotation = pmpi.getMethodAnnotation(Out.class);
         if (outAnnotation != null) {
-            if (result.contains(outAnnotation.name())) {
+            if (handeledParams.contains(outAnnotation.name())) {
                 LOG.warn(String.format(DUPLICATE_PARAM_WARNING, outAnnotation.name()));
             } else {
                 result.add(createParamDescriptor(outAnnotation));
@@ -216,7 +216,7 @@ public final class ProcedureCompilationUtil {
         OutParams outParamsAnnotation = pmpi.getMethodAnnotation(OutParams.class);
         if (outParamsAnnotation != null) {
             for (Out out : outParamsAnnotation.value()) {
-                if (result.contains(out.name())) {
+                if (handeledParams.contains(out.name())) {
                     LOG.warn(String.format(DUPLICATE_PARAM_WARNING, out.name()));
                 } else {
                     result.add(createParamDescriptor(out));

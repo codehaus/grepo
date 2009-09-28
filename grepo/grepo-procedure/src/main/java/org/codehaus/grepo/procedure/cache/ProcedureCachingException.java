@@ -14,24 +14,31 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.cache;
 
-import org.codehaus.grepo.procedure.annotation.GenericProcedure;
-import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.codehaus.grepo.exception.GrepoException;
 
 /**
- * Executes generic procedure methods with appropriate arguments.
- *
  * @author dguggi
  */
-public interface ProcedureExecutor {
+public class ProcedureCachingException extends GrepoException {
+
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -7080155530255854352L;
 
     /**
-     * @param pmpi The procedure method parameter info.
-     * @param genericProcedure The annotation
-     * @return Returns the result map.
-     * @throws Exception in case of errors.
+     * @param msg The message.
+     * @param cause The cause.
      */
-    @SuppressWarnings("PMD")
-    Object execute(ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure) throws Exception;
+    public ProcedureCachingException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
+
+    /**
+     * @param msg The message.
+     */
+    public ProcedureCachingException(String msg) {
+        super(msg);
+    }
+
 }

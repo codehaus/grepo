@@ -14,24 +14,24 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.input;
+package org.codehaus.grepo.procedure.repository;
 
-import java.util.Map;
-
-import javax.sql.DataSource;
-
+import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 
 /**
- * Generates an input map for a procedure call.
+ * Executes generic procedure methods with appropriate arguments.
  *
  * @author dguggi
  */
-public interface InputGenerationStrategy {
+public interface GenericProcedureRepository {
+
     /**
-     * @param dataSource The data source.
      * @param pmpi The procedure method parameter info.
-     * @return Returns the created input map.
+     * @param genericProcedure The annotation.
+     * @return Returns the result map.
+     * @throws Exception in case of errors.
      */
-    Map<String, Object> generate(DataSource dataSource, ProcedureMethodParameterInfo pmpi);
+    @SuppressWarnings("PMD")
+    Object execute(ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure) throws Exception;
 }
