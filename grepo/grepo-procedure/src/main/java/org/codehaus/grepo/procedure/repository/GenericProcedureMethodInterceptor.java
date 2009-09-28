@@ -42,7 +42,7 @@ public class GenericProcedureMethodInterceptor implements MethodInterceptor {
         StopWatch watch = null;
         Object result = null;
 
-        GenericProcedureRepository executor = (GenericProcedureRepository)invocation.getThis();
+        GenericProcedureRepository repo = (GenericProcedureRepository)invocation.getThis();
         ProcedureMethodParameterInfo pmpi = new ProcedureMethodParameterInfoImpl(invocation.getMethod(), invocation
             .getArguments());
 
@@ -59,12 +59,12 @@ public class GenericProcedureMethodInterceptor implements MethodInterceptor {
                 if (LOG.isTraceEnabled()) {
                     String msg = String.format("Method '%s' is not annotated with @GenericQuery"
                         + " - invocation will proceed to implementation '%s'",
-                        pmpi.getMethodName(), executor.getClass().getName());
+                        pmpi.getMethodName(), repo.getClass().getName());
                     LOG.trace(msg);
                 }
                 result = invocation.proceed();
             } else {
-                result = executor.execute(pmpi, annotation);
+                result = repo.execute(pmpi, annotation);
             }
         } finally {
             if (LOG.isTraceEnabled()) {
