@@ -46,9 +46,9 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
         StopWatch watch = null;
         Object result = null;
 
-        GenericRepository<?> genericDao = (GenericRepository<?>)invocation.getThis();
+        GenericRepository<?> repo = (GenericRepository<?>)invocation.getThis();
         QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
-            .getArguments(), genericDao.getEntityClass());
+            .getArguments(), repo.getEntityClass());
 
         if (LOG.isTraceEnabled()) {
             LOG.trace(String.format("Invoking method '%s'", qmpi.getMethodName()));
@@ -65,13 +65,13 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
                 // no GenericQuery annotation present, so do not invoke via aop...
                 if (LOG.isTraceEnabled()) {
                     String msg = String.format("Method '%s' is not annotated with @GenericQuery"
-                        + " - invocation will proceed to implementation '%s'", qmpi.getMethodName(), genericDao
+                        + " - invocation will proceed to implementation '%s'", qmpi.getMethodName(), repo
                         .getClass().getName());
                     LOG.trace(msg);
                 }
                 result = invocation.proceed();
             } else {
-                result = genericDao.executeGenericQuery(qmpi, annotation);
+                result = repo.executeGenericQuery(qmpi, annotation);
             }
         } finally {
             if (LOG.isTraceEnabled()) {
