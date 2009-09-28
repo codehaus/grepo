@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.cache;
 
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.springframework.jdbc.object.StoredProcedure;

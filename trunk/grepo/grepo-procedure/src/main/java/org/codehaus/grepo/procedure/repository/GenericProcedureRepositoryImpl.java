@@ -14,78 +14,54 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.repository;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategy;
-import org.codehaus.grepo.procedure.input.InputGenerationStrategy;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 /**
- * Default implementation of {@link ProcedureExecutor}.
+ * Default implementation of {@link GenericProcedureRepository}.
  *
  * @author dguggi
  */
-public class DefaultProcedureExecutor implements ProcedureExecutor {
+public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySupport {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultProcedureExecutor.class);
-
-    /** The caching strategy. */
-    private ProcedureCachingStrategy procedureCachingStrategy;
-
-    /** The compilation strategy. */
-    private ProcedureCompilationStrategy procedureCompilationStrategy;
-
-    /** The input generation strategy. */
-    private InputGenerationStrategy inputGenerationStrategy;
-
-    /** The result conversion service. */
-    private ResultConversionService resultConversionService;
-
-    /** The datasource. */
-    private DataSource dataSource;
-
-    /** The transaction template to use. */
-    private TransactionTemplate transactionTemplate;
+    private static final Log LOG = LogFactory.getLog(GenericProcedureRepositoryImpl.class);
 
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD")
     public Object execute(final ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure) throws Exception {
-        Map<String, Object> resultMap = executeProcedure(pmpi);
+        Map<String, Object> resultMap = executeProcedure(pmpi, genericProcedure);
 
         Object result = convertResult(resultMap, pmpi, genericProcedure);
 
         validateResult(result, pmpi, genericProcedure);
 
         return result;
-
     }
 
     /**
      * Execute the procedure.
      *
      * @param pmpi The method parameter info.
+     * @param genericProcedure The annotation.
      * @return Returns the result map of the procedure call.
      */
-    protected Map<String, Object> executeProcedure(final ProcedureMethodParameterInfo pmpi) {
+    protected Map<String, Object> executeProcedure(final ProcedureMethodParameterInfo pmpi,
+            GenericProcedure genericProcedure) {
         TransactionCallback callback = new TransactionCallback() {
 
             @SuppressWarnings("unchecked")
@@ -96,7 +72,7 @@ public class DefaultProcedureExecutor implements ProcedureExecutor {
                 if (pmpi.getParameters().size() == 1 && pmpi.getParameter(0) instanceof Map) {
                     input = pmpi.getParameter(0, Map.class);
                 } else {
-                    input = inputGenerationStrategy.generate(dataSource, pmpi);
+                    input = getProcedureInputGenerationStrategy().generate(getDataSource(), pmpi);
                 }
 
                 if (input == null) {
@@ -112,7 +88,7 @@ public class DefaultProcedureExecutor implements ProcedureExecutor {
             }
         };
 
-        return executeCallback(callback);
+        return executeCallback(callback, genericProcedure.isReadOnly());
     }
 
     /**
@@ -166,93 +142,20 @@ public class DefaultProcedureExecutor implements ProcedureExecutor {
         String cacheName = null;
         if (annotation.cachingEnabled()) {
             // try to get an already compiled procedure from the cache...
-            cacheName = procedureCachingStrategy.generateCacheName(pmpi);
-            storedProcedure = procedureCachingStrategy.getFromCache(cacheName);
+            cacheName = getProcedureCachingStrategy().generateCacheName(pmpi);
+            storedProcedure = getProcedureCachingStrategy().getFromCache(cacheName);
         }
 
         if (storedProcedure == null) {
             // no procedure found in cache, so create new procedure...
-            storedProcedure = procedureCompilationStrategy.compile(dataSource, pmpi);
+            storedProcedure = getProcedureCompilationStrategy().compile(getDataSource(), pmpi);
             if (annotation.cachingEnabled()) {
                 // cache the newly compiled procedure...
-                procedureCachingStrategy.addToCache(storedProcedure, cacheName);
+                getProcedureCachingStrategy().addToCache(storedProcedure, cacheName);
             }
 
         }
         return storedProcedure;
-    }
-
-    /**
-     * Executes the given {@code callback} with either an normal or none transaction template.
-     *
-     * @param callback The callback to execute.
-     * @return Returns the result.
-     */
-    @SuppressWarnings("unchecked")
-    protected Map<String, Object> executeCallback(TransactionCallback callback) {
-        Map<String, Object> retVal = null;
-        if (transactionTemplate == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Executing procedure without using transaction template");
-            }
-            // execute without transaction...
-            retVal = (Map<String, Object>)callback.doInTransaction(null);
-        } else {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Executing procedure using transaction template");
-            }
-            retVal = (Map<String, Object>)transactionTemplate.execute(callback);
-        }
-        return retVal;
-    }
-
-    @Required
-    public void setProcedureCachingStrategy(final ProcedureCachingStrategy procedureCachingStrategy) {
-        this.procedureCachingStrategy = procedureCachingStrategy;
-    }
-
-    protected ProcedureCachingStrategy getProcedureCachingStrategy() {
-        return procedureCachingStrategy;
-    }
-
-    public void setProcedureCompilationStrategy(ProcedureCompilationStrategy procedureCompilationStrategy) {
-        this.procedureCompilationStrategy = procedureCompilationStrategy;
-    }
-
-    protected ProcedureCompilationStrategy getProcedureCompilationStrategy() {
-        return procedureCompilationStrategy;
-    }
-
-    public void setInputGenerationStrategy(InputGenerationStrategy inputGenerationStrategy) {
-        this.inputGenerationStrategy = inputGenerationStrategy;
-    }
-
-    protected InputGenerationStrategy getInputGenerationStrategy() {
-        return inputGenerationStrategy;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    protected DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
-    }
-
-    protected TransactionTemplate getTransactionTemplate() {
-        return this.transactionTemplate;
-    }
-
-    protected ResultConversionService getResultConversionService() {
-        return resultConversionService;
-    }
-
-    public void setResultConversionService(ResultConversionService resultConversionService) {
-        this.resultConversionService = resultConversionService;
     }
 
 }

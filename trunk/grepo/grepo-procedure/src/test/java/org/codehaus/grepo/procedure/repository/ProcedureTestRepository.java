@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.repository;
 
 import java.sql.Types;
 import java.util.Map;
@@ -30,7 +30,7 @@ import org.codehaus.grepo.procedure.annotation.OutParams;
 /**
  * @author dguggi
  */
-public interface ExecutorTestRepository {
+public interface ProcedureTestRepository {
 
     /**
      * @param p1 Procedure param1.

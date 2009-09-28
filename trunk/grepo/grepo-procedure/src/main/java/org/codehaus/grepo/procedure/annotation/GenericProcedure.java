@@ -55,4 +55,7 @@ public @interface GenericProcedure {
 
     /** The return param name. */
     String returnParamName() default "";
+
+    /** Specifies whether or not the procedure is read-only (default is {@code false}). */
+    boolean isReadOnly() default false;
 }

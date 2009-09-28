@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.cache;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,14 +27,15 @@ import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**
- * Default implementation of {@link ProcedureCachingStrategy}.
+ * Implementation of {@link ProcedureCachingStrategy} which uses {@code java.util.HashMap} for storing compiled
+ * procedures.
  *
  * @author dguggi
  */
-public class DefaultProcedureCachingStrategy implements ProcedureCachingStrategy {
+public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultProcedureCachingStrategy.class);
+    private static final Log LOG = LogFactory.getLog(ProcedureCachingStrategyImpl.class);
 
     /** The cache. */
     private Map<String, StoredProcedure> cache = new HashMap<String, StoredProcedure>();

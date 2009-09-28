@@ -35,10 +35,10 @@ import org.springframework.jdbc.object.StoredProcedure;
  *
  * @author dguggi
  */
-public class DefaultProcedureCompilationStrategy implements ProcedureCompilationStrategy {
+public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStrategy {
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultProcedureCompilationStrategy.class);
+    private static final Log LOG = LogFactory.getLog(ProcedureCompilationStrategyImpl.class);
 
     /**
      * {@inheritDoc}
@@ -167,7 +167,7 @@ public class DefaultProcedureCompilationStrategy implements ProcedureCompilation
     protected void declareParameters(StoredProcedure storedProcedure, List<ProcedureParamDescriptor> list,
             boolean forceSort) {
         if (forceSort || ProcedureCompilationUtil.allParamsHaveValidIndex(list)) {
-            Collections.sort(list);
+            Collections.sort(list, new ProcedureParamDescriptorComparator());
         }
         for (ProcedureParamDescriptor desc : list) {
             storedProcedure.declareParameter(desc.getSqlParameter());

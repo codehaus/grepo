@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.executor;
+package org.codehaus.grepo.procedure.repository;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,10 +33,10 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
-public class ExecutorRepositoryOracleTest extends AbstractProcedureRepositoryTest {
+public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTest {
     /** The repo to test. */
     @Autowired
-    private ExecutorTestRepository repo;    //NOPMD
+    private ProcedureTestRepository repo;    //NOPMD
 
     /**
      * @throws IOException  in case of errors.

@@ -11,18 +11,18 @@
 
     <import resource="classpath:META-INF/spring/grepo-core-default.cfg.xml" />
 
-    <bean id="grepo.genericProcedureIntroductionInterceptor"
-        class="org.codehaus.grepo.procedure.repository.GenericProcedureIntroductionInterceptor">
+    <bean id="grepo.genericProcedureMethodInterceptor"
+        class="org.codehaus.grepo.procedure.repository.GenericProcedureMethodInterceptor">
     </bean>
 
-    <bean id="grepo.defaultProcedureCachingStrategy"
-        class="org.codehaus.grepo.procedure.executor.DefaultProcedureCachingStrategy" scope="prototype">
+    <bean id="grepo.procedureCachingStrategy"
+        class="org.codehaus.grepo.procedure.cache.ProcedureCachingStrategyImpl" scope="prototype">
     </bean>
 
-    <bean id="grepo.defaultProcedureCompilationStrategy"
-        class="org.codehaus.grepo.procedure.compile.DefaultProcedureCompilationStrategy" />
+    <bean id="grepo.procedureCompilationStrategy"
+        class="org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategyImpl" />
 
-    <bean id="grepo.defaultInputGenerationStrategy"
-        class="org.codehaus.grepo.procedure.input.DefaultInputGenerationStrategy" />
+    <bean id="grepo.procedureInputGenerationStrategy"
+        class="org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategyImpl" />
 
 </beans>
