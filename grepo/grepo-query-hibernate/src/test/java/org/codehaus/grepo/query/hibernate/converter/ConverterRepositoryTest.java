@@ -78,7 +78,7 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         Assert.assertEquals(1, repo.getTypeByUsername("username"));
 
         // throws a conversion exception, because query result is null
-        // and gdao-method return type is a primitive (int)
+        // and method's return type is a primitive (int)
         repo.getTypeByUsername("xyz");
     }
 
@@ -87,7 +87,7 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
      */
     @Test(expected = RegistryException.class)
     public void testNoValidConverterNotFound() {
-        // query returns type TestEntity, but gdao-method
+        // query returns type TestEntity, but method
         // has String return type and no converter specified
         // implicit conversion not possible -> RegistryException
         repo.getByUsername("username");

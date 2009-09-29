@@ -19,12 +19,11 @@ package org.codehaus.grepo.query.jpa.generator;
 import java.util.Map;
 
 import org.codehaus.grepo.query.commons.generator.QueryGenerator;
-import org.codehaus.grepo.query.jpa.executor.DynamicNamedJpaParam;
 
 /**
  * @author dguggi
  */
-public interface JpaQueryGenerator extends QueryGenerator<DynamicNamedJpaParam> {
+public interface JpaQueryGenerator extends QueryGenerator<JpaQueryParam> {
     /**
      * @return Returns a map of hints.
      */

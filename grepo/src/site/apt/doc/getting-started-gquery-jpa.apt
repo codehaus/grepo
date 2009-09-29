@@ -122,7 +122,8 @@ $ mvn test
   the hsql datasource and entity manager factory are configured in
   <src/main/resources/META-INF/spring/db-environment.xml>.
 
-  The next step is to define a basic configuration DAO-Layer. This configuration may look like this:
+  The next step is to define a basic configuration for the data access layer. This configuration may
+  look like this:
 
 +--
 <bean id="abstractRepository" class="org.codehaus.grepo.query.jpa.repository.JpaRepositoryFactoryBean"
@@ -139,7 +140,7 @@ $ mvn test
   Here we define an <abstract> bean which will be used for all of our concrete repositories (DAOs).
   Its a good idea (although not required) to define an <abstract> bean because this makes configuration
   of concrete repository beans simpler and furthermore you just have to modify the <abstract> bean if
-  you need to change the basic configuration for your DAO-Layer in the future. Note that the <abstract>
+  you need to change the basic configuration for your data access layer in the future. Note that the <abstract>
   bean above uses a really simple configuration approach (just a session factory and transaction
   template are configured - the rest of the configuration will be done by the framework behind the scenes).
   For custom/special needs the <abstract> bean definition (properties) may be more comprehensive. The simplest
@@ -153,7 +154,7 @@ $ mvn test
 </bean>
 +--
 
-  That's it, you are now ready to build your DAO-Layer using the grepo framework!
+  That's it, you are now ready to build your data access layer using the grepo framework!
 
 * Creating the first repository
 
@@ -408,6 +409,7 @@ package demo.repository;
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.jpa.generator.AbstractJpaQueryGenerator;
+import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
 
 public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
 
@@ -418,11 +420,11 @@ public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
         StringBuilder query = new StringBuilder("from User where 1=1");
         if (StringUtils.isNotEmpty(firstname)) {
             query.append(" AND firstname = :fn");
-            addDynamicNamedParam(new DynamicNamedJpaParam("fn", firstname));
+            addDynamicQueryParam(new JpaQueryParam("fn", firstname));
         }
         if (StringUtils.isNotEmpty(lastname)) {
             query.append(" AND lastname = :ln");
-            addDynamicNamedParam(new DynamicNamedJpaParam("ln", lastname));
+            addDynamicQueryParam(new JpaQueryParam("ln", lastname));
         }
 
         return query.toString();
@@ -563,7 +565,7 @@ int getBySomething(String something);
   The grepo framework was designed around the
   {{{http://en.wikipedia.org/wiki/Convention_over_configuration}convention over configuration}}
   paradigm. You configure the grepo framework with your guidelines (if the default configuration
-  does not meet your needs) for your DAO-Layer and grepo will then apply those rules
+  does not meet your needs) for your data access layer and grepo will then apply those rules
   transparently. For instance, we have seen that grepo can guarantee that all methods
   which execute <"list-queries"> have to start with the prefix "<list>" and also have to return
   an instance of <java.util.List>. If you want to break the rules you could for instance configure

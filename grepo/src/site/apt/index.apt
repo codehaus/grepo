@@ -22,7 +22,7 @@ What is grepo?
   * Simplifies development and increases code quality - you won't hear your colleague say
     <"Hey look, what I've found - I guess this is not the way we do this normally?!"> anymore.
 
-  * Makes your DAO-Layer consistent - similar/equal data access operations are "implemented"
+  * Makes your data access layer consistent - similar/equal data access operations are "implemented"
     (and thus work) in the same way which in turn makes software more stable and in general
     better maintainable.
 
@@ -38,10 +38,10 @@ What is grepo?
     most database access specific tasks - grepo is easily configurable and extensible in order
     to fit custom/special needs.
 
-  * <<Consistency>> - The framework should assist in building consistent DAO-Layers - grepo
-    allows to define and configure rules and guidelines (coding conventions etc...) for the
-    DAO-Layer. Those rules are then applied and enforced by the framework - grepo has a
-    predefined (default) set of rules which may be customized for custom/special needs.
+  * <<Consistency>> - The framework should assist in building consistent data access layers -
+    grepo allows to define and configure rules and guidelines (coding conventions etc...) for
+    the data access objects. Those rules are then applied and enforced by the framework - grepo
+    has a predefined (default) set of rules which may be customized for custom/special needs.
 
 * Features
 

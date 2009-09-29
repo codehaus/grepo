@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.executor;
+package org.codehaus.grepo.query.hibernate.generator;
 
-import org.codehaus.grepo.query.commons.generator.DynamicNamedParam;
+import org.codehaus.grepo.query.commons.generator.QueryParam;
 import org.hibernate.type.Type;
 
 /**
  * @author dguggi
  */
-public class DynamicNamedHibernateParam extends DynamicNamedParam {
+public class HibernateQueryParam extends QueryParam {
     /** The type. */
     private Type type;
 
@@ -30,7 +30,7 @@ public class DynamicNamedHibernateParam extends DynamicNamedParam {
      * @param name The name to set.
      * @param value The value to set.
      */
-    public DynamicNamedHibernateParam(String name, Object value) {
+    public HibernateQueryParam(String name, Object value) {
         super(name, value);
     }
 
@@ -39,7 +39,7 @@ public class DynamicNamedHibernateParam extends DynamicNamedParam {
      * @param value The value to set.
      * @param type The type to set.
      */
-    public DynamicNamedHibernateParam(String name, Object value, Type type) {
+    public HibernateQueryParam(String name, Object value, Type type) {
         super(name, value);
         this.type = type;
     }

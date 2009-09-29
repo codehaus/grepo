@@ -17,7 +17,6 @@
 package org.codehaus.grepo.query.jpa.generator;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.jpa.executor.DynamicNamedJpaParam;
 
 /**
  * @author dguggi
@@ -28,7 +27,7 @@ public class TestJPQLGeneratorUsingDynParams extends AbstractJpaQueryGenerator {
      * {@inheritDoc}
      */
     public String generate(QueryMethodParameterInfo qmpi) {
-        addDynamicNamedParam(new DynamicNamedJpaParam("dynParamName", "username"));
+        addDynamicQueryParam(new JpaQueryParam("dynParamName", "username"));
         return "FROM TestEntity WHERE username = :dynParamName";
     }
 

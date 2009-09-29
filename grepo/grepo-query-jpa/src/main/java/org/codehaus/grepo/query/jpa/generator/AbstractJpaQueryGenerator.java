@@ -20,13 +20,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.codehaus.grepo.query.commons.generator.AbstractQueryGenerator;
-import org.codehaus.grepo.query.jpa.executor.DynamicNamedJpaParam;
 
 /**
  * @author dguggi
  */
 public abstract class AbstractJpaQueryGenerator
-    extends AbstractQueryGenerator<DynamicNamedJpaParam> implements JpaQueryGenerator {
+    extends AbstractQueryGenerator<JpaQueryParam> implements JpaQueryGenerator {
 
     /** The hints. */
     private Map<String, Object> hints;

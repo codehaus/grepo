@@ -41,6 +41,7 @@ import org.codehaus.grepo.query.jpa.annotation.GTemporal;
 import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.generator.JpaNativeQueryGenerator;
 import org.codehaus.grepo.query.jpa.generator.JpaQueryGenerator;
+import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -228,7 +229,7 @@ public abstract class AbstractJpaQueryExecutor
         boolean retVal = !params.isEmpty();
 
         if (params.isEmpty()) {
-            retVal = (queryDesc.isGeneratedQuery() && queryDesc.hasDynamicNamedParams());
+            retVal = (queryDesc.isGeneratedQuery() && queryDesc.hasDynamicQueryParams());
         }
         return retVal;
     }
@@ -259,7 +260,7 @@ public abstract class AbstractJpaQueryExecutor
             // configure query options...
             configureQuery(query, queryOptions, generator);
 
-            return new JpaQueryDescriptor(query, true, generator.getDynamicNamedParams());
+            return new JpaQueryDescriptor(query, true, generator.getDynamicQueryParams());
 
         } catch (InstantiationException e) {
             throw ConfigurationException.instantiateException(clazz, e);
@@ -275,23 +276,23 @@ public abstract class AbstractJpaQueryExecutor
     @SuppressWarnings("PMD")
     private void setNamedParams(JpaQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
         List<String> alreadyHandeledParamNames = new ArrayList<String>();
-        if (queryDesc.isGeneratedQuery() && queryDesc.hasDynamicNamedParams()) {
+        if (queryDesc.isGeneratedQuery() && queryDesc.hasDynamicQueryParams()) {
             // first set all dynamic named parameters...
-            for (DynamicNamedJpaParam dynParam : queryDesc.getDynamicNamedParams()) {
+            for (JpaQueryParam dynParam : queryDesc.getDynamicQueryParams()) {
                 setNamedParam(queryDesc.getQuery(), dynParam);
                 alreadyHandeledParamNames.add(dynParam.getName());
             }
         }
 
-        // now handle all method-paramerters annotated with @QueryParam
+        // now handle all method-parameters annotated with @Param
         for (int i = 0; i < qmpi.getParameters().size(); i++) {
             if (qmpi.parameterHasAnnotation(i, Param.class)) {
                 Param queryParam = qmpi.getParameterAnnotation(i, Param.class);
-                DynamicNamedJpaParam param = null;
+                JpaQueryParam param = null;
                 if (!alreadyHandeledParamNames.contains(queryParam.value())) {
                     Object value = qmpi.getParameter(i);
                     GTemporal gt = qmpi.getParameterAnnotation(i, GTemporal.class);
-                    param = new DynamicNamedJpaParam(queryParam.value(), value,
+                    param = new JpaQueryParam(queryParam.value(), value,
                         (gt == null ? null : gt.value()));
                     setNamedParam(queryDesc.getQuery(), param);
                 }
@@ -303,7 +304,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param query The query.
      * @param param The named param.
      */
-    private void setNamedParam(Query query, DynamicNamedJpaParam param) {
+    private void setNamedParam(Query query, JpaQueryParam param) {
         if (param.getTemporalType() != null && (param.getValue() instanceof Calendar)) {
             traceSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Calendar)param.getValue(), param.getTemporalType());

@@ -17,12 +17,11 @@
 package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.query.commons.generator.QueryGenerator;
-import org.codehaus.grepo.query.hibernate.executor.DynamicNamedHibernateParam;
 
 /**
  * @author dguggi
  */
 public interface HibernateQueryGenerator
-    extends QueryGenerator<DynamicNamedHibernateParam> {
+    extends QueryGenerator<HibernateQueryParam> {
 
 }

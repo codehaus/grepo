@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.jpa.executor;
+package org.codehaus.grepo.query.jpa.generator;
 
 import javax.persistence.TemporalType;
 
-import org.codehaus.grepo.query.commons.generator.DynamicNamedParam;
+import org.codehaus.grepo.query.commons.generator.QueryParam;
 
 /**
  * @author dguggi
  */
-public class DynamicNamedJpaParam extends DynamicNamedParam {
+public class JpaQueryParam extends QueryParam {
 
     /** The temporal type. */
     private TemporalType temporalType;
@@ -32,7 +32,7 @@ public class DynamicNamedJpaParam extends DynamicNamedParam {
      * @param name The name.
      * @param value The value.
      */
-    public DynamicNamedJpaParam(String name, Object value) {
+    public JpaQueryParam(String name, Object value) {
         super(name, value);
     }
 
@@ -41,7 +41,7 @@ public class DynamicNamedJpaParam extends DynamicNamedParam {
      * @param value The value.
      * @param temporalType The temporal type.
      */
-    public DynamicNamedJpaParam(String name, Object value, TemporalType temporalType) {
+    public JpaQueryParam(String name, Object value, TemporalType temporalType) {
         this(name, value);
         this.temporalType = temporalType;
     }

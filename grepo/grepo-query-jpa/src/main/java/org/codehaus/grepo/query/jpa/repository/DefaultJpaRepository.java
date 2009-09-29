@@ -132,7 +132,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> {
     protected void closeNewEntityManager(CurrentEntityManagerHolder info) {
         if (info.isNewEm()) {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("Closing new EntityManager after GenericDao execution");
+                LOG.trace("Closing new EntityManager after generic repository execution");
             }
             EntityManagerFactoryUtils.closeEntityManager(info.getEntityManager());
         }

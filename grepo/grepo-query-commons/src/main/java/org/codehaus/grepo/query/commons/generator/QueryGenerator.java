@@ -25,8 +25,8 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @param <P> The paremter type.
  */
-public interface QueryGenerator<P extends DynamicNamedParam>
-     extends DynamicNamedParamsAware<P> {
+public interface QueryGenerator<P extends QueryParam>
+     extends DynamicQueryParamsAware<P> {
 
     /**
      * @param qmpi The method parameter info.
