@@ -21,7 +21,7 @@ package org.codehaus.grepo.query.commons.generator;
  *
  * @author dguggi
  */
-public class DynamicNamedParam {
+public class QueryParam {
     /** The name of the query parameter. */
     private String name;
 
@@ -32,7 +32,7 @@ public class DynamicNamedParam {
      * @param name The name to set.
      * @param value The value to set.
      */
-    public DynamicNamedParam(String name, Object value) {
+    public QueryParam(String name, Object value) {
         super();
         this.name = name;
         this.value = value;

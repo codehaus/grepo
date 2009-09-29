@@ -22,28 +22,29 @@ import java.util.Collection;
  * @author dguggi
  * @param <P> The parameter type.
  */
-public interface DynamicNamedParamsAware<P extends DynamicNamedParam> {
+public interface DynamicQueryParamsAware<P extends QueryParam> {
 
     /**
-     * @return Returns a collection of dynamic named param instances.
+     * @return Returns a collection of dynamic query param instances.
      */
-    Collection<P> getDynamicNamedParams();
+    Collection<P> getDynamicQueryParams();
+
+    /**
+     * @param name The name of the param.
+     * @return Returns the param identified by {@code name} or {@code null}.
+     */
+    P getDynamicQueryParam(String name);
 
     /**
      * @param name The name of the param.
      * @return Returns {@code true} if a parameter with the given {@code name} exists and {@code false}
      *         otherwise.
      */
-    boolean hasDynamicNamedParam(String name);
+    boolean hasDynamicQueryParam(String name);
 
     /**
-     * @return Returns {@code true} if dynamic named params exist and {@code false} otherwise.
+     * @return Returns {@code true} if dynamic query params exist and {@code false} otherwise.
      */
-    boolean hasDynamicNamedParams();
+    boolean hasDynamicQueryParams();
 
-    /**
-     * @param name The name of the param.
-     * @return Returns the param identified by {@code name} or {@code null}.
-     */
-    P getDynamicNamedParam(String name);
 }

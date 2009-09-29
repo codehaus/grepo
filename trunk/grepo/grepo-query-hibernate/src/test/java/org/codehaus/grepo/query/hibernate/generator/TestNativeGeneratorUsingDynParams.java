@@ -18,7 +18,6 @@ package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.hibernate.TestEntity;
-import org.codehaus.grepo.query.hibernate.executor.DynamicNamedHibernateParam;
 
 /**
  * @author dguggi
@@ -31,7 +30,7 @@ public class TestNativeGeneratorUsingDynParams extends AbstractHibernateNativeQu
     public String generate(QueryMethodParameterInfo mpi) {
         // add entity
         addEntity(TestEntity.class);
-        addDynamicNamedParam(new DynamicNamedHibernateParam("dynParamName", "username"));
+        addDynamicQueryParam(new HibernateQueryParam("dynParamName", "username"));
         return "select * from test_entity where username = :dynParamName";
     }
 

@@ -48,8 +48,8 @@ public interface ConverterTestRepository extends GenericRepository<TestEntity> {
     int getTypeByUsername(String username);
 
     /**
-     * Note: this is an invalid generic dao configuration because the method's return
-     * type is {@code String}, but the query will return an instance of
+     * Note: this is an invalid generic repository configuration because the method's
+     * return type is {@code String}, but the query will return an instance of
      * {@code TestEntity} and no result-converter is specified.
      *
      * @param username The username.

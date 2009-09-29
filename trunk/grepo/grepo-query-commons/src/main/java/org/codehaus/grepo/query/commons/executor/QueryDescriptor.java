@@ -20,23 +20,23 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.grepo.query.commons.generator.DynamicNamedParam;
-import org.codehaus.grepo.query.commons.generator.DynamicNamedParamsAware;
+import org.codehaus.grepo.query.commons.generator.QueryParam;
+import org.codehaus.grepo.query.commons.generator.DynamicQueryParamsAware;
 
 /**
  * Used to desribe a query.
  *
  * @author dguggi
  * @param <Q> The type of Query instances used.
- * @param <P> The type of {@link DynamicNamedParam} instances used.
+ * @param <P> The type of {@link QueryParam} instances used.
  */
-public class QueryDescriptor<Q, P extends DynamicNamedParam> implements DynamicNamedParamsAware<P> {
+public class QueryDescriptor<Q, P extends QueryParam> implements DynamicQueryParamsAware<P> {
 
     /** The query. */
     private Q query;
 
-    /** The dynamic named params. */
-    private Map<String,P> dynamicNamedParams = new HashMap<String,P>();
+    /** The dynamic query params. */
+    private Map<String,P> dynamicQueryParams = new HashMap<String,P>();
 
     /** Flag to indicate whether or not the query was generated using a {@link QueryGenerator}. */
     private boolean generatedQuery;
@@ -58,7 +58,7 @@ public class QueryDescriptor<Q, P extends DynamicNamedParam> implements DynamicN
     public QueryDescriptor(Q query, boolean isGeneratedQuery, Collection<P> params) {
         this(query, isGeneratedQuery);
         for (P param : params) {
-            dynamicNamedParams.put(param.getName(), param);
+            dynamicQueryParams.put(param.getName(), param);
         }
     }
 
@@ -70,34 +70,36 @@ public class QueryDescriptor<Q, P extends DynamicNamedParam> implements DynamicN
         this.query = query;
     }
 
-    public Collection<P> getDynamicNamedParams() {
-        return dynamicNamedParams.values();
-    }
-
-    protected void setDynamicNamedParams(Map<String, P> dynamicNamedParams) {
-        this.dynamicNamedParams = dynamicNamedParams;
-    }
-
     /**
-     * @return Returns true if dynamic named params are available.
+     * {@inheritDoc}
      */
-    public boolean hasDynamicNamedParams() {
-        return !dynamicNamedParams.isEmpty();
+    public Collection<P> getDynamicQueryParams() {
+        return dynamicQueryParams.values();
+    }
+
+    protected void setDynamicQueryParams(Map<String, P> dynamicQueryParams) {
+        this.dynamicQueryParams = dynamicQueryParams;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasDynamicNamedParam(String name) {
-        return dynamicNamedParams.containsKey(name);
+    public boolean hasDynamicQueryParams() {
+        return !dynamicQueryParams.isEmpty();
     }
 
     /**
-     * @param name The param name.
-     * @return Returns the value for the given {@code name} or {@code null}.
+     * {@inheritDoc}
      */
-    public P getDynamicNamedParam(String name) {
-        return dynamicNamedParams.get(name);
+    public boolean hasDynamicQueryParam(String name) {
+        return dynamicQueryParams.containsKey(name);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public P getDynamicQueryParam(String name) {
+        return dynamicQueryParams.get(name);
     }
 
     public boolean isGeneratedQuery() {

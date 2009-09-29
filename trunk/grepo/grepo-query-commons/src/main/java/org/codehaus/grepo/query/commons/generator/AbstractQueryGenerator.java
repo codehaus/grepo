@@ -18,6 +18,7 @@ package org.codehaus.grepo.query.commons.generator;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -25,64 +26,76 @@ import java.util.Map;
  *
  * @param <P> The parmeter type.
  */
-public abstract class AbstractQueryGenerator<P extends DynamicNamedParam>
+public abstract class AbstractQueryGenerator<P extends QueryParam>
     implements QueryGenerator<P> {
 
-    /** Dynamic named parameters map. */
-    private Map<String,P> dynamicNamedParams = new HashMap<String,P>();
+    /** Dynamic query parameters map. */
+    private Map<String,P> dynamicQueryParams = new HashMap<String,P>();
 
 
     /**
      * {@inheritDoc}
      */
-    public P getDynamicNamedParam(String name) {
-        return dynamicNamedParams.get(name);
+    public P getDynamicQueryParam(String name) {
+        return dynamicQueryParams.get(name);
     }
 
     /**
      * {@inheritDoc}
      */
-    public Collection<P> getDynamicNamedParams() {
-        return dynamicNamedParams.values();
+    public Collection<P> getDynamicQueryParams() {
+        return dynamicQueryParams.values();
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasDynamicNamedParam(String name) {
-        return dynamicNamedParams.containsKey(name);
+    public boolean hasDynamicQueryParam(String name) {
+        return dynamicQueryParams.containsKey(name);
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasDynamicNamedParams() {
-        return !dynamicNamedParams.isEmpty();
+    public boolean hasDynamicQueryParams() {
+        return !dynamicQueryParams.isEmpty();
     }
 
     /**
      * @param param The param to add.
      */
-    protected void addDynamicNamedParam(P param) {
-        dynamicNamedParams.put(param.getName(), param);
+    protected void addDynamicQueryParam(P param) {
+        dynamicQueryParams.put(param.getName(), param);
+    }
+
+    /**
+     * @param params The params to add.
+     */
+    protected void addDynamicQueryParams(Collection<P> params) {
+        if (params != null) {
+            Iterator<P> it = params.iterator();
+            while (it.hasNext()) {
+                addDynamicQueryParam(it.next());
+            }
+        }
     }
 
     /**
      * @param name The name of the param to remove.
      */
-    protected void removeDynamicNamedParam(String name) {
-        dynamicNamedParams.remove(name);
+    protected void removeDynamicQueryParam(String name) {
+        dynamicQueryParams.remove(name);
     }
 
     /**
-     * Clears all dynamic named parameters.
+     * Clears all dynamic query parameters.
      */
-    protected void clearDynamicNamedParams() {
-        dynamicNamedParams.clear();
+    protected void clearDynamicQueryParams() {
+        dynamicQueryParams.clear();
     }
 
-    protected void setDynamicNamedParams(Map<String,P> dynamicNamedParams) {
-        this.dynamicNamedParams = dynamicNamedParams;
+    protected void setDynamicQueryParams(Map<String,P> dynamicQueryParams) {
+        this.dynamicQueryParams = dynamicQueryParams;
     }
 
 }

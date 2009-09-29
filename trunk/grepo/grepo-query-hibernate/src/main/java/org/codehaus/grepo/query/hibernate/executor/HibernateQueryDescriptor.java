@@ -19,12 +19,13 @@ package org.codehaus.grepo.query.hibernate.executor;
 import java.util.Collection;
 
 import org.codehaus.grepo.query.commons.executor.QueryDescriptor;
+import org.codehaus.grepo.query.hibernate.generator.HibernateQueryParam;
 import org.hibernate.Query;
 
 /**
  * @author dguggi
  */
-public class HibernateQueryDescriptor extends QueryDescriptor<Query, DynamicNamedHibernateParam> {
+public class HibernateQueryDescriptor extends QueryDescriptor<Query, HibernateQueryParam> {
 
     /**
      * @param query The query.
@@ -32,7 +33,7 @@ public class HibernateQueryDescriptor extends QueryDescriptor<Query, DynamicName
      * @param params The query parameters.
      */
     public HibernateQueryDescriptor(Query query, boolean generatedQuery,
-            Collection<DynamicNamedHibernateParam> params) {
+            Collection<HibernateQueryParam> params) {
         super(query, generatedQuery, params);
     }
 

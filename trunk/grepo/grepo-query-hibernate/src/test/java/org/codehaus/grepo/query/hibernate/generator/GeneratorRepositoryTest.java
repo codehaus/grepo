@@ -31,7 +31,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class GeneratorRepositoryTest extends AbstractHibernateRepositoryTest {
-    /** The dao to test. */
+    /** The repository to test. */
     @Autowired
     private GeneratorTestRepository repo; //NOPMD
 

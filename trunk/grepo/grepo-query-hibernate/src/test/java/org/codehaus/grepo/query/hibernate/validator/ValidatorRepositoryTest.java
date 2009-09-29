@@ -33,7 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ValidatorRepositoryTest extends AbstractHibernateRepositoryTest {
-    /** The dao to test. */
+    /** The repository to test. */
     @Autowired
     private ValidatorTestRepository repo;   //NOPMD
 

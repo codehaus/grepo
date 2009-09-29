@@ -25,7 +25,7 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @author dguggi
  */
-public final class PlaceHolderQueryGenerator implements QueryGenerator<DynamicNamedParam> {
+public final class PlaceHolderQueryGenerator implements QueryGenerator<QueryParam> {
     /**
      * {@inheritDoc}
      */
@@ -36,28 +36,28 @@ public final class PlaceHolderQueryGenerator implements QueryGenerator<DynamicNa
     /**
      * {@inheritDoc}
      */
-    public Collection<DynamicNamedParam> getDynamicNamedParams() {
+    public Collection<QueryParam> getDynamicQueryParams() {
         return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasDynamicNamedParam(String name) {
+    public boolean hasDynamicQueryParam(String name) {
         return false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public boolean hasDynamicNamedParams() {
+    public boolean hasDynamicQueryParams() {
         return false;
     }
 
     /**
      * {@inheritDoc}
      */
-    public DynamicNamedParam getDynamicNamedParam(String name) {
+    public QueryParam getDynamicQueryParam(String name) {
         return null;
     }
 

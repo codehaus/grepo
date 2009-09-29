@@ -38,6 +38,7 @@ import org.codehaus.grepo.query.hibernate.converter.PlaceHolderResultTransformer
 import org.codehaus.grepo.query.hibernate.generator.CriteriaGenerator;
 import org.codehaus.grepo.query.hibernate.generator.HibernateNativeQueryGenerator;
 import org.codehaus.grepo.query.hibernate.generator.HibernateQueryGenerator;
+import org.codehaus.grepo.query.hibernate.generator.HibernateQueryParam;
 import org.codehaus.grepo.query.hibernate.generator.PlaceHolderCriteriaGenerator;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -198,10 +199,10 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
                 SQLQuery query = session.createSQLQuery(queryString);
                 HibernateNativeQueryGenerator sqlGenerator = (HibernateNativeQueryGenerator)generator;
                 configureNativeQuery(query, queryOptions, sqlGenerator);
-                queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicNamedParams());
+                queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicQueryParams());
             } else {
                 Query query = session.createQuery(queryString);
-                queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicNamedParams());
+                queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicQueryParams());
             }
             return queryDesc;
         } catch (InstantiationException e) {
@@ -320,7 +321,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
     private void setNamedParams(HibernateQueryDescriptor queryDesc, String[] namedParameters,
             QueryMethodParameterInfo qmpi) {
         for (String namedParam : namedParameters) {
-            DynamicNamedHibernateParam dnp = getNamedParam(namedParam, queryDesc, qmpi);
+            HibernateQueryParam dnp = getNamedParam(namedParam, queryDesc, qmpi);
 
             traceSetParameter(namedParam, dnp.getValue(), dnp.getType());
 
@@ -478,16 +479,16 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param qmpi The query method parameter info.
      * @return Returns the dynamic named param.
      */
-    private DynamicNamedHibernateParam getNamedParam(String name, HibernateQueryDescriptor queryDesc,
+    private HibernateQueryParam getNamedParam(String name, HibernateQueryDescriptor queryDesc,
             QueryMethodParameterInfo qmpi) {
-        DynamicNamedHibernateParam retVal = null;
-        if (queryDesc.hasDynamicNamedParam(name)) {
-            retVal = queryDesc.getDynamicNamedParam(name);
+        HibernateQueryParam retVal = null;
+        if (queryDesc.hasDynamicQueryParam(name)) {
+            retVal = queryDesc.getDynamicQueryParam(name);
         } else {
             int index = qmpi.getParameterIndexByParamName(name);
             Object value = qmpi.getParameter(index);
             Type type = getArgumentType(index, value, qmpi);
-            retVal = new DynamicNamedHibernateParam(name, value, type);
+            retVal = new HibernateQueryParam(name, value, type);
         }
 
         if (retVal.getType() == null) {

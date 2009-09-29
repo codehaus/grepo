@@ -21,17 +21,18 @@ import java.util.Collection;
 import javax.persistence.Query;
 
 import org.codehaus.grepo.query.commons.executor.QueryDescriptor;
+import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
 
 /**
  * @author dguggi
  */
-public class JpaQueryDescriptor extends QueryDescriptor<Query, DynamicNamedJpaParam> {
+public class JpaQueryDescriptor extends QueryDescriptor<Query, JpaQueryParam> {
     /**
      * @param query The query.
      * @param generatedQuery The flag.
      * @param params The params.
      */
-    public JpaQueryDescriptor(Query query, boolean generatedQuery, Collection<DynamicNamedJpaParam> params) {
+    public JpaQueryDescriptor(Query query, boolean generatedQuery, Collection<JpaQueryParam> params) {
         super(query, generatedQuery, params);
     }
 
