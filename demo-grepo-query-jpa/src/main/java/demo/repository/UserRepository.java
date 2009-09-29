@@ -84,7 +84,7 @@ public interface UserRepository extends ReadWriteJpaRepository<User, Long> {
      * Checks if a given email address already exists in database.
      *
      * @param email The email to check.
-     * @return Returns <code>true</code> if email exists and <code>false</code> otherwise.
+     * @return Returns {@code true} if email exists and {@code false} otherwise.
      */
     @GenericQuery
     boolean isExistingEmail(String email);
