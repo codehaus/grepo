@@ -18,8 +18,8 @@ package demo.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.jpa.executor.DynamicNamedJpaParam;
 import org.codehaus.grepo.query.jpa.generator.AbstractJpaQueryGenerator;
+import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
 
 /**
  * @author dguggi
@@ -36,11 +36,11 @@ public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
         StringBuilder query = new StringBuilder("from User where 1=1");
         if (StringUtils.isNotEmpty(firstname)) {
             query.append(" AND firstname = :fn");
-            addDynamicNamedParam(new DynamicNamedJpaParam("fn", firstname));
+            addDynamicQueryParam(new JpaQueryParam("fn", firstname));
         }
         if (StringUtils.isNotEmpty(lastname)) {
             query.append(" AND lastname = :ln");
-            addDynamicNamedParam(new DynamicNamedJpaParam("ln", lastname));
+            addDynamicQueryParam(new JpaQueryParam("ln", lastname));
         }
 
         return query.toString();
