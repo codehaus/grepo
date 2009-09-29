@@ -57,16 +57,16 @@ $ mvn test
   Grepo should print out information similar to this:
 
 +--
-16:22:50,963 TRACE [GenericQueryIntroductionInterceptor:54] - Invoking method 'loadByUsername'
-16:22:50,974 TRACE [DefaultQueryExecutorNamingStrategy:63] - Resolved executor name: load
-16:22:50,975 TRACE [QueryExecutorFindingStrategyImpl:68] - Found queryExecutor
+12:08:42,673 TRACE [GenericQueryMethodInterceptor:54] - Invoking method 'loadByUsername'
+12:08:42,693 TRACE [QueryExecutorNamingStrategyImpl:63] - Resolved executor name: load
+12:08:42,694 TRACE [QueryExecutorFindingStrategyImpl:68] - Found queryExecutor
                    'org.codehaus.grepo.query.jpa.executor.LoadQueryExecutor' for execution of method 'loadByUsername'
-16:22:50,978 TRACE [AbstractGenericRepository:114] - Executing query using transaction template
-16:22:50,985 TRACE [DefaultQueryNamingStrategy:78] - Resolved named-query: demo.domain.User.ByUsername
-16:22:50,992 TRACE [AbstractJpaQueryExecutor:98] - Using query: org.hibernate.ejb.QueryImpl@4cf221f6
-16:22:50,995 TRACE [AbstractJpaQueryExecutor:399] - Setting parameter '1' to 'max'
-16:22:51,012 TRACE [DefaultJpaRepository:101] - Query result is 'demo.domain.User@5aaefcbb[id=1,username=max]'
-16:22:51,019 TRACE [GenericQueryIntroductionInterceptor:79] - Invocation of method 'loadByUsername' took '0:00:00.047'
+12:08:42,694 TRACE [GenericRepositorySupport:117] - Executing query using transaction template
+12:08:42,695 TRACE [QueryNamingStrategyImpl:89] - Resolved named-query: demo.domain.User.ByUsername
+12:08:42,696 TRACE [AbstractJpaQueryExecutor:98] - Using query: org.hibernate.ejb.QueryImpl@2c61ec49
+12:08:42,696 TRACE [AbstractJpaQueryExecutor:399] - Setting parameter '1' to 'max'
+12:08:42,698 TRACE [DefaultJpaRepository:100] - Query result is 'demo.domain.User@14b9b618[id=2,username=max]'
+12:08:42,699 TRACE [GenericQueryMethodInterceptor:79] - Invocation of method 'loadByUsername' took '0:00:00.006'
 +--
 
 * Demo application
@@ -122,40 +122,36 @@ $ mvn test
   the hsql datasource and entity manager factory are configured in
   <src/main/resources/META-INF/spring/db-environment.xml>.
 
-  The next step is to define a basic configuration (that is <abstract> Spring beans) for your
-  DAO-Layer. This configuration looks like this:
+  The next step is to define a basic configuration DAO-Layer. This configuration may look like this:
 
 +--
-<bean id="abstractRepositoryTarget"
-    class="org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl" abstract="true">
+<bean id="abstractRepository" class="org.codehaus.grepo.query.jpa.repository.JpaRepositoryFactoryBean"
+    abstract="true">
     <property name="entityManagerFactory" ref="entityManagerFactory" />
-    <property name="executorFindingStrategy" ref="grepo.queryExecutorFindingStrategy" />
-    <property name="resultConversionService" ref="grepo.resultConversionService" />
-    <property name="executorFactory" ref="grepo.defaultQueryExecutorFactory" />
     <property name="transactionTemplate">
         <bean class="org.springframework.transaction.support.TransactionTemplate">
             <property name="transactionManager" ref="transactionManager" />
         </bean>
     </property>
 </bean>
-
-<bean id="abstractRepository" class="org.springframework.aop.framework.ProxyFactoryBean"
-    abstract="true">
-    <property name="interceptorNames" value="grepo.genericQueryIntroductionInterceptor" />
-</bean>
 +--
 
-  Here we define two <abstract> beans which will be used for all of our concrete repositories (DAOs).
-  Its a good idea to define <abstract> beans because they make configuration of concrete repository beans
-  simpler and furthermore you just have to modify the <abstract> beans if you need to change the basic
-  configuration for your DAO-Layer in the future. Note that we use grepo's
-  <org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl>
-  class. This class provides basic CRUD operations (and optionally transaction handling support)
-  for your DAOs. For read-only repositories you could use
-  <org.codehaus.grepo.query.jpa.repository.ReadOnlyJpaRepositoryImpl>
-  or <org.codehaus.grepo.query.jpa.repository.DefaultJpaRepository>. If none of those
-  implementations fits your needs, you could provide your own implementation of the
-  <org.codehaus.grepo.query.commons.repository.GenericRepository> interface.
+  Here we define an <abstract> bean which will be used for all of our concrete repositories (DAOs).
+  Its a good idea (although not required) to define an <abstract> bean because this makes configuration
+  of concrete repository beans simpler and furthermore you just have to modify the <abstract> bean if
+  you need to change the basic configuration for your DAO-Layer in the future. Note that the <abstract>
+  bean above uses a really simple configuration approach (just a session factory and transaction
+  template are configured - the rest of the configuration will be done by the framework behind the scenes).
+  For custom/special needs the <abstract> bean definition (properties) may be more comprehensive. The simplest
+  configuration of the <abstract> bean would look like this (as you can see the only property required is the
+  entity manager factory reference):
+
++--
+<bean id="abstractRepository" class="org.codehaus.grepo.query.jpa.repository.JpaRepositoryFactoryBean"
+    abstract="true">
+    <property name="entityManagerFactory" ref="entityManagerFactory" />
+</bean>
++--
 
   That's it, you are now ready to build your DAO-Layer using the grepo framework!
 
@@ -174,42 +170,32 @@ public interface UserRepository extends ReadWriteJpaRepository<User, Long> {
 }
 +--
 
-  Note that we want a read-write repository and thus have to extend from
+  Note that we want a read-write repository (this means that we want a repository with basic CRUD
+  operations) and thus have to extend from
   <org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepository>. For a read-only
   repository we would exend from
-  <org.codehaus.grepo.query.jpa.repository.ReadOnlyJpaRepository> instead. The
+  org.codehaus.grepo.query.jpa.repository.ReadOnlyJpaRepository> instead. The
   first generic type is the Java entity (<User>) and the second one is the type for the primary
   key property of the entity (<Long>).
 
-  The next step is to configure a bean in our Spring application context:
+  The next step is to configure a repository bean in our Spring application context:
 
 +--
 <bean id="userRepository" parent="abstractRepository">
-    <property name="proxyInterfaces">
-        <value>demo.repository.UserRepository</value>
-    </property>
-    <property name="target">
-        <bean parent="abstractRepositoryTarget">
-            <constructor-arg value="demo.domain.User"/>
-        </bean>
-    </property>
+    <property name="proxyInterface" value="demo.repository.UserRepository" />
 </bean>
 +--
 
   The <userRepository> bean uses the <abstractRepository> bean as parent and thus inherits
-  the basic configuration from the parent. We have to set two properties:
+  the basic configuration from the parent. We have to set (al least) one property:
 
-  * <proxyInterfaces>: This property must be set to the interface which should be proxied.
+  * <proxyInterface>: This property must be set to the interface which should be proxied.
     In our case we provide the fully qualified name of the <demo.repository.UserRepository>
-    interfaces which we created previously.
-
-  * <target>: This property is configured as inner bean which has <abstractRepositoryTarget>
-    as a parent bean. We have to tell grepo the type of entity for this repository which is
-    done via constructor-arg <demo.domain.User>.
+    interfaces which we have created previously.
 
     []
 
-  Finished! We can now inject our <userRepository> bean where we need basic CRUD operations
+  Finished! We can now inject our <userRepository> bean wherever we need basic CRUD operations
   for the <User> entity.
 
 * Executing generic queries
@@ -303,13 +289,13 @@ List<User> findByUsernames(@Param("list") Collection<String> usernames);
   the <GetQueryExecutor> for the <getByUsername> method. But how did grepo know which
   executor has to be used for which method (Note that we didn't tell grepo which executor
   has to be used). The answer is again conventions. The framework uses a
-  <org.codehaus.grepo.query.commons.executor.ExecutorFindingStrategy> which is responsible
+  <org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategy> which is responsible
   for finding the appropriate executor for a given generic method. In its default
-  configuration grepo uses <org.codehaus.grepo.query.commons.executor.ExecutorFindingStrategyImpl>.
+  configuration grepo uses <org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategyImpl>.
   This implementation uses a <org.codehaus.grepo.query.commons.executor.QueryExecutorNamingStrategy>
   which is responsible to retrieve an executor name for a given method. Furthermore the
-  <ExecutorFindingStrategyImpl> has a registry (basically a <Map>) which maps executor names to
-  executor classes. The <org.codehaus.grepo.query.commons.executor.DefaultQueryExecutorNamingStrategy>
+  <QueryExecutorFindingStrategyImpl> has a registry (basically a <Map>) which maps executor names to
+  executor classes. The <org.codehaus.grepo.query.commons.executor.QueryExecutorNamingStrategyImpl>
   (which is the one grepo uses in its basic configuration) resolves executor names according to the
   following rules:
 
@@ -377,7 +363,7 @@ User getByUsername(String username);
   <org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl> which uses a
   <org.codehaus.grepo.query.commons.naming.QueryNamingStrategy>. You could write your own implementation
   and tell grepo to use that strategy instead. Grepo's default implementation is
-  <org.codehaus.grepo.query.commons.naming.DefaultQueryNamingStrategy> which resolves query names for
+  <org.codehaus.grepo.query.commons.naming.QueryNamingStrategyImpl> which resolves query names for
   generic methods according to the following rules:
 
   * If the <queryName> property is set for the <@GenericQuery> annotation, then this value is
@@ -476,8 +462,8 @@ List<User> findUsers(@FirstResult int firstResult, @MaxResults int maxResults);
 ** Result conversion
 
   The framework supports result conversion functionality. For this grepo uses implementations
-  of the <org.codehaus.grepo.core.converter.ResultConverter> interface. <ResultConverts> can
-  be used to convert the result of a query invokation. <ResultConverters> can be configured
+  of the <org.codehaus.grepo.core.converter.ResultConverter> interface. <ResultConverters> can
+  be used to convert the result of a query invokation and may be configured
   for methods using grepo's <@GenericQuery> annotation, like this:
 
 +--
@@ -520,13 +506,13 @@ boolean isExistingEmail(String email);
   following will be logged:
 
 +--
-14:22:25,651 TRACE [DefaultJpaRepository:101] - Query result is '0'
-14:22:25,653 TRACE [ResultConverterFindingStrategyImpl:99] - Found converter
+12:14:50,632 TRACE [DefaultJpaRepository:100] - Query result is '0'
+12:14:50,633 TRACE [ResultConverterFindingStrategyImpl:99] - Found converter
                    'org.codehaus.grepo.core.converter.ResultToBooleanConverter' for conversion from
                    'java.lang.Long' to 'boolean'
-14:22:25,653 TRACE [ResultConversionServiceImpl:52] - Doing conversion for result (class=java.lang.Long, value=0)
+12:14:50,634 TRACE [ResultConversionServiceImpl:52] - Doing conversion for result (class=java.lang.Long, value=0)
                    with converter 'org.codehaus.grepo.core.converter.ResultToBooleanConverter'
-14:22:25,657 TRACE [ResultConversionServiceImpl:60] - Conversion result is 'false'
+12:14:50,634 TRACE [ResultConversionServiceImpl:60] - Conversion result is 'false'
 +--
 
 ** Result validation
@@ -546,21 +532,18 @@ int getBySomething(String something);
 
   You configure transaction handling for your repository objects (DAOs) as you would do
   normally with plain Spring/Jpa. However grepo also optionally supports transaction
-  handling using spring's transaction template (see <abstractRepositoryTarget> above).
+  handling using spring's transaction template (see <abstractRepository> above).
   If you don't want grepo to handle transactions you just do not configure the
   <transactionTemplate> property. Additionally you can configure the <readOnlyTransactionTemplate>
   property. Doing so grepo will use the read-only template for executing read-only operations.
   If no read-only template is defined, then grepo will use the <transactionTemplate> (if
   configured) for both read- and write-operations. Here is an example of the
-  <abstractRepositoryTarget> bean with both templates defined:
+  <abstractRepository> bean with both templates defined:
 
 +--
-<bean id="abstractRepositoryTarget"
-    class="org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl" abstract="true">
+<bean id="abstractRepository" class="org.codehaus.grepo.query.jpa.repository.JpaRepositoryFactoryBean"
+    abstract="true">
     <property name="entityManagerFactory" ref="entityManagerFactory" />
-    <property name="executorFindingStrategy" ref="grepo.queryExecutorFindingStrategy" />
-    <property name="resultConversionService" ref="grepo.resultConversionService" />
-    <property name="executorFactory" ref="grepo.defaultQueryExecutorFactory" />
     <property name="transactionTemplate">
         <bean class="org.springframework.transaction.support.TransactionTemplate">
             <property name="transactionManager" ref="transactionManager" />
@@ -579,7 +562,7 @@ int getBySomething(String something);
 
   The grepo framework was designed around the
   {{{http://en.wikipedia.org/wiki/Convention_over_configuration}convention over configuration}}
-  paradigm. You configure the grepo framework with your guidlines (if the default configuration
+  paradigm. You configure the grepo framework with your guidelines (if the default configuration
   does not meet your needs) for your DAO-Layer and grepo will then apply those rules
   transparently. For instance, we have seen that grepo can guarantee that all methods
   which execute <"list-queries"> have to start with the prefix "<list>" and also have to return
