@@ -47,14 +47,6 @@
                 <role>Developer</role>
             </roles>
         </developer>
-        <developer>
-            <id>pkleindl</id>
-            <name>Patrik Kleindl</name>
-            <email>pkleindl@gmail.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-        </developer>
     </developers>
 
     <organization>
