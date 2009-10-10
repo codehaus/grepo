@@ -212,7 +212,7 @@ User getByUsername(String username);
 
   And thats it! We can now inject our <userRepository> bean and use the <getByUsername> method
   to fetch <User> entities from database by <username>. As you can see we use grepo's
-  <@GenericQuery> annotation to tell the framework that the method has to be executed (or
+  <GenericQuery> annotation to tell the framework that the method has to be executed (or
   handeled) dynamically (remember that we didn't have to provide and implementation of our
   <UserRepository> interface). The <query> property provides the JPQL query to be executed when
   the method gets invoked. We can also execute SQL queries:
@@ -223,7 +223,7 @@ User getByUsername(String username);
 User getByUsername(String username);
 +--
 
-  Here we have to use grepo's <@JpaQueryOptions> annotation to tell the framework that an
+  Here we have to use grepo's <JpaQueryOptions> annotation to tell the framework that an
   instance of <User> has to be returned.
 
 ** Queries with named-parameters
@@ -236,10 +236,10 @@ User getByUsername(String username);
 User getByUsername(@Param("un") String username);
 +--
 
-  Note that we also have to annotate the method's parameters with grepo's <@Param> annotation.
+  Note that we also have to annotate the method's parameters with grepo's <Param> annotation.
   This is necessary to associate method parameters with named-parameters in the query. Even
   though using named-parameters requires a litte more configuration in your interface (because
-  of the <@Param> annotation), there are several reasons why someone would (and should) prefer
+  of the <Param> annotation), there are several reasons why someone would (and should) prefer
   named-paramter in queries:
 
   * The sequence and number of query-paramters does not have to match the method's parameters.
@@ -367,7 +367,7 @@ User getByUsername(String username);
   <org.codehaus.grepo.query.commons.naming.QueryNamingStrategyImpl> which resolves query names for
   generic methods according to the following rules:
 
-  * If the <queryName> property is set for the <@GenericQuery> annotation, then this value is
+  * If the <queryName> property is set for the <GenericQuery> annotation, then this value is
     used as the query name. For instance:
 
 +--
@@ -399,7 +399,7 @@ User getByUsername(String username);
   So far we have only used static queries. But you may also want to generate your queries dynamically
   depending on the given method (input) parameters. In our application we may want a method which finds
   users via their <firstname> and/or <lastname>. For this we can either just implement the method ourselves
-  (meaning not annotating the method with <@GenericQuery>) or we could write an implementation
+  (meaning not annotating the method with <GenericQuery>) or we could write an implementation
   of the <org.codehaus.grepo.query.jpa.generator.JpaQueryGenerator> interface. A simple
   implementation which generates a JPQL query looks like:
 
@@ -450,8 +450,8 @@ List<User> findUsersByName(
 
 ** Paging
 
-  Jpa offers <paging> functionality which can be used with grepo's <@MaxResults>
-  and <@FirstResult> annotations like this:
+  Jpa offers <paging> functionality which can be used with grepo's <MaxResults>
+  and <FirstResult> annotations like this:
 
 +--
 @GenericQuery(query = "from User")
@@ -459,14 +459,14 @@ List<User> findUsers(@FirstResult int firstResult, @MaxResults int maxResults);
 +--
 
   It's also possible to use the <firstResult> and <maxResults> properties of the
-  <@GenericQuery> annotation.
+  <GenericQuery> annotation.
 
 ** Result conversion
 
   The framework supports result conversion functionality. For this grepo uses implementations
   of the <org.codehaus.grepo.core.converter.ResultConverter> interface. <ResultConverters> can
   be used to convert the result of a query invokation and may be configured
-  for methods using grepo's <@GenericQuery> annotation, like this:
+  for methods using grepo's <GenericQuery> annotation, like this:
 
 +--
 @GenericQuery(resultConverter = MyResultConverter.class)
@@ -523,7 +523,7 @@ boolean isExistingEmail(String email);
   of the <org.codehaus.grepo.core.validator.ResultValidator> interface. <ResultValidators> can
   be used to validate the result of a method invokation. Note that result validation is performed
   after result conversion. <ResultValidators> can be configured for methods using grepo's
-  <@GenericQuery> annotation like this:
+  <GenericQuery> annotation like this:
 
 +--
 @GenericQuery(resultValidator = MyResultValidator.class)
