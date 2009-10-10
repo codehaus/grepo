@@ -79,12 +79,17 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
                     input = new HashMap<String, Object>();
                 }
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("About to execute procedure: " + sp.getSql());
-                    LOG.debug("Using input map: " + input);
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("About to execute procedure: " + sp.getSql());
+                    LOG.trace("Using input map: " + input);
                 }
 
-                return sp.execute(input);
+                Object result =  sp.execute(input);
+                if (LOG.isTraceEnabled()) {
+                    String msg = String.format("Procedure result is '%s'", result);
+                    LOG.trace(msg);
+                }
+                return result;
             }
         };
 
