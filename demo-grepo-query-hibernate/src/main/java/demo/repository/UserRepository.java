@@ -28,7 +28,7 @@ import org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepositor
 import demo.domain.User;
 
 /**
- * This is the repository for auf {@link User} entity.
+ * This is the repository for the {@link User} entity.
  *
  * @author dguggi
  */
