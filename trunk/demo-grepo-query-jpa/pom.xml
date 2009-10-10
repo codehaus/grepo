@@ -5,8 +5,8 @@
     <artifactId>demo-grepo-query-jpa</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Generic Repository: query Jpa Demo</name>
-    <description>Generic Repository: query Jpa Demo</description>
+    <name>Generic Repository: Query Jpa Demo</name>
+    <description>Generic Repository: Query Jpa Demo</description>
     <url>http://grepo.codehaus.org</url>
 
     <organization>
