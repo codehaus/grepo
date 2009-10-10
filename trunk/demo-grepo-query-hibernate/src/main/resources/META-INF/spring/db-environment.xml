@@ -8,7 +8,6 @@
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!-- Configuration for hsql datasource -->
     <bean id="dataSource"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.hsqldb.jdbcDriver" />
@@ -18,7 +17,6 @@
         <property name="password" value="" />
     </bean>
 
-    <!-- Configuration for hibernate session factory. -->
     <bean id="sessionFactory"
         class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
@@ -45,7 +43,6 @@
         </property>
     </bean>
 
-    <!-- Optional transaction manager. -->
     <bean id="transactionManager"
         class="org.springframework.orm.hibernate3.HibernateTransactionManager">
         <property name="dataSource" ref="dataSource" />
