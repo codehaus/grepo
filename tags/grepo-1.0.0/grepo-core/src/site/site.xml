@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd"
+  name="grepo-core">
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-default-skin</artifactId>
+        <version>1.0</version>
+    </skin>
+    <bannerLeft>
+        <name>Generic Repository</name>
+        <src>images/logo/grepo-logo-big-400x80.png</src>
+    </bannerLeft>
+    <publishDate position="left" />
+
+    <body>
+        <links>
+            <item name="Spring" href="http://www.springsource.org/" />
+            <item name="Hibernate" href="https://www.hibernate.org/" />
+            <item name="Maven" href="http://maven.apache.org/" />
+        </links>
+
+        <!--
+        <menu ref="parent" />
+        -->
+        <menu name="Parent">
+            <item name="grepo" href="../index.html" />
+        </menu>
+
+        <menu ref="reports" />
+
+    </body>
+</project>

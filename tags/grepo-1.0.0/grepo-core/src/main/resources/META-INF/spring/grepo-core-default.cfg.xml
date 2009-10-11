@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+    <bean id="grepo.resultConverterRegistry" class="org.codehaus.grepo.core.converter.ResultConverterRegistry">
+        <property name="registryMap">
+            <util:map map-class="java.util.HashMap">
+                <entry key="boolean" value="org.codehaus.grepo.core.converter.ResultToBooleanConverter" />
+                <entry key="java.lang.Boolean" value="org.codehaus.grepo.core.converter.ResultToBooleanConverter" />
+                <entry key="long" value="org.codehaus.grepo.core.converter.ResultToLongConverter" />
+                <entry key="java.lang.Long" value="org.codehaus.grepo.core.converter.ResultToLongConverter" />
+                <entry key="int" value="org.codehaus.grepo.core.converter.ResultToIntegerConverter" />
+                <entry key="java.lang.Integer" value="org.codehaus.grepo.core.converter.ResultToIntegerConverter" />
+            </util:map>
+        </property>
+    </bean>
+
+    <bean id="grepo.resultConverterFindingStrategy"
+        class="org.codehaus.grepo.core.converter.ResultConverterFindingStrategyImpl">
+        <property name="converterRegistry" ref="grepo.resultConverterRegistry" />
+    </bean>
+
+    <bean id="grepo.resultConversionService" class="org.codehaus.grepo.core.converter.ResultConversionServiceImpl">
+        <property name="converterFindingStrategy" ref="grepo.resultConverterFindingStrategy" />
+    </bean>
+
+</beans>
