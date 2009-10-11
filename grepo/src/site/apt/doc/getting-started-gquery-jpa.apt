@@ -32,9 +32,7 @@ $ svn checkout http://svn.codehaus.org/grepo/trunk/demo-grepo-query-jpa demo-gre
 $ mvn eclipse:eclipse
 +--
 
-  You can now import the project in your eclipse workspace. Note that the demo project requires grepo artifacts
-  (currently in version 1.0.0-SNAPSHOT) which are available at our maven snapshot repository:
-  {{{http://snapshots.repository.codehaus.org/org/codehaus/grepo}http://snapshots.repository.codehaus.org/}}
+  You can now import the project in your eclipse workspace.
 
   After you have imported the project you should now be able to run the <UserRepositoryTest> JUnit test. You
   can also run the test using maven from command line:
