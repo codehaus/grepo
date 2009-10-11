@@ -8,13 +8,13 @@ Downloads
 
 Download released versions
 
+* Latest stable version
+
+  * Generic Repository <<1.0.0>>: {{{http://dist.codehaus.org/grepo/1.0.0/grepo-1.0.0.zip}Download}}
+
 * Unstable version
 
   * Generic Repository <<1.0.0.RC1>>: {{{http://snapshots.dist.codehaus.org/grepo/1.0.0.RC1/grepo-1.0.0.RC1.zip}Download}}
-
-* Latest stable version
-
-  Currently there are no stable releases available.
 
 Getting artifacts from M2 repository
 
