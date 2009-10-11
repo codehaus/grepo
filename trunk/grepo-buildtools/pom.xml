@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo-buildtools</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Generic Repository: Buildtools</name>
     <description>Generic Repository: Buildtools</description>
@@ -22,9 +22,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/grepo/tags/grepo-buildtools-1.0.0</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/grepo/tags/grepo-buildtools-1.0.0</developerConnection>
-        <url>http://fisheye.codehaus.org/browse/grepo/tags/grepo-buildtools-1.0.0</url>
+        <connection>scm:svn:http://svn.codehaus.org/grepo/trunk/grepo-buildtools</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/grepo/trunk/grepo-buildtools</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/grepo/trunk/grepo-buildtools</url>
     </scm>
 
     <distributionManagement>
