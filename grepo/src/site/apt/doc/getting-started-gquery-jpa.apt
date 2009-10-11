@@ -436,9 +436,7 @@ public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
 
 +--
 @GenericQuery(queryGenerator = UserSearchQueryGenerator.class)
-List<User> findUsersByName(
-    @Param("fn") String firstname,
-    @Param("ln") String lastname);
+List<User> findUsersByName(String firstname, String lastname);
 +--
 
   Note that it is required to generate queries with named-parameter style (as JDBC style does not
