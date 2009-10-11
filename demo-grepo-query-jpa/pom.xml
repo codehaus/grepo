@@ -9,6 +9,10 @@
     <description>Generic Repository: Query Jpa Demo</description>
     <url>http://grepo.codehaus.org</url>
 
+    <properties>
+        <grepo.version>1.0.0</grepo.version>
+    </properties>
+
     <organization>
         <name>Generic Repository Framework</name>
         <url>http://grepo.codehaus.org</url>
@@ -41,17 +45,17 @@
         <dependency>
             <groupId>org.codehaus.grepo</groupId>
             <artifactId>grepo-core</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${grepo.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.grepo</groupId>
             <artifactId>grepo-query-commons</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${grepo.version}</version>
         </dependency>
         <dependency>
             <groupId>org.codehaus.grepo</groupId>
             <artifactId>grepo-query-jpa</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>${grepo.version}</version>
         </dependency>
 
         <!-- 3rd party libs -->
