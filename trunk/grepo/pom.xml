@@ -21,6 +21,7 @@
         <!-- build properties -->
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
         <build.jdk.version>1.5</build.jdk.version>
+        <grepo-buildtools.version>1.0.0</grepo-buildtools.version>
 
         <grepo.checkstyle.config.location>dev/config/checkstyle/grepo-style.xml</grepo.checkstyle.config.location>
         <grepo.pmd.config.location>/dev/config/pmd/grepo-ruleset.xml</grepo.pmd.config.location>
@@ -28,13 +29,6 @@
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
         <grepo.maillist.archive.baseurl>http://archive.codehaus.org/lists</grepo.maillist.archive.baseurl>
-
-        <!-- grepo module versions -->
-        <grepo-buildtools.version>1.0.0-SNAPSHOT</grepo-buildtools.version>
-        <grepo-core.version>1.0.0-SNAPSHOT</grepo-core.version>
-        <grepo-query-commons.version>1.0.0-SNAPSHOT</grepo-query-commons.version>
-        <grepo-query-hibernate.version>1.0.0-SNAPSHOT</grepo-query-hibernate.version>
-        <grepo-query-jpa.version>1.0.0-SNAPSHOTT</grepo-query-jpa.version>
     </properties>
 
     <developers>
@@ -183,6 +177,12 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
                 <version>2.5.6</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>persistence-api</artifactId>
+                <version>1.0</version>
             </dependency>
 
             <dependency>
