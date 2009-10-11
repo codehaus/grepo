@@ -22,6 +22,12 @@
         </license>
     </licenses>
 
+    <scm>
+        <connection>scm:svn:http://svn.codehaus.org/grepo/trunk/grepo-buildtools</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/grepo/trunk/grepo-buildtools</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/grepo/trunk/grepo-buildtools</url>
+    </scm>
+
     <distributionManagement>
         <repository>
             <id>codehaus.org</id>
