@@ -45,7 +45,7 @@
             <item name="Getting Started" href="doc/getting-started.html">
                 <item name="Generic Query (Hibernate)" href="doc/getting-started-gquery-hibernate.html" />
                 <item name="Generic Query (Jpa)" href="doc/getting-started-gquery-jpa.html" />
-<!--                <item name="Generic Procedure" href="doc/getting-started-gprocedure.html" />-->
+                <item name="Generic Procedure" href="doc/getting-started-gprocedure.html" />
             </item>
         </menu>
 

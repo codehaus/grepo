@@ -465,7 +465,7 @@ List<User> findUsers(@FirstResult int firstResult, @MaxResults int maxResults);
 
   The framework supports result conversion functionality. For this grepo uses implementations
   of the <org.codehaus.grepo.core.converter.ResultConverter> interface. <ResultConverters> can
-  be used to convert the result of a query invokation and may be configured
+  be used to convert the result of a query invocation and may be configured
   for methods using grepo's <GenericQuery> annotation, like this:
 
 +--
@@ -521,7 +521,7 @@ boolean isExistingEmail(String email);
 
   The framework supports result validation functionality. For this grepo uses implementations
   of the <org.codehaus.grepo.core.validator.ResultValidator> interface. <ResultValidators> can
-  be used to validate the result of a method invokation. Note that result validation is performed
+  be used to validate the result of a method invocation. Note that result validation is performed
   after result conversion. <ResultValidators> can be configured for methods using grepo's
   <GenericQuery> annotation like this:
 
