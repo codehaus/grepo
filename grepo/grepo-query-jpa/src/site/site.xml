@@ -19,6 +19,7 @@
         <links>
             <item name="Spring" href="http://www.springsource.org/" />
             <item name="Hibernate" href="https://www.hibernate.org/" />
+            <item name="Jpa" href="http://java.sun.com/developer/technicalArticles/J2EE/jpa/" />
             <item name="Maven" href="http://maven.apache.org/" />
         </links>
 
