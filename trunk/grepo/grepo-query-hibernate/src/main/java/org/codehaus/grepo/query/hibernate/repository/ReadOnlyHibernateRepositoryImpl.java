@@ -27,7 +27,7 @@ import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContex
  * @param <PK> The primary key type.
  */
 public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
-    extends HibernateRepositoryImpl<T> implements ReadOnlyHibernateRepository<T,PK> {
+    extends DefaultHibernateRepository<T> implements ReadOnlyHibernateRepository<T,PK> {
 
     /**
      * Default constructor.

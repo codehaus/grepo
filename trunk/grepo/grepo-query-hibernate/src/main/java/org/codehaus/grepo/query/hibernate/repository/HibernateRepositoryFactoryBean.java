@@ -146,7 +146,7 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     @Override
     protected void validateTargetClass() {
         Assert.notNull(getTargetClass(), "targetClass must not be null");
-        Assert.isAssignable(HibernateRepositoryImpl.class, getTargetClass());
+        Assert.isAssignable(DefaultHibernateRepository.class, getTargetClass());
     }
 
     /**
@@ -157,7 +157,7 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
         super.configureTarget(target);
 
         // set session factory...
-        HibernateRepositoryImpl<T> hibernateTarget = (HibernateRepositoryImpl<T>)target;
+        DefaultHibernateRepository<T> hibernateTarget = (DefaultHibernateRepository<T>)target;
         hibernateTarget.setSessionFactory(sessionFactory);
 
         if (alwaysUseNewSession != null) {
