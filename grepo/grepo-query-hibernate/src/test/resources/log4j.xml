@@ -31,10 +31,10 @@
     <category name="org.hibernate.type">
         <priority value="TRACE" />
     </category>
+     -->
     <category name="org.codehaus.grepo">
         <priority value="TRACE" />
     </category>
-     -->
 
     <root>
         <priority value="ERROR" />

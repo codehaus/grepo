@@ -16,16 +16,28 @@
 
 package org.codehaus.grepo.query.hibernate.executor;
 
-import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.commons.executor.QueryExecutionContext;
+import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
+import org.hibernate.Session;
 
 /**
+ * Context for execution of hibernate queries.
  * @author dguggi
+ *
  */
-public interface HibernateQueryExecutor extends QueryExecutor<HibernateQueryExecutionContext> {
+public interface HibernateQueryExecutionContext extends QueryExecutionContext {
+    /**
+     * @return Returns the hibernate session used for this exection.
+     */
+    Session getSession();
 
     /**
-     * @param argumentTypeFactory The argument type factory to set.
+     * @return Returns the caching property.
      */
-    void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory);
+    HibernateCaching getCaching();
 
+    /**
+     * @return Returns the cache region.
+     */
+    String getCacheRegion();
 }

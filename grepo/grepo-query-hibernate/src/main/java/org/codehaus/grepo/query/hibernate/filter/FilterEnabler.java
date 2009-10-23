@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.executor;
+package org.codehaus.grepo.query.hibernate.filter;
 
-import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.hibernate.Session;
 
 /**
+ * Providing hooks for enabling filters.
+ *
  * @author dguggi
  */
-public interface HibernateQueryExecutor extends QueryExecutor<HibernateQueryExecutionContext> {
-
+public interface FilterEnabler {
     /**
-     * @param argumentTypeFactory The argument type factory to set.
+     * @param name The name.
+     * @param qmpi The query method parameter info.
+     * @param session The session.
      */
-    void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory);
-
+    void enable(String name, QueryMethodParameterInfo qmpi, Session session);
 }

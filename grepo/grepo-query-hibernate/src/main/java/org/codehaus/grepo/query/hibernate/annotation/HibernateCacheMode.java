@@ -16,36 +16,39 @@
 
 package org.codehaus.grepo.query.hibernate.annotation;
 
-import org.hibernate.ScrollMode;
+import org.hibernate.CacheMode;
 
 /**
  * @author dguggi
  */
-public enum HibernateScrollMode {
-    /** NONE. */
+public enum HibernateCacheMode {
+    /** UNDEFINED. */
     UNDEFINED(null),
-    /** FORWARD_ONLY. */
-    FORWARD_ONLY(ScrollMode.FORWARD_ONLY),
-    /** SCROLL_SENSITIVE. */
-    SCROLL_SENSITIVE(ScrollMode.SCROLL_SENSITIVE),
-    /** SCROLL_INSENSITIVE. */
-    SCROLL_INSENSITIVE(ScrollMode.SCROLL_INSENSITIVE);
+    /** NORMAL. */
+    NORMAL(CacheMode.NORMAL),
+    /** IGNORE. */
+    IGNORE(CacheMode.IGNORE),
+    /** GET. */
+    GET(CacheMode.GET),
+    /** PUT. */
+    PUT(CacheMode.PUT),
+    /** REFRESH. */
+    REFRESH(CacheMode.REFRESH);
 
-    /** The scroll mode. */
-    private ScrollMode scrollMode;
+    /** The cache mode. */
+    private CacheMode cacheMode;
 
     /**
-     * @param scrollMode The scroll mode to set.
+     * @param cacheMode The casche mode to set.
      */
-    private HibernateScrollMode(ScrollMode scrollMode) {
-        this.scrollMode = scrollMode;
+    private HibernateCacheMode(CacheMode cacheMode) {
+        this.cacheMode = cacheMode;
     }
 
     /**
-     * @return Returns the scroll mode.
+     * @return Returns the cache mode.
      */
-    public ScrollMode value() {
-        return scrollMode;
+    public CacheMode value() {
+        return cacheMode;
     }
-
 }

@@ -19,7 +19,6 @@ package org.codehaus.grepo.query.hibernate.executor;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
 /**
  * This executor is used to execute generic "update" queries.
@@ -31,10 +30,10 @@ public class UpdateQueryExecutor extends AbstractHibernateQueryExecutor {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, Session session) {
+    public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
         GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
 
-        Query query = prepareQuery(genericQuery, qmpi, session);
+        Query query = prepareQuery(genericQuery, qmpi, context);
         return query.executeUpdate();
     }
 

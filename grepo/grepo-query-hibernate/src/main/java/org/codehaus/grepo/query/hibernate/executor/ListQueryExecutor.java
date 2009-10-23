@@ -23,7 +23,6 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.Session;
 
 /**
  * This executor is used to execute generic "list" queries.
@@ -34,16 +33,16 @@ public class ListQueryExecutor extends AbstractHibernateQueryExecutor {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, Session session) {
+    public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
         GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
         HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
 
         List<?> result = null;
         if (hasValidCriteriaGenerator(queryOptions)) {
-            Criteria criteria = prepareCriteria(genericQuery, qmpi, session);
+            Criteria criteria = prepareCriteria(genericQuery, qmpi, context);
             result = (List<?>)criteria.list();
         } else {
-            Query query = prepareQuery(genericQuery, qmpi, session);
+            Query query = prepareQuery(genericQuery, qmpi, context);
             result = (List<?>)query.list();
         }
         return result;

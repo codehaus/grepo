@@ -26,7 +26,6 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateScrollMode;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
-import org.hibernate.Session;
 
 /**
  * This executor is used to execute generic "scroll" queries.
@@ -40,7 +39,7 @@ public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, Session session) {
+    public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
         GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
         HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
 
@@ -48,14 +47,14 @@ public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
 
         Object result = null;
         if (hasValidCriteriaGenerator(queryOptions)) {
-            Criteria criteria = prepareCriteria(genericQuery, qmpi, session);
+            Criteria criteria = prepareCriteria(genericQuery, qmpi, context);
             if (scrollMode == null) {
                 result = criteria.scroll();
             } else {
                 result = criteria.scroll(scrollMode);
             }
         } else {
-            Query query = prepareQuery(genericQuery, qmpi, session);
+            Query query = prepareQuery(genericQuery, qmpi, context);
             if (scrollMode == null) {
                 result = query.scroll();
             } else {
@@ -74,7 +73,7 @@ public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
     private ScrollMode getScrollMode(QueryMethodParameterInfo qmpi, HibernateQueryOptions queryOptions) {
         ScrollMode retVal = null;
 
-        if (queryOptions != null && queryOptions.scrollMode() != HibernateScrollMode.NONE) {
+        if (queryOptions != null && queryOptions.scrollMode() != HibernateScrollMode.UNDEFINED) {
             retVal = queryOptions.scrollMode().value();
         }
 
@@ -82,7 +81,7 @@ public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
         if (gsm != null) {
             if (gsm instanceof HibernateScrollMode) {
                 HibernateScrollMode hsm = (HibernateScrollMode)gsm;
-                if (hsm != HibernateScrollMode.NONE) {
+                if (hsm != HibernateScrollMode.UNDEFINED) {
                     retVal = hsm.value();
                 }
             } else if (gsm instanceof ScrollMode) {

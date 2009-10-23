@@ -16,36 +16,40 @@
 
 package org.codehaus.grepo.query.hibernate.annotation;
 
-import org.hibernate.ScrollMode;
+import org.hibernate.FlushMode;
 
 /**
  * @author dguggi
  */
-public enum HibernateScrollMode {
-    /** NONE. */
+public enum HibernateFlushMode {
+    /** UNDEFINED. */
     UNDEFINED(null),
-    /** FORWARD_ONLY. */
-    FORWARD_ONLY(ScrollMode.FORWARD_ONLY),
-    /** SCROLL_SENSITIVE. */
-    SCROLL_SENSITIVE(ScrollMode.SCROLL_SENSITIVE),
-    /** SCROLL_INSENSITIVE. */
-    SCROLL_INSENSITIVE(ScrollMode.SCROLL_INSENSITIVE);
+    /** EAGER. */
+    EAGER(null),
+    /** MANUAL. */
+    MANUAL(FlushMode.MANUAL),
+    /** COMMIT. */
+    COMMIT(FlushMode.COMMIT),
+    /** AUTO. */
+    AUTO(FlushMode.AUTO),
+    /** ALWAYS. */
+    ALWAYS(FlushMode.ALWAYS);
 
-    /** The scroll mode. */
-    private ScrollMode scrollMode;
+    /** The flush mode. */
+    private FlushMode flushMode;
 
     /**
-     * @param scrollMode The scroll mode to set.
+     * @param flushMode The flush mode to set.
      */
-    private HibernateScrollMode(ScrollMode scrollMode) {
-        this.scrollMode = scrollMode;
+    private HibernateFlushMode(FlushMode flushMode) {
+        this.flushMode = flushMode;
     }
 
     /**
-     * @return Returns the scroll mode.
+     * @return Returns the flush mode.
      */
-    public ScrollMode value() {
-        return scrollMode;
+    public FlushMode value() {
+        return flushMode;
     }
 
 }
