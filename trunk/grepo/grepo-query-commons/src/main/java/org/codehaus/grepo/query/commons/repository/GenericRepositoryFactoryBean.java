@@ -65,8 +65,8 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
     /** The application context. */
     private ApplicationContext applicationContext;
 
-    /** Flag to control whether or not grepo beans should be auto-detected (default is {@code true}. */
-    private boolean autoDetectGrepoBeans = true;
+    /** Flag to control whether or not beans should be auto-detected (default is {@code true}. */
+    private boolean autoDetectBeans = true;
 
     /** The mandatory entity class  (may be retrieved automatically). */
     private Class<T> entityClass;
@@ -167,11 +167,11 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
     }
 
     /**
-     * If the {@link #methodInterceptor} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
+     * If the {@link #methodInterceptor} is not set and {@link #autoDetectBean} is set to {@code true}, this
      * method tries to retrieve the {@link #methodInterceptor} automatically.
      */
     protected void initMethodInterceptor() {
-        if (methodInterceptor == null && autoDetectGrepoBeans) {
+        if (methodInterceptor == null && autoDetectBeans) {
             @SuppressWarnings("unchecked")
             Map<String, GenericQueryMethodInterceptor> beans = applicationContext
                 .getBeansOfType(GenericQueryMethodInterceptor.class);
@@ -196,11 +196,11 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
     }
 
     /**
-     * If the {@link #resultConversionService} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
+     * If the {@link #resultConversionService} is not set and {@link #autoDetectBeans} is set to {@code true}, this
      * method tries to retrieve the {@link #resultConversionService} automatically.
      */
     protected void initResultConversionService() {
-        if (resultConversionService == null && autoDetectGrepoBeans) {
+        if (resultConversionService == null && autoDetectBeans) {
             @SuppressWarnings("unchecked")
             Map<String, ResultConversionService> beans = applicationContext
                 .getBeansOfType(ResultConversionService.class);
@@ -227,11 +227,11 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
     }
 
     /**
-     * If the {@link #queryExecutorFactory} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
+     * If the {@link #queryExecutorFactory} is not set and {@link #autoDetectBeans} is set to {@code true}, this
      * method tries to retrieve the {@link #queryExecutorFactory} automatically.
      */
     protected void initQueryExecutorFactory() {
-        if (queryExecutorFactory == null && autoDetectGrepoBeans) {
+        if (queryExecutorFactory == null && autoDetectBeans) {
             @SuppressWarnings("unchecked")
             Map<String, QueryExecutorFactory> beans = applicationContext.getBeansOfType(QueryExecutorFactory.class);
 
@@ -255,11 +255,11 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
     }
 
     /**
-     * If the {@link #queryExecutorFindingStrategy} is not set and {@link #autoDetectGrepoBeans} is set to {@code true},
+     * If the {@link #queryExecutorFindingStrategy} is not set and {@link #autoDetectBeans} is set to {@code true},
      * this method tries to retrieve the {@link #queryExecutorFindingStrategy} automatically.
      */
     protected void initQueryExecutorFindingStrategy() {
-        if (queryExecutorFindingStrategy == null && autoDetectGrepoBeans) {
+        if (queryExecutorFindingStrategy == null && autoDetectBeans) {
             @SuppressWarnings("unchecked")
             Map<String, QueryExecutorFindingStrategy> beans = applicationContext
                 .getBeansOfType(QueryExecutorFindingStrategy.class);
@@ -397,12 +397,12 @@ public class GenericRepositoryFactoryBean<T> implements FactoryBean, Initializin
         this.readOnlyTransactionTemplate = readOnlyTransactionTemplate;
     }
 
-    public boolean isAutoDetectGrepoBeans() {
-        return autoDetectGrepoBeans;
+    public boolean isAutoDetectBeans() {
+        return autoDetectBeans;
     }
 
-    public void setAutoDetectGrepoBeans(boolean autoDetectGrepoBeans) {
-        this.autoDetectGrepoBeans = autoDetectGrepoBeans;
+    public void setAutoDetectBeans(boolean autoDetectBeans) {
+        this.autoDetectBeans = autoDetectBeans;
     }
 
     public ResultConversionService getResultConversionService() {
