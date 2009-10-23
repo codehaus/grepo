@@ -16,9 +16,20 @@
 
 package org.codehaus.grepo.query.hibernate.repository;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.repository.GenericRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
+import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
+import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
+import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
+import org.codehaus.grepo.query.hibernate.filter.FilterDescriptor;
+import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.util.Assert;
 
 /**
@@ -29,6 +40,9 @@ import org.springframework.util.Assert;
  */
 public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T> {
 
+    /** The logger for this class. */
+    private static final Log LOG = LogFactory.getLog(HibernateRepositoryFactoryBean.class);
+
     /** Default target class to use. */
     @SuppressWarnings("unchecked")
     private static final Class<ReadWriteHibernateRepositoryImpl> DEFAULT_TARGET_CLASS =
@@ -37,6 +51,39 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     /** The session factory. */
     private SessionFactory sessionFactory;
 
+    /** Flag to indicate wether or not we have to use a new session always. */
+    private Boolean alwaysUseNewSession;
+
+    /**
+     * Flag to indicate whether or not it is allowed to create a non transactional session if there is no transactional
+     * session bound to the current thread.
+     */
+    private Boolean allowCreate;
+
+    /** The hibernate flush mode to set. */
+    private HibernateFlushMode flushMode;
+
+    /** The hibernate caching flag. */
+    private HibernateCaching caching;
+
+    /** The cache region. */
+    private String cacheRegion;
+
+    /** the hibernate cache mode to set. */
+    private HibernateCacheMode cacheMode;
+
+    /** The entity interceptor. */
+    private Interceptor entityInterceptor;
+
+    /** The hibernate filters to use. */
+    private FilterDescriptor[] filters;
+
+    /** Flag to indicate whether or not access exceptions should be converted. */
+    private Boolean convertAccessExceptions;
+
+    /** The jdbc exception translator. */
+    private SQLExceptionTranslator jdbcExceptionTranslator;
+
     /**
      * {@inheritDoc}
      */
@@ -44,11 +91,44 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     @SuppressWarnings("PMD")
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
+        initSessionFactory();
         // init targetClass if necessary...
         if (getTargetClass() == null) {
             setTargetClass(DEFAULT_TARGET_CLASS);
         }
     }
+
+    /**
+     * If the {@link #resultConversionService} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
+     * method tries to retrieve the {@link #resultConversionService} automatically.
+     */
+    protected void initSessionFactory() {
+        if (sessionFactory == null && isAutoDetectBeans()) {
+            @SuppressWarnings("unchecked")
+            Map<String, SessionFactory> beans = getApplicationContext()
+                .getBeansOfType(SessionFactory.class);
+
+            if (beans.isEmpty()) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, SessionFactory.class.getName()));
+                }
+            } else if (beans.size() > 1) {
+                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, SessionFactory.class.getName(),
+                    beans.keySet());
+                LOG.warn(msg);
+            } else {
+                // we found excatly one bean...
+                Entry<String, SessionFactory> entry = beans.entrySet().iterator().next();
+                sessionFactory = entry.getValue();
+                if (LOG.isDebugEnabled()) {
+                    String msg = String.format(AUTODETECT_MSG_SUCCESS, SessionFactory.class.getName(), entry
+                        .getKey());
+                    LOG.debug(msg);
+                }
+            }
+        }
+    }
+
 
     /**
      * {@inheritDoc}
@@ -66,7 +146,7 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     @Override
     protected void validateTargetClass() {
         Assert.notNull(getTargetClass(), "targetClass must not be null");
-        Assert.isAssignable(DefaultHibernateRepository.class, getTargetClass());
+        Assert.isAssignable(HibernateRepositoryImpl.class, getTargetClass());
     }
 
     /**
@@ -77,8 +157,40 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
         super.configureTarget(target);
 
         // set session factory...
-        DefaultHibernateRepository<T> hibernateTarget = (DefaultHibernateRepository<T>)target;
+        HibernateRepositoryImpl<T> hibernateTarget = (HibernateRepositoryImpl<T>)target;
         hibernateTarget.setSessionFactory(sessionFactory);
+
+        if (alwaysUseNewSession != null) {
+            hibernateTarget.setAlwaysUseNewSession(alwaysUseNewSession);
+        }
+        if (allowCreate != null) {
+            hibernateTarget.setAllowCreate(allowCreate);
+        }
+        if (flushMode != null) {
+            hibernateTarget.setFlushMode(flushMode);
+        }
+        if (caching != null) {
+            hibernateTarget.setCaching(caching);
+        }
+        if (cacheRegion != null) {
+            hibernateTarget.setCacheRegion(cacheRegion);
+        }
+        if (cacheMode != null) {
+            hibernateTarget.setCacheMode(cacheMode);
+        }
+        if (filters != null) {
+            hibernateTarget.setFilters(filters);
+        }
+        if (convertAccessExceptions != null) {
+            hibernateTarget.setConvertAccessExceptions(convertAccessExceptions);
+        }
+        if (jdbcExceptionTranslator != null) {
+            hibernateTarget.setJdbcExceptionTranslator(jdbcExceptionTranslator);
+        }
+        if (entityInterceptor != null) {
+            hibernateTarget.setEntityInterceptor(entityInterceptor);
+        }
+
     }
 
     public SessionFactory getSessionFactory() {
@@ -87,6 +199,90 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public Boolean getAlwaysUseNewSession() {
+        return alwaysUseNewSession;
+    }
+
+    public void setAlwaysUseNewSession(Boolean alwaysUseNewSession) {
+        this.alwaysUseNewSession = alwaysUseNewSession;
+    }
+
+    public Boolean getAllowCreate() {
+        return allowCreate;
+    }
+
+    public void setAllowCreate(Boolean allowCreate) {
+        this.allowCreate = allowCreate;
+    }
+
+    public HibernateFlushMode getFlushMode() {
+        return flushMode;
+    }
+
+    public void setFlushMode(HibernateFlushMode flushMode) {
+        this.flushMode = flushMode;
+    }
+
+    public HibernateCaching getCaching() {
+        return caching;
+    }
+
+    public void setCaching(HibernateCaching caching) {
+        this.caching = caching;
+    }
+
+    public String getCacheRegion() {
+        return cacheRegion;
+    }
+
+    public void setCacheRegion(String cacheRegion) {
+        this.cacheRegion = cacheRegion;
+    }
+
+    public HibernateCacheMode getCacheMode() {
+        return cacheMode;
+    }
+
+    public void setCacheMode(HibernateCacheMode cacheMode) {
+        this.cacheMode = cacheMode;
+    }
+
+    public Interceptor getEntityInterceptor() {
+        return entityInterceptor;
+    }
+
+    public void setEntityInterceptor(Interceptor entityInterceptor) {
+        this.entityInterceptor = entityInterceptor;
+    }
+
+    public FilterDescriptor[] getFilters() {
+        return filters;
+    }
+
+    public void setFilters(FilterDescriptor[] filters) {
+        this.filters = filters;
+    }
+
+    public void setFilter(FilterDescriptor fd) {
+        this.filters = new FilterDescriptor[] { fd };
+    }
+
+    public Boolean getConvertAccessExceptions() {
+        return convertAccessExceptions;
+    }
+
+    public void setConvertAccessExceptions(Boolean convertAccessExceptions) {
+        this.convertAccessExceptions = convertAccessExceptions;
+    }
+
+    public SQLExceptionTranslator getJdbcExceptionTranslator() {
+        return jdbcExceptionTranslator;
+    }
+
+    public void setJdbcExceptionTranslator(SQLExceptionTranslator jdbcExceptionTranslator) {
+        this.jdbcExceptionTranslator = jdbcExceptionTranslator;
     }
 
 }

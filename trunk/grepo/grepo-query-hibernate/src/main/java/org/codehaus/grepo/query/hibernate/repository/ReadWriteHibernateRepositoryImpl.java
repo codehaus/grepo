@@ -18,11 +18,9 @@ package org.codehaus.grepo.query.hibernate.repository;
 
 import java.io.Serializable;
 
+import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContext;
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 /**
  * @author dguggi
@@ -50,15 +48,15 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")  //NOPMD
+    @SuppressWarnings("unchecked")  // NOPMD
     public T get(final PK id, final LockMode lockMode) {
-        TransactionCallback callback = new TransactionCallback() {
-
-            public Object doInTransaction(TransactionStatus status) {
-                return getSession().get(getEntityClass(), id, lockMode);
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().get(getEntityClass(), id, lockMode);
             }
         };
-        return (T)executeCallback(callback, false);
+        return (T)executeCallback(callback.create(null), false);
     }
 
     /**
@@ -66,41 +64,41 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     @SuppressWarnings("unchecked")
     public T load(final PK id, final LockMode lockMode) {
-        TransactionCallback callback = new TransactionCallback() {
-
-            public Object doInTransaction(TransactionStatus status) {
-                return getSession().load(getEntityClass(), id, lockMode);
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().load(getEntityClass(), id, lockMode);
             }
         };
-        return (T)executeCallback(callback, false);
+        return (T)executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void refresh(final T entity, final LockMode lockMode) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().refresh(entity, lockMode);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().refresh(entity, lockMode);
+                return null;
             }
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void lock(final T entity, final LockMode lockMode) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().lock(entity, lockMode);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().lock(entity, lockMode);
+                return null;
             }
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
     /**
@@ -108,69 +106,69 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     @SuppressWarnings("unchecked")
     public PK save(final T entity) {
-        TransactionCallback callback = new TransactionCallback() {
-
-            public Object doInTransaction(TransactionStatus status) {
-                return getSession().save(entity);
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().save(entity);
             }
         };
-        return (PK)executeCallback(callback, false);
+        return (PK)executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void update(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().update(entity);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().update(entity);
+                return null;
             }
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void saveOrUpdate(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().saveOrUpdate(entity);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().saveOrUpdate(entity);
+                return null;
             }
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void persist(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().persist(entity);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().persist(entity);
+                return null;
             }
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void delete(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().delete(entity);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().delete(entity);
+                return null;
             }
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
     /**
@@ -178,28 +176,27 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     @SuppressWarnings("unchecked")
     public T merge(final T entity) {
-        TransactionCallback callback = new TransactionCallback() {
-
-            public Object doInTransaction(TransactionStatus status) {
-                return getSession().merge(entity);
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().merge(entity);
             }
         };
-        return (T)executeCallback(callback, false);
+        return (T)executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void replicate(final T entity, final ReplicationMode replicationMode) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
-
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().replicate(entity, replicationMode);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().replicate(entity, replicationMode);
+                return null;
             }
-
         };
-        executeCallback(callback, false);
+        executeCallback(callback.create(null), false);
     }
 
 }

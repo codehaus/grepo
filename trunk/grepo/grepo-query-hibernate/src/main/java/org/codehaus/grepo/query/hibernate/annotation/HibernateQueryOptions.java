@@ -33,13 +33,28 @@ import org.codehaus.grepo.query.hibernate.generator.PlaceHolderCriteriaGenerator
 public @interface HibernateQueryOptions {
 
     /** The scroll mode. */
-    HibernateScrollMode scrollMode() default HibernateScrollMode.NONE;
+    HibernateScrollMode scrollMode() default HibernateScrollMode.UNDEFINED;
+
+    /** The flush mode. */
+    HibernateFlushMode flushMode() default HibernateFlushMode.UNDEFINED;
+
+    /** The cache mode. */
+    HibernateCacheMode cacheMode() default HibernateCacheMode.UNDEFINED;
+
+    /** The caching flag. */
+    HibernateCaching caching() default HibernateCaching.UNDEFINED;
+
+    /** The cache region. */
+    String cacheRegion() default "";
 
     /** The result transformer. */
     Class<?> resultTransformer() default PlaceHolderResultTransformer.class;
 
     /** The critieria generator. */
     Class<? extends CriteriaGenerator> criteriaGenerator() default PlaceHolderCriteriaGenerator.class;
+
+    /** The fetch size. */
+    int fetchSize() default 0;
 
     /** Entity classes specified for native queries. */
     EntityClass[] entityClasses() default { };

@@ -18,9 +18,7 @@ package org.codehaus.grepo.query.hibernate.repository;
 
 import java.io.Serializable;
 
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContext;
 
 /**
  * @author dguggi
@@ -29,7 +27,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
  * @param <PK> The primary key type.
  */
 public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
-    extends DefaultHibernateRepository<T> implements ReadOnlyHibernateRepository<T,PK> {
+    extends HibernateRepositoryImpl<T> implements ReadOnlyHibernateRepository<T,PK> {
 
     /**
      * Default constructor.
@@ -50,12 +48,13 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
      */
     @SuppressWarnings("unchecked")
     public T load(final PK id) {
-        TransactionCallback callback = new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                return getSession().load(getEntityClass(), id);
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().load(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback, true);
+        return (T)executeCallback(callback.create(null), true);
     }
 
     /**
@@ -63,25 +62,27 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
      */
     @SuppressWarnings("unchecked")
     public T get(final PK id) {
-        TransactionCallback callback = new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                return getSession().get(getEntityClass(), id);
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().get(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback, true);
+        return (T)executeCallback(callback.create(null), true);
     }
 
     /**
      * {@inheritDoc}
      */
     public void refresh(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                getSession().refresh(entity);
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().refresh(entity);
+                return null;
             }
         };
-        executeCallback(callback, true);
+        executeCallback(callback.create(null), true);
     }
 
 }

@@ -18,8 +18,6 @@ package org.codehaus.grepo.query.hibernate.repository;
 
 import java.io.Serializable;
 
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
-
 /**
  * Basic interface for a generic read-only hibernate data access object.
  *
@@ -27,7 +25,8 @@ import org.codehaus.grepo.query.commons.repository.GenericRepository;
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public interface ReadOnlyHibernateRepository<T, PK extends Serializable> extends GenericRepository<T> {
+public interface ReadOnlyHibernateRepository<T, PK extends Serializable>
+    extends HibernateRepository<T> {
 
     /**
      * Loads the entity by primary key.

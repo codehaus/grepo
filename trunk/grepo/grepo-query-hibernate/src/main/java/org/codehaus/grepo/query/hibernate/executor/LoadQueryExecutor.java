@@ -17,7 +17,6 @@
 package org.codehaus.grepo.query.hibernate.executor;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.hibernate.Session;
 
 /**
  * This executor is used to execute generic "load" queries.
@@ -29,8 +28,8 @@ public class LoadQueryExecutor extends GetQueryExecutor {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, Session session) {
-        Object result = super.execute(qmpi, session);
+    public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
+        Object result = super.execute(qmpi, context);
 
         if (result == null) {
             String msg = String.format("Unable to load entity of type '%s' (method='%s')", qmpi.getEntityClass()

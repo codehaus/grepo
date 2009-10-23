@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.executor;
-
-import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+package org.codehaus.grepo.query.hibernate.annotation;
 
 /**
  * @author dguggi
  */
-public interface HibernateQueryExecutor extends QueryExecutor<HibernateQueryExecutionContext> {
-
-    /**
-     * @param argumentTypeFactory The argument type factory to set.
-     */
-    void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory);
-
+public enum HibernateCaching {
+    /** UNDEFINED. */
+    UNDEFINED,
+    /** ENABLED. */
+    ENABLED,
+    /** DISABLED. */
+    DISABLED;
 }

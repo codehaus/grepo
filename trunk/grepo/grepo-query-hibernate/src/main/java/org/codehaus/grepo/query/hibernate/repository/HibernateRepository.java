@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.executor;
+package org.codehaus.grepo.query.hibernate.repository;
 
-import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.commons.repository.GenericRepository;
 
 /**
+ * Marker interface for hibernate generic repositories.
+ *
  * @author dguggi
+ *
+ * @param <T>  The main entity type.
  */
-public interface HibernateQueryExecutor extends QueryExecutor<HibernateQueryExecutionContext> {
-
-    /**
-     * @param argumentTypeFactory The argument type factory to set.
-     */
-    void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory);
+public interface HibernateRepository<T> extends GenericRepository<T> {
 
 }
