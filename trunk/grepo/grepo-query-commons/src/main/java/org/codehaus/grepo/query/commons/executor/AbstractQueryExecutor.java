@@ -33,7 +33,7 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  * @author dguggi
  * @param <T> The type.
  */
-public abstract class AbstractQueryExecutor<T> implements QueryExecutor<T> {
+public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> implements QueryExecutor<T> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(AbstractQueryExecutor.class);

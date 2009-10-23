@@ -24,11 +24,11 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  *
  * @author dguggi
  */
-public final class PlaceHolderQueryExecutor implements QueryExecutor<Object> {
+public final class PlaceHolderQueryExecutor implements QueryExecutor<PlaceHolderQueryExecutionContext> {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, Object obj) {
+    public Object execute(QueryMethodParameterInfo qmpi, PlaceHolderQueryExecutionContext obj) {
         return null;
     }
 

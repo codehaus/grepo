@@ -27,7 +27,7 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  *
  * @param <T> The type.
  */
-public interface QueryExecutor<T> {
+public interface QueryExecutor<T extends QueryExecutionContext> {
     /**
      * Execute a generic query.
      * @param qmpi The query method parameter info.
