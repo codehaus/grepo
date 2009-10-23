@@ -23,6 +23,7 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  * @author dguggi
  */
 public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
+
     /** The query naming strategy. */
     private QueryNamingStrategy queryNamingStrategy;
 
@@ -32,13 +33,22 @@ public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
     public QueryExecutor<?> createExecutor(Class<? extends QueryExecutor<?>> clazz) {
         try {
             QueryExecutor<?> executor = clazz.newInstance();
-            executor.setQueryNamingStrategy(getQueryNamingStrategy());
+            configure(executor);
             return executor;
         } catch (InstantiationException e) {
             throw ConfigurationException.instantiateException(clazz, e);
         } catch (IllegalAccessException e) {
             throw ConfigurationException.accessException(clazz, e);
         }
+    }
+
+    /**
+     * Configures the given executor.
+     *
+     * @param executor The executor to configure.
+     */
+    protected void configure(QueryExecutor<?> executor) {
+        executor.setQueryNamingStrategy(getQueryNamingStrategy());
     }
 
     public void setQueryNamingStrategy(QueryNamingStrategy queryNamingStrategy) {
