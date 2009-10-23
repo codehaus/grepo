@@ -118,7 +118,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> {
         EntityManager em = getTransactionalEntityManager();
         if (em == null) {
             if (LOG.isTraceEnabled()) {
-                LOG.trace("Creating new EntityManager for Generic Repository execution");
+                LOG.trace("Creating new EntityManager for generic repository execution");
             }
             em = createEntityManager();
             isNewEm = true;
