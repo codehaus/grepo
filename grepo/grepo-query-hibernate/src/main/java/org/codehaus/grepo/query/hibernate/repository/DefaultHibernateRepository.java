@@ -265,12 +265,14 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         throws HibernateException {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
-        if (flushModeToUse == HibernateFlushMode.EAGER
-                || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL)) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Eagerly flushing Hibernate session");
+        if (flushModeToUse != null) {
+            if (flushModeToUse == HibernateFlushMode.EAGER
+                    || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL)) {
+                if (LOG.isTraceEnabled()) {
+                    LOG.trace("Eagerly flushing Hibernate session");
+                }
+                sessionHolder.getSession().flush();
             }
-            sessionHolder.getSession().flush();
         }
     }
 
@@ -283,56 +285,58 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     protected void applyFlushMode(CurrentSessionHolder sessionHolder, HibernateQueryOptions queryOptions) {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
-        FlushMode flushModeToSet = null;
-        FlushMode previousFlushMode = null;
+        if (flushModeToUse != null) {
+            FlushMode flushModeToSet = null;
+            FlushMode previousFlushMode = null;
 
-        if (flushModeToUse == HibernateFlushMode.MANUAL) {
-            if (sessionHolder.isExistingTransaction()) {
-                previousFlushMode = sessionHolder.getSession().getFlushMode();
-                if (!previousFlushMode.lessThan(FlushMode.COMMIT)) {
+            if (flushModeToUse == HibernateFlushMode.MANUAL) {
+                if (sessionHolder.isExistingTransaction()) {
+                    previousFlushMode = sessionHolder.getSession().getFlushMode();
+                    if (!previousFlushMode.lessThan(FlushMode.COMMIT)) {
+                        flushModeToSet = FlushMode.MANUAL;
+                    }
+                } else {
                     flushModeToSet = FlushMode.MANUAL;
                 }
-            } else {
-                flushModeToSet = FlushMode.MANUAL;
-            }
-        } else if (flushModeToUse == HibernateFlushMode.EAGER) {
-            if (sessionHolder.isExistingTransaction()) {
-                previousFlushMode = sessionHolder.getSession().getFlushMode();
-                if (!previousFlushMode.equals(FlushMode.AUTO)) {
-                    flushModeToSet = FlushMode.AUTO;
+            } else if (flushModeToUse == HibernateFlushMode.EAGER) {
+                if (sessionHolder.isExistingTransaction()) {
+                    previousFlushMode = sessionHolder.getSession().getFlushMode();
+                    if (!previousFlushMode.equals(FlushMode.AUTO)) {
+                        flushModeToSet = FlushMode.AUTO;
+                    }
                 }
-            }
-            // else rely on default FlushMode.AUTO
-        } else if (flushModeToUse == HibernateFlushMode.COMMIT) {
-            if (sessionHolder.isExistingTransaction()) {
-                previousFlushMode = sessionHolder.getSession().getFlushMode();
-                if (previousFlushMode.equals(FlushMode.AUTO) || previousFlushMode.equals(FlushMode.ALWAYS)) {
+                // else rely on default FlushMode.AUTO
+            } else if (flushModeToUse == HibernateFlushMode.COMMIT) {
+                if (sessionHolder.isExistingTransaction()) {
+                    previousFlushMode = sessionHolder.getSession().getFlushMode();
+                    if (previousFlushMode.equals(FlushMode.AUTO) || previousFlushMode.equals(FlushMode.ALWAYS)) {
+                        flushModeToSet = FlushMode.COMMIT;
+                    }
+                } else {
                     flushModeToSet = FlushMode.COMMIT;
                 }
-            } else {
-                flushModeToSet = FlushMode.COMMIT;
-            }
-        } else if (flushModeToUse == HibernateFlushMode.ALWAYS) {
-            if (sessionHolder.isExistingTransaction()) {
-                previousFlushMode = sessionHolder.getSession().getFlushMode();
-                if (!previousFlushMode.equals(FlushMode.ALWAYS)) {
+            } else if (flushModeToUse == HibernateFlushMode.ALWAYS) {
+                if (sessionHolder.isExistingTransaction()) {
+                    previousFlushMode = sessionHolder.getSession().getFlushMode();
+                    if (!previousFlushMode.equals(FlushMode.ALWAYS)) {
+                        flushModeToSet = FlushMode.ALWAYS;
+                    }
+                } else {
                     flushModeToSet = FlushMode.ALWAYS;
                 }
-            } else {
-                flushModeToSet = FlushMode.ALWAYS;
             }
-        }
 
-        if (flushModeToSet != null) {
-            if (LOG.isTraceEnabled()) {
-                String msg = "Setting flushMode to '%s' for generic repository execution";
-                LOG.trace(String.format(msg, flushModeToSet));
+            if (flushModeToSet != null) {
+                if (LOG.isTraceEnabled()) {
+                    String msg = "Setting flushMode to '%s' for generic repository execution";
+                    LOG.trace(String.format(msg, flushModeToSet));
+                }
+                sessionHolder.getSession().setFlushMode(flushModeToSet);
             }
-            sessionHolder.getSession().setFlushMode(flushModeToSet);
-        }
 
-        if (previousFlushMode != null) {
-            sessionHolder.setPreviousFlushMode(previousFlushMode);
+            if (previousFlushMode != null) {
+                sessionHolder.setPreviousFlushMode(previousFlushMode);
+            }
         }
     }
 
