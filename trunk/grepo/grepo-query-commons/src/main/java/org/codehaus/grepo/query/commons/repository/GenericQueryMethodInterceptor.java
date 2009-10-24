@@ -45,6 +45,10 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         StopWatch watch = null;
         Object result = null;
+        if (LOG.isTraceEnabled()) {
+            watch = new StopWatch();
+            watch.start();
+        }
 
         GenericRepository<?> repo = (GenericRepository<?>)invocation.getThis();
         QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
@@ -55,11 +59,6 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
         }
 
         try {
-            if (LOG.isTraceEnabled()) {
-                watch = new StopWatch();
-                watch.start();
-            }
-
             GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
             if (annotation == null) {
                 // no GenericQuery annotation present, so do not invoke via aop...
