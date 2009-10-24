@@ -78,8 +78,8 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     /** The hibernate filters to use. */
     private FilterDescriptor[] filters;
 
-    /** Flag to indicate whether or not access exceptions should be converted. */
-    private Boolean convertAccessExceptions;
+    /** Flag to indicate whether or not exceptions should be translated. */
+    private Boolean translateExceptions;
 
     /** The jdbc exception translator. */
     private SQLExceptionTranslator jdbcExceptionTranslator;
@@ -181,8 +181,8 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
         if (filters != null) {
             hibernateTarget.setFilters(filters);
         }
-        if (convertAccessExceptions != null) {
-            hibernateTarget.setConvertAccessExceptions(convertAccessExceptions);
+        if (translateExceptions != null) {
+            hibernateTarget.setTranslateExceptions(translateExceptions);
         }
         if (jdbcExceptionTranslator != null) {
             hibernateTarget.setJdbcExceptionTranslator(jdbcExceptionTranslator);
@@ -269,12 +269,12 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
         this.filters = new FilterDescriptor[] { fd };
     }
 
-    public Boolean getConvertAccessExceptions() {
-        return convertAccessExceptions;
+    public Boolean getTranslateExceptions() {
+        return translateExceptions;
     }
 
-    public void setConvertAccessExceptions(Boolean convertAccessExceptions) {
-        this.convertAccessExceptions = convertAccessExceptions;
+    public void setTranslateExceptions(Boolean translateExceptions) {
+        this.translateExceptions = translateExceptions;
     }
 
     public SQLExceptionTranslator getJdbcExceptionTranslator() {
