@@ -17,11 +17,16 @@
 package org.codehaus.grepo.query.jpa.repository;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.repository.GenericRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
+import org.codehaus.grepo.query.jpa.annotation.JpaFlushMode;
+import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.util.Assert;
 
 /**
@@ -31,6 +36,9 @@ import org.springframework.util.Assert;
  * @param <T> The entity class type.
  */
 public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T> {
+
+    /** The logger for this class. */
+    private static final Log LOG = LogFactory.getLog(JpaRepositoryFactoryBean.class);
 
     /** Default target class to use. */
     @SuppressWarnings("unchecked")
@@ -43,6 +51,15 @@ public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T>
     /** A map of jpa properties. */
     private Map<String, Object> jpaPropertyMap;
 
+    /** The jpa dialect. */
+    private JpaDialect jpaDialect;
+
+    /** Flag to indicate whether or not exceptions should be translated. */
+    private Boolean translateExceptions;
+
+    /** The jpa flush mode to set. */
+    private JpaFlushMode flushMode;
+
     /**
      * {@inheritDoc}
      */
@@ -50,9 +67,41 @@ public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T>
     @SuppressWarnings("PMD")
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
+        initEntityManagerFactory();
         // init targetClass if necessary...
         if (getTargetClass() == null) {
             setTargetClass(DEFAULT_TARGET_CLASS);
+        }
+    }
+
+    /**
+     * If the {@link #entityManagerFactory} is not set and {@link #isAutoDetectBeans()} is set to {@code true}, this
+     * method tries to retrieve the {@link #entityManagerFactory} automatically.
+     */
+    protected void initEntityManagerFactory() {
+        if (entityManagerFactory == null && isAutoDetectBeans()) {
+            @SuppressWarnings("unchecked")
+            Map<String, EntityManagerFactory> beans = getApplicationContext()
+                .getBeansOfType(EntityManagerFactory.class);
+
+            if (beans.isEmpty()) {
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, EntityManagerFactory.class.getName()));
+                }
+            } else if (beans.size() > 1) {
+                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, EntityManagerFactory.class.getName(),
+                    beans.keySet());
+                LOG.warn(msg);
+            } else {
+                // we found excatly one bean...
+                Entry<String, EntityManagerFactory> entry = beans.entrySet().iterator().next();
+                entityManagerFactory = entry.getValue();
+                if (LOG.isDebugEnabled()) {
+                    String msg = String.format(AUTODETECT_MSG_SUCCESS, EntityManagerFactory.class.getName(), entry
+                        .getKey());
+                    LOG.debug(msg);
+                }
+            }
         }
     }
 
@@ -85,7 +134,16 @@ public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T>
         // set entitymanager factory and property map...
         DefaultJpaRepository<T> jpaTarget = (DefaultJpaRepository<T>)target;
         jpaTarget.setEntityManagerFactory(entityManagerFactory);
-        jpaTarget.setJpaPropertyMap(jpaPropertyMap);
+
+        if (jpaPropertyMap != null) {
+            jpaTarget.setJpaPropertyMap(jpaPropertyMap);
+        }
+        if (jpaDialect != null) {
+            jpaTarget.setJpaDialect(jpaDialect);
+        }
+        if (flushMode != null) {
+            jpaTarget.setFlushMode(flushMode);
+        }
     }
 
     public EntityManagerFactory getEntityManagerFactory() {
@@ -104,4 +162,27 @@ public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T>
         this.jpaPropertyMap = jpaPropertyMap;
     }
 
+    public JpaDialect getJpaDialect() {
+        return jpaDialect;
+    }
+
+    public void setJpaDialect(JpaDialect jpaDialect) {
+        this.jpaDialect = jpaDialect;
+    }
+
+    public Boolean getTranslateExceptions() {
+        return translateExceptions;
+    }
+
+    public void setTranslateExceptions(Boolean translateExceptions) {
+        this.translateExceptions = translateExceptions;
+    }
+
+    public JpaFlushMode getFlushMode() {
+        return flushMode;
+    }
+
+    public void setFlushMode(JpaFlushMode flushMode) {
+        this.flushMode = flushMode;
+    }
 }
