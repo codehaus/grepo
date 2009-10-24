@@ -22,8 +22,8 @@ import org.hibernate.Session;
 
 /**
  * Context for execution of hibernate queries.
- * @author dguggi
  *
+ * @author dguggi
  */
 public interface HibernateQueryExecutionContext extends QueryExecutionContext {
     /**

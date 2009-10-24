@@ -135,32 +135,21 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
         final HibernateQueryExecutor executor = (HibernateQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
 
-        TransactionCallback callback = new TransactionCallback() {
-            public Object doInTransaction(TransactionStatus status) {
-                CurrentSessionHolder sessionHolder = getCurrentSession();
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
 
-                try {
-                    HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
-                    applyFlushMode(sessionHolder, queryOptions);
-                    applyCacheMode(sessionHolder, queryOptions);
-                    enableFilters(qmpi, sessionHolder);
-
-                    HibernateQueryExecutionContext context = createQueryExecutionContext(sessionHolder);
-                    Object result = executor.execute(qmpi, context);
-                    if (LOG.isTraceEnabled()) {
-                        String msg = String.format("Query result is '%s'", result);
-                        LOG.trace(msg);
-                    }
-
-                    flushIfNecessary(sessionHolder, queryOptions);
-                    return result;
-                } finally {
-                    closeNewSession(sessionHolder);
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) throws HibernateException {
+                Object result = executor.execute(qmpi, context);
+                if (LOG.isTraceEnabled()) {
+                    String msg = String.format("Query result is '%s'", result);
+                    LOG.trace(msg);
                 }
+                return result;
             }
+
         };
 
-        return executeCallback(callback, executor.isReadOnlyOperation());
+        return executeCallback(callback.create(qmpi), executor.isReadOnlyOperation());
     }
 
     /**
@@ -628,14 +617,16 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
                 public Object doInTransaction(TransactionStatus status) {
                     CurrentSessionHolder sessionHolder = getCurrentSession();
+                    HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
+
                     try {
-                        applyFlushMode(sessionHolder, null);
-                        applyCacheMode(sessionHolder, null);
+                        applyFlushMode(sessionHolder, queryOptions);
+                        applyCacheMode(sessionHolder, queryOptions);
                         enableFilters(qmpi, sessionHolder);
 
                         Object result = doExecute(createQueryExecutionContext(sessionHolder));
 
-                        flushIfNecessary(sessionHolder, null);
+                        flushIfNecessary(sessionHolder, queryOptions);
                         return result;
                     } catch (HibernateException e) {
                         if (isConvertAccessExceptions()) {
