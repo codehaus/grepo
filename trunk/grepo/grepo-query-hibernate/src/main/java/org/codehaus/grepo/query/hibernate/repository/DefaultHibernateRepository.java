@@ -623,7 +623,9 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
         /**
          * Creates a new transaction callback.
-         * @param qmpi The query method parameter info.
+         * @param qmpi The query method parameter info. Note that this parameter is null for methods
+         *        which are not annotated with {@code GenericQuery}.
+         *
          * @return Returns the call back.
          */
         public TransactionCallback create(final QueryMethodParameterInfo qmpi) {
@@ -631,7 +633,11 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
                 public Object doInTransaction(TransactionStatus status) {
                     CurrentSessionHolder sessionHolder = getCurrentSession();
-                    HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
+
+                    HibernateQueryOptions queryOptions = null;
+                    if (qmpi != null) {
+                        queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
+                    }
 
                     try {
                         applyFlushMode(sessionHolder, queryOptions);
