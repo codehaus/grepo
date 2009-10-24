@@ -16,13 +16,11 @@
 
 package org.codehaus.grepo.query.jpa.executor;
 
-import javax.persistence.EntityManager;
-
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
 
 /**
  * @author dguggi
  */
-public interface JpaQueryExecutor extends QueryExecutor<EntityManager> {
+public interface JpaQueryExecutor extends QueryExecutor<JpaQueryExecutionContext> {
 
 }

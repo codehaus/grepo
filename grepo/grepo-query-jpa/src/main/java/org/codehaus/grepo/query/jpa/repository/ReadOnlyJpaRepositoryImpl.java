@@ -18,9 +18,7 @@ package org.codehaus.grepo.query.jpa.repository;
 
 import java.io.Serializable;
 
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
 
 /**
  * @author dguggi
@@ -49,18 +47,14 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
      */
     @SuppressWarnings("unchecked")
     public T find(final PK id) {
-        TransactionCallback callback = new TransactionCallback() {
-            public Object doInTransaction(final TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    return emHolder.getEntityManager().find(getEntityClass(), id);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
+            @Override
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                return context.getEntityManager().find(getEntityClass(), id);
             }
         };
 
-        return (T)executeCallback(callback, true);
+        return (T)executeCallback(callback.create(null), true);
     }
 
     /**
@@ -68,36 +62,29 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
      */
     @SuppressWarnings("unchecked")
     public T getReference(final PK id) {
-        TransactionCallback callback = new TransactionCallback() {
-            public Object doInTransaction(final TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    return emHolder.getEntityManager().getReference(getEntityClass(), id);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
+            @Override
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                return context.getEntityManager().getReference(getEntityClass(), id);
             }
         };
 
-        return (T)executeCallback(callback, true);
+        return (T)executeCallback(callback.create(null), true);
     }
 
     /**
      * {@inheritDoc}
      */
     public void refresh(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    emHolder.getEntityManager().refresh(entity);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                context.getEntityManager().refresh(entity);
+                return null;
             }
         };
-        executeCallback(callback, true);
+
+        executeCallback(callback.create(null), true);
     }
 
 }

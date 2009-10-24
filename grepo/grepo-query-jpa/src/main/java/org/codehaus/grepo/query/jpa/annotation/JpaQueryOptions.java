@@ -39,4 +39,7 @@ public @interface JpaQueryOptions {
 
     /** The query hints to use. */
     QueryHint[] queryHints() default { };
+
+    /** The flush mode to use. */
+    JpaFlushMode flushMode() default JpaFlushMode.UNDEFINED;
 }

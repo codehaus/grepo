@@ -14,32 +14,38 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.jpa.executor;
+package org.codehaus.grepo.query.jpa.annotation;
 
-import javax.persistence.Query;
+import javax.persistence.FlushModeType;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 
 /**
  * @author dguggi
  */
-public class UpdateQueryExecutor extends AbstractJpaQueryExecutor {
+public enum JpaFlushMode {
+    /** UNDEFINED. */
+    UNDEFINED(null),
+    /** EAGER. */
+    EAGER(null),
+    /** AUTO. */
+    AUTO(FlushModeType.AUTO),
+    /** COMMIT. */
+    COMMIT(FlushModeType.COMMIT);
+
+    /** The flush mode. */
+    private FlushModeType flushMode;
 
     /**
-     * {@inheritDoc}
+     * @param flushMode The flush mode to set.
      */
-    public Object execute(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
-        GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
-        Query query = prepareQuery(annotation, qmpi, context);
-        return query.executeUpdate();
+    private JpaFlushMode(FlushModeType flushMode) {
+        this.flushMode = flushMode;
     }
 
     /**
-     * {@inheritDoc}
+     * @return Returns the flush mode.
      */
-    public boolean isReadOnlyOperation() {
-        return false;
+    public FlushModeType value() {
+        return flushMode;
     }
-
 }
