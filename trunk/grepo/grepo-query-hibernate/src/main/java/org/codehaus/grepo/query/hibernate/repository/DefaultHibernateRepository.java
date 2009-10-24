@@ -85,8 +85,8 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     /** The hibernate filters to use. */
     private FilterDescriptor[] filters;
 
-    /** Flag to indicate whether or not access exceptions should be converted. */
-    private boolean convertAccessExceptions = false;
+    /** Flag to indicate whether or not exceptions should be translated. */
+    private boolean translateExceptions = false;
 
     /** The jdbc exception translator. */
     private SQLExceptionTranslator jdbcExceptionTranslator;
@@ -372,6 +372,20 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     }
 
     /**
+     * Convert the given runtime exception to an appropriate exception from the {@code org.springframework.dao}
+     * hierarchy if necessary, or return the exception itself if it is not persistence related.
+     * @param e runtime exception that occured, which may or may not be Hibernate-related
+     * @return the corresponding DataAccessException instance if wrapping should occur, otherwise the raw exception
+     */
+    protected RuntimeException translateIfNecessary(RuntimeException e) {
+        if (isTranslateExceptions() && e instanceof HibernateException) {
+            return convertHibernateAccessException((HibernateException)e);
+        } else {
+            return e;
+        }
+    }
+
+    /**
      * Convert the given HibernateException to an appropriate exception from the
      * {@code org.springframework.dao} hierarchy. Will automatically apply a specified SQLExceptionTranslator to a
      * Hibernate JDBCException, else rely on Hibernate's default translation.
@@ -526,12 +540,12 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         this.entityInterceptor = entityInterceptor;
     }
 
-    public boolean isConvertAccessExceptions() {
-        return convertAccessExceptions;
+    public boolean isTranslateExceptions() {
+        return translateExceptions;
     }
 
-    public void setConvertAccessExceptions(boolean convertAccessExceptions) {
-        this.convertAccessExceptions = convertAccessExceptions;
+    public void setTranslateExceptions(boolean translateExceptions) {
+        this.translateExceptions = translateExceptions;
     }
 
     public SQLExceptionTranslator getJdbcExceptionTranslator() {
@@ -628,12 +642,8 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
                         flushIfNecessary(sessionHolder, queryOptions);
                         return result;
-                    } catch (HibernateException e) {
-                        if (isConvertAccessExceptions()) {
-                            throw convertHibernateAccessException(e);
-                        } else {
-                            throw e;
-                        }
+                    } catch (RuntimeException e) {
+                        throw translateIfNecessary(e);
                     } finally {
                         closeNewSession(sessionHolder);
                     }
