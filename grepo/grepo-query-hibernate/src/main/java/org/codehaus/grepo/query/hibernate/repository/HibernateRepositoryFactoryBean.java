@@ -99,8 +99,8 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     }
 
     /**
-     * If the {@link #resultConversionService} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
-     * method tries to retrieve the {@link #resultConversionService} automatically.
+     * If the {@link #sessionFactory} is not set and {@link #isAutoDetectBeans()} returns {@code true}, this
+     * method tries to retrieve the {@link #sessionFactory} automatically.
      */
     protected void initSessionFactory() {
         if (sessionFactory == null && isAutoDetectBeans()) {
