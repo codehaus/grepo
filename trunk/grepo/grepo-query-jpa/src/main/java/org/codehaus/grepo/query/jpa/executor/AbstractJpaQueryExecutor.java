@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map.Entry;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.QueryHint;
 import javax.persistence.TemporalType;
@@ -50,7 +49,7 @@ import org.springframework.util.CollectionUtils;
  * @author dguggi
  */
 public abstract class AbstractJpaQueryExecutor
-    extends AbstractQueryExecutor<EntityManager> implements JpaQueryExecutor {
+    extends AbstractQueryExecutor<JpaQueryExecutionContext> implements JpaQueryExecutor {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(AbstractJpaQueryExecutor.class);
@@ -58,11 +57,11 @@ public abstract class AbstractJpaQueryExecutor
     /**
      * @param genericQuery The annotation.
      * @param qmpi The query method parameter info.
-     * @param entityManager The entity manager.
+     * @param context The query execution context.
      * @return Returns the query.
      */
     protected Query prepareQuery(GenericQuery genericQuery, QueryMethodParameterInfo qmpi,
-            EntityManager entityManager) {
+            JpaQueryExecutionContext context) {
         JpaQueryDescriptor queryDesc = null;
 
         JpaQueryOptions queryOptions = qmpi.getMethodAnnotation(JpaQueryOptions.class);
@@ -71,16 +70,16 @@ public abstract class AbstractJpaQueryExecutor
             @SuppressWarnings("unchecked")
             Class<? extends JpaQueryGenerator> jpaGenerator = (Class<? extends JpaQueryGenerator>)genericQuery
                 .queryGenerator();
-            queryDesc = generateQuery(jpaGenerator, queryOptions, qmpi, entityManager);
+            queryDesc = generateQuery(jpaGenerator, queryOptions, qmpi, context);
         } else if (StringUtils.isNotEmpty(genericQuery.query())) {
             // query specified, so use specified query...
             Query query = null;
             if (genericQuery.isNativeQuery()) {
                 Class<?> resultClass = getResultClass(queryOptions, null);
                 String resultSetMapping = getResultSetMapping(queryOptions, null);
-                query = createNativeQuery(genericQuery.query(), resultClass, resultSetMapping, entityManager);
+                query = createNativeQuery(genericQuery.query(), resultClass, resultSetMapping, context);
             } else {
-                query = entityManager.createQuery(genericQuery.query());
+                query = context.getEntityManager().createQuery(genericQuery.query());
             }
             // configure query options
             configureQuery(query, queryOptions, null);
@@ -91,7 +90,7 @@ public abstract class AbstractJpaQueryExecutor
             // Note: configureQuery is not invoked for named-queries, this information
             // is supposed to be provided where the named-query is defined...
             String queryName = getQueryNamingStrategy().getQueryName(qmpi);
-            Query query = entityManager.createNamedQuery(queryName);
+            Query query = context.getEntityManager().createNamedQuery(queryName);
             queryDesc = new JpaQueryDescriptor(query, false);
         }
 
@@ -159,24 +158,24 @@ public abstract class AbstractJpaQueryExecutor
      * @param queryString The query string.
      * @param resultClass The result class.
      * @param resultSetMapping The result set mapping.
-     * @param entityManager The entity manager.
+     * @param context The query execution context.
      * @return Returns the created query.
      */
     private Query createNativeQuery(String queryString, Class<?> resultClass, String resultSetMapping,
-            EntityManager entityManager) {
+            JpaQueryExecutionContext context) {
         Query query = null;
         if (resultClass == null) {
             // no result class specified, so check for result set mapping...
             if (resultSetMapping == null) {
                 // no result set mapping specified...
-                query = entityManager.createNativeQuery(queryString);
+                query = context.getEntityManager().createNativeQuery(queryString);
             } else {
                 // result set mapping specified...
-                query = entityManager.createNativeQuery(queryString, resultSetMapping);
+                query = context.getEntityManager().createNativeQuery(queryString, resultSetMapping);
             }
         } else {
             // result class specified...
-            query = entityManager.createNativeQuery(queryString, resultClass);
+            query = context.getEntityManager().createNativeQuery(queryString, resultClass);
             if (resultSetMapping != null) {
                 LOG.warn("Both resultClass and resultSetMapping specified - using specified resultClass");
             }
@@ -238,11 +237,11 @@ public abstract class AbstractJpaQueryExecutor
      * @param clazz The generator clazz.
      * @param queryOptions The query options.
      * @param qmpi The query method parameter info.
-     * @param entityManager The entity manager.
+     * @param context The query execution context.
      * @return Returns the jpa query descriptor.
      */
     protected JpaQueryDescriptor generateQuery(Class<? extends JpaQueryGenerator> clazz,
-            JpaQueryOptions queryOptions, QueryMethodParameterInfo qmpi, EntityManager entityManager) {
+            JpaQueryOptions queryOptions, QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
         try {
             JpaQueryGenerator generator = clazz.newInstance();
             String queryString = generator.generate(qmpi);
@@ -252,9 +251,9 @@ public abstract class AbstractJpaQueryExecutor
                 JpaNativeQueryGenerator nativeGenerator = (JpaNativeQueryGenerator)generator;
                 Class<?> resultClass = getResultClass(queryOptions, nativeGenerator);
                 String resultSetMapping = getResultSetMapping(queryOptions, nativeGenerator);
-                query = createNativeQuery(queryString, resultClass, resultSetMapping, entityManager);
+                query = createNativeQuery(queryString, resultClass, resultSetMapping, context);
             } else {
-                query = entityManager.createQuery(queryString);
+                query = context.getEntityManager().createQuery(queryString);
             }
 
             // configure query options...

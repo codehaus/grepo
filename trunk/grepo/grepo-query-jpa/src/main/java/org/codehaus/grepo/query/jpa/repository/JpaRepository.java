@@ -16,30 +16,15 @@
 
 package org.codehaus.grepo.query.jpa.repository;
 
-import java.io.Serializable;
+import org.codehaus.grepo.query.commons.repository.GenericRepository;
 
 /**
+ * Marker interface for jpa generic repositories.
+ *
  * @author dguggi
  *
- * @param <T> The main entity type.
- * @param <PK> The primary key type.
+ * @param <T>  The main entity type.
  */
-public interface ReadOnlyJpaRepository <T,PK extends Serializable> extends JpaRepository<T> {
+public interface JpaRepository<T> extends GenericRepository<T> {
 
-    /**
-     * @param id The primary key.
-     * @return Returns the entity.
-     */
-    T getReference(PK id);
-
-    /**
-     * @param id The primary key.
-     * @return Returns the entity.
-     */
-    T find(PK id);
-
-    /**
-     * @param entity The entity.
-     */
-    void refresh(T entity);
 }

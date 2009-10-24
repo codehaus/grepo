@@ -18,7 +18,6 @@ package org.codehaus.grepo.query.jpa.executor;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
@@ -32,9 +31,9 @@ public class GetQueryExecutor extends ListQueryExecutor {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, EntityManager entityManager) {
+    public Object execute(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
         @SuppressWarnings("unchecked")
-        List<Object> list = (List<Object>)super.execute(qmpi, entityManager);
+        List<Object> list = (List<Object>)super.execute(qmpi, context);
         if (list.size() == 0) {
             return null;
         } else if (list.size() == 1) {

@@ -20,9 +20,7 @@ import java.io.Serializable;
 
 import javax.persistence.LockModeType;
 
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
 
 /**
  * @author dguggi
@@ -51,18 +49,15 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
      * {@inheritDoc}
      */
     public void lock(final T entity, final LockModeType lockModeType) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    emHolder.getEntityManager().lock(entity, lockModeType);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                context.getEntityManager().lock(entity, lockModeType);
+                return null;
             }
         };
-        executeCallback(callback, false);
+
+        executeCallback(callback.create(null), false);
     }
 
     /**
@@ -70,54 +65,44 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
      */
     @SuppressWarnings("unchecked")
     public T merge(final T entity) {
-        TransactionCallback callback = new TransactionCallback() {
-            public Object doInTransaction(final TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    return emHolder.getEntityManager().merge(entity);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
+            @Override
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                return context.getEntityManager().merge(entity);
             }
         };
 
-        return (T)executeCallback(callback, false);
+        return (T)executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void persist(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    emHolder.getEntityManager().persist(entity);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                context.getEntityManager().persist(entity);
+                return null;
             }
         };
-        executeCallback(callback, false);
+
+        executeCallback(callback.create(null), false);
     }
 
     /**
      * {@inheritDoc}
      */
     public void remove(final T entity) {
-        TransactionCallback callback = new TransactionCallbackWithoutResult() {
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
             @Override
-            protected void doInTransactionWithoutResult(TransactionStatus status) {
-                CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
-                try {
-                    emHolder.getEntityManager().remove(entity);
-                } finally {
-                    closeNewEntityManager(emHolder);
-                }
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                context.getEntityManager().remove(entity);
+                return null;
             }
         };
-        executeCallback(callback, false);
+
+        executeCallback(callback.create(null), false);
     }
 
 }

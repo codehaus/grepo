@@ -16,7 +16,6 @@
 
 package org.codehaus.grepo.query.jpa.executor;
 
-import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
@@ -32,9 +31,9 @@ public class ListQueryExecutor extends AbstractJpaQueryExecutor {
     /**
      * {@inheritDoc}
      */
-    public Object execute(QueryMethodParameterInfo qmpi, EntityManager entityManager) {
+    public Object execute(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
         GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
-        Query query = prepareQuery(annotation, qmpi, entityManager);
+        Query query = prepareQuery(annotation, qmpi, context);
         return query.getResultList();
     }
 

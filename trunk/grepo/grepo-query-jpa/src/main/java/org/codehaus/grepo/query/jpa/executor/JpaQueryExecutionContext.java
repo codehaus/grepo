@@ -16,30 +16,18 @@
 
 package org.codehaus.grepo.query.jpa.executor;
 
-import javax.persistence.Query;
+import javax.persistence.EntityManager;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.commons.executor.QueryExecutionContext;
 
 /**
+ * Context for execution of jpa queries.
+ *
  * @author dguggi
  */
-public class UpdateQueryExecutor extends AbstractJpaQueryExecutor {
-
+public interface JpaQueryExecutionContext extends QueryExecutionContext {
     /**
-     * {@inheritDoc}
+     * @return Returns the entity manager.
      */
-    public Object execute(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
-        GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
-        Query query = prepareQuery(annotation, qmpi, context);
-        return query.executeUpdate();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isReadOnlyOperation() {
-        return false;
-    }
-
+    EntityManager getEntityManager();
 }
