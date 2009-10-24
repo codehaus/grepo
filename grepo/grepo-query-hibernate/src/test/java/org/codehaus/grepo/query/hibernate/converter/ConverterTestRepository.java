@@ -21,18 +21,18 @@ import java.util.Map;
 
 import org.codehaus.grepo.core.converter.TestResultConverter;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.codehaus.grepo.query.hibernate.TestEntityDto;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 import org.codehaus.grepo.query.hibernate.annotation.Scalar;
+import org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepository;
 import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.hibernate.transform.ToListResultTransformer;
 
 /**
  * @author dguggi
  */
-public interface ConverterTestRepository extends GenericRepository<TestEntity> {
+public interface ConverterTestRepository extends ReadWriteHibernateRepository<TestEntity, Long> {
     /**
      * @param username The username.
      * @return Returns the flag.
