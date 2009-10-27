@@ -19,6 +19,8 @@ package org.codehaus.grepo.core.util;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.codehaus.grepo.core.exception.ConfigurationException;
+
 /**
  * @author dguggi
  */
@@ -62,5 +64,21 @@ public final class ClassUtils {
      */
     public static boolean isVoidType(Class<?> clazz) {
         return (clazz == void.class || clazz == Void.class);
+    }
+
+    /**
+     * @param <T> The type of clazz.
+     * @param clazz The clazz to instantiate.
+     * @return Returns the newly created instance.
+     * @throws ConfigurationException in case of errors.
+     */
+    public static <T> T instantiateClass(Class<T> clazz) throws ConfigurationException {
+        try {
+            return (T) clazz.newInstance();
+        } catch (InstantiationException e) {
+            throw ConfigurationException.instantiateException(clazz, e);
+        } catch (IllegalAccessException e) {
+            throw ConfigurationException.accessException(clazz, e);
+        }
     }
 }
