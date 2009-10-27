@@ -22,7 +22,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.grepo.exception.ConfigurationException;
+import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.annotation.MaxResults;
@@ -71,13 +71,8 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      */
     protected DetachedCriteria generateCriteria(Class<? extends CriteriaGenerator> clazz,
                 QueryMethodParameterInfo qmpi) {
-        try {
-            return clazz.newInstance().generate(qmpi);
-        } catch (InstantiationException e) {
-            throw ConfigurationException.instantiateException(clazz, e);
-        } catch (IllegalAccessException e) {
-            throw ConfigurationException.accessException(clazz, e);
-        }
+        CriteriaGenerator generator = ClassUtils.instantiateClass(clazz);
+        return generator.generate(qmpi);
     }
 
     /**
@@ -225,26 +220,20 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      */
     protected HibernateQueryDescriptor generateQuery(Class<? extends HibernateQueryGenerator> clazz,
             HibernateQueryOptions queryOptions, QueryMethodParameterInfo qmpi, Session session) {
-        try {
-            HibernateQueryDescriptor queryDesc = null;
-            HibernateQueryGenerator generator = clazz.newInstance();
-            String queryString = generator.generate(qmpi);
+        HibernateQueryGenerator generator = ClassUtils.instantiateClass(clazz);
+        String queryString = generator.generate(qmpi);
 
-            if (generator instanceof HibernateNativeQueryGenerator) {
-                SQLQuery query = session.createSQLQuery(queryString);
-                HibernateNativeQueryGenerator sqlGenerator = (HibernateNativeQueryGenerator)generator;
-                configureNativeQuery(query, queryOptions, sqlGenerator);
-                queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicQueryParams());
-            } else {
-                Query query = session.createQuery(queryString);
-                queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicQueryParams());
-            }
-            return queryDesc;
-        } catch (InstantiationException e) {
-            throw ConfigurationException.instantiateException(clazz, e);
-        } catch (IllegalAccessException e) {
-            throw ConfigurationException.accessException(clazz, e);
+        HibernateQueryDescriptor queryDesc = null;
+        if (generator instanceof HibernateNativeQueryGenerator) {
+            SQLQuery query = session.createSQLQuery(queryString);
+            HibernateNativeQueryGenerator sqlGenerator = (HibernateNativeQueryGenerator)generator;
+            configureNativeQuery(query, queryOptions, sqlGenerator);
+            queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicQueryParams());
+        } else {
+            Query query = session.createQuery(queryString);
+            queryDesc = new HibernateQueryDescriptor(query, true, generator.getDynamicQueryParams());
         }
+        return queryDesc;
     }
 
     /**
@@ -299,14 +288,8 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         if (queryOptions != null) {
             for (Scalar s : queryOptions.scalars()) {
                 if (isValidScalarType(s.type())) {
-                    try {
-                        Type type = s.type().newInstance();
-                        sqlQuery.addScalar(s.alias(), type);
-                    } catch (InstantiationException e) {
-                        throw ConfigurationException.instantiateException(s.type(), e);
-                    } catch (IllegalAccessException e) {
-                        throw ConfigurationException.accessException(s.type(), e);
-                    }
+                    Type type = ClassUtils.instantiateClass(s.type());
+                    sqlQuery.addScalar(s.alias(), type);
                 } else {
                     sqlQuery.addScalar(s.alias());
                 }
@@ -419,13 +402,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         Type retVal = null;
         GType gType = qmpi.getParameterAnnotation(index, GType.class);
         if (gType != null) {
-            try {
-                retVal = gType.value().newInstance();
-            } catch (InstantiationException e) {
-                throw ConfigurationException.instantiateException(gType.value(), e);
-            } catch (IllegalAccessException e) {
-                throw ConfigurationException.accessException(gType.value(), e);
-            }
+            retVal = ClassUtils.instantiateClass(gType.value());
         }
 
         if (retVal == null) {
@@ -490,13 +467,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
             } else if (AliasToEntityMapResultTransformer.class.isAssignableFrom(queryOptions.resultTransformer())) {
                 transformer = Transformers.ALIAS_TO_ENTITY_MAP;
             } else if (ResultTransformer.class.isAssignableFrom(queryOptions.resultTransformer())) {
-                try {
-                    transformer = (ResultTransformer)queryOptions.resultTransformer().newInstance();
-                } catch (InstantiationException e) {
-                    throw ConfigurationException.instantiateException(queryOptions.resultTransformer(), e);
-                } catch (IllegalAccessException e) {
-                    throw ConfigurationException.accessException(queryOptions.resultTransformer(), e);
-                }
+                transformer = (ResultTransformer)ClassUtils.instantiateClass(queryOptions.resultTransformer());
             } else {
                 transformer = Transformers.aliasToBean(queryOptions.resultTransformer());
             }
