@@ -23,7 +23,7 @@ import javax.persistence.EntityManagerFactory;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.grepo.query.commons.repository.GenericRepositoryFactoryBean;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
 import org.codehaus.grepo.query.jpa.annotation.JpaFlushMode;
 import org.springframework.orm.jpa.JpaDialect;
@@ -35,7 +35,7 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The entity class type.
  */
-public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T> {
+public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(JpaRepositoryFactoryBean.class);
@@ -75,7 +75,7 @@ public class JpaRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T>
     }
 
     /**
-     * If the {@link #entityManagerFactory} is not set and {@link #isAutoDetectBeans()} is set to {@code true}, this
+     * If the {@link #entityManagerFactory} is not set and {@code #isAutoDetectBeans()} returns {@code true}, this
      * method tries to retrieve the {@link #entityManagerFactory} automatically.
      */
     protected void initEntityManagerFactory() {
