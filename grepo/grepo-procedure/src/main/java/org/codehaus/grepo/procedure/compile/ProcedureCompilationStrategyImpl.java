@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.annotation.Param;
-import org.codehaus.grepo.exception.ConfigurationException;
+import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.springframework.jdbc.object.StoredProcedure;

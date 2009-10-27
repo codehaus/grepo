@@ -21,20 +21,12 @@ import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
-import org.aopalliance.intercept.MethodInterceptor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.grepo.core.converter.ResultConversionService;
+import org.codehaus.grepo.core.repository.GenericRepositoryFactoryBean;
 import org.codehaus.grepo.procedure.cache.ProcedureCachingStrategy;
 import org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategy;
 import org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategy;
-import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
 
 /**
@@ -42,43 +34,18 @@ import org.springframework.util.Assert;
  *
  * @author dguggi
  */
-public class GenericProcedureRepositoryFactoryBean implements FactoryBean, InitializingBean, ApplicationContextAware {
+public class GenericProcedureRepositoryFactoryBean
+    extends GenericRepositoryFactoryBean<GenericProcedureRepositorySupport> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(GenericProcedureRepositoryFactoryBean.class);
-
-    /** Log message for autodetection mode. */
-    protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =
-        "Unable to auto-detect grepo bean of type '%s' - no beans found";
-
-    /** Log message for autodetection mode. */
-    protected static final String AUTODETECT_MSG_UNABLE_TOOMANYFOUND =
-        "Unable to auto-detect grepo bean of type '%s' - too many beans found (%s)";
-
-    /** Log message for autodetection mode. */
-    protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected grepo bean of type '%s' (id=%s)";
 
     /** Default target class to use. */
     private static final Class<GenericProcedureRepositoryImpl> DEFAULT_TARGET_CLASS =
         GenericProcedureRepositoryImpl.class;
 
-    /** The mandatory interface to proxy. */
-    private Class<?> proxyInterface;
-
-    /** The mandatory target class (will be defaulted with {@link #DEFAULT_TARGET_CLASS}). */
-    private Class<?> targetClass;
-
     /** The mandatory datasource. */
     private DataSource dataSource;
-
-    /** The application context. */
-    private ApplicationContext applicationContext;
-
-    /** Flag to control whether or not grepo beans should be auto-detected (default is {@code true}. */
-    private boolean autoDetectGrepoBeans = true;
-
-    /** The optional result conversion service (may be auto-detected). */
-    private ResultConversionService resultConversionService;
 
     /** The mandatory procedure caching strategy (may be auto-detected). */
     private ProcedureCachingStrategy procedureCachingStrategy;
@@ -89,86 +56,31 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
     /** The the mandadory procedure input generation strategy (may be auto-detected). */
     private ProcedureInputGenerationStrategy procedureInputGenerationStrategy;
 
-    /** The mandatory method interceptor (may be auto-detected). */
-    private MethodInterceptor methodInterceptor;
-
-    /** The optional transaction template. */
-    private TransactionTemplate transactionTemplate;
-
-    /** The optional read only transaction template. */
-    private TransactionTemplate readOnlyTransactionTemplate;
-
     /**
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD")
-    public Object getObject() throws Exception {
-        // validate factory configuration
-        validate();
-
-        // create target
-        GenericProcedureRepositorySupport target = createTarget();
-        configureTarget(target);
-
-        // create proxy
-        ProxyFactory proxyFactory = new ProxyFactory();
-        proxyFactory.setTarget(target);
-        proxyFactory.setInterfaces(new Class[] { proxyInterface });
-        proxyFactory.addAdvice(methodInterceptor);
-        return proxyFactory.getProxy();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class<?> getObjectType() {
-        return proxyInterface;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isSingleton() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @SuppressWarnings("PMD")
+    @Override
     public void afterPropertiesSet() throws Exception {
-        initTargetClass();
-        initMethodInterceptor();
+        super.afterPropertiesSet();
         initProcedureInputGenerationStrategy();
         initProcedureCachingStrategy();
         initProcedureCompilationStrategy();
-        initResultConversionService();
-    }
-
-    /**
-     * if the {@link #targetClass} is not set, this method sets the property to {@link #DEFAULT_TARGET_CLASS}.
-     */
-    protected void initTargetClass() {
-        if (targetClass == null) {
-            targetClass = DEFAULT_TARGET_CLASS;
+        initDataSource();
+        // init targetClass if necessary...
+        if (getTargetClass() == null) {
+            setTargetClass(DEFAULT_TARGET_CLASS);
         }
     }
 
     /**
-     * If the {@link #methodInterceptor} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
-     * method tries to retrieve the {@link #methodInterceptor} automatically.
+     * {@inheritDoc}
      */
+    @Override
     protected void initMethodInterceptor() {
-        if (methodInterceptor == null && autoDetectGrepoBeans) {
+        if (getMethodInterceptor() == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")  // NOPMD
-            Map<String, GenericProcedureMethodInterceptor> beans = applicationContext
+            Map<String, GenericProcedureMethodInterceptor> beans = getApplicationContext()
                 .getBeansOfType(GenericProcedureMethodInterceptor.class);
 
             if (beans.isEmpty()) {
@@ -181,7 +93,7 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
             } else {
                 // we found excatly one bean...
                 Entry<String, GenericProcedureMethodInterceptor> entry = beans.entrySet().iterator().next();
-                methodInterceptor = entry.getValue();
+                setMethodInterceptor(entry.getValue());
                 if (LOG.isDebugEnabled()) {
                     String msg = String.format(AUTODETECT_MSG_SUCCESS, GenericProcedureMethodInterceptor.class
                         .getName(), entry.getKey());
@@ -192,29 +104,28 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
     }
 
     /**
-     * If the {@link #resultConversionService} is not set and {@link #autoDetectGrepoBeans} is set to {@code true}, this
-     * method tries to retrieve the {@link #resultConversionService} automatically.
+     * If the {@link #dataSource} is not set and {@code isAutoDetectBeans()} returns {@code true}, this
+     * method tries to retrieve the {@link #dataSource} automatically.
      */
-    protected void initResultConversionService() {
-        if (resultConversionService == null && autoDetectGrepoBeans) {
+    protected void initDataSource() {
+        if (dataSource == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ResultConversionService> beans = applicationContext
-                .getBeansOfType(ResultConversionService.class);
+            Map<String, DataSource> beans = getApplicationContext().getBeansOfType(DataSource.class);
 
             if (beans.isEmpty()) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, ResultConversionService.class.getName()));
+                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, DataSource.class.getName()));
                 }
             } else if (beans.size() > 1) {
-                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ResultConversionService.class.getName(),
+                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, DataSource.class.getName(),
                     beans.keySet());
                 LOG.warn(msg);
             } else {
                 // we found excatly one bean...
-                Entry<String, ResultConversionService> entry = beans.entrySet().iterator().next();
-                resultConversionService = entry.getValue();
+                Entry<String, DataSource> entry = beans.entrySet().iterator().next();
+                dataSource = entry.getValue();
                 if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS, ResultConversionService.class.getName(), entry
+                    String msg = String.format(AUTODETECT_MSG_SUCCESS, DataSource.class.getName(), entry
                         .getKey());
                     LOG.debug(msg);
                 }
@@ -223,13 +134,13 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
     }
 
     /**
-     * If the {@link #procedureInputGenerationStrategy} is not set and {@link #autoDetectGrepoBeans} is set to {@code
+     * If the {@link #procedureInputGenerationStrategy} is not set and {@code isAutoDetectBeans} returns {@code
      * true}, this method tries to retrieve the {@link #procedureInputGenerationStrategy} automatically.
      */
     protected void initProcedureInputGenerationStrategy() {
-        if (procedureInputGenerationStrategy == null && autoDetectGrepoBeans) {
+        if (procedureInputGenerationStrategy == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ProcedureInputGenerationStrategy> beans = applicationContext
+            Map<String, ProcedureInputGenerationStrategy> beans = getApplicationContext()
                 .getBeansOfType(ProcedureInputGenerationStrategy.class);
 
             if (beans.isEmpty()) {
@@ -255,13 +166,13 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
     }
 
     /**
-     * If the {@link #procedureCachingStrategy} is not set and {@link #autoDetectGrepoBeans} is set to {@code
+     * If the {@link #procedureCachingStrategy} is not set and {@code isAutoDetectBeans} returns {@code
      * true}, this method tries to retrieve the {@link #procedureCachingStrategy} automatically.
      */
     protected void initProcedureCachingStrategy() {
-        if (procedureCachingStrategy == null && autoDetectGrepoBeans) {
+        if (procedureCachingStrategy == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ProcedureCachingStrategy> beans = applicationContext
+            Map<String, ProcedureCachingStrategy> beans = getApplicationContext()
                 .getBeansOfType(ProcedureCachingStrategy.class);
 
             if (beans.isEmpty()) {
@@ -287,13 +198,13 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
     }
 
     /**
-     * If the {@link #procedureCompilationStrategy} is not set and {@link #autoDetectGrepoBeans} is set to {@code
+     * If the {@link #procedureCompilationStrategy} is not set and {@code isAutoDetectBeans} returns {@code
      * true}, this method tries to retrieve the {@link #procedureCompilationStrategy} automatically.
      */
     protected void initProcedureCompilationStrategy() {
-        if (procedureCompilationStrategy == null && autoDetectGrepoBeans) {
+        if (procedureCompilationStrategy == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ProcedureCompilationStrategy> beans = applicationContext
+            Map<String, ProcedureCompilationStrategy> beans = getApplicationContext()
                 .getBeansOfType(ProcedureCompilationStrategy.class);
 
             if (beans.isEmpty()) {
@@ -319,49 +230,33 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
     }
 
     /**
-     * Validates the configuration for this factory bean.
+     * {@inheritDoc}
      */
+    @Override
     protected void validate() {
+        super.validate();
         validateProxyInterface();
         validateTargetClass();
 
         Assert.notNull(dataSource, "dataSource must not be null");
-        Assert.notNull(methodInterceptor, "methodInterceptor must not be null");
         Assert.notNull(procedureInputGenerationStrategy, "procedureInputGenerationStrategy must not be null");
         Assert.notNull(procedureCompilationStrategy, "procedureCompilationStrategy must not be null");
         Assert.notNull(procedureCachingStrategy, "procedureCachingStrategy must not be null");
     }
 
     /**
-     * Validates the {@link #proxyInterface} property.
+     * {@inheritDoc}
      */
-    protected void validateProxyInterface() {
-        Assert.notNull(proxyInterface, "proxyInterface must not be null");
-        Assert.isTrue(proxyInterface.isInterface(), "proxyInterface is not an interface");
-    }
-
-    /**
-     * Validates the {@link #targetClass} property.
-     */
+    @Override
     protected void validateTargetClass() {
-        Assert.notNull(targetClass, "targetClass must not be null");
-        Assert.isAssignable(GenericProcedureRepositorySupport.class, targetClass);
+        super.validateTargetClass();
+        Assert.isAssignable(GenericProcedureRepositorySupport.class, getTargetClass());
     }
 
     /**
-     * @return Returns a new target instance.
-     * @throws Exception in case of errors.
+     * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
-    protected GenericProcedureRepositorySupport createTarget() throws Exception {
-        return (GenericProcedureRepositorySupport)targetClass.newInstance();
-    }
-
-    /**
-     * Configures the given {@code target} instance.
-     *
-     * @param target The instance to configure.
-     */
+    @Override
     protected void configureTarget(GenericProcedureRepositorySupport target) {
         // set mandatory properties...
         target.setDataSource(dataSource);
@@ -370,83 +265,15 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
         target.setProcedureCompilationStrategy(procedureCompilationStrategy);
 
         // set optional properties...
-        if (resultConversionService != null) {
-            target.setResultConversionService(resultConversionService);
+        if (getResultConversionService() != null) {
+            target.setResultConversionService(getResultConversionService());
         }
-        if (transactionTemplate != null) {
-            target.setTransactionTemplate(transactionTemplate);
+        if (getTransactionTemplate() != null) {
+            target.setTransactionTemplate(getTransactionTemplate());
         }
-        if (readOnlyTransactionTemplate != null) {
-            target.setReadOnlyTransactionTemplate(readOnlyTransactionTemplate);
+        if (getReadOnlyTransactionTemplate() != null) {
+            target.setReadOnlyTransactionTemplate(getReadOnlyTransactionTemplate());
         }
-    }
-
-    public ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
-    public Class<?> getProxyInterface() {
-        return proxyInterface;
-    }
-
-    public void setProxyInterface(Class<?> proxyInterface) {
-        this.proxyInterface = proxyInterface;
-    }
-
-    public MethodInterceptor getMethodInterceptor() {
-        return methodInterceptor;
-    }
-
-    public void setMethodInterceptor(MethodInterceptor methodInterceptor) {
-        this.methodInterceptor = methodInterceptor;
-    }
-
-    public Class<?> getTargetClass() {
-        return targetClass;
-    }
-
-    public void setTargetClass(Class<?> targetClass) {
-        this.targetClass = targetClass;
-    }
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public TransactionTemplate getTransactionTemplate() {
-        return transactionTemplate;
-    }
-
-    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
-    }
-
-    public TransactionTemplate getReadOnlyTransactionTemplate() {
-        return readOnlyTransactionTemplate;
-    }
-
-    public void setReadOnlyTransactionTemplate(TransactionTemplate readOnlyTransactionTemplate) {
-        this.readOnlyTransactionTemplate = readOnlyTransactionTemplate;
-    }
-
-    public boolean isAutoDetectGrepoBeans() {
-        return autoDetectGrepoBeans;
-    }
-
-    public void setAutoDetectGrepoBeans(boolean autoDetectGrepoBeans) {
-        this.autoDetectGrepoBeans = autoDetectGrepoBeans;
-    }
-
-    public ResultConversionService getResultConversionService() {
-        return resultConversionService;
-    }
-
-    public void setResultConversionService(ResultConversionService resultConversionService) {
-        this.resultConversionService = resultConversionService;
     }
 
     public ProcedureCachingStrategy getProcedureCachingStrategy() {
@@ -471,6 +298,14 @@ public class GenericProcedureRepositoryFactoryBean implements FactoryBean, Initi
 
     public void setProcedureInputGenerationStrategy(ProcedureInputGenerationStrategy procedureInputGenerationStrategy) {
         this.procedureInputGenerationStrategy = procedureInputGenerationStrategy;
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
 }

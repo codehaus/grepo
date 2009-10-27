@@ -20,7 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.codehaus.grepo.core.context.GrepoOracleTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.exception.ConfigurationException;
+import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.procedure.AbstractProcedureRepositoryTest;
 import org.junit.After;
 import org.junit.Before;
