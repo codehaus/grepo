@@ -21,7 +21,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.grepo.query.commons.repository.GenericRepositoryFactoryBean;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The entity class type.
  */
-public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryBean<T> {
+public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(HibernateRepositoryFactoryBean.class);
@@ -99,7 +99,7 @@ public class HibernateRepositoryFactoryBean<T> extends GenericRepositoryFactoryB
     }
 
     /**
-     * If the {@link #sessionFactory} is not set and {@link #isAutoDetectBeans()} returns {@code true}, this
+     * If the {@link #sessionFactory} is not set and {@code isAutoDetectBeans()} returns {@code true}, this
      * method tries to retrieve the {@link #sessionFactory} automatically.
      */
     protected void initSessionFactory() {
