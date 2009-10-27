@@ -19,8 +19,8 @@ package org.codehaus.grepo.core.converter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
+import org.codehaus.grepo.core.exception.GrepoException;
 import org.codehaus.grepo.core.util.ClassUtils;
-import org.codehaus.grepo.exception.GrepoException;
 
 /**
  * Default implementation of {@link ResultConverterFindingStrategy}.

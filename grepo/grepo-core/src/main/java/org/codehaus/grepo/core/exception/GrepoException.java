@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.exception;
+package org.codehaus.grepo.core.exception;
 
 import org.springframework.dao.DataAccessException;
 

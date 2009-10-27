@@ -16,7 +16,7 @@
 
 package org.codehaus.grepo.core.converter;
 
-import org.codehaus.grepo.exception.GrepoException;
+import org.codehaus.grepo.core.exception.GrepoException;
 
 /**
  * Exception to be thrown if result conversion fails for some reason.

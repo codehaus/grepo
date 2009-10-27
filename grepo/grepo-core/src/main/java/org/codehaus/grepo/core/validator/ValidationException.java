@@ -16,7 +16,7 @@
 
 package org.codehaus.grepo.core.validator;
 
-import org.codehaus.grepo.exception.GrepoException;
+import org.codehaus.grepo.core.exception.GrepoException;
 
 /**
  * Validation exception thrown by {@link GenericValidationUtils}.
