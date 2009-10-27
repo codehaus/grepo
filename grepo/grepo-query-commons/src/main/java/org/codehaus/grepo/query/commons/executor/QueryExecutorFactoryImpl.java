@@ -16,7 +16,7 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import org.codehaus.grepo.exception.ConfigurationException;
+import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
 
 /**
@@ -31,15 +31,9 @@ public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
      * {@inheritDoc}
      */
     public QueryExecutor<?> createExecutor(Class<? extends QueryExecutor<?>> clazz) {
-        try {
-            QueryExecutor<?> executor = clazz.newInstance();
-            configure(executor);
-            return executor;
-        } catch (InstantiationException e) {
-            throw ConfigurationException.instantiateException(clazz, e);
-        } catch (IllegalAccessException e) {
-            throw ConfigurationException.accessException(clazz, e);
-        }
+        QueryExecutor<?> executor = ClassUtils.instantiateClass(clazz);
+        configure(executor);
+        return executor;
     }
 
     /**
@@ -55,7 +49,7 @@ public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
         this.queryNamingStrategy = queryNamingStrategy;
     }
 
-    protected QueryNamingStrategy getQueryNamingStrategy() {
+    public QueryNamingStrategy getQueryNamingStrategy() {
         return queryNamingStrategy;
     }
 

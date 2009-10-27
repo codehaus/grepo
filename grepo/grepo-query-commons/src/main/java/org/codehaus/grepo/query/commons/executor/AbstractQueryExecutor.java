@@ -18,7 +18,7 @@ package org.codehaus.grepo.query.commons.executor;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.grepo.exception.ConfigurationException;
+import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.annotation.MaxResults;
