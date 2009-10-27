@@ -18,7 +18,7 @@ package org.codehaus.grepo.query.hibernate.executor;
 
 import java.util.List;
 
-import org.codehaus.grepo.exception.GrepoException;
+import org.codehaus.grepo.core.exception.GrepoException;
 
 /**
  * @author dguggi
