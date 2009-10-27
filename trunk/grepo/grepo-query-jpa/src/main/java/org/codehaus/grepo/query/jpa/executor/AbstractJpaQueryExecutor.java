@@ -30,7 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.annotation.Param;
-import org.codehaus.grepo.exception.ConfigurationException;
+import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.annotation.MaxResults;
@@ -242,30 +242,23 @@ public abstract class AbstractJpaQueryExecutor
      */
     protected JpaQueryDescriptor generateQuery(Class<? extends JpaQueryGenerator> clazz,
             JpaQueryOptions queryOptions, QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
-        try {
-            JpaQueryGenerator generator = clazz.newInstance();
-            String queryString = generator.generate(qmpi);
+        JpaQueryGenerator generator = ClassUtils.instantiateClass(clazz);
+        String queryString = generator.generate(qmpi);
 
-            Query query = null;
-            if (generator instanceof JpaNativeQueryGenerator) {
-                JpaNativeQueryGenerator nativeGenerator = (JpaNativeQueryGenerator)generator;
-                Class<?> resultClass = getResultClass(queryOptions, nativeGenerator);
-                String resultSetMapping = getResultSetMapping(queryOptions, nativeGenerator);
-                query = createNativeQuery(queryString, resultClass, resultSetMapping, context);
-            } else {
-                query = context.getEntityManager().createQuery(queryString);
-            }
-
-            // configure query options...
-            configureQuery(query, queryOptions, generator);
-
-            return new JpaQueryDescriptor(query, true, generator.getDynamicQueryParams());
-
-        } catch (InstantiationException e) {
-            throw ConfigurationException.instantiateException(clazz, e);
-        } catch (IllegalAccessException e) {
-            throw ConfigurationException.accessException(clazz, e);
+        Query query = null;
+        if (generator instanceof JpaNativeQueryGenerator) {
+            JpaNativeQueryGenerator nativeGenerator = (JpaNativeQueryGenerator)generator;
+            Class<?> resultClass = getResultClass(queryOptions, nativeGenerator);
+            String resultSetMapping = getResultSetMapping(queryOptions, nativeGenerator);
+            query = createNativeQuery(queryString, resultClass, resultSetMapping, context);
+        } else {
+            query = context.getEntityManager().createQuery(queryString);
         }
+
+        // configure query options...
+        configureQuery(query, queryOptions, generator);
+
+        return new JpaQueryDescriptor(query, true, generator.getDynamicQueryParams());
     }
 
     /**
