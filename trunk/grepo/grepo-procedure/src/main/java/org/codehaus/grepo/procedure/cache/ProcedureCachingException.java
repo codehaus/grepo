@@ -16,7 +16,7 @@
 
 package org.codehaus.grepo.procedure.cache;
 
-import org.codehaus.grepo.exception.GrepoException;
+import org.codehaus.grepo.core.exception.GrepoException;
 
 /**
  * @author dguggi
