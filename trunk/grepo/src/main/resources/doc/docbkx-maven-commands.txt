@@ -1,0 +1,11 @@
+############################ HTML chunked ############################
+# maven command to generate chunked HTML documentation.
+# It's necessary to execute with the option --non-recursive to make sure not to call all child modules.
+
+mvn -e clean docbkx:generate-pdf -Pdocbook-pdf --non-recursive
+
+############################ PDF ############################
+# maven command to generate PDF documentation.
+# It's necessary to execute with the option --non-recursive to make sure not to call all child modules.
+
+mvn -e clean docbkx:generate-pdf -Pdocbook-pdf --non-recursive

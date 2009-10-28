@@ -1,0 +1,173 @@
+html {
+    padding: 0pt;
+    margin: 0pt;
+}
+
+body {
+    margin-left: 10%;
+    margin-right: 10%;
+    font-family: verdana, sans-serif;
+}
+
+div {
+    margin: 0pt;
+    font-size: 12px;
+}
+
+p {
+    text-align: justify;
+    font-size: 12px;
+}
+
+hr {
+    border: 1px solid #003063;
+}
+
+h1 {
+    color: #e4c357;
+    font-family: verdana, sans-serif;
+    font-size: 2.5em;
+}
+
+h2 {
+    color: #003063;
+    font-family: verdana, sans-serif;
+    font-size: 2em;
+    border-left: 1px solid #e4c357;
+    border-bottom: 1px solid #e4c357;
+}
+
+h3 {
+    color: #003063;
+    font-family: verdana, sans-serif;
+    font-size: 1.5em;
+}
+
+h4 {
+    color: #003063;
+    font-family: verdana, sans-serif;
+    font-size: 1em;
+}
+
+th {
+    color: #003063;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+pre.programlisting {
+    color: #000000;
+    font-family: monospace, sans-serif;
+    font-size: 11px;
+    background-color: #ffffff;
+    border: 1px solid #aaaaaa;
+    padding: 1em;
+    clear: both;
+}
+
+div.table {
+    margin: 1em;
+    padding: 12px;
+    text-align: center;
+}
+
+div.table table {
+    display: table;
+    width: 100%;
+}
+
+div.table td {
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 12px;
+}
+
+.mediaobject {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+.legalnotice {
+    font-family: verdana, helvetica, sans-serif;
+    font-size: 12px;
+    font-style: italic;
+}
+
+p.releaseinfo {
+    font-weight: bold;
+    font-family: verdana, helvetica, sans-serif;
+    padding-top: 10px;
+}
+
+p.pubdate {
+    font-weight: bold;
+    font-family: verdana, helvetica, sans-serif;
+}
+
+span.productname {
+    font-weight: bold;
+    font-family: verdana, helvetica, sans-serif;
+}
+
+div.revhistory {
+    display: none;
+}
+
+img {
+    border: none;
+}
+
+a {
+    color: #a00000;
+    font-family: verdana, helvetica, sans-serif;
+    text-decoration: underline;
+    font-size: 10px;
+}
+
+a:hover {
+    color: #a00000;
+    font-family: verdana, helvetica, sans-serif;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+div.example {
+    color: #e4c357;
+    font-family: verdana, helvetica, sans-serif;
+    font-size: 1.2em;
+}
+
+ul {
+    list-style-image: url(../images/bullet.png);
+    list-style-type: square;
+}
+
+.hl-keyword {
+    color: #7f0055 !important;
+    font-weight: bold !important;
+}
+
+.hl-comment {
+    color: #3f5f5f !important;
+    font-style: italic !important;
+}
+
+.hl-multiline-comment {
+    color: #3f5fbf !important;
+    font-style: italic !important;
+}
+
+.hl-tag {
+    color: #3f7f7f !important;
+}
+
+.hl-attribute {
+    color: #7f007f !important;
+}
+.hl-string {
+    color: #2a00ff !important;
+}
+
+.hl-value {
+    color: #2a00ff !important;
+}
