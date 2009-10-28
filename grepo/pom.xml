@@ -433,4 +433,139 @@
         </plugins>
     </reporting>
 
+    <profiles>
+        <profile>
+            <!-- See src/main/doc/docbkx-maven-commands.txt for how to create documentation -->
+            <id>docbook-html-chunked</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                         <plugin>
+                            <groupId>com.agilejava.docbkx</groupId>
+                            <artifactId>docbkx-maven-plugin</artifactId>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>org.docbook</groupId>
+                                    <artifactId>docbook-xml</artifactId>
+                                    <version>4.4</version>
+                                    <scope>runtime</scope>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.xmlgraphics</groupId>
+                                    <artifactId>fop</artifactId>
+                                    <version>0.95</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.avalon.framework</groupId>
+                                    <artifactId>avalon-framework-impl</artifactId>
+                                    <version>4.3.1</version>
+                                </dependency>
+                            </dependencies>
+                            <configuration>
+                                <chunkedOutput>true</chunkedOutput>
+                                <sourceDirectory>
+                                    ${basedir}/src/main/resources/doc
+                                </sourceDirectory>
+                                <targetDirectory>
+                                    ${project.build.directory}/doc/html/chunked
+                                </targetDirectory>
+                                <htmlCustomization>${basedir}/src/main/resources/doc/html/fo-chunked-html.xsl</htmlCustomization>
+                                <imgSrcPath>
+                                    ${basedir}/src/main/resources/doc/resources/images
+                                </imgSrcPath>
+                                <preProcess>
+                                    <copy todir="${project.build.directory}/doc/html/chunked/resources/images">
+                                        <fileset dir="${basedir}/src/main/resources/doc/html/resources/images" />
+                                        <fileset dir="${basedir}/src/main/resources/doc/resources/images" />
+                                    </copy>
+                                    <copy todir="${project.build.directory}/doc/html/chunked/resources/css">
+                                        <fileset dir="${basedir}/src/main/resources/doc/html/resources/css" />
+                                    </copy>
+                                    <copy todir="${project.build.directory}/doc/html/chunked/resources">
+                                        <fileset dir="${basedir}/src/main/resources/doc/html/resources" />
+                                    </copy>
+                                </preProcess>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>com.agilejava.docbkx</groupId>
+                        <artifactId>docbkx-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <!-- See src/main/doc/docbkx-maven-commands.txt for how to create documentation -->
+            <!--  TODO : modify XSL for PDF creation. It's not yet  finished. -->
+            <id>docbook-pdf</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                         <plugin>
+                            <groupId>com.agilejava.docbkx</groupId>
+                            <artifactId>docbkx-maven-plugin</artifactId>
+                            <dependencies>
+                                <!-- Install manually -->
+                                <dependency>
+                                    <groupId>offo.hyphenation</groupId>
+                                    <artifactId>fop-hyph</artifactId>
+                                    <version>1.2</version>
+                                    <scope>runtime</scope>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.docbook</groupId>
+                                    <artifactId>docbook-xml</artifactId>
+                                    <version>4.4</version>
+                                    <scope>runtime</scope>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.xmlgraphics</groupId>
+                                    <artifactId>fop</artifactId>
+                                    <version>0.95</version>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.avalon.framework</groupId>
+                                    <artifactId>avalon-framework-impl</artifactId>
+                                    <version>4.3.1</version>
+                                </dependency>
+                            </dependencies>
+                            <configuration>
+                                <sourceDirectory>
+                                    ${basedir}/src/main/resources/doc
+                                </sourceDirectory>
+                                <targetDirectory>
+                                    ${project.build.directory}/doc/pdf
+                                </targetDirectory>
+                                <htmlCustomization>${basedir}/src/main/resources/doc/pdf/fo-pdf.xsl</htmlCustomization>
+                                <imgSrcPath>
+                                    ${basedir}/src/main/resources/doc/resources/images
+                                </imgSrcPath>
+                                <preProcess>
+                                    <copy todir="${project.build.directory}/doc/pdf/resources/images">
+                                        <fileset dir="${basedir}/src/main/resources/doc/pdf/resources/images" />
+                                        <fileset dir="${basedir}/src/main/resources/doc/resources/images" />
+                                    </copy>
+                                    <copy todir="${project.build.directory}/doc/pdf/resources">
+                                        <fileset dir="${basedir}/src/main/resources/doc/pdf/resources" />
+                                    </copy>
+                                </preProcess>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+
+                <plugins>
+                    <plugin>
+                        <groupId>com.agilejava.docbkx</groupId>
+                        <artifactId>docbkx-maven-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
