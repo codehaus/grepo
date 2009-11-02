@@ -52,6 +52,6 @@ public final class GenericJdbcUtils {
      * @return Returns {@code true} if valid and {@code false} otherwise.
      */
     public static boolean isValidResultSetExtractor(Class<? extends ResultSetExtractor> clazz) {
-        return (clazz != null && clazz != ResultSetExtractor.class);
+        return (clazz != null && clazz != PlaceHolderResultSetExtractor.class);
     }
 }
