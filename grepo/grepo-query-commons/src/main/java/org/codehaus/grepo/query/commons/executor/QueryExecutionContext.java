@@ -16,11 +16,13 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
+import org.codehaus.grepo.core.executor.GenericExecutionContext;
+
 /**
  * Represents the context of a generic query execution.
  *
  * @author dguggi
  */
-public interface QueryExecutionContext {
+public interface QueryExecutionContext extends GenericExecutionContext {
 
 }
