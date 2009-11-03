@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFactory;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategy;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -33,6 +34,9 @@ public abstract class GenericRepositorySupport<T> implements GenericRepository<T
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(GenericRepositorySupport.class);
+
+    /** The application context. */
+    private ApplicationContext applicationContext;
 
     /** The transaction template to use. */
     private TransactionTemplate transactionTemplate;
@@ -63,17 +67,6 @@ public abstract class GenericRepositorySupport<T> implements GenericRepository<T
      * @param entityClass The entity class.
      */
     public GenericRepositorySupport(Class<T> entityClass) {
-        this.entityClass = entityClass;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Class<T> getEntityClass() {
-        return entityClass;
-    }
-
-    public void setEntityClass(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 
@@ -120,6 +113,25 @@ public abstract class GenericRepositorySupport<T> implements GenericRepository<T
             retVal = templateToUse.execute(callback);
         }
         return retVal;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Class<T> getEntityClass() {
+        return entityClass;
+    }
+
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
+    protected ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
     public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
