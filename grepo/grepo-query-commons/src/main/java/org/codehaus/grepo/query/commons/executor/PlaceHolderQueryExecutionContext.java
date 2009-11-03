@@ -16,11 +16,19 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
+import org.springframework.context.ApplicationContext;
+
 /**
  * PlaceHolder may not be used or extended.
  *
  * @author dguggi
  */
 public final class PlaceHolderQueryExecutionContext implements QueryExecutionContext {
+    /**
+     * {@inheritDoc}
+     */
+    public ApplicationContext getApplicationContext() {
+        return null;
+    }
 
 }
