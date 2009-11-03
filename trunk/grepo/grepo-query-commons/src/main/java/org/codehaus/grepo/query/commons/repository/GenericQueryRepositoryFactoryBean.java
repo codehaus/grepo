@@ -205,6 +205,7 @@ public class GenericQueryRepositoryFactoryBean<E> extends GenericRepositoryFacto
     @Override
     protected void configureTarget(GenericRepositorySupport<E> target) {
         // set mandatory properties...
+        target.setApplicationContext(getApplicationContext());
         target.setEntityClass(entityClass);
         target.setQueryExecutorFactory(queryExecutorFactory);
         target.setQueryExecutorFindingStrategy(queryExecutorFindingStrategy);
