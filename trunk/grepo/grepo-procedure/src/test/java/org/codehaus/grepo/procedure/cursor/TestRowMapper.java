@@ -14,33 +14,22 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.compile;
+package org.codehaus.grepo.procedure.cursor;
 
-import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.springframework.jdbc.object.StoredProcedure;
+import org.springframework.jdbc.core.RowMapper;
 
 /**
- * Default stored procedure implementation.
- *
  * @author dguggi
  */
-public class StoredProcedureImpl extends StoredProcedure {
-
-    /**
-     * @param ds The datasource.
-     * @param name The name.
-     */
-    public StoredProcedureImpl(final DataSource ds, final String name) {
-        super(ds, name);
-    }
-
+public class TestRowMapper implements RowMapper {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this).append("sql", getSql()).toString();
+    public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return rs.getString("value");
     }
+
 }

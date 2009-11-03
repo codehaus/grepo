@@ -33,5 +33,6 @@ public interface GenericProcedureRepository {
      * @throws Exception in case of errors.
      */
     @SuppressWarnings("PMD")
-    Object execute(ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure) throws Exception;
+    Object executeGenericProcedure(ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
+        throws Exception;
 }

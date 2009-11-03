@@ -64,7 +64,7 @@ public class GenericProcedureMethodInterceptor implements MethodInterceptor {
                 }
                 result = invocation.proceed();
             } else {
-                result = repo.execute(pmpi, annotation);
+                result = repo.executeGenericProcedure(pmpi, annotation);
             }
         } finally {
             if (LOG.isTraceEnabled()) {

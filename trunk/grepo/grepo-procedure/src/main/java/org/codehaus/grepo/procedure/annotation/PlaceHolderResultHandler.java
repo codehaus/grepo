@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.input;
-
-import java.util.Map;
-
-import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+package org.codehaus.grepo.procedure.annotation;
 
 /**
- * Generates an input map for a procedure call.
- *
  * @author dguggi
  */
-public interface ProcedureInputGenerationStrategy {
-    /**
-     * @param pmpi The method parameter info.
-     * @param context The procedure execution context.
-     * @return Returns the created input map.
-     */
-    Map<String, Object> generate(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context);
+public final class PlaceHolderResultHandler {
+
 }

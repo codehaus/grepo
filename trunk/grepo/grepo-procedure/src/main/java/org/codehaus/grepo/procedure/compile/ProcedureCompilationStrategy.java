@@ -16,9 +16,8 @@
 
 package org.codehaus.grepo.procedure.compile;
 
-import javax.sql.DataSource;
-
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**
@@ -28,9 +27,9 @@ import org.springframework.jdbc.object.StoredProcedure;
  */
 public interface ProcedureCompilationStrategy {
     /**
-     * @param ds The data source to set.
-     * @param pmpi The Method Parameter Info.
+     * @param pmpi The method parameter info.
+     * @param context The procedure execution context.
      * @return Returns the compiled procedure.
      */
-    StoredProcedure compile(DataSource ds, ProcedureMethodParameterInfo pmpi);
+    StoredProcedure compile(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context);
 }

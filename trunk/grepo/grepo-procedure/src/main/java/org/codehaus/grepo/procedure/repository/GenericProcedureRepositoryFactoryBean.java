@@ -260,6 +260,7 @@ public class GenericProcedureRepositoryFactoryBean
     protected void configureTarget(GenericProcedureRepositorySupport target) {
         // set mandatory properties...
         target.setDataSource(dataSource);
+        target.setApplicationContext(getApplicationContext());
         target.setProcedureInputGenerationStrategy(procedureInputGenerationStrategy);
         target.setProcedureCachingStrategy(procedureCachingStrategy);
         target.setProcedureCompilationStrategy(procedureCompilationStrategy);
