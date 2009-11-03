@@ -167,6 +167,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
      */
     protected JpaQueryExecutionContext createQueryExecutionContext(CurrentEntityManagerHolder emHolder) {
         JpaQueryExecutionContextImpl context = new JpaQueryExecutionContextImpl();
+        context.setApplicationContext(getApplicationContext());
         context.setEntityManager(emHolder.getEntityManager());
         return context;
     }
