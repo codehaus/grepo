@@ -160,6 +160,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
      */
     protected HibernateQueryExecutionContext createQueryExecutionContext(CurrentSessionHolder sessionHolder) {
         HibernateQueryExecutionContextImpl context = new HibernateQueryExecutionContextImpl();
+        context.setApplicationContext(getApplicationContext());
         context.setSession(sessionHolder.getSession());
         context.setCaching(getCaching());
         context.setCacheRegion(getCacheRegion());
