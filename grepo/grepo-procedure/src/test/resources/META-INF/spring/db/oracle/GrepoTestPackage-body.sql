@@ -14,7 +14,7 @@ IS
 	p_integer IN OUT INTEGER)
 	IS
 	BEGIN
-		p_integer := 99;
+	   p_integer := 99;
   END simple_proc2;
 
   FUNCTION simple_function (
@@ -23,8 +23,18 @@ IS
     RETURN VARCHAR2
     IS
     BEGIN
-    	return 'p1=' || p_string || ' p2=' || p_integer;
+       return 'p1=' || p_string || ' p2=' || p_integer;
   END simple_function;
+
+  PROCEDURE cursor_proc (
+    p_string IN VARCHAR2,
+    p_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+       open p_result FOR
+       select p_string as value from dual;
+  END cursor_proc;
+  
 
 END grepo_test;
 

@@ -14,23 +14,31 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.input;
+package org.codehaus.grepo.procedure.executor;
 
-import java.util.Map;
+import javax.sql.DataSource;
 
-import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
 
 /**
- * Generates an input map for a procedure call.
- *
  * @author dguggi
  */
-public interface ProcedureInputGenerationStrategy {
+public class ProcedureExecutionContextImpl extends AbstractGenericExecutionContext
+    implements ProcedureExecutionContext {
+
+    /** The data source. */
+    private DataSource dataSource;
+
     /**
-     * @param pmpi The method parameter info.
-     * @param context The procedure execution context.
-     * @return Returns the created input map.
+     * {@inheritDoc}
      */
-    Map<String, Object> generate(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context);
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
 }

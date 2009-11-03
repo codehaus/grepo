@@ -45,4 +45,10 @@ public @interface InOut {
 
     /** The param typeName. */
     String typeName() default "";
+
+    /** The result handler class. */
+    Class<?> resultHandler() default PlaceHolderResultHandler.class;
+
+    /** The result handler spring bean id. */
+    String resultHandlerId() default "";
 }

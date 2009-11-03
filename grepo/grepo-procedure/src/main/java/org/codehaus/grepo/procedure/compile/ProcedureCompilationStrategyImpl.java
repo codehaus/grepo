@@ -19,8 +19,6 @@ package org.codehaus.grepo.procedure.compile;
 import java.util.Collections;
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +26,8 @@ import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.executor.StoredProcedureImpl;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**
@@ -43,16 +43,16 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
     /**
      * {@inheritDoc}
      */
-    public StoredProcedure compile(DataSource ds, ProcedureMethodParameterInfo pmpi) {
+    public StoredProcedure compile(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context) {
         GenericProcedure annotation = pmpi.getMethodAnnotation(GenericProcedure.class);
-        List<ProcedureParamDescriptor> params = ProcedureCompilationUtil.collectParams(pmpi);
+        List<ProcedureParamDescriptor> params = ProcedureCompilationUtils.collectParams(pmpi, context);
 
         validateParamNames(annotation, pmpi, params);
 
-        StoredProcedure storedProcedure = new StoredProcedureImpl(ds, annotation.sql());
+        StoredProcedure storedProcedure = new StoredProcedureImpl(context.getDataSource(), annotation.sql());
         storedProcedure.setFunction(annotation.function());
 
-        if (ProcedureCompilationUtil.allParamsHaveValidIndex(params)) {
+        if (ProcedureCompilationUtils.allParamsHaveValidIndex(params)) {
             // all parameters have valid index defined...
             declareParameters(storedProcedure, params, true);
         } else if (storedProcedure.isFunction()) {
@@ -81,7 +81,7 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
     protected void validateParamNames(GenericProcedure genericProcedure, ProcedureMethodParameterInfo pmpi,
             List<ProcedureParamDescriptor> params) throws ConfigurationException {
         if (StringUtils.isNotEmpty(genericProcedure.returnParamName())) {
-            ProcedureParamDescriptor desc = ProcedureCompilationUtil.getParamWithName(params, genericProcedure
+            ProcedureParamDescriptor desc = ProcedureCompilationUtils.getParamWithName(params, genericProcedure
                 .returnParamName());
             if (desc == null || desc.getType() == ProcedureParamType.IN) {
                 String msg = String.format("Attribute returnParamName set to '%s' but no "
@@ -93,7 +93,7 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
         // validate names for method-parameters annotated with @Param
         List<Param> list = pmpi.getParameterAnnotations(Param.class);
         for (Param param : list) {
-            ProcedureParamDescriptor desc = ProcedureCompilationUtil.getParamWithName(params, param.value());
+            ProcedureParamDescriptor desc = ProcedureCompilationUtils.getParamWithName(params, param.value());
             if (desc == null) {
                 String msg = String.format("Procedure parameter '%s' is invalid", param.value());
                 throw new ConfigurationException(msg);
@@ -116,15 +116,15 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
     protected void declareParametersForFunction(StoredProcedure storedProcedure,
                                                     List<ProcedureParamDescriptor> params) {
         // declare out, in-out, in prameters in that order...
-        List<ProcedureParamDescriptor> outParams = ProcedureCompilationUtil.getParamsWithType(params,
+        List<ProcedureParamDescriptor> outParams = ProcedureCompilationUtils.getParamsWithType(params,
             ProcedureParamType.OUT);
         declareParameters(storedProcedure, outParams, false);
 
-        List<ProcedureParamDescriptor> inoutParams = ProcedureCompilationUtil.getParamsWithType(params,
+        List<ProcedureParamDescriptor> inoutParams = ProcedureCompilationUtils.getParamsWithType(params,
             ProcedureParamType.INOUT);
         declareParameters(storedProcedure, inoutParams, false);
 
-        List<ProcedureParamDescriptor> inParams = ProcedureCompilationUtil.getParamsWithType(params,
+        List<ProcedureParamDescriptor> inParams = ProcedureCompilationUtils.getParamsWithType(params,
             ProcedureParamType.IN);
         declareParameters(storedProcedure, inParams, false);
     }
@@ -144,15 +144,15 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
     protected void declareParametersForProcedure(StoredProcedure storedProcedure,
                                                 List<ProcedureParamDescriptor> params) {
         // declare in, in-out, out prameters in that order...
-        List<ProcedureParamDescriptor> inParams = ProcedureCompilationUtil.getParamsWithType(params,
+        List<ProcedureParamDescriptor> inParams = ProcedureCompilationUtils.getParamsWithType(params,
             ProcedureParamType.IN);
         declareParameters(storedProcedure, inParams, false);
 
-        List<ProcedureParamDescriptor> inoutParams = ProcedureCompilationUtil.getParamsWithType(params,
+        List<ProcedureParamDescriptor> inoutParams = ProcedureCompilationUtils.getParamsWithType(params,
             ProcedureParamType.INOUT);
         declareParameters(storedProcedure, inoutParams, false);
 
-        List<ProcedureParamDescriptor> outParams = ProcedureCompilationUtil.getParamsWithType(params,
+        List<ProcedureParamDescriptor> outParams = ProcedureCompilationUtils.getParamsWithType(params,
             ProcedureParamType.OUT);
         declareParameters(storedProcedure, outParams, false);
     }
@@ -166,7 +166,7 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
      */
     protected void declareParameters(StoredProcedure storedProcedure, List<ProcedureParamDescriptor> list,
             boolean forceSort) {
-        if (forceSort || ProcedureCompilationUtil.allParamsHaveValidIndex(list)) {
+        if (forceSort || ProcedureCompilationUtils.allParamsHaveValidIndex(list)) {
             Collections.sort(list, new ProcedureParamDescriptorComparator());
         }
         for (ProcedureParamDescriptor desc : list) {

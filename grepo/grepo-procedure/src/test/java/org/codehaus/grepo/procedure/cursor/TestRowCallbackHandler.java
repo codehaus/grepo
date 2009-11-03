@@ -14,23 +14,30 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.input;
+package org.codehaus.grepo.procedure.cursor;
 
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.springframework.jdbc.core.RowCallbackHandler;
 
 /**
- * Generates an input map for a procedure call.
- *
  * @author dguggi
  */
-public interface ProcedureInputGenerationStrategy {
-    /**
-     * @param pmpi The method parameter info.
-     * @param context The procedure execution context.
-     * @return Returns the created input map.
-     */
-    Map<String, Object> generate(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context);
+public class TestRowCallbackHandler implements RowCallbackHandler {
+    /** invoked flag. */
+    private static boolean invoked;
+
+    /** {@inheritDoc} */
+    public void processRow(ResultSet rs) throws SQLException {
+        setInvoked(true);
+    }
+
+    public static boolean isInvoked() {
+        return invoked;
+    }
+
+    public static void setInvoked(boolean invoked) {
+        TestRowCallbackHandler.invoked = invoked;
+    }
 }

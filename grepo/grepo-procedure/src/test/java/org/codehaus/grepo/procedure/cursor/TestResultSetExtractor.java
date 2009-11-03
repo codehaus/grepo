@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.input;
+package org.codehaus.grepo.procedure.cursor;
 
-import java.util.Map;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 
 /**
- * Generates an input map for a procedure call.
- *
  * @author dguggi
  */
-public interface ProcedureInputGenerationStrategy {
+public class TestResultSetExtractor implements ResultSetExtractor {
     /**
-     * @param pmpi The method parameter info.
-     * @param context The procedure execution context.
-     * @return Returns the created input map.
+     * {@inheritDoc}
      */
-    Map<String, Object> generate(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context);
+    public Object extractData(ResultSet rs) throws SQLException, DataAccessException {
+        rs.next();
+        return rs.getString("value");
+    }
 }

@@ -19,11 +19,10 @@ package org.codehaus.grepo.procedure.input;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
 
 /**
  * Default implementation of {@link ProcedureInputGenerationStrategy}.
@@ -37,7 +36,7 @@ public class ProcedureInputGenerationStrategyImpl implements ProcedureInputGener
     /**
      * {@inheritDoc}
      */
-    public Map<String, Object> generate(DataSource dataSource, ProcedureMethodParameterInfo pmpi) {
+    public Map<String, Object> generate(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context) {
         Map<String, Object> map = new HashMap<String, Object>();
 
         for (int i = 0; i < pmpi.getParameters().size(); i++) {

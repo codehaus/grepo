@@ -25,6 +25,8 @@ import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.executor.ProcedureExecutionContextImpl;
 import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -43,7 +45,8 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD")
-    public Object execute(final ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure) throws Exception {
+    public Object executeGenericProcedure(final ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
+        throws Exception {
         Map<String, Object> resultMap = executeProcedure(pmpi, genericProcedure);
 
         Object result = convertResult(resultMap, pmpi, genericProcedure);
@@ -63,21 +66,12 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
     protected Map<String, Object> executeProcedure(final ProcedureMethodParameterInfo pmpi,
             GenericProcedure genericProcedure) {
         TransactionCallback callback = new TransactionCallback() {
-
-            @SuppressWarnings("unchecked")
             public Object doInTransaction(final TransactionStatus status) {
-                StoredProcedure sp = prepareProcedure(pmpi);
+                ProcedureExecutionContext context = createProcedureExecutionContext();
 
-                Map<String, Object> input = null;
-                if (pmpi.getParameters().size() == 1 && pmpi.getParameter(0) instanceof Map) {
-                    input = pmpi.getParameter(0, Map.class);
-                } else {
-                    input = getProcedureInputGenerationStrategy().generate(getDataSource(), pmpi);
-                }
+                StoredProcedure sp = prepareProcedure(pmpi, context);
 
-                if (input == null) {
-                    input = new HashMap<String, Object>();
-                }
+                Map<String, Object> input = generateInputMap(pmpi, context);
 
                 if (LOG.isTraceEnabled()) {
                     LOG.trace("About to execute procedure: " + sp.getSql());
@@ -137,10 +131,23 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
     }
 
     /**
+     * Creates a procedure execution context.
+     *
+     * @return Returns the newly created {@link ProcedureExecutionContext}.
+     */
+    protected ProcedureExecutionContext createProcedureExecutionContext() {
+        ProcedureExecutionContextImpl context = new ProcedureExecutionContextImpl();
+        context.setApplicationContext(getApplicationContext());
+        context.setDataSource(getDataSource());
+        return context;
+    }
+
+    /**
      * @param pmpi The procedure method parameter info.
+     * @param context The procedure execution context.
      * @return Returns the stored procedure.
      */
-    protected StoredProcedure prepareProcedure(ProcedureMethodParameterInfo pmpi) {
+    protected StoredProcedure prepareProcedure(ProcedureMethodParameterInfo pmpi, ProcedureExecutionContext context) {
         GenericProcedure annotation = pmpi.getMethodAnnotation(GenericProcedure.class);
 
         StoredProcedure storedProcedure = null;
@@ -153,7 +160,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
 
         if (storedProcedure == null) {
             // no procedure found in cache, so create new procedure...
-            storedProcedure = getProcedureCompilationStrategy().compile(getDataSource(), pmpi);
+            storedProcedure = getProcedureCompilationStrategy().compile(pmpi, context);
             if (annotation.cachingEnabled()) {
                 // cache the newly compiled procedure...
                 getProcedureCachingStrategy().addToCache(storedProcedure, cacheName);
@@ -161,6 +168,27 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
 
         }
         return storedProcedure;
+    }
+
+    /**
+     * @param pmpi The procedure method parameter info.
+     * @param context The procedure execution context.
+     * @return Returns the generated input map.
+     */
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> generateInputMap(ProcedureMethodParameterInfo pmpi,
+            ProcedureExecutionContext context) {
+        Map<String, Object> input = null;
+        if (pmpi.getParameters().size() == 1 && pmpi.getParameter(0) instanceof Map) {
+            input = pmpi.getParameter(0, Map.class);
+        } else {
+            input = getProcedureInputGenerationStrategy().generate(pmpi, context);
+        }
+
+        if (input == null) {
+            input = new HashMap<String, Object>();
+        }
+        return input;
     }
 
 }

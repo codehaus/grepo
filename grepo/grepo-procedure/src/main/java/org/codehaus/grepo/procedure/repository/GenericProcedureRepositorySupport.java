@@ -26,6 +26,7 @@ import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.procedure.cache.ProcedureCachingStrategy;
 import org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategy;
 import org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategy;
+import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -50,6 +51,9 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
 
     /** The datasource. */
     private DataSource dataSource;
+
+    /** The application context. */
+    private ApplicationContext applicationContext;
 
     /** The transaction template to use. */
     private TransactionTemplate transactionTemplate;
@@ -156,4 +160,13 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
     public void setResultConversionService(ResultConversionService resultConversionService) {
         this.resultConversionService = resultConversionService;
     }
+
+    protected ApplicationContext getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+    }
+
 }
