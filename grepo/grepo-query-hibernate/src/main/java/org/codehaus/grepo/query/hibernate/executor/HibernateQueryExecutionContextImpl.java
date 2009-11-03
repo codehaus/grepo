@@ -16,13 +16,16 @@
 
 package org.codehaus.grepo.query.hibernate.executor;
 
+import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.hibernate.Session;
 
 /**
  * @author dguggi
  */
-public class HibernateQueryExecutionContextImpl implements HibernateQueryExecutionContext {
+public class HibernateQueryExecutionContextImpl
+    extends AbstractGenericExecutionContext implements HibernateQueryExecutionContext {
+
     /** The session. */
     private Session session;
 
