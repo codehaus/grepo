@@ -21,13 +21,16 @@ import java.sql.Types;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.annotation.In;
 import org.codehaus.grepo.procedure.annotation.Out;
+import org.codehaus.grepo.procedure.repository.GenericProcedureRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * This is the procedure repository for the {@code GREPO_DEMO} package.
  *
  * @author dguggi
  */
-public interface DemoProcedure {
+@Repository
+public interface DemoProcedure extends GenericProcedureRepository {
 
     /**
      * Executes {@code GREPO_DEMO.DEMO_PROCEDURE}.
