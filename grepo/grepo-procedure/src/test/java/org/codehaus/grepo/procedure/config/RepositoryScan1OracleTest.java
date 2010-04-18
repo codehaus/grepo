@@ -20,22 +20,28 @@ import org.codehaus.grepo.core.context.GrepoOracleTestContextLoaderWithDefLoc;
 import org.codehaus.grepo.procedure.AbstractProcedureRepositoryTest;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
-public class RepositoryScanOracleTest3 extends AbstractProcedureRepositoryTest {
+public class RepositoryScan1OracleTest extends AbstractProcedureRepositoryTest {
+
+    /** This is a special repository with custom implementation. */
+    @Autowired
+    private ScanTestRepository4 repo4;  //NOPMD
 
     /**
-     * Tests scan result. {@link ScanTestRepository1} should have been ignored because of exclude-filter.
+     * Tests scan result.
      */
     @Test
     public void testScanResult() {
-        Assert.assertFalse(getBeanFactory().containsBean("scanTestRepository1"));
+        Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository1"));
         Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository2CustomName"));
         Assert.assertFalse(getBeanFactory().containsBean("scanTestRepository3"));
         Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository4Impl"));
+        repo4.doSomethingSpecial();
     }
 }

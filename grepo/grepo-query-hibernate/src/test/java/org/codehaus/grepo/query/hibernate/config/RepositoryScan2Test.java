@@ -26,7 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class RepositoryScanTest2 extends AbstractHibernateRepositoryTest {
+public class RepositoryScan2Test extends AbstractHibernateRepositoryTest {
     /**
      * Tests scan result. All repositories should have been ignored because of exclude-filter.
      */

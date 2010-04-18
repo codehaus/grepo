@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.jpa.config;
+package org.codehaus.grepo.query.hibernate.config;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.query.jpa.AbstractJpaRepositoryTest;
+import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
@@ -26,7 +26,7 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class RepositoryScanTest3 extends AbstractJpaRepositoryTest {
+public class RepositoryScan3Test extends AbstractHibernateRepositoryTest {
     /**
      * Tests scan result. {@link ScanTestRepository1} should have been ignored because of exclude-filter.
      */

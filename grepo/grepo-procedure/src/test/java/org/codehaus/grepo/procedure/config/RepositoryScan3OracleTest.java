@@ -14,33 +14,28 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.config;
+package org.codehaus.grepo.procedure.config;
 
-import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
+import org.codehaus.grepo.core.context.GrepoOracleTestContextLoaderWithDefLoc;
+import org.codehaus.grepo.procedure.AbstractProcedureRepositoryTest;
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 /**
  * @author dguggi
  */
-@ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class RepositoryScanTest1 extends AbstractHibernateRepositoryTest {
-    /** This is a special repository with custom implementation. */
-    @Autowired
-    private ScanTestRepository4 repo4;  //NOPMD
+@ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
+public class RepositoryScan3OracleTest extends AbstractProcedureRepositoryTest {
 
     /**
-     * Tests scan result.
+     * Tests scan result. {@link ScanTestRepository1} should have been ignored because of exclude-filter.
      */
     @Test
     public void testScanResult() {
-        Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository1"));
+        Assert.assertFalse(getBeanFactory().containsBean("scanTestRepository1"));
         Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository2CustomName"));
         Assert.assertFalse(getBeanFactory().containsBean("scanTestRepository3"));
         Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository4Impl"));
-        repo4.doSomethingSpecial();
     }
 }
