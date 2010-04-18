@@ -8,7 +8,7 @@
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath:META-INF/spring/grepo-core-default.cfg.xml"/>
+    <import resource="classpath:META-INF/grepo/grepo-core-default.cfg.xml"/>
 
     <bean id="grepo.genericQueryMethodInterceptor"
         class="org.codehaus.grepo.query.commons.repository.GenericQueryMethodInterceptor">
