@@ -10,7 +10,7 @@
     <url>http://grepo.codehaus.org</url>
 
     <properties>
-        <grepo.version>1.0.0</grepo.version>
+        <grepo.version>1.5.0-SNAPSHOT</grepo.version>
     </properties>
 
     <organization>
