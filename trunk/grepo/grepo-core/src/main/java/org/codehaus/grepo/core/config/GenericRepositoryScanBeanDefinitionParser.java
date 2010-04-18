@@ -88,7 +88,10 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
     public BeanDefinition parse(Element element, ParserContext parserContext) {
         Object source = parserContext.extractSource(element);
         GenericRepositoryConfigContext configContext = new GenericRepositoryConfigContext(element);
+
+        // init bean defintion parse delegate...
         BeanDefinitionParserDelegate delegate = new BeanDefinitionParserDelegate(parserContext.getReaderContext());
+        delegate.initDefaults(element.getOwnerDocument().getDocumentElement());
 
         GenericRepositoryBeanDefinitionScanner scanner = configureScanner(configContext, parserContext);
 
