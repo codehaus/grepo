@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.procedure.config;
+package org.codehaus.grepo.query.jpa.config;
 
-import org.codehaus.grepo.core.context.GrepoOracleTestContextLoaderWithDefLoc;
-import org.codehaus.grepo.procedure.AbstractProcedureRepositoryTest;
+import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
+import org.codehaus.grepo.query.jpa.AbstractJpaRepositoryTest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,8 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author dguggi
  */
-@ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
-public class RepositoryScanOracleTest1 extends AbstractProcedureRepositoryTest {
-
+@ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
+public class RepositoryScan1Test extends AbstractJpaRepositoryTest {
     /** This is a special repository with custom implementation. */
     @Autowired
     private ScanTestRepository4 repo4;  //NOPMD
