@@ -57,7 +57,7 @@ public class GenericProcedureMethodInterceptor implements MethodInterceptor {
             if (annotation == null) {
                 // no GenericProcedure annotation present, so do not invoke via aop...
                 if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Method '%s' is not annotated with @GenericQuery"
+                    String msg = String.format("Method '%s' is not annotated with @GenericProcedure"
                         + " - invocation will proceed to implementation '%s'",
                         pmpi.getMethodName(), repo.getClass().getName());
                     LOG.trace(msg);
