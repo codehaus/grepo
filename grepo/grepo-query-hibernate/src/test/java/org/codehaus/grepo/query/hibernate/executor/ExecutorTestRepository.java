@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.codehaus.grepo.query.hibernate.annotation.GScrollMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
@@ -31,7 +31,7 @@ import org.hibernate.ScrollableResults;
 /**
  * @author dguggi
  */
-public interface ExecutorTestRepository extends GenericRepository<TestEntity> {
+public interface ExecutorTestRepository extends GenericQueryRepository<TestEntity> {
     /**
      * @param type The type.
      * @return Returns the entity.

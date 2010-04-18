@@ -22,11 +22,12 @@ import org.codehaus.grepo.core.converter.TestResultConverter;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.annotation.In;
 import org.codehaus.grepo.procedure.annotation.Out;
+import org.codehaus.grepo.procedure.repository.GenericProcedureRepository;
 
 /**
  * @author dguggi
  */
-public interface ConverterTestRepository {
+public interface ConverterTestRepository extends GenericProcedureRepository {
 
     /**
      * To test implicit conversion (from int to boolean).

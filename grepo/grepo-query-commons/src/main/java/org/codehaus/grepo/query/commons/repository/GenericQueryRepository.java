@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.query.commons.repository;
 
+import org.codehaus.grepo.core.repository.GenericRepository;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 
@@ -24,7 +25,7 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @param <T> The main entity type.
  */
-public interface GenericRepository<T> {
+public interface GenericQueryRepository<T> extends GenericRepository {
     /**
      * @return Returns the entity class.
      */

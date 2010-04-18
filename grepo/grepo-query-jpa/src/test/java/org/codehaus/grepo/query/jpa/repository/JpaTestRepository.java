@@ -22,14 +22,14 @@ import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.annotation.MaxResults;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.jpa.TestEntity;
 import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 
 /**
  * @author dguggi
  */
-public interface JpaTestRepository extends GenericRepository<TestEntity> {
+public interface JpaTestRepository extends GenericQueryRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the entity.

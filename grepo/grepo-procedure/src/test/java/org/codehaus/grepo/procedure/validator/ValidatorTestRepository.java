@@ -24,11 +24,12 @@ import org.codehaus.grepo.core.validator.TestResultValidator;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.annotation.In;
 import org.codehaus.grepo.procedure.annotation.Out;
+import org.codehaus.grepo.procedure.repository.GenericProcedureRepository;
 
 /**
  * @author dguggi
  */
-public interface ValidatorTestRepository {
+public interface ValidatorTestRepository extends GenericProcedureRepository {
 
     /**
      * @param p1 Procedure param1.

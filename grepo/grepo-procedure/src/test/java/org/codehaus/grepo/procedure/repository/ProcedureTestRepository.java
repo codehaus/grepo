@@ -30,7 +30,7 @@ import org.codehaus.grepo.procedure.annotation.OutParams;
 /**
  * @author dguggi
  */
-public interface ProcedureTestRepository {
+public interface ProcedureTestRepository extends GenericProcedureRepository {
 
     /**
      * @param p1 Procedure param1.

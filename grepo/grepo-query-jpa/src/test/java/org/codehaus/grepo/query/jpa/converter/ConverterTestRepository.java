@@ -18,13 +18,13 @@ package org.codehaus.grepo.query.jpa.converter;
 
 import org.codehaus.grepo.core.converter.TestResultConverter;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.jpa.TestEntity;
 
 /**
  * @author dguggi
  */
-public interface ConverterTestRepository extends GenericRepository<TestEntity> {
+public interface ConverterTestRepository extends GenericQueryRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the flag.

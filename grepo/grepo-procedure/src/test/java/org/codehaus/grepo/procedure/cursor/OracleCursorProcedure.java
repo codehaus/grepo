@@ -24,13 +24,14 @@ import oracle.jdbc.OracleTypes;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.annotation.In;
 import org.codehaus.grepo.procedure.annotation.Out;
+import org.codehaus.grepo.procedure.repository.GenericProcedureRepository;
 import org.hsqldb.Types;
 
 /**
  * @author dguggi
  */
 @SuppressWarnings("PMD")
-public interface OracleCursorProcedure {
+public interface OracleCursorProcedure extends GenericProcedureRepository {
 
     /**
      * This is an invalid procedure configuration because the sql type is set to {@code OracleTypes.CURSOR}

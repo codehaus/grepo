@@ -20,13 +20,13 @@ import java.io.IOException;
 
 import org.codehaus.grepo.core.validator.TestResultValidator;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.jpa.TestEntity;
 
 /**
  * @author dguggi
  */
-public interface ValidatorTestRepository extends GenericRepository<TestEntity> {
+public interface ValidatorTestRepository extends GenericQueryRepository<TestEntity> {
 
     /**
      * @param username The username.

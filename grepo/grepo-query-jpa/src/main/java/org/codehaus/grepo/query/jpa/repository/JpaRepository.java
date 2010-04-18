@@ -16,7 +16,7 @@
 
 package org.codehaus.grepo.query.jpa.repository;
 
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 
 /**
  * Marker interface for jpa generic repositories.
@@ -25,6 +25,6 @@ import org.codehaus.grepo.query.commons.repository.GenericRepository;
  *
  * @param <T>  The main entity type.
  */
-public interface JpaRepository<T> extends GenericRepository<T> {
+public interface JpaRepository<T> extends GenericQueryRepository<T> {
 
 }

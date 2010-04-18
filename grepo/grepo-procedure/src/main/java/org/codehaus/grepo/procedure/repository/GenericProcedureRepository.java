@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.procedure.repository;
 
+import org.codehaus.grepo.core.repository.GenericRepository;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 
@@ -24,7 +25,7 @@ import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
  *
  * @author dguggi
  */
-public interface GenericProcedureRepository {
+public interface GenericProcedureRepository extends GenericRepository {
 
     /**
      * @param pmpi The procedure method parameter info.

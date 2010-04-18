@@ -19,13 +19,13 @@ package org.codehaus.grepo.query.jpa.executor;
 import java.util.List;
 
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.jpa.TestEntity;
 
 /**
  * @author dguggi
  */
-public interface ExecutorTestRepository extends GenericRepository<TestEntity> {
+public interface ExecutorTestRepository extends GenericQueryRepository<TestEntity> {
 
     /**
      * @param username The username.

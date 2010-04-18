@@ -34,7 +34,7 @@ public final class GenericRepositoryUtils {
         for (Type type : clazz.getGenericInterfaces()) {
             if (type instanceof ParameterizedType) {
                 ParameterizedType pType = (ParameterizedType)type;
-                if (isGenericRepository(pType) && pType.getActualTypeArguments().length > 0
+                if (isGenericQueryRepository(pType) && pType.getActualTypeArguments().length > 0
                     && pType.getActualTypeArguments()[0] instanceof Class<?>) {
                     return (Class<?>)pType.getActualTypeArguments()[0];
                 }
@@ -52,17 +52,17 @@ public final class GenericRepositoryUtils {
     }
 
     /**
-     * Checks if the given parameterized type is a {@link GenericRepository}.
+     * Checks if the given parameterized type is a {@link GenericQueryRepository}.
      *
      * @param type The type to check.
-     * @return Returns {@code true} if the given parameterized type is a {@link GenericRepository} and {@code false}
-     *         otherwise.
+     * @return Returns {@code true} if the given parameterized type is a
+     *          {@link GenericQueryRepository} and {@code false} otherwise.
      */
-    private static boolean isGenericRepository(ParameterizedType type) {
-        boolean retVal = type.getRawType().equals(GenericRepository.class);
+    private static boolean isGenericQueryRepository(ParameterizedType type) {
+        boolean retVal = type.getRawType().equals(GenericQueryRepository.class);
         if (!retVal) {
-            // type is not GenericRepository check if it is assignable to...
-            retVal = GenericRepository.class.isAssignableFrom((Class<?>)type.getRawType());
+            // type is not GenericQueryRepository check if it is assignable to...
+            retVal = GenericQueryRepository.class.isAssignableFrom((Class<?>)type.getRawType());
         }
         return retVal;
     }

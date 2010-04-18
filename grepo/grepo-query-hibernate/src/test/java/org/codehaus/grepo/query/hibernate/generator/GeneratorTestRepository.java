@@ -18,14 +18,14 @@ package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
-import org.codehaus.grepo.query.commons.repository.GenericRepository;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 
 /**
  * @author dguggi
  */
-public interface GeneratorTestRepository extends GenericRepository<TestEntity> {
+public interface GeneratorTestRepository extends GenericQueryRepository<TestEntity> {
     /**
      * @param username The username.
      * @return Returns the entity.

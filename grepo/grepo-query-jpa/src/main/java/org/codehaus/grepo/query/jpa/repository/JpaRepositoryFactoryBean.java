@@ -40,11 +40,6 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(JpaRepositoryFactoryBean.class);
 
-    /** Default target class to use. */
-    @SuppressWarnings("unchecked")
-    private static final Class<ReadWriteJpaRepositoryImpl> DEFAULT_TARGET_CLASS =
-            ReadWriteJpaRepositoryImpl.class;
-
     /** The entity manager factory. */
     private EntityManagerFactory entityManagerFactory;
 
@@ -64,14 +59,9 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD")
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+    protected void doInitialization() {
+        super.doInitialization();
         initEntityManagerFactory();
-        // init targetClass if necessary...
-        if (getTargetClass() == null) {
-            setTargetClass(DEFAULT_TARGET_CLASS);
-        }
     }
 
     /**
@@ -144,6 +134,14 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
         if (flushMode != null) {
             jpaTarget.setFlushMode(flushMode);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<?> getDefaultTargetClass() {
+        return ReadWriteJpaRepositoryImpl.class;
     }
 
     public EntityManagerFactory getEntityManagerFactory() {

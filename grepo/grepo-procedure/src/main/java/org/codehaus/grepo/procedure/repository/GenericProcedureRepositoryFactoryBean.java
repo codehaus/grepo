@@ -34,15 +34,11 @@ import org.springframework.util.Assert;
  *
  * @author dguggi
  */
-public class GenericProcedureRepositoryFactoryBean
-    extends GenericRepositoryFactoryBean<GenericProcedureRepositorySupport> {
+public class GenericProcedureRepositoryFactoryBean //
+        extends GenericRepositoryFactoryBean<GenericProcedureRepositorySupport> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(GenericProcedureRepositoryFactoryBean.class);
-
-    /** Default target class to use. */
-    private static final Class<GenericProcedureRepositoryImpl> DEFAULT_TARGET_CLASS =
-        GenericProcedureRepositoryImpl.class;
 
     /** The mandatory datasource. */
     private DataSource dataSource;
@@ -59,18 +55,13 @@ public class GenericProcedureRepositoryFactoryBean
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+    protected void doInitialization() {
+        super.doInitialization();
         initProcedureInputGenerationStrategy();
         initProcedureCachingStrategy();
         initProcedureCompilationStrategy();
         initDataSource();
-        // init targetClass if necessary...
-        if (getTargetClass() == null) {
-            setTargetClass(DEFAULT_TARGET_CLASS);
-        }
     }
 
     /**
@@ -79,9 +70,9 @@ public class GenericProcedureRepositoryFactoryBean
     @Override
     protected void initMethodInterceptor() {
         if (getMethodInterceptor() == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")  // NOPMD
-            Map<String, GenericProcedureMethodInterceptor> beans = getApplicationContext()
-                .getBeansOfType(GenericProcedureMethodInterceptor.class);
+            @SuppressWarnings("unchecked") // NOPMD
+            Map<String, GenericProcedureMethodInterceptor> beans = getApplicationContext().getBeansOfType(
+                GenericProcedureMethodInterceptor.class);
 
             if (beans.isEmpty()) {
                 LOG.warn(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, GenericProcedureMethodInterceptor.class
@@ -104,8 +95,8 @@ public class GenericProcedureRepositoryFactoryBean
     }
 
     /**
-     * If the {@link #dataSource} is not set and {@code isAutoDetectBeans()} returns {@code true}, this
-     * method tries to retrieve the {@link #dataSource} automatically.
+     * If the {@link #dataSource} is not set and {@code isAutoDetectBeans()} returns {@code true}, this method tries to
+     * retrieve the {@link #dataSource} automatically.
      */
     protected void initDataSource() {
         if (dataSource == null && isAutoDetectBeans()) {
@@ -117,16 +108,15 @@ public class GenericProcedureRepositoryFactoryBean
                     LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, DataSource.class.getName()));
                 }
             } else if (beans.size() > 1) {
-                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, DataSource.class.getName(),
-                    beans.keySet());
+                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, DataSource.class.getName(), beans
+                    .keySet());
                 LOG.warn(msg);
             } else {
                 // we found excatly one bean...
                 Entry<String, DataSource> entry = beans.entrySet().iterator().next();
                 dataSource = entry.getValue();
                 if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS, DataSource.class.getName(), entry
-                        .getKey());
+                    String msg = String.format(AUTODETECT_MSG_SUCCESS, DataSource.class.getName(), entry.getKey());
                     LOG.debug(msg);
                 }
             }
@@ -134,14 +124,14 @@ public class GenericProcedureRepositoryFactoryBean
     }
 
     /**
-     * If the {@link #procedureInputGenerationStrategy} is not set and {@code isAutoDetectBeans} returns {@code
-     * true}, this method tries to retrieve the {@link #procedureInputGenerationStrategy} automatically.
+     * If the {@link #procedureInputGenerationStrategy} is not set and {@code isAutoDetectBeans} returns {@code true},
+     * this method tries to retrieve the {@link #procedureInputGenerationStrategy} automatically.
      */
     protected void initProcedureInputGenerationStrategy() {
         if (procedureInputGenerationStrategy == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ProcedureInputGenerationStrategy> beans = getApplicationContext()
-                .getBeansOfType(ProcedureInputGenerationStrategy.class);
+            Map<String, ProcedureInputGenerationStrategy> beans = getApplicationContext().getBeansOfType(
+                ProcedureInputGenerationStrategy.class);
 
             if (beans.isEmpty()) {
                 if (LOG.isDebugEnabled()) {
@@ -166,31 +156,30 @@ public class GenericProcedureRepositoryFactoryBean
     }
 
     /**
-     * If the {@link #procedureCachingStrategy} is not set and {@code isAutoDetectBeans} returns {@code
-     * true}, this method tries to retrieve the {@link #procedureCachingStrategy} automatically.
+     * If the {@link #procedureCachingStrategy} is not set and {@code isAutoDetectBeans} returns {@code true}, this
+     * method tries to retrieve the {@link #procedureCachingStrategy} automatically.
      */
     protected void initProcedureCachingStrategy() {
         if (procedureCachingStrategy == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ProcedureCachingStrategy> beans = getApplicationContext()
-                .getBeansOfType(ProcedureCachingStrategy.class);
+            Map<String, ProcedureCachingStrategy> beans = getApplicationContext().getBeansOfType(
+                ProcedureCachingStrategy.class);
 
             if (beans.isEmpty()) {
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, ProcedureCachingStrategy.class
-                        .getName()));
+                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, ProcedureCachingStrategy.class.getName()));
                 }
             } else if (beans.size() > 1) {
-                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureCachingStrategy.class
-                    .getName(), beans.keySet());
+                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND,
+                    ProcedureCachingStrategy.class.getName(), beans.keySet());
                 LOG.warn(msg);
             } else {
                 // we found excatly one bean...
                 Entry<String, ProcedureCachingStrategy> entry = beans.entrySet().iterator().next();
                 procedureCachingStrategy = entry.getValue();
                 if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS,
-                        ProcedureCachingStrategy.class.getName(), entry.getKey());
+                    String msg = String.format(AUTODETECT_MSG_SUCCESS, ProcedureCachingStrategy.class.getName(), entry
+                        .getKey());
                     LOG.debug(msg);
                 }
             }
@@ -198,14 +187,14 @@ public class GenericProcedureRepositoryFactoryBean
     }
 
     /**
-     * If the {@link #procedureCompilationStrategy} is not set and {@code isAutoDetectBeans} returns {@code
-     * true}, this method tries to retrieve the {@link #procedureCompilationStrategy} automatically.
+     * If the {@link #procedureCompilationStrategy} is not set and {@code isAutoDetectBeans} returns {@code true}, this
+     * method tries to retrieve the {@link #procedureCompilationStrategy} automatically.
      */
     protected void initProcedureCompilationStrategy() {
         if (procedureCompilationStrategy == null && isAutoDetectBeans()) {
             @SuppressWarnings("unchecked")
-            Map<String, ProcedureCompilationStrategy> beans = getApplicationContext()
-                .getBeansOfType(ProcedureCompilationStrategy.class);
+            Map<String, ProcedureCompilationStrategy> beans = getApplicationContext().getBeansOfType(
+                ProcedureCompilationStrategy.class);
 
             if (beans.isEmpty()) {
                 if (LOG.isDebugEnabled()) {
@@ -221,8 +210,8 @@ public class GenericProcedureRepositoryFactoryBean
                 Entry<String, ProcedureCompilationStrategy> entry = beans.entrySet().iterator().next();
                 procedureCompilationStrategy = entry.getValue();
                 if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS,
-                        ProcedureCompilationStrategy.class.getName(), entry.getKey());
+                    String msg = String.format(AUTODETECT_MSG_SUCCESS, ProcedureCompilationStrategy.class.getName(),
+                        entry.getKey());
                     LOG.debug(msg);
                 }
             }
@@ -275,6 +264,22 @@ public class GenericProcedureRepositoryFactoryBean
         if (getReadOnlyTransactionTemplate() != null) {
             target.setReadOnlyTransactionTemplate(getReadOnlyTransactionTemplate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<?> getDefaultTargetClass() {
+        return GenericProcedureRepositoryImpl.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<?> getRequiredGenericRepositoryType() {
+        return GenericProcedureRepository.class;
     }
 
     public ProcedureCachingStrategy getProcedureCachingStrategy() {

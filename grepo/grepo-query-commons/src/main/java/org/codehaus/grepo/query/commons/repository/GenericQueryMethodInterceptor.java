@@ -50,7 +50,7 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
             watch.start();
         }
 
-        GenericRepository<?> repo = (GenericRepository<?>)invocation.getThis();
+        GenericQueryRepository<?> repo = (GenericQueryRepository<?>)invocation.getThis();
         QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
             .getArguments(), repo.getEntityClass());
 
