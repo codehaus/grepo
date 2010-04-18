@@ -24,6 +24,7 @@ import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.hibernate.annotation.EntityClass;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 import org.codehaus.grepo.query.hibernate.repository.ReadWriteHibernateRepository;
+import org.springframework.stereotype.Repository;
 
 import demo.domain.User;
 
@@ -32,6 +33,7 @@ import demo.domain.User;
  *
  * @author dguggi
  */
+@Repository
 public interface UserRepository extends ReadWriteHibernateRepository<User, Long> {
 
     /**
