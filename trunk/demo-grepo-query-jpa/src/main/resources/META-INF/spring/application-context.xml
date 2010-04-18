@@ -2,32 +2,42 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
     xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:gquery="http://grepo.codehaus.org/schema/query-jpa"
     xsi:schemaLocation="
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
-      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://grepo.codehaus.org/schema/query-jpa http://grepo.codehaus.org/schema/grepo-query-jpa.xsd">
 
     <!-- Import default grepo (gquery) configuration. -->
-    <import resource="classpath:META-INF/spring/grepo-query-jpa-default.cfg.xml"/>
+    <import resource="classpath:META-INF/grepo/grepo-query-jpa-default.cfg.xml"/>
 
     <!-- Import database environment (this is standard spring/hibernate configuration) -->
     <import resource="classpath:META-INF/spring/db-environment.xml"/>
 
-    <!-- Configuration for abstract grepo bean -->
-    <bean id="abstractRepository" class="org.codehaus.grepo.query.jpa.repository.JpaRepositoryFactoryBean"
-        abstract="true">
-        <property name="entityManagerFactory" ref="entityManagerFactory" />
-        <property name="transactionTemplate">
-            <bean class="org.springframework.transaction.support.TransactionTemplate">
-                <property name="transactionManager" ref="transactionManager" />
-            </bean>
-        </property>
-    </bean>
+    <!--
+        Configuration of the (optional) abstract repository factory bean using the grepo query-jpa namespace.
+        Without using the namespace the configuration for this bean would look like this:
 
-    <!-- Repository for User entity -->
-    <bean id="userRepository" parent="abstractRepository">
-        <property name="proxyInterface" value="demo.repository.UserRepository" />
-    </bean>
+        <bean id="repositoryFactory" class="org.codehaus.grepo.query.jpa.repository.JpaRepositoryFactoryBean"
+            abstract="true" />
+    -->
+    <gquery:repository-factory id="repositoryFactory" />
+
+    <!--
+        Configuration for the user repository bean using the grepo query-jpa namespace.
+        Alternatively you could also let grepo find (scan) for repository beans like this:
+
+        <gquery:repository-scan base-package="demo.repository" factory="repositoryFactory" />
+
+        Without using the namespace the configuration for this bean would look like this:
+
+        <bean id="userRepository" parent="repositoryFactory">
+            <property name="proxyClass" value="demo.repository.UserRepository" />
+        </bean>
+    -->
+    <gquery:repository id="userRepository" factory="repositoryFactory"
+        proxy-class="demo.repository.UserRepository" />
 
 </beans>

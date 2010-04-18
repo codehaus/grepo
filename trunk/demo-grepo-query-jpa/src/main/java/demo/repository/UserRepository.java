@@ -23,6 +23,7 @@ import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepository;
+import org.springframework.stereotype.Repository;
 
 import demo.domain.User;
 
@@ -31,6 +32,7 @@ import demo.domain.User;
  *
  * @author dguggi
  */
+@Repository
 public interface UserRepository extends ReadWriteJpaRepository<User, Long> {
 
     /**
