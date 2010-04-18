@@ -44,8 +44,8 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
      */
     @Before
     public void before() throws FileNotFoundException, IOException {
-        executeSqlFromFile("classpath:META-INF/spring/db/oracle/GrepoTestPackage-spec.sql");
-        executeSqlFromFile("classpath:META-INF/spring/db/oracle/GrepoTestPackage-body.sql");
+        executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
+        executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
     /** after. */

@@ -18,13 +18,13 @@ package org.codehaus.grepo.core.context;
 
 /**
  * Grepo test context loader for hsql-db tests. Adds all files matching pattern
- * {@code classpath*:META-INF/spring/db/oracle-testenv.xml}.
+ * {@code classpath*:META-INF/grepo/db/oracle-testenv.xml}.
  *
  * @author dguggi
  */
 public class GrepoOracleTestContextLoader extends GrepoTestContextLoader {
     @Override
     protected String getAdditionalConfigPattern() {
-        return "classpath*:META-INF/spring/db/oracle-testenv.xml";
+        return "classpath*:META-INF/grepo/db/oracle-testenv.xml";
     }
 }

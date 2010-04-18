@@ -47,7 +47,7 @@ public class GrepoTestContextLoader extends GenericXmlContextLoader {
         BeanDefinitionReader bdr = super.createBeanDefinitionReader(context);
         ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
         try {
-            Resource[] resources = rpr.getResources("classpath*:/META-INF/spring/grepo-testcontext.xml");
+            Resource[] resources = rpr.getResources("classpath*:/META-INF/grepo/grepo-testcontext.xml");
             if (LOG.isDebugEnabled()) {
                 String entries = ArrayUtils.toString(resources);
                 LOG.debug(String.format("Found grepo-testcontexts: [%s]", entries));

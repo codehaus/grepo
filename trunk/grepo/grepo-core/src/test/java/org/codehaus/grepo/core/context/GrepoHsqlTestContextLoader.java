@@ -18,7 +18,7 @@ package org.codehaus.grepo.core.context;
 
 /**
  * Grepo test context loader for hsql-db tests. Adds all files matching pattern
- * {@code classpath*:META-INF/spring/db/hsql-testenv.xml}.
+ * {@code classpath*:META-INF/grepo/db/hsql-testenv.xml}.
  *
  * @author dguggi
  */
@@ -26,7 +26,7 @@ public class GrepoHsqlTestContextLoader extends GrepoTestContextLoader {
 
     @Override
     protected String getAdditionalConfigPattern() {
-        return "classpath*:META-INF/spring/db/hsql-testenv.xml";
+        return "classpath*:META-INF/grepo/db/hsql-testenv.xml";
     }
 
 }
