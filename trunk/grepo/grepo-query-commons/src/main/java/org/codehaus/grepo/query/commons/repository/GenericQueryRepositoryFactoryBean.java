@@ -31,9 +31,10 @@ import org.springframework.util.Assert;
  *
  * @author dguggi
  *
- * @param <E> The entity class type.
+ * @param <E> The factory class type.
  */
-public class GenericQueryRepositoryFactoryBean<E> extends GenericRepositoryFactoryBean<GenericRepositorySupport<E>> {
+public abstract class GenericQueryRepositoryFactoryBean<E> //
+        extends GenericRepositoryFactoryBean<GenericRepositorySupport<E>> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(GenericQueryRepositoryFactoryBean.class);
@@ -50,10 +51,9 @@ public class GenericQueryRepositoryFactoryBean<E> extends GenericRepositoryFacto
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     @Override
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+    protected void doInitialization() {
+        super.doInitialization();
         initEntityClass();
         initQueryExecutorFactory();
         initQueryExecutorFindingStrategy();
@@ -174,20 +174,19 @@ public class GenericQueryRepositoryFactoryBean<E> extends GenericRepositoryFacto
      * {@inheritDoc}
      */
     @Override
-    protected void validate() {
-        super.validate();
-        Assert.notNull(entityClass, "entityClass must not be null");
-        Assert.notNull(queryExecutorFactory, "queryExecutorFactory must not be null");
-        Assert.notNull(queryExecutorFindingStrategy, "queryExecutorFindingStrategy must not be null");
+    protected Class<?> getRequiredGenericRepositoryType() {
+        return GenericQueryRepository.class;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void validateProxyInterface() {
-        super.validateProxyInterface();
-        Assert.isAssignable(GenericRepository.class, getProxyInterface());
+    protected void validate() {
+        super.validate();
+        Assert.notNull(entityClass, "entityClass must not be null");
+        Assert.notNull(queryExecutorFactory, "queryExecutorFactory must not be null");
+        Assert.notNull(queryExecutorFindingStrategy, "queryExecutorFindingStrategy must not be null");
     }
 
     /**

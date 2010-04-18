@@ -30,7 +30,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  *
  * @param <T> The entity class type.
  */
-public abstract class GenericRepositorySupport<T> implements GenericRepository<T> {
+public abstract class GenericRepositorySupport<T> implements GenericQueryRepository<T> {
 
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(GenericRepositorySupport.class);

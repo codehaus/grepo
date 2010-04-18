@@ -23,11 +23,12 @@ import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.annotation.In;
 import org.codehaus.grepo.procedure.annotation.InParams;
 import org.codehaus.grepo.procedure.annotation.Out;
+import org.codehaus.grepo.procedure.repository.GenericProcedureRepository;
 
 /**
  * @author dguggi
  */
-public interface CompilationErrorTestRepository {
+public interface CompilationErrorTestRepository extends GenericProcedureRepository {
 
     /**
      * Invalid config (inparams have invalid order).

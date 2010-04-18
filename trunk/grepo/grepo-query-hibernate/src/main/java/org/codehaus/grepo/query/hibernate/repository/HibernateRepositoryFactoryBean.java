@@ -43,11 +43,6 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(HibernateRepositoryFactoryBean.class);
 
-    /** Default target class to use. */
-    @SuppressWarnings("unchecked")
-    private static final Class<ReadWriteHibernateRepositoryImpl> DEFAULT_TARGET_CLASS =
-            ReadWriteHibernateRepositoryImpl.class;
-
     /** The session factory. */
     private SessionFactory sessionFactory;
 
@@ -88,14 +83,9 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD")
-    public void afterPropertiesSet() throws Exception {
-        super.afterPropertiesSet();
+    protected void doInitialization() {
+        super.doInitialization();
         initSessionFactory();
-        // init targetClass if necessary...
-        if (getTargetClass() == null) {
-            setTargetClass(DEFAULT_TARGET_CLASS);
-        }
     }
 
     /**
@@ -128,7 +118,6 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
             }
         }
     }
-
 
     /**
      * {@inheritDoc}
@@ -191,6 +180,14 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
             hibernateTarget.setEntityInterceptor(entityInterceptor);
         }
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected Class<?> getDefaultTargetClass() {
+        return ReadWriteHibernateRepositoryImpl.class;
     }
 
     public SessionFactory getSessionFactory() {

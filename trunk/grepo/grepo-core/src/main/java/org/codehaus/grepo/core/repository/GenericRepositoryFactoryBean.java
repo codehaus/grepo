@@ -38,7 +38,7 @@ import org.springframework.util.Assert;
  * Factory bean used to create generic repository beans (aop proxies).
  *
  * @author dguggi
- * @param <T> The entity class type.
+ * @param <T> The target class (base) type.
  */
 public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
             InitializingBean, ApplicationContextAware {
@@ -63,11 +63,18 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
     /** The mandatory target class. */
     private Class<?> targetClass;
 
+    /** The optional proxy class, which may be used to determine {@link #proxyInterface} and {@link #targetClass}. */
+    private Class<?> proxyClass;
+
     /** The application context. */
     private ApplicationContext applicationContext;
 
     /** Flag to control whether or not beans should be auto-detected (default is {@code true}. */
     private boolean autoDetectBeans = true;
+
+    /** Flag to control whether or not bean validation is performed after
+     * {@link #afterPropertiesSet()} method was invoked. */
+    private boolean validateAfterPropertiesSet = true;
 
     /** The optional result conversion service (may be auto-detected). */
     private ResultConversionService resultConversionService;
@@ -127,7 +134,19 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
      * {@inheritDoc}
      */
     @SuppressWarnings("PMD")
-    public void afterPropertiesSet() throws Exception {
+    public final void afterPropertiesSet() throws Exception {
+        doInitialization();
+        // validate factory configuration
+        if (validateAfterPropertiesSet) {
+            validate();
+        }
+    }
+
+    /**
+     * Performs required initialization.
+     */
+    protected void doInitialization() {
+        initProxyInterfaceAndTargetClass();
         initMethodInterceptor();
         initResultConversionService();
     }
@@ -173,6 +192,48 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
     }
 
     /**
+     * This method initializes the required settings for the generic repository (aop) proxy. That is setting
+     * the {@link #proxyInterface}} property and the {@link #targetClass} property based on the
+     * {@link #proxyClass} property.
+     */
+    protected void initProxyInterfaceAndTargetClass() {
+        if (getProxyInterface() == null && getProxyClass() != null) {
+            // proxy interface is not set, but proxy class is set, so we
+            // try to retrieve proxy interface and eventuall target class
+            // from the specified proxy class...
+            if (getProxyClass().isInterface()) {
+                setProxyInterface(getProxyClass());
+            } else {
+                boolean foundProxyInterface = false;
+
+                Class<?>[] interfaces = getProxyClass().getInterfaces();
+                for (Class<?> intf : interfaces) {
+                    if (getRequiredGenericRepositoryType().isAssignableFrom(intf)) {
+                        if (LOG.isTraceEnabled()) {
+                            String msg = "Determined proxyInterface '%s' for targetClass '%s'";
+                            LOG.trace(String.format(msg, intf.getName(), getProxyClass().getName()));
+                        }
+                        setProxyInterface(intf);
+                        setTargetClass(getProxyClass());
+                        foundProxyInterface = true;
+                        break;
+                    }
+                }
+
+                if (!foundProxyInterface) {
+                    String msg = "Unable to determine proxyInterface from proxyClass '%s'";
+                    LOG.warn(String.format(msg, getProxyClass().getName()));
+                }
+            }
+        }
+
+        // if target class wasn't set, then use default target class..
+        if (getTargetClass() == null) {
+            setTargetClass(getDefaultTargetClass());
+        }
+    }
+
+    /**
      * Validates the configuration for this factory bean.
      */
     protected void validate() {
@@ -188,6 +249,8 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
     protected void validateProxyInterface() {
         Assert.notNull(proxyInterface, "proxyInterface must not be null");
         Assert.isTrue(proxyInterface.isInterface(), "proxyInterface is not an interface");
+        Assert.isAssignable(getRequiredGenericRepositoryType(), proxyInterface,
+            "proxyInterface is not of required type '" + getRequiredGenericRepositoryType().getName() + "'");
     }
 
     /**
@@ -213,6 +276,16 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
      */
     protected abstract void configureTarget(T target);
 
+    /**
+     * @return Returns the required {@link GenericRepository} type for this factory.
+     */
+    protected abstract Class<?> getRequiredGenericRepositoryType();
+
+    /**
+     * @return Returns the default target class for this factory.
+     */
+    protected abstract Class<?> getDefaultTargetClass();
+
     public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
@@ -223,6 +296,14 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
 
     public void setProxyInterface(Class<?> proxyInterface) {
         this.proxyInterface = proxyInterface;
+    }
+
+    public Class<?> getProxyClass() {
+        return proxyClass;
+    }
+
+    public void setProxyClass(Class<?> proxyClass) {
+        this.proxyClass = proxyClass;
     }
 
     public MethodInterceptor getMethodInterceptor() {
@@ -247,6 +328,14 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
 
     public void setAutoDetectBeans(boolean autoDetectBeans) {
         this.autoDetectBeans = autoDetectBeans;
+    }
+
+    public boolean isValidateAfterPropertiesSet() {
+        return validateAfterPropertiesSet;
+    }
+
+    public void setValidateAfterPropertiesSet(boolean validateAfterPropertiesSet) {
+        this.validateAfterPropertiesSet = validateAfterPropertiesSet;
     }
 
     public ResultConversionService getResultConversionService() {
