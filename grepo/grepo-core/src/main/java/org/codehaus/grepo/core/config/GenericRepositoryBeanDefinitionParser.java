@@ -46,7 +46,10 @@ public class GenericRepositoryBeanDefinitionParser extends AbstractBeanDefinitio
     protected AbstractBeanDefinition parseInternal(Element element, ParserContext parserContext) {
         Object source = parserContext.extractSource(element);
         GenericRepositoryConfigContext configContext = new GenericRepositoryConfigContext(element);
+
+        // init bean defintion parse delegate...
         BeanDefinitionParserDelegate delegate = new BeanDefinitionParserDelegate(parserContext.getReaderContext());
+        delegate.initDefaults(element.getOwnerDocument().getDocumentElement());
 
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition();
         builder.getRawBeanDefinition().setSource(source);
