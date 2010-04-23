@@ -55,6 +55,9 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
     /** The jpa flush mode to set. */
     private JpaFlushMode flushMode;
 
+    /** Flag to indicate whether or not the native entity manager should be exposed. */
+    private Boolean exposeNativeEntityManager;
+
     /**
      * {@inheritDoc}
      */
@@ -134,6 +137,12 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
         if (flushMode != null) {
             jpaTarget.setFlushMode(flushMode);
         }
+        if (translateExceptions != null) {
+            jpaTarget.setTranslateExceptions(translateExceptions);
+        }
+        if (exposeNativeEntityManager != null) {
+            jpaTarget.setExposeNativeEntityManager(exposeNativeEntityManager);
+        }
     }
 
     /**
@@ -174,6 +183,14 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
 
     public void setTranslateExceptions(Boolean translateExceptions) {
         this.translateExceptions = translateExceptions;
+    }
+
+    public Boolean getExposeNativeEntityManager() {
+        return exposeNativeEntityManager;
+    }
+
+    public void setExposeNativeEntityManager(Boolean exposeNativeEntityManager) {
+        this.exposeNativeEntityManager = exposeNativeEntityManager;
     }
 
     public JpaFlushMode getFlushMode() {

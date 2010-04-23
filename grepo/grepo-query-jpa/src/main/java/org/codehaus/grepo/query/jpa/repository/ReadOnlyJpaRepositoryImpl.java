@@ -54,7 +54,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
             }
         };
 
-        return (T)executeCallback(callback.create(null), true);
+        return (T)executeCallback(callback.create(null, true), true);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
             }
         };
 
-        return (T)executeCallback(callback.create(null), true);
+        return (T)executeCallback(callback.create(null, true), true);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
             }
         };
 
-        executeCallback(callback.create(null), true);
+        executeCallback(callback.create(null, true), true);
     }
 
 }
