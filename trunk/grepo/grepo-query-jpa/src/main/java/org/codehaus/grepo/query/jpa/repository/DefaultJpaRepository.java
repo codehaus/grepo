@@ -16,6 +16,10 @@
 
 package org.codehaus.grepo.query.jpa.repository;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -34,13 +38,16 @@ import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContextImpl;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutor;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.jpa.DefaultJpaDialect;
+import org.springframework.orm.jpa.EntityManagerFactoryInfo;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.util.Assert;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -48,9 +55,12 @@ import org.springframework.util.CollectionUtils;
  *
  * @param <T> The main entity type.
  */
-public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> implements JpaRepository<T> {
+public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> implements JpaRepository<T>, InitializingBean {
     /** The logger for this class. */
     private static final Log LOG = LogFactory.getLog(DefaultJpaRepository.class);
+
+    /** Flag to indicate whether or not the native entity manager should be exposed. */
+    private boolean exposeNativeEntityManager = false;
 
     /** The entity manager factory. */
     private EntityManagerFactory entityManagerFactory;
@@ -96,6 +106,19 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public void afterPropertiesSet() throws Exception {
+        EntityManagerFactory emf = getEntityManagerFactory();
+        if (emf instanceof EntityManagerFactoryInfo) {
+            JpaDialect dialect = ((EntityManagerFactoryInfo) emf).getJpaDialect();
+            if (dialect != null) {
+                setJpaDialect(dialect);
+            }
+        }
+    }
+
+    /**
      * @param qmpi The query method parameter info.
      * @param genericQuery The annotation.
      * @return Returns the result of query execution.
@@ -118,7 +141,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
             }
         };
 
-        return executeCallback(callback.create(qmpi), executor.isReadOnlyOperation());
+        return executeCallback(callback.create(qmpi, isExposeNativeEntityManager()), executor.isReadOnlyOperation());
     }
 
     /**
@@ -135,6 +158,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
             em = createEntityManager();
             isNewEm = true;
         }
+
         return new CurrentEntityManagerHolder(isNewEm, em);
     }
 
@@ -163,13 +187,44 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
      * Creates a hibernate query execution context.
      *
      * @param emHolder The mandatory entityManagerHolder.
+     * @param doExposeNativeEntityManager Controls whether to expose the native JPA entity manager
+     *        to callback code.
      * @return Returns the newly created {@link HibernateQueryExecutionContext}.
      */
-    protected JpaQueryExecutionContext createQueryExecutionContext(CurrentEntityManagerHolder emHolder) {
+    protected JpaQueryExecutionContext createQueryExecutionContext(CurrentEntityManagerHolder emHolder,
+            boolean doExposeNativeEntityManager) {
         JpaQueryExecutionContextImpl context = new JpaQueryExecutionContextImpl();
         context.setApplicationContext(getApplicationContext());
-        context.setEntityManager(emHolder.getEntityManager());
+
+        if (doExposeNativeEntityManager) {
+            context.setEntityManager(emHolder.getEntityManager());
+        } else {
+            context.setEntityManager(createEntityManagerProxy(emHolder.getEntityManager()));
+        }
         return context;
+    }
+
+    /**
+     * Create a close-suppressing proxy for the given JPA EntityManager.
+     *
+     * @param em The JPA EntityManager to create a proxy for.
+     * @return The EntityManager proxy, implementing all interfaces implemented by the passed-in EntityManager object
+     *         (that is, also implementing all provider-specific extension interfaces).
+     */
+    protected EntityManager createEntityManagerProxy(EntityManager em) {
+        Class<?>[] ifcs = null;
+        EntityManagerFactory emf = getEntityManagerFactory();
+        if (emf instanceof EntityManagerFactoryInfo) {
+            Class<?> entityManagerInterface = ((EntityManagerFactoryInfo) emf).getEntityManagerInterface();
+            if (entityManagerInterface != null) {
+                ifcs = new Class[] {entityManagerInterface};
+            }
+        }
+        if (ifcs == null) {
+            ifcs = ClassUtils.getAllInterfacesForClass(em.getClass());
+        }
+        return (EntityManager) Proxy.newProxyInstance(
+                em.getClass().getClassLoader(), ifcs, new CloseSuppressingInvocationHandler(em));
     }
 
     /**
@@ -318,6 +373,14 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
         return this.jpaDialect;
     }
 
+    public boolean isExposeNativeEntityManager() {
+        return exposeNativeEntityManager;
+    }
+
+    public void setExposeNativeEntityManager(boolean exposeNativeEntityManager) {
+        this.exposeNativeEntityManager = exposeNativeEntityManager;
+    }
+
     public boolean isTranslateExceptions() {
         return translateExceptions;
     }
@@ -404,9 +467,12 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
          * Creates a new transaction callback.
          * @param qmpi The query method parameter info. Note that this parameter is null for methods
          *        which are not annotated with {@code GenericQuery}.
+         * @param doExposeNativeEntityManager Controls whether to expose the native JPA entity manager
+         *        to callback code.
          * @return Returns the call back.
          */
-        public TransactionCallback create(final QueryMethodParameterInfo qmpi) {
+        public TransactionCallback create(final QueryMethodParameterInfo qmpi,
+                final boolean doExposeNativeEntityManager) {
             return new TransactionCallback() {
                 public Object doInTransaction(TransactionStatus status) {
                     CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
@@ -419,7 +485,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
                     try {
                         applyFlushMode(emHolder, queryOptions);
 
-                        Object result = doExecute(createQueryExecutionContext(emHolder));
+                        Object result = doExecute(createQueryExecutionContext(emHolder, doExposeNativeEntityManager));
 
                         flushIfNecessary(emHolder, queryOptions);
                         return result;
@@ -429,7 +495,6 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
                         closeNewEntityManager(emHolder);
                     }
                 }
-
             };
         }
 
@@ -440,5 +505,46 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
          * @return Returns the result or {@code null}.
          */
         protected abstract Object doExecute(JpaQueryExecutionContext context);
+    }
+
+    /**
+     * Invocation handler that suppresses close calls on JPA EntityManagers.
+     *
+     * @author dguggi
+     */
+    private class CloseSuppressingInvocationHandler implements InvocationHandler {
+        /** The target entity manager. */
+        private final EntityManager target;
+
+        /**
+         * @param target The target to set.
+         */
+        public CloseSuppressingInvocationHandler(EntityManager target) {
+            this.target = target;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            // Invocation on EntityManager interface (or provider-specific extension) coming in...
+            if (method.getName().equals("equals")) {
+                // Only consider equal when proxies are identical.
+                return (proxy == args[0]);
+            } else if (method.getName().equals("hashCode")) {
+                // Use hashCode of EntityManager proxy.
+                return System.identityHashCode(proxy);
+            } else if (method.getName().equals("close")) {
+                // Handle close method: suppress, not valid.
+                return null;
+            }
+
+            // Invoke method on target EntityManager.
+            try {
+                return method.invoke(this.target, args);
+            } catch (InvocationTargetException ex) {
+                throw ex.getTargetException();
+            }
+        }
     }
 }

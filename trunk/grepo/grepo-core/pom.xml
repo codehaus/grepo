@@ -16,31 +16,8 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -53,38 +30,17 @@
         </dependency>
     </dependencies>
 
-    <profiles>
-        <profile>
-            <id>osgi-bundle</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <!-- See: http://felix.apache.org/site/apache-felix-maven-bundle-plugin-bnd.html -->
-                        <groupId>org.apache.felix</groupId>
-                        <artifactId>maven-bundle-plugin</artifactId>
-                        <extensions>true</extensions>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>bundle</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <instructions>
-                                <Export-Package>org.codehaus.grepo.core</Export-Package>
-                                <Bundle-SymbolicName>${pom.groupId}.${pom.artifactId}</Bundle-SymbolicName>
-                                <Bundle-Vendor>grepo</Bundle-Vendor>
-                                <Bundle-Name>${pom.artifactId}</Bundle-Name>
-                                <Bundle-Version>${pom.version}</Bundle-Version>
-                                <Import-Package>*;resolution:=optional</Import-Package>
-                            </instructions>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
+<!--    <profiles>-->
+<!--         profile using spring 2.5.6-->
+<!--        <profile>-->
+<!--            <id>spring-2.5.6</id>-->
+<!--            <dependencies>-->
+<!--                <dependency>-->
+<!--                    <groupId>org.springframework</groupId>-->
+<!--                    <artifactId>spring-aop</artifactId>-->
+<!--                    <optional>true</optional>-->
+<!--                </dependency>-->
+<!--            </dependencies>-->
+<!--       </profile>-->
+<!--    </profiles>-->
 </project>

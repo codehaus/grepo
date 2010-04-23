@@ -57,7 +57,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
             }
         };
 
-        executeCallback(callback.create(null), false);
+        executeCallback(callback.create(null, true), false);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
             }
         };
 
-        return (T)executeCallback(callback.create(null), false);
+        return (T)executeCallback(callback.create(null, true), false);
     }
 
     /**
@@ -87,7 +87,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
             }
         };
 
-        executeCallback(callback.create(null), false);
+        executeCallback(callback.create(null, true), false);
     }
 
     /**
@@ -102,7 +102,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
             }
         };
 
-        executeCallback(callback.create(null), false);
+        executeCallback(callback.create(null, true), false);
     }
 
 }

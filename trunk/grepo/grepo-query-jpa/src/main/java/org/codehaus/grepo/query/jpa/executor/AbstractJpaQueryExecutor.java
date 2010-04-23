@@ -280,11 +280,10 @@ public abstract class AbstractJpaQueryExecutor
         for (int i = 0; i < qmpi.getParameters().size(); i++) {
             if (qmpi.parameterHasAnnotation(i, Param.class)) {
                 Param queryParam = qmpi.getParameterAnnotation(i, Param.class);
-                JpaQueryParam param = null;
-                if (!alreadyHandeledParamNames.contains(queryParam.value())) {
+                if (queryParam != null && !alreadyHandeledParamNames.contains(queryParam.value())) {
                     Object value = qmpi.getParameter(i);
                     GTemporal gt = qmpi.getParameterAnnotation(i, GTemporal.class);
-                    param = new JpaQueryParam(queryParam.value(), value,
+                    JpaQueryParam param = new JpaQueryParam(queryParam.value(), value,
                         (gt == null ? null : gt.value()));
                     setNamedParam(queryDesc.getQuery(), param);
                 }
