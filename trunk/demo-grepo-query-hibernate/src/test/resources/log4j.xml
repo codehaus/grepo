@@ -34,7 +34,7 @@
      -->
 
     <category name="org.codehaus.grepo">
-        <priority value="TRACE" />
+        <priority value="DEBUG" />
     </category>
 
     <root>
