@@ -72,7 +72,6 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
      */
     protected void initEntityManagerFactory() {
         if (entityManagerFactory == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, EntityManagerFactory> beans = getApplicationContext()
                 .getBeansOfType(EntityManagerFactory.class);
 

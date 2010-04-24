@@ -85,7 +85,6 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
     @Override
     protected void initMethodInterceptor() {
         if (getMethodInterceptor() == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, GenericQueryMethodInterceptor> beans = getApplicationContext()
                 .getBeansOfType(GenericQueryMethodInterceptor.class);
 
@@ -109,7 +108,6 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
      */
     protected void initQueryExecutorFactory() {
         if (queryExecutorFactory == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, QueryExecutorFactory> beans = getApplicationContext()
                 .getBeansOfType(QueryExecutorFactory.class);
 
@@ -132,7 +130,6 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
      */
     protected void initQueryExecutorFindingStrategy() {
         if (queryExecutorFindingStrategy == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, QueryExecutorFindingStrategy> beans = getApplicationContext()
                 .getBeansOfType(QueryExecutorFindingStrategy.class);
 

@@ -69,7 +69,6 @@ public class GenericProcedureRepositoryFactoryBean //
     @Override
     protected void initMethodInterceptor() {
         if (getMethodInterceptor() == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked") // NOPMD
             Map<String, GenericProcedureMethodInterceptor> beans = getApplicationContext().getBeansOfType(
                 GenericProcedureMethodInterceptor.class);
 
@@ -93,7 +92,6 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initDataSource() {
         if (dataSource == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, DataSource> beans = getApplicationContext().getBeansOfType(DataSource.class);
 
             if (beans.isEmpty()) {
@@ -115,7 +113,6 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initProcedureInputGenerationStrategy() {
         if (procedureInputGenerationStrategy == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, ProcedureInputGenerationStrategy> beans = getApplicationContext().getBeansOfType(
                 ProcedureInputGenerationStrategy.class);
 
@@ -139,7 +136,6 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initProcedureCachingStrategy() {
         if (procedureCachingStrategy == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, ProcedureCachingStrategy> beans = getApplicationContext().getBeansOfType(
                 ProcedureCachingStrategy.class);
 
@@ -163,7 +159,6 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initProcedureCompilationStrategy() {
         if (procedureCompilationStrategy == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, ProcedureCompilationStrategy> beans = getApplicationContext().getBeansOfType(
                 ProcedureCompilationStrategy.class);
 

@@ -93,7 +93,6 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
      */
     protected void initSessionFactory() {
         if (sessionFactory == null && isAutoDetectBeans()) {
-            @SuppressWarnings("unchecked")
             Map<String, SessionFactory> beans = getApplicationContext()
                 .getBeansOfType(SessionFactory.class);
 
