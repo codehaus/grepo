@@ -21,11 +21,11 @@ import java.util.Map.Entry;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
 import org.codehaus.grepo.query.jpa.annotation.JpaFlushMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.orm.jpa.JpaDialect;
 import org.springframework.util.Assert;
 
@@ -36,9 +36,8 @@ import org.springframework.util.Assert;
  * @param <T> The entity class type.
  */
 public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(JpaRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(JpaRepositoryFactoryBean.class);
 
     /** The entity manager factory. */
     private EntityManagerFactory entityManagerFactory;
@@ -78,22 +77,14 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
                 .getBeansOfType(EntityManagerFactory.class);
 
             if (beans.isEmpty()) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, EntityManagerFactory.class.getName()));
-                }
+                logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, EntityManagerFactory.class.getName());
             } else if (beans.size() > 1) {
-                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, EntityManagerFactory.class.getName(),
-                    beans.keySet());
-                LOG.warn(msg);
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, EntityManagerFactory.class.getName(), beans.keySet());
             } else {
                 // we found excatly one bean...
                 Entry<String, EntityManagerFactory> entry = beans.entrySet().iterator().next();
                 entityManagerFactory = entry.getValue();
-                if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS, EntityManagerFactory.class.getName(), entry
-                        .getKey());
-                    LOG.debug(msg);
-                }
+                logger.debug(AUTODETECT_MSG_SUCCESS, EntityManagerFactory.class.getName(), entry.getKey());
             }
         }
     }

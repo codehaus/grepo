@@ -16,11 +16,11 @@
 
 package org.codehaus.grepo.core.converter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 import org.codehaus.grepo.core.exception.GrepoException;
 import org.codehaus.grepo.core.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default implementation of {@link ResultConverterFindingStrategy}.
@@ -28,9 +28,8 @@ import org.codehaus.grepo.core.util.ClassUtils;
  * @author dguggi
  */
 public class ResultConverterFindingStrategyImpl implements ResultConverterFindingStrategy {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ResultConverterFindingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ResultConverterFindingStrategyImpl.class);
 
     /** The converter registry. */
     private ResultConverterRegistry converterRegistry;
@@ -68,9 +67,8 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
             // method has no (void) return type...
             if (isValidUserConverter) {
                 // ...but user has specified a converter, so log warning
-                String msg = String.format("Converter '%s' is defined, but method '%s' has 'void' "
-                    + "return-type - converter will NOT be used!", specifiedConverter, mpi.getMethodName());
-                LOG.warn(msg);
+                logger.warn("Converter '{}' is specified, but method '{}' has 'void' "
+                    + "return-type - converter will not be used", specifiedConverter, mpi.getMethodName());
             }
         } else {
             // method has return-type...
@@ -93,10 +91,10 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
             }
         }
 
-        if (converterToUse != null && LOG.isTraceEnabled()) {
-            String msg = String.format("Found converter '%s' for conversion from '%s' to '%s'", converterToUse
-                .getName(), (resultIsNull ? "null" : result.getClass().getName()), methodReturnType.getName());
-            LOG.trace(msg);
+        if (converterToUse != null && logger.isDebugEnabled()) {
+            Object[] params = new Object[] {converterToUse.getName(),
+                (resultIsNull ? "null" : result.getClass().getName()), methodReturnType.getName()};
+            logger.debug("Found converter '{}' for conversion from '{}' to '{}'", params);
         }
 
         return converterToUse;

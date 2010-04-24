@@ -19,12 +19,11 @@ package org.codehaus.grepo.query.commons.naming;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Looks up named queries based on the {@link GenericQuery} annotation and the methodname.
@@ -32,9 +31,8 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  * @author dguggi
  */
 public class QueryNamingStrategyImpl implements QueryNamingStrategy {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(QueryNamingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryNamingStrategyImpl.class);
 
     /** The pattern to match method names. */
     private Pattern methodNamePattern;
@@ -85,10 +83,7 @@ public class QueryNamingStrategyImpl implements QueryNamingStrategy {
             queryName = annotation.queryName();
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Resolved named-query: " + queryName);
-        }
-
+        logger.debug("Resolved named-query: {}", queryName);
         return queryName;
     }
 

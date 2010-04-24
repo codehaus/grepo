@@ -19,8 +19,6 @@ package org.codehaus.grepo.query.hibernate.repository;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
@@ -29,6 +27,8 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
 import org.codehaus.grepo.query.hibernate.filter.FilterDescriptor;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
 import org.springframework.util.Assert;
 
@@ -39,9 +39,8 @@ import org.springframework.util.Assert;
  * @param <T> The entity class type.
  */
 public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(HibernateRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(HibernateRepositoryFactoryBean.class);
 
     /** The session factory. */
     private SessionFactory sessionFactory;
@@ -99,22 +98,14 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
                 .getBeansOfType(SessionFactory.class);
 
             if (beans.isEmpty()) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, SessionFactory.class.getName()));
-                }
+                logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, SessionFactory.class.getName());
             } else if (beans.size() > 1) {
-                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, SessionFactory.class.getName(),
-                    beans.keySet());
-                LOG.warn(msg);
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, SessionFactory.class.getName(), beans.keySet());
             } else {
                 // we found excatly one bean...
                 Entry<String, SessionFactory> entry = beans.entrySet().iterator().next();
                 sessionFactory = entry.getValue();
-                if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS, SessionFactory.class.getName(), entry
-                        .getKey());
-                    LOG.debug(msg);
-                }
+                logger.debug(AUTODETECT_MSG_SUCCESS, SessionFactory.class.getName(), entry.getKey());
             }
         }
     }

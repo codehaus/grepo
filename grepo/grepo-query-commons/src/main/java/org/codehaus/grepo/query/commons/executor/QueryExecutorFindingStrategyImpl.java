@@ -16,18 +16,17 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.registry.GenericRegistryMap;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author dguggi
  */
 public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStrategy {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(QueryExecutorFindingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryExecutorFindingStrategyImpl.class);
 
     /** Class registry. */
     private GenericRegistryMap<String, Class<? extends QueryExecutor<?>>> executorRegistry;
@@ -52,21 +51,12 @@ public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStr
             executorToUse = executorRegistry.get(key, true);
         }
 
-        traceFoundQueryExecutor(executorToUse, qmpi);
+        if (executorToUse != null) {
+            logger.debug("Found queryExecutor '{}' for execution of method '{}'", executorToUse.getName(),
+                qmpi.getMethodName());
+        }
 
         return executorToUse;
-    }
-
-    /**
-     * @param clazz The class.
-     * @param qmpi The query method parameter info.
-     */
-    private void traceFoundQueryExecutor(Class<? extends QueryExecutor<?>> clazz, QueryMethodParameterInfo qmpi) {
-        if (clazz != null && LOG.isTraceEnabled()) {
-            String msg = String.format("Found queryExecutor '%s' for execution of method '%s'", clazz.getName(), qmpi
-                .getMethodName());
-            LOG.trace(msg);
-        }
     }
 
     /**

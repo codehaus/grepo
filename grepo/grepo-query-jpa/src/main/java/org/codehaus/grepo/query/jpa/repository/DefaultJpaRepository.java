@@ -26,8 +26,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.FlushModeType;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
@@ -38,6 +36,8 @@ import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContextImpl;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.jpa.DefaultJpaDialect;
@@ -57,10 +57,10 @@ import org.springframework.util.CollectionUtils;
  */
 public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> implements JpaRepository<T>, InitializingBean {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultJpaRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class);
 
     /** Flag to indicate whether or not the native entity manager should be exposed. */
-    private boolean exposeNativeEntityManager = false;
+    private boolean exposeNativeEntityManager = true;
 
     /** The entity manager factory. */
     private EntityManagerFactory entityManagerFactory;
@@ -133,10 +133,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 Object result = executor.execute(qmpi, context);
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Query result is '%s'", result);
-                    LOG.trace(msg);
-                }
+                logger.debug("Query result is '{}'", result);
                 return result;
             }
         };
@@ -152,9 +149,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
         boolean isNewEm = false;
         EntityManager em = getTransactionalEntityManager();
         if (em == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Creating new EntityManager for generic repository execution");
-            }
+            logger.debug("Creating new EntityManager for generic repository execution");
             em = createEntityManager();
             isNewEm = true;
         }
@@ -167,17 +162,13 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
      */
     protected void closeNewEntityManager(CurrentEntityManagerHolder emHolder) {
         if (emHolder.isNewEm()) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Closing new EntityManager after generic repository execution");
-            }
+            logger.debug("Closing new EntityManager after generic repository execution");
             EntityManagerFactoryUtils.closeEntityManager(emHolder.getEntityManager());
         } else {
             // we have an existing entity manager
             if (emHolder.getPreviousFlushMode() != null) {
-                if (LOG.isTraceEnabled()) {
-                    String msg = "Setting flushMode back to previous value '%s' after generic repository execution";
-                    LOG.trace(String.format(msg, emHolder.getPreviousFlushMode()));
-                }
+                logger.debug("Setting flushMode back to previous value '{}' after generic repository execution",
+                    emHolder.getPreviousFlushMode());
                 emHolder.getEntityManager().setFlushMode(emHolder.getPreviousFlushMode());
             }
         }
@@ -235,9 +226,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
      */
     protected Object convertResult(Object result, QueryMethodParameterInfo qmpi, GenericQuery genericQuery) {
         if (getResultConversionService() == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("No result conversion is performed, because no resultConversionService is configured");
-            }
+            logger.debug("No result conversion is performed, because no resultConversionService is configured");
             return result;
         } else {
             return getResultConversionService().convert(qmpi, genericQuery.resultConverter(), result);
@@ -314,10 +303,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
         }
 
         if (flushModeToSet != null) {
-            if (LOG.isTraceEnabled()) {
-                String msg = "Setting flushMode to '%s' for generic repository execution";
-                LOG.trace(String.format(msg, flushModeToSet));
-            }
+            logger.debug("Setting flushMode to '{}' for generic repository execution", flushModeToSet);
             emHolder.getEntityManager().setFlushMode(flushModeToSet);
         }
 
@@ -335,9 +321,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
         JpaFlushMode flushModeToUse = getFlushMode(queryOptions);
 
         if (flushModeToUse != null && flushModeToUse == JpaFlushMode.EAGER) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Eagerly flushing Jpa entity manager");
-            }
+            logger.debug("Eagerly flushing Jpa entity manager");
             emHolder.getEntityManager().flush();
         }
     }

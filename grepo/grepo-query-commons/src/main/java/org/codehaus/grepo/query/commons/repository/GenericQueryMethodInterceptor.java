@@ -19,11 +19,11 @@ package org.codehaus.grepo.query.commons.repository;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfoImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Connects the Spring AOP magic with the Hibernate DAO magic.
@@ -31,9 +31,8 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfoImpl;
  * @author dguggi
  */
 public class GenericQueryMethodInterceptor implements MethodInterceptor {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericQueryMethodInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericQueryMethodInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -45,7 +44,7 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
     public Object invoke(MethodInvocation invocation) throws Throwable {
         StopWatch watch = null;
         Object result = null;
-        if (LOG.isTraceEnabled()) {
+        if (logger.isDebugEnabled()) {
             watch = new StopWatch();
             watch.start();
         }
@@ -54,28 +53,23 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor {
         QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
             .getArguments(), repo.getEntityClass());
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace(String.format("Invoking method '%s'", qmpi.getMethodName()));
-        }
+        logger.debug("Invoking method '{}'", qmpi.getMethodName());
 
         try {
             GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
             if (annotation == null) {
                 // no GenericQuery annotation present, so do not invoke via aop...
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Method '%s' is not annotated with @GenericQuery"
-                        + " - invocation will proceed to implementation '%s'", qmpi.getMethodName(), repo
-                        .getClass().getName());
-                    LOG.trace(msg);
-                }
+                logger.debug("Method '{}' is not annotated with @GenericQuery - "
+                    + "invocation will proceed to implementation '{}'", qmpi.getMethodName(),
+                        repo.getClass().getName());
                 result = invocation.proceed();
             } else {
                 result = repo.executeGenericQuery(qmpi, annotation);
             }
         } finally {
-            if (LOG.isTraceEnabled()) {
+            if (logger.isDebugEnabled()) {
                 watch.stop();
-                LOG.trace(String.format("Invocation of method '%s' took '%s'", qmpi.getMethodName(), watch));
+                logger.debug("Invocation of method '{}' took '{}'", qmpi.getMethodName(), watch);
             }
         }
 

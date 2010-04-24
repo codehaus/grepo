@@ -20,8 +20,8 @@ import java.lang.annotation.Annotation;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -47,10 +47,6 @@ import org.w3c.dom.NodeList;
  * @author dguggi
  */
 public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinitionParser {
-
-    /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericRepositoryScanBeanDefinitionParser.class);
-
     /** The exclude-filter element. */
     private static final String EXCLUDE_FILTER_ELEMENT = "exclude-filter";
 
@@ -62,6 +58,9 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
 
     /** The expression attribute. */
     private static final String FILTER_EXPRESSION_ATTRIBUTE = "expression";
+
+    /** The logger for this class. */
+    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryScanBeanDefinitionParser.class);
 
     /** The bean name generator. */
     private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator(); // NOPMD
@@ -126,10 +125,7 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
                 String beanName = beanNameGenerator.generateBeanName(candidate, parserContext.getRegistry());
                 parserContext.registerBeanComponent(
                     new BeanComponentDefinition(builder.getBeanDefinition(), beanName)); // NOPMD
-                if (LOG.isTraceEnabled()) {
-                    String msg = "Registered generic repository bean '%s'";
-                    LOG.trace(String.format(msg, beanName));
-                }
+                logger.debug("Registered generic repository bean '{}'", beanName);
             }
         }
 

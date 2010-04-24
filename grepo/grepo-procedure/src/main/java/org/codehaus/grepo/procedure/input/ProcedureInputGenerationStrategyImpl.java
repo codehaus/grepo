@@ -19,10 +19,10 @@ package org.codehaus.grepo.procedure.input;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default implementation of {@link ProcedureInputGenerationStrategy}.
@@ -31,7 +31,7 @@ import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
  */
 public class ProcedureInputGenerationStrategyImpl implements ProcedureInputGenerationStrategy {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ProcedureInputGenerationStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcedureInputGenerationStrategyImpl.class);
 
     /**
      * {@inheritDoc}
@@ -42,18 +42,13 @@ public class ProcedureInputGenerationStrategyImpl implements ProcedureInputGener
         for (int i = 0; i < pmpi.getParameters().size(); i++) {
             String paramName = pmpi.getParameterName(i);
             if (paramName == null) {
-                if (LOG.isDebugEnabled()) {
-                    String msg = "Ignoring method parameter[%s] (value=%s)";
-                    LOG.debug(String.format(msg, i, pmpi.getParameter(i)));
-                }
+                logger.debug("Ignoring method parameter[{}] (value={})", i, pmpi.getParameter(i));
             } else {
                 map.put(paramName, pmpi.getParameter(i));
             }
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Generated input-map: " + map);
-        }
+        logger.debug("Generated input-map: {}", map);
         return map;
     }
 

@@ -21,8 +21,6 @@ import java.util.List;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.procedure.annotation.In;
@@ -34,6 +32,8 @@ import org.codehaus.grepo.procedure.annotation.OutParams;
 import org.codehaus.grepo.procedure.annotation.PlaceHolderResultHandler;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.core.RowMapper;
@@ -48,19 +48,15 @@ import org.springframework.jdbc.core.SqlReturnType;
  * @author dguggi
  */
 public final class ProcedureCompilationUtils {
-
-    /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ProcedureCompilationUtils.class);
-
     /** Warning message for duplicate param definitions. */
     private static final String DUPLICATE_PARAM_WARNING =
-        "Duplicate param with name '%s' defined - please check your configuration";
+        "Duplicate param with name '{}' defined - please verify your configuration";
 
-    /** Error message for invalid result handler1. */
+    /** Error message for invalid result handler. */
     private static final String INVALID_RESULTHANDLER_ERROR1 =
         "Invalid resultHandler specified (class=%s) - expected instance of '%s'";
 
-    /** Error message for invalid result handler1. */
+    /** Error message for invalid result handler. */
     private static final String INVALID_RESULTHANDLER_ERROR3 = INVALID_RESULTHANDLER_ERROR1 + ", '%s', '%s'";
 
     /**
@@ -136,13 +132,14 @@ public final class ProcedureCompilationUtils {
      */
     public static List<ProcedureParamDescriptor> collectInParams(ProcedureMethodParameterInfo pmpi,
             ProcedureExecutionContext context) {
+        Logger logger = getLogger();
         List<ProcedureParamDescriptor> result = new ArrayList<ProcedureParamDescriptor>();
         List<String> handeledParams = new ArrayList<String>();
 
         In inAnnotation = pmpi.getMethodAnnotation(In.class);
         if (inAnnotation != null) {
             if (handeledParams.contains(inAnnotation.name())) {
-                LOG.warn(String.format(DUPLICATE_PARAM_WARNING, inAnnotation.name()));
+                logger.warn(DUPLICATE_PARAM_WARNING, inAnnotation.name());
             } else {
                 result.add(createParamDescriptor(inAnnotation, context));
                 handeledParams.add(inAnnotation.name());
@@ -152,7 +149,7 @@ public final class ProcedureCompilationUtils {
         if (inParamsAnnotation != null) {
             for (In in : inParamsAnnotation.value()) {
                 if (handeledParams.contains(in.name())) {
-                    LOG.warn(String.format(DUPLICATE_PARAM_WARNING, in.name()));
+                    logger.warn(DUPLICATE_PARAM_WARNING, in.name());
                 } else {
                     result.add(createParamDescriptor(in, context));
                     handeledParams.add(in.name());
@@ -162,7 +159,7 @@ public final class ProcedureCompilationUtils {
         List<In> inAnnotationList = pmpi.getParameterAnnotations(In.class);
         for (In in : inAnnotationList) {
             if (handeledParams.contains(in.name())) {
-                LOG.warn(String.format(DUPLICATE_PARAM_WARNING, in.name()));
+                logger.warn(DUPLICATE_PARAM_WARNING, in.name());
             } else {
                 result.add(createParamDescriptor(in, context));
                 handeledParams.add(in.name());
@@ -180,13 +177,14 @@ public final class ProcedureCompilationUtils {
      */
     public static List<ProcedureParamDescriptor> collectInOutParams(ProcedureMethodParameterInfo pmpi,
             ProcedureExecutionContext context) {
+        Logger logger = getLogger();
         List<ProcedureParamDescriptor> result = new ArrayList<ProcedureParamDescriptor>();
         List<String> handeledParams = new ArrayList<String>();
 
         InOut inOutAnnotation = pmpi.getMethodAnnotation(InOut.class);
         if (inOutAnnotation != null) {
             if (handeledParams.contains(inOutAnnotation.name())) {
-                LOG.warn(String.format(DUPLICATE_PARAM_WARNING, inOutAnnotation.name()));
+                logger.warn(DUPLICATE_PARAM_WARNING, inOutAnnotation.name());
             } else {
                 result.add(createParamDescriptor(inOutAnnotation, context));
                 handeledParams.add(inOutAnnotation.name());
@@ -196,7 +194,7 @@ public final class ProcedureCompilationUtils {
         if (inoutParamsAnnotation != null) {
             for (InOut inout : inoutParamsAnnotation.value()) {
                 if (handeledParams.contains(inout.name())) {
-                    LOG.warn(String.format(DUPLICATE_PARAM_WARNING, inout.name()));
+                    logger.warn(DUPLICATE_PARAM_WARNING, inout.name());
                 } else {
                     result.add(createParamDescriptor(inout, context));
                     handeledParams.add(inout.name());
@@ -206,7 +204,7 @@ public final class ProcedureCompilationUtils {
         List<InOut> inoutAnnotationList = pmpi.getParameterAnnotations(InOut.class);
         for (InOut inout : inoutAnnotationList) {
             if (handeledParams.contains(inout.name())) {
-                LOG.warn(String.format(DUPLICATE_PARAM_WARNING, inout.name()));
+                logger.warn(DUPLICATE_PARAM_WARNING, inout.name());
             } else {
                 result.add(createParamDescriptor(inout, context));
                 handeledParams.add(inout.name());
@@ -224,13 +222,14 @@ public final class ProcedureCompilationUtils {
      */
     public static List<ProcedureParamDescriptor> collectOutParams(ProcedureMethodParameterInfo pmpi,
             ProcedureExecutionContext context) {
+        Logger logger = getLogger();
         List<ProcedureParamDescriptor> result = new ArrayList<ProcedureParamDescriptor>();
         List<String> handeledParams = new ArrayList<String>();
 
         Out outAnnotation = pmpi.getMethodAnnotation(Out.class);
         if (outAnnotation != null) {
             if (handeledParams.contains(outAnnotation.name())) {
-                LOG.warn(String.format(DUPLICATE_PARAM_WARNING, outAnnotation.name()));
+                logger.warn(DUPLICATE_PARAM_WARNING, outAnnotation.name());
             } else {
                 result.add(createParamDescriptor(outAnnotation, context));
                 handeledParams.add(outAnnotation.name());
@@ -240,7 +239,7 @@ public final class ProcedureCompilationUtils {
         if (outParamsAnnotation != null) {
             for (Out out : outParamsAnnotation.value()) {
                 if (handeledParams.contains(out.name())) {
-                    LOG.warn(String.format(DUPLICATE_PARAM_WARNING, out.name()));
+                    logger.warn(DUPLICATE_PARAM_WARNING, out.name());
                 } else {
                     result.add(createParamDescriptor(out, context));
                     handeledParams.add(out.name());
@@ -411,6 +410,13 @@ public final class ProcedureCompilationUtils {
             throw new ConfigurationException(String.format(msg, beanId, clazz));
         }
         return result;
+    }
+
+    /**
+     * @return Returns the logger for this class.
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(ProcedureCompilationUtils.class);
     }
 
 }

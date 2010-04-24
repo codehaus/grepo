@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.query.hibernate.repository;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
@@ -39,6 +37,8 @@ import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.exception.GenericJDBCException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.jdbc.support.SQLExceptionTranslator;
@@ -51,9 +51,8 @@ import org.springframework.transaction.support.TransactionCallback;
  * @param <T> The main entity type.
  */
 public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> implements HibernateRepository<T> {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(DefaultHibernateRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class);
 
     /** The session factory. */
     private SessionFactory sessionFactory;
@@ -136,14 +135,10 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         final HibernateQueryExecutor executor = (HibernateQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
 
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
-
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) throws HibernateException {
                 Object result = executor.execute(qmpi, context);
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Query result is '%s'", result);
-                    LOG.trace(msg);
-                }
+                logger.debug("Query result is '{}'", result);
                 return result;
             }
 
@@ -175,9 +170,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
      */
     protected Object convertResult(Object result, QueryMethodParameterInfo qmpi, GenericQuery genericQuery) {
         if (getResultConversionService() == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("No result conversion is performed, because no resultConversionService is configured");
-            }
+            logger.debug("No result conversion is performed, because no resultConversionService is configured");
             return result;
         } else {
             return getResultConversionService().convert(qmpi, genericQuery.resultConverter(), result);
@@ -219,8 +212,8 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         boolean existingTransaction = (!isAlwaysUseNewSession() && (!isAllowCreate() || SessionFactoryUtils
             .isSessionTransactional(session, getSessionFactory())));
 
-        if (LOG.isTraceEnabled() && !existingTransaction) {
-            LOG.trace("No existing transactional Hibernate Session for generic repository execution found");
+        if (!existingTransaction) {
+            logger.debug("No existing transactional Hibernate Session for generic repository execution found");
         }
 
         return new CurrentSessionHolder(session, existingTransaction);
@@ -234,23 +227,17 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         if (sessionHolder.isExistingTransaction()) {
             disableFilters(sessionHolder);
             if (sessionHolder.getPreviousFlushMode() != null) {
-                if (LOG.isTraceEnabled()) {
-                    String msg = "Setting flushMode back to previous value '%s' after generic repository execution";
-                    LOG.trace(String.format(msg, sessionHolder.getPreviousFlushMode()));
-                }
+                logger.debug("Setting flushMode back to previous value '{}' after generic repository execution",
+                    sessionHolder.getPreviousFlushMode());
                 sessionHolder.getSession().setFlushMode(sessionHolder.getPreviousFlushMode());
             }
             if (sessionHolder.getPreviousCacheMode() != null) {
-                if (LOG.isTraceEnabled()) {
-                    String msg = "Setting cacheMode back to previous value '%s' after generic repository execution";
-                    LOG.trace(String.format(msg, sessionHolder.getPreviousCacheMode()));
-                }
+                logger.debug("Setting cacheMode back to previous value '{}' after generic repository execution",
+                    sessionHolder.getPreviousCacheMode());
                 sessionHolder.getSession().setCacheMode(sessionHolder.getPreviousCacheMode());
             }
         } else {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Closing (new) non-transactional Hibernate Session after generic repository execution");
-            }
+            logger.debug("Closing (new) non-transactional Hibernate Session after generic repository execution");
             SessionFactoryUtils.closeSession(sessionHolder.getSession());
         }
     }
@@ -269,9 +256,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         if (flushModeToUse != null) {
             if (flushModeToUse == HibernateFlushMode.EAGER
                     || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL)) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("Eagerly flushing Hibernate session");
-                }
+                logger.debug("Eagerly flushing Hibernate session");
                 sessionHolder.getSession().flush();
             }
         }
@@ -328,10 +313,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
             }
 
             if (flushModeToSet != null) {
-                if (LOG.isTraceEnabled()) {
-                    String msg = "Setting flushMode to '%s' for generic repository execution";
-                    LOG.trace(String.format(msg, flushModeToSet));
-                }
+                logger.debug("Setting flushMode to '{}' for generic repository execution", flushModeToSet);
                 sessionHolder.getSession().setFlushMode(flushModeToSet);
             }
 
@@ -352,10 +334,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
         if (cacheModeToUse != null && cacheModeToUse != HibernateCacheMode.UNDEFINED) {
             // we have a cache mode specified...
-            if (LOG.isTraceEnabled()) {
-                String msg = "Setting cacheMode to '%s' for generic repository execution";
-                LOG.trace(String.format(msg, cacheModeToUse));
-            }
+            logger.debug("Setting cacheMode to '{}' for generic repository execution", cacheModeToUse);
             CacheMode previousCacheMode = sessionHolder.getSession().getCacheMode();
             sessionHolder.getSession().setCacheMode(cacheModeToUse.value());
 

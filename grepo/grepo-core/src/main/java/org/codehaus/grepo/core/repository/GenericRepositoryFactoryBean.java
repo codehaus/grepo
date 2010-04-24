@@ -20,11 +20,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.aopalliance.intercept.MethodInterceptor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.core.util.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.FactoryBean;
@@ -42,20 +42,19 @@ import org.springframework.util.Assert;
  */
 public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
             InitializingBean, ApplicationContextAware {
-
-    /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericRepositoryFactoryBean.class);
-
     /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =
-        "Unable to auto-detect grepo bean of type '%s' - no beans found";
+        "Unable to auto-detect grepo bean of type '{}' - no bean found";
 
     /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_UNABLE_TOOMANYFOUND =
-        "Unable to auto-detect grepo bean of type '%s' - too many beans found (%s)";
+        "Unable to auto-detect grepo bean of type '{}' - too many beans found: {}";
 
     /** Log message for autodetection mode. */
-    protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected grepo bean of type '%s' (id=%s)";
+    protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected grepo bean of type '{}' (id={})";
+
+    /** The logger for this class. */
+    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryFactoryBean.class);
 
     /** The mandatory interface to proxy. */
     private Class<?> proxyInterface;
@@ -171,22 +170,16 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
                 .getBeansOfType(ResultConversionService.class);
 
             if (beans.isEmpty()) {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(String.format(AUTODETECT_MSG_UNABLE_NOTFOUND, ResultConversionService.class.getName()));
-                }
+                logger.debug(AUTODETECT_MSG_UNABLE_NOTFOUND, ResultConversionService.class.getName());
             } else if (beans.size() > 1) {
-                String msg = String.format(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ResultConversionService.class.getName(),
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ResultConversionService.class.getName(),
                     beans.keySet());
-                LOG.warn(msg);
             } else {
                 // we found excatly one bean...
                 Entry<String, ResultConversionService> entry = beans.entrySet().iterator().next();
                 resultConversionService = entry.getValue();
-                if (LOG.isDebugEnabled()) {
-                    String msg = String.format(AUTODETECT_MSG_SUCCESS, ResultConversionService.class.getName(),
-                        entry.getKey());
-                    LOG.debug(msg);
-                }
+                logger.debug(AUTODETECT_MSG_SUCCESS, ResultConversionService.class.getName(),
+                    entry.getKey());
             }
         }
     }
@@ -209,10 +202,9 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
                 Class<?>[] interfaces = getProxyClass().getInterfaces();
                 for (Class<?> intf : interfaces) {
                     if (getRequiredGenericRepositoryType().isAssignableFrom(intf)) {
-                        if (LOG.isTraceEnabled()) {
-                            String msg = "Determined proxyInterface '%s' for targetClass '%s'";
-                            LOG.trace(String.format(msg, intf.getName(), getProxyClass().getName()));
-                        }
+                        logger.debug("Determined proxyInterface '{}' for targetClass '{}'", intf.getName(),
+                            getProxyClass().getName());
+
                         setProxyInterface(intf);
                         setTargetClass(getProxyClass());
                         foundProxyInterface = true;
@@ -221,8 +213,7 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
                 }
 
                 if (!foundProxyInterface) {
-                    String msg = "Unable to determine proxyInterface from proxyClass '%s'";
-                    LOG.warn(String.format(msg, getProxyClass().getName()));
+                    logger.warn("Unable to determine proxyInterface from proxyClass '{}'", getProxyClass().getName());
                 }
             }
         }

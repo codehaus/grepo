@@ -16,9 +16,9 @@
 
 package org.codehaus.grepo.core.converter;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link ResultConversionService}.
@@ -26,9 +26,8 @@ import org.codehaus.grepo.core.aop.MethodParameterInfo;
  * @author dguggi
  */
 public class ResultConversionServiceImpl implements ResultConversionService {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ResultConversionServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ResultConversionServiceImpl.class);
 
     /** The result converter finding strategy to be used. */
     private ResultConverterFindingStrategy converterFindingStrategy;
@@ -46,19 +45,16 @@ public class ResultConversionServiceImpl implements ResultConversionService {
             // no converter found (no conversion performed)...
             return result;
         } else {
-            if (LOG.isTraceEnabled()) {
-                String msg = String.format("Doing conversion for result (class=%s, value=%s) with converter '%s'",
-                    (result == null ? "null" : result.getClass().getName()), result, converter.getName());
-                LOG.trace(msg);
+            if (logger.isDebugEnabled()) {
+                Object[] params = new Object[] {(result == null ? "null" : result.getClass().getName()),
+                    result, converter.getName()};
+                logger.debug("Doing conversion for result (class={}, value={}) with converter '{}'", params);
             }
 
             try {
                 ResultConverter<?> rc = converter.newInstance();
                 Object convertedResult = rc.convert(result);
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Conversion result is '%s'", convertedResult);
-                    LOG.trace(msg);
-                }
+                logger.debug("Conversion result is '{}'", convertedResult);
                 return convertedResult;
             } catch (InstantiationException e) {
                 String msg = String.format("Unable to create new instance of '%s': '%s'", converter.getName(), e
