@@ -165,7 +165,6 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
      */
     protected void initResultConversionService() {
         if (resultConversionService == null && autoDetectBeans) {
-            @SuppressWarnings("unchecked")
             Map<String, ResultConversionService> beans = applicationContext
                 .getBeansOfType(ResultConversionService.class);
 
