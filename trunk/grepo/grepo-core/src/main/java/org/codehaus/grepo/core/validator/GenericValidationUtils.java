@@ -17,9 +17,9 @@
 package org.codehaus.grepo.core.validator;
 
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility for performing result validation.
@@ -28,8 +28,9 @@ import org.codehaus.grepo.core.aop.MethodParameterInfo;
  */
 public final class GenericValidationUtils {
 
-    /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericValidationUtils.class);
+    /** Private constructor. */
+    private GenericValidationUtils() {
+    }
 
     /**
      * Checks if the given {@code clazz} is a valid {@link ResultValidator}.
@@ -40,9 +41,6 @@ public final class GenericValidationUtils {
         return (clazz != null && clazz != PlaceHolderResultValidator.class);
     }
 
-    /** Private constructor. */
-    private GenericValidationUtils() {
-    }
 
     /**
      * Validates the given {@code result} using the given {@link ResultValidator} {@code clazz}.
@@ -56,13 +54,12 @@ public final class GenericValidationUtils {
     @SuppressWarnings("PMD")
     public static void validateResult(MethodParameterInfo mpi, Class<? extends ResultValidator> clazz, Object result)
             throws Exception, ValidationException {
+        Logger logger = getLogger();
+
         if (isValidResultValidator(clazz)) {
             ResultValidator validator = null;
             try {
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Using result validator '%s' for validating result '%s'", clazz, result);
-                    LOG.trace(msg);
-                }
+                logger.debug("Using result validator '{}' for validating result '{}'", clazz, result);
                 validator = clazz.newInstance();
             } catch (InstantiationException e) {
                 String msg = String.format("Unable to create new instance of '%s': '%s'", clazz.getName(), e
@@ -77,9 +74,7 @@ public final class GenericValidationUtils {
             try {
                 validator.validate(result);
             } catch (Exception e) {
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("Validation error occured: " + e.getMessage());
-                }
+                logger.debug("Validation error occured: {}", e.getMessage());
 
                 if (mpi.isMethodCompatibleWithException(e)) {
                     throw e;
@@ -88,10 +83,17 @@ public final class GenericValidationUtils {
                         + "- exception will be wrapped in a ValidationException";
                     String msg = String.format(m, e.getClass().getName(), mpi.getMethodName(), ArrayUtils.toString(mpi
                         .getMethod().getExceptionTypes()));
-                    LOG.error(msg);
+                    logger.error(msg);
                     throw new ValidationException(msg);
                 }
             }
         }
+    }
+
+    /**
+     * @return Returns the logger for this class.
+     */
+    private static Logger getLogger() {
+        return LoggerFactory.getLogger(GenericValidationUtils.class);
     }
 }

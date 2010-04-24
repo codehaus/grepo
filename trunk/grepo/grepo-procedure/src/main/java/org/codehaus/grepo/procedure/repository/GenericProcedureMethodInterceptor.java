@@ -19,11 +19,11 @@ package org.codehaus.grepo.procedure.repository;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfoImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Intercepts method calls of methods which are annotated with {@link GenericProcedure}.
@@ -31,9 +31,8 @@ import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfoImpl;
  * @author dguggi
  */
 public class GenericProcedureMethodInterceptor implements MethodInterceptor {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericProcedureMethodInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureMethodInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -46,30 +45,27 @@ public class GenericProcedureMethodInterceptor implements MethodInterceptor {
         ProcedureMethodParameterInfo pmpi = new ProcedureMethodParameterInfoImpl(invocation.getMethod(), invocation
             .getArguments());
 
-        if (LOG.isTraceEnabled()) {
+        if (logger.isDebugEnabled()) {
             watch = new StopWatch();
             watch.start();
-            LOG.trace(String.format("Invoking method '%s'", pmpi.getMethodName()));
+            logger.debug("Invoking method '{}'", pmpi.getMethodName());
         }
 
         try {
             GenericProcedure annotation = pmpi.getMethodAnnotation(GenericProcedure.class);
             if (annotation == null) {
                 // no GenericProcedure annotation present, so do not invoke via aop...
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Method '%s' is not annotated with @GenericProcedure"
-                        + " - invocation will proceed to implementation '%s'",
-                        pmpi.getMethodName(), repo.getClass().getName());
-                    LOG.trace(msg);
-                }
+                logger.debug("Method '{}' is not annotated with @GenericProcedure - "
+                        + "invocation will proceed to implementation '{}'", pmpi.getMethodName(),
+                            repo.getClass().getName());
                 result = invocation.proceed();
             } else {
                 result = repo.executeGenericProcedure(pmpi, annotation);
             }
         } finally {
-            if (LOG.isTraceEnabled()) {
+            if (logger.isDebugEnabled()) {
                 watch.stop();
-                LOG.trace(String.format("Invocation of method '%s' took '%s'", pmpi.getMethodName(), watch));
+                logger.debug("Invocation of method '{}' took '{}'", pmpi.getMethodName(), watch);
             }
         }
 

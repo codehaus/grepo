@@ -20,14 +20,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
 import org.codehaus.grepo.procedure.executor.StoredProcedureImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**
@@ -36,9 +36,8 @@ import org.springframework.jdbc.object.StoredProcedure;
  * @author dguggi
  */
 public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStrategy {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ProcedureCompilationStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcedureCompilationStrategyImpl.class);
 
     /**
      * {@inheritDoc}
@@ -62,10 +61,7 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
         }
 
         storedProcedure.compile();
-
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Compiled stored procedure: " + storedProcedure);
-        }
+        logger.debug("Compiled stored procedure: {}", storedProcedure);
 
         return storedProcedure;
     }
@@ -171,10 +167,7 @@ public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStr
         }
         for (ProcedureParamDescriptor desc : list) {
             storedProcedure.declareParameter(desc.getSqlParameter());
-            if (LOG.isTraceEnabled()) {
-                LOG.trace(String.format("Declaring procedure param name=%s, type=%s", desc.getName(), desc
-                    .getSqlParameter()));
-            }
+            logger.debug("Declared procedure param name={}, type={}", desc.getName(), desc.getSqlParameter());
         }
     }
 

@@ -20,12 +20,12 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.procedure.cache.ProcedureCachingStrategy;
 import org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategy;
 import org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -35,7 +35,7 @@ import org.springframework.transaction.support.TransactionTemplate;
  */
 public abstract class GenericProcedureRepositorySupport implements GenericProcedureRepository {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericProcedureRepositorySupport.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositorySupport.class);
 
     /** The caching strategy. */
     private ProcedureCachingStrategy procedureCachingStrategy;
@@ -79,7 +79,7 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
      */
     @SuppressWarnings("unchecked")
     protected Map<String, Object> executeCallback(TransactionCallback callback,
-                                    boolean preferReadOnlyTransactionTemplate) {
+            boolean preferReadOnlyTransactionTemplate) {
         boolean isReadOnlyTemplateUsed = false;
         TransactionTemplate templateToUse = null;
         if (preferReadOnlyTransactionTemplate && readOnlyTransactionTemplate != null) {
@@ -91,14 +91,12 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
 
         Map<String, Object> retVal = null;
         if (templateToUse == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Executing procedure without using transaction template");
-            }
+            logger.debug("Executing procedure without using transaction template");
             // execute without transaction...
             retVal = (Map<String, Object>)callback.doInTransaction(null);
         } else {
-            LOG.trace("Executing procedure using" + (isReadOnlyTemplateUsed ? " read-only " : " ")
-                + "transaction template");
+            logger.debug("Executing procedure using {} transaction template",
+                (isReadOnlyTemplateUsed ? "read-only" : ""));
             retVal = (Map<String, Object>)templateToUse.execute(callback);
         }
         return retVal;

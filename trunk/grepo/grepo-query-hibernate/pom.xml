@@ -25,11 +25,21 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- hibernate-core and required libs -->
         <dependency>
             <groupId>org.hibernate</groupId>
-            <artifactId>hibernate</artifactId>
+            <artifactId>hibernate-core</artifactId>
+            <version>3.3.2.GA</version>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.8.0.GA</version>
+            <optional>true</optional>
         </dependency>
 
+        <!-- test dependencies -->
         <dependency>
             <groupId>org.codehaus.grepo</groupId>
             <artifactId>grepo-core</artifactId>

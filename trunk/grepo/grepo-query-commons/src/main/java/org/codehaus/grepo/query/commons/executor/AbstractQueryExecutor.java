@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
@@ -26,6 +24,8 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.generator.PlaceHolderQueryGenerator;
 import org.codehaus.grepo.query.commons.generator.QueryGenerator;
 import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class which may be used for query executor implementations.
@@ -34,9 +34,8 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  * @param <T> The type.
  */
 public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> implements QueryExecutor<T> {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(AbstractQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractQueryExecutor.class);
 
     /** The query naming strategy. */
     private QueryNamingStrategy queryNamingStrategy;
@@ -74,8 +73,8 @@ public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> imp
             retVal = (Integer)firstResult;
         }
 
-        if (retVal != null && LOG.isTraceEnabled()) {
-            LOG.trace("Found firstResult parameter: " + retVal);
+        if (retVal != null && logger.isDebugEnabled()) {
+            logger.debug("Found firstResult parameter: {}", retVal);
         }
 
         return retVal;
@@ -106,8 +105,8 @@ public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> imp
             retVal = ((Number)maxResults).intValue();
         }
 
-        if (retVal != null && LOG.isTraceEnabled()) {
-            LOG.trace("Found maxResults parameter: " + retVal);
+        if (retVal != null && logger.isDebugEnabled()) {
+            logger.debug("Found maxResults parameter: {} ", retVal);
         }
 
         return retVal;

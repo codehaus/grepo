@@ -27,8 +27,6 @@ import javax.persistence.QueryHint;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
@@ -41,6 +39,8 @@ import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.generator.JpaNativeQueryGenerator;
 import org.codehaus.grepo.query.jpa.generator.JpaQueryGenerator;
 import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
 /**
@@ -50,9 +50,12 @@ import org.springframework.util.CollectionUtils;
  */
 public abstract class AbstractJpaQueryExecutor
     extends AbstractQueryExecutor<JpaQueryExecutionContext> implements JpaQueryExecutor {
+    /** Invalid temporal type message. */
+    private static final String INVALID_TEMPORALTYPE_MSG = "TemporalType '{}' specified, but parameter-value '{}'"
+        + " has unsupported type (either '{}' or '{}' is required) - ignoring specified temporal-type...";
 
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(AbstractJpaQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractJpaQueryExecutor.class);
 
     /**
      * @param genericQuery The annotation.
@@ -94,9 +97,7 @@ public abstract class AbstractJpaQueryExecutor
             queryDesc = new JpaQueryDescriptor(query, false);
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Using query: " + queryDesc.getQuery().toString().trim());
-        }
+        logger.debug("Using query: {}", queryDesc.getQuery().toString().trim());
 
         // set first result if available
         Integer firstResult = getFirstResult(qmpi, genericQuery);
@@ -177,7 +178,7 @@ public abstract class AbstractJpaQueryExecutor
             // result class specified...
             query = context.getEntityManager().createNativeQuery(queryString, resultClass);
             if (resultSetMapping != null) {
-                LOG.warn("Both resultClass and resultSetMapping specified - using specified resultClass");
+                logger.warn("Both resultClass and resultSetMapping specified - using specified resultClass");
             }
         }
         return query;
@@ -201,9 +202,7 @@ public abstract class AbstractJpaQueryExecutor
         if (queryOptions != null) {
             for (QueryHint hint : queryOptions.queryHints()) {
                 query.setHint(hint.name(), hint.value());
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace(String.format("Setting hint name=%s value=%s", hint.name(), hint.value()));
-                }
+                logger.debug("Setting hint name={} value={}", hint.name(), hint.value());
             }
         }
 
@@ -211,9 +210,7 @@ public abstract class AbstractJpaQueryExecutor
             // we have hints specified, so set hints on query object...
             for (Entry<String, Object> entry : generator.getHints().entrySet()) {
                 query.setHint(entry.getKey(), entry.getValue());
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace(String.format("Setting hint name=%s value=%s", entry.getKey(), entry.getValue()));
-                }
+                logger.debug("Setting hint name={} value={}", entry.getKey(), entry.getValue());
             }
         }
     }
@@ -297,20 +294,18 @@ public abstract class AbstractJpaQueryExecutor
      */
     private void setNamedParam(Query query, JpaQueryParam param) {
         if (param.getTemporalType() != null && (param.getValue() instanceof Calendar)) {
-            traceSetParameter(param.getName(), param.getValue(), param.getTemporalType());
+            logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Calendar)param.getValue(), param.getTemporalType());
         } else if (param.getTemporalType() != null && (param.getValue() instanceof Date)) {
-            traceSetParameter(param.getName(), param.getValue(), param.getTemporalType());
+            logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Date)param.getValue(), param.getTemporalType());
         } else {
-            traceSetParameter(param.getName(), param.getValue(), null);
+            logSetParameter(param.getName(), param.getValue(), null);
             query.setParameter(param.getName(), param.getValue());
             if (param.getTemporalType() != null) {
-                String msg = String.format(
-                    "TemporalType '%s' specified, but parameter-value '%s' has unsupported type (eiter '%s' or '%s') "
-                        + "is required - ignoring specified temporal-type...", param.getTemporalType().toString(),
-                    param.getValue(), Date.class.getName(), Calendar.class.getName());
-                LOG.warn(msg);
+                Object[] params = new Object[] {param.getTemporalType().toString(), param.getValue(),
+                    Date.class.getName(), Calendar.class.getName()};
+                logger.warn(INVALID_TEMPORALTYPE_MSG, params);
             }
         }
     }
@@ -344,20 +339,18 @@ public abstract class AbstractJpaQueryExecutor
     private void setPositionalParam(JpaQueryDescriptor queryDesc, int index, Object value,
             TemporalType temporalType) {
         if (temporalType != null && value instanceof Calendar) {
-            traceSetParameter(index, value, temporalType);
+            logSetParameter(index, value, temporalType);
             queryDesc.getQuery().setParameter(index, (Calendar)value, temporalType);
         } else if (temporalType != null && value instanceof Date) {
-            traceSetParameter(index, (Date)value, temporalType);
+            logSetParameter(index, (Date)value, temporalType);
             queryDesc.getQuery().setParameter(index, (Date)value, temporalType);
         } else {
-            traceSetParameter(index, value, null);
+            logSetParameter(index, value, null);
             queryDesc.getQuery().setParameter(index, value);
             if (temporalType != null) {
-                String msg = String.format(
-                    "TemporalType '%s' specified, but parameter-value '%s' has unsupported type (eiter '%s' or '%s') "
-                        + "is required - ignoring specified temporal-type...", temporalType.toString(), value,
-                    Date.class.getName(), Calendar.class.getName());
-                LOG.warn(msg);
+                Object[] params = new Object[] {temporalType.toString(), value, Date.class.getName(),
+                    Calendar.class.getName()};
+                logger.warn(INVALID_TEMPORALTYPE_MSG, params);
             }
         }
     }
@@ -367,8 +360,8 @@ public abstract class AbstractJpaQueryExecutor
      * @param value The value.
      * @param temporalType The temporal type.
      */
-    private void traceSetParameter(int index, Object value, TemporalType temporalType) {
-        traceSetParameter(String.valueOf(index), value, temporalType);
+    private void logSetParameter(int index, Object value, TemporalType temporalType) {
+        logSetParameter(String.valueOf(index), value, temporalType);
     }
 
     /**
@@ -376,8 +369,8 @@ public abstract class AbstractJpaQueryExecutor
      * @param value The parameter value.
      * @param temporalType The temporalType.
      */
-    private void traceSetParameter(String name, Object value, TemporalType temporalType) {
-        if (LOG.isTraceEnabled()) {
+    private void logSetParameter(String name, Object value, TemporalType temporalType) {
+        if (logger.isDebugEnabled()) {
             StringBuilder str = new StringBuilder("Setting parameter '");
             str.append(name);
             str.append("' to '");
@@ -388,7 +381,7 @@ public abstract class AbstractJpaQueryExecutor
                 str.append(temporalType.name());
                 str.append("'");
             }
-            LOG.trace(str.toString());
+            logger.debug(str.toString());
         }
     }
 

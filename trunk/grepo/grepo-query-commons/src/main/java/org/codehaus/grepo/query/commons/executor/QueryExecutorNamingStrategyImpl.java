@@ -19,9 +19,9 @@ package org.codehaus.grepo.query.commons.executor;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Default strategy for resolving names of {@link QueryExecutor}s based on a method-name pattern.
@@ -30,7 +30,7 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  */
 public class QueryExecutorNamingStrategyImpl implements QueryExecutorNamingStrategy {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(QueryExecutorNamingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryExecutorNamingStrategyImpl.class);
 
     /** The pattern. */
     private Pattern pattern;
@@ -59,10 +59,7 @@ public class QueryExecutorNamingStrategyImpl implements QueryExecutorNamingStrat
             result = matcher.group();
         }
 
-        if (LOG.isTraceEnabled()) {
-            LOG.trace("Resolved executor name: " + result);
-        }
-
+        logger.debug("Resolved executor name: {}", result);
         return result;
     }
 

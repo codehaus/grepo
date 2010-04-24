@@ -20,8 +20,8 @@ import java.io.IOException;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReader;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.Resource;
@@ -36,8 +36,8 @@ import org.springframework.test.context.support.GenericXmlContextLoader;
  */
 public class GrepoTestContextLoader extends GenericXmlContextLoader {
 
-    /** The logger. */
-    private static final Log LOG = LogFactory.getLog(GrepoTestContextLoader.class);
+    /** The logger for this class. */
+    private final Logger logger = LoggerFactory.getLogger(GrepoTestContextLoader.class);
 
     /**
      * {@inheritDoc}
@@ -48,25 +48,19 @@ public class GrepoTestContextLoader extends GenericXmlContextLoader {
         ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
         try {
             Resource[] resources = rpr.getResources("classpath*:/META-INF/grepo/grepo-testcontext.xml");
-            if (LOG.isDebugEnabled()) {
-                String entries = ArrayUtils.toString(resources);
-                LOG.debug(String.format("Found grepo-testcontexts: [%s]", entries));
-            }
+            logger.debug("Found grepo-testcontexts: {}", ArrayUtils.toString(resources));
             bdr.loadBeanDefinitions(resources);
 
             String addPattern = getAdditionalConfigPattern();
             if (!StringUtils.isEmpty(addPattern)) {
                 Resource[] addResources = rpr.getResources(addPattern);
                 if (addResources != null) {
-                    if (LOG.isDebugEnabled()) { // NOPMD
-                        LOG.debug(String.format("Found additional spring-configs: %s", ArrayUtils
-                            .toString(addResources)));
-                    }
+                    logger.debug("Found additional spring-configs: {}", ArrayUtils.toString(addResources));
                     bdr.loadBeanDefinitions(addResources);
                 }
             }
         } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return bdr;
     }

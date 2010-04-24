@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**
@@ -33,9 +33,8 @@ import org.springframework.jdbc.object.StoredProcedure;
  * @author dguggi
  */
 public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ProcedureCachingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcedureCachingStrategyImpl.class);
 
     /** The cache. */
     private Map<String, StoredProcedure> cache = new HashMap<String, StoredProcedure>();
@@ -68,10 +67,7 @@ public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
      */
     public StoredProcedure getFromCache(final String cacheName) {
         StoredProcedure sp = cache.get(cacheName);
-        if (LOG.isTraceEnabled()) {
-            String msg = "Got procedure from cache key=%s, value=%s";
-            LOG.trace(String.format(msg, cacheName, sp));
-        }
+        logger.debug("Got procedure from cache key={}, value={}", cacheName, sp);
         return sp;
     }
 

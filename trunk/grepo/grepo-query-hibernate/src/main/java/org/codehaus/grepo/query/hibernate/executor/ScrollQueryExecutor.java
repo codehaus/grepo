@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.query.hibernate.executor;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.hibernate.annotation.GScrollMode;
@@ -26,6 +24,8 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateScrollMode;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This executor is used to execute generic "scroll" queries.
@@ -34,7 +34,7 @@ import org.hibernate.ScrollMode;
  */
 public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(ScrollQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(ScrollQueryExecutor.class);
 
     /**
      * {@inheritDoc}
@@ -94,8 +94,8 @@ public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
             }
         }
 
-        if (retVal != null && LOG.isTraceEnabled()) {
-            LOG.trace("Using scrollMode " + retVal);
+        if (retVal != null) {
+            logger.debug("Using scrollMode: {}", retVal);
         }
 
         return retVal;

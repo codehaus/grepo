@@ -16,11 +16,11 @@
 
 package org.codehaus.grepo.query.commons.repository;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFactory;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -31,9 +31,8 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @param <T> The entity class type.
  */
 public abstract class GenericRepositorySupport<T> implements GenericQueryRepository<T> {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericRepositorySupport.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericRepositorySupport.class);
 
     /** The application context. */
     private ApplicationContext applicationContext;
@@ -100,16 +99,12 @@ public abstract class GenericRepositorySupport<T> implements GenericQueryReposit
 
         Object retVal = null;
         if (templateToUse == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Executing query without using transaction template");
-            }
+            logger.debug("Executing query without using transaction template");
             // execute without transaction...
             retVal = callback.doInTransaction(null);
         } else {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("Executing query using" + (isReadOnlyTemplateUsed ? " read-only " : " ")
-                    + "transaction template");
-            }
+            logger.debug("Executing query using {} transaction template",
+                (isReadOnlyTemplateUsed ? " read-only " : " "));
             retVal = templateToUse.execute(callback);
         }
         return retVal;

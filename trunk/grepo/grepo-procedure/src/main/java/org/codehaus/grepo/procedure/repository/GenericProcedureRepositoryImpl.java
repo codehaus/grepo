@@ -20,13 +20,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutionContextImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -37,9 +37,8 @@ import org.springframework.transaction.support.TransactionCallback;
  * @author dguggi
  */
 public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySupport {
-
     /** The logger for this class. */
-    private static final Log LOG = LogFactory.getLog(GenericProcedureRepositoryImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryImpl.class);
 
     /**
      * {@inheritDoc}
@@ -73,16 +72,13 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
 
                 Map<String, Object> input = generateInputMap(pmpi, context);
 
-                if (LOG.isTraceEnabled()) {
-                    LOG.trace("About to execute procedure: " + sp.getSql());
-                    LOG.trace("Using input map: " + input);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("About to execute procedure: {}", sp.getSql());
+                    logger.debug("Using input map: {}", input);
                 }
 
                 Object result =  sp.execute(input);
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("Procedure result is '%s'", result);
-                    LOG.trace(msg);
-                }
+                logger.debug("Procedure result is '{}'", result);
                 return result;
             }
         };
@@ -100,16 +96,10 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
             GenericProcedure genericProcedure) {
         Object result = resultMap;
         if (getResultConversionService() == null) {
-            if (LOG.isTraceEnabled()) {
-                LOG.trace("No result conversion is performed, because no resultConversionService is configured");
-            }
+            logger.debug("No result conversion is performed, because no resultConversionService is configured");
         } else {
             if (!StringUtils.isEmpty(genericProcedure.returnParamName())) {
-                if (LOG.isTraceEnabled()) {
-                    String msg = String.format("GenericProcedure has returnParamName '%s' specified", genericProcedure
-                        .returnParamName());
-                    LOG.trace(msg);
-                }
+                logger.debug("GenericProcedure has returnParamName '{}' specified", genericProcedure.returnParamName());
                 result = resultMap.get(genericProcedure.returnParamName());
             }
 
