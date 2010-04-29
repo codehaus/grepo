@@ -45,6 +45,9 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
     /** The session factory. */
     private SessionFactory sessionFactory;
 
+    /** Flag to indicate whether or not the native Hibernate session should be exposed. */
+    private Boolean exposeNativeSession;
+
     /** Flag to indicate wether or not we have to use a new session always. */
     private Boolean alwaysUseNewSession;
 
@@ -169,7 +172,9 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
         if (entityInterceptor != null) {
             hibernateTarget.setEntityInterceptor(entityInterceptor);
         }
-
+        if (exposeNativeSession != null) {
+            hibernateTarget.setExposeNativeSession(exposeNativeSession);
+        }
     }
 
     /**
@@ -186,6 +191,14 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public Boolean getExposeNativeSession() {
+        return exposeNativeSession;
+    }
+
+    public void setExposeNativeSession(Boolean exposeNativeSession) {
+        this.exposeNativeSession = exposeNativeSession;
     }
 
     public Boolean getAlwaysUseNewSession() {
