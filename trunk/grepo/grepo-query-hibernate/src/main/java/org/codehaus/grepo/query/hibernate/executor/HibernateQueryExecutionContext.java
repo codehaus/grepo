@@ -19,6 +19,7 @@ package org.codehaus.grepo.query.hibernate.executor;
 import org.codehaus.grepo.query.commons.executor.QueryExecutionContext;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  * Context for execution of hibernate queries.
@@ -40,4 +41,9 @@ public interface HibernateQueryExecutionContext extends QueryExecutionContext {
      * @return Returns the cache region.
      */
     String getCacheRegion();
+
+    /**
+     * @return Returns the hibernate session factory.
+     */
+    SessionFactory getSessionFactory();
 }

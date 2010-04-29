@@ -172,12 +172,14 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         context.setApplicationContext(getApplicationContext());
         context.setCaching(getCaching());
         context.setCacheRegion(getCacheRegion());
+        context.setSessionFactory(getSessionFactory());
 
         if (doExposeNativeSession) {
             context.setSession(sessionHolder.getSession());
         } else {
             context.setSession(createSessionProxy(sessionHolder.getSession()));
         }
+
         return context;
     }
 

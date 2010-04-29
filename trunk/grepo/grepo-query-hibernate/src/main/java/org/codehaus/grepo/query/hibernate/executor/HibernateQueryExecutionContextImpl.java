@@ -19,12 +19,16 @@ package org.codehaus.grepo.query.hibernate.executor;
 import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  * @author dguggi
  */
 public class HibernateQueryExecutionContextImpl
     extends AbstractGenericExecutionContext implements HibernateQueryExecutionContext {
+
+    /** The session factory. */
+    private SessionFactory sessionFactory;
 
     /** The session. */
     private Session session;
@@ -34,6 +38,17 @@ public class HibernateQueryExecutionContextImpl
 
     /** The cache region. */
     private String cacheRegion;
+
+    /**
+     * {@inheritDoc}
+     */
+    public SessionFactory getSessionFactory() {
+        return sessionFactory;
+    }
+
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     /**
      * {@inheritDoc}
