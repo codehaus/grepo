@@ -85,4 +85,20 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
         executeCallback(callback.create(null, true), true);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void evict(final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().evict(entity);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), true);
+    }
+
+
+
 }

@@ -50,4 +50,11 @@ public interface ReadOnlyHibernateRepository<T, PK extends Serializable>
      * @param entity The entity to refresh.
      */
     void refresh(T entity);
+
+    /**
+     * Evicts an entity.
+     *
+     * @param entity The entity to evict.
+     */
+    void evict(T entity);
 }
