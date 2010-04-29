@@ -126,7 +126,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param generator The query generator.
      * @return Returns the result class or null if not specified.
      */
-    private Class<?> getResultClass(JpaQueryOptions queryOptions, JpaNativeQueryGenerator generator) {
+    protected Class<?> getResultClass(JpaQueryOptions queryOptions, JpaNativeQueryGenerator generator) {
         Class<?> resultClass = null;
         if (queryOptions != null && isValidResultClass(queryOptions.resultClass())) {
             resultClass = queryOptions.resultClass();
@@ -143,7 +143,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param generator The query generator.
      * @return Returns the result set mapping or null if not specified.
      */
-    private String getResultSetMapping(JpaQueryOptions queryOptions, JpaNativeQueryGenerator generator) {
+    protected String getResultSetMapping(JpaQueryOptions queryOptions, JpaNativeQueryGenerator generator) {
         String resultSetMapping = null;
         if (queryOptions != null && StringUtils.isNotEmpty(queryOptions.resultSetMapping())) {
             resultSetMapping = queryOptions.resultSetMapping();
@@ -162,7 +162,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param context The query execution context.
      * @return Returns the created query.
      */
-    private Query createNativeQuery(String queryString, Class<?> resultClass, String resultSetMapping,
+    protected Query createNativeQuery(String queryString, Class<?> resultClass, String resultSetMapping,
             JpaQueryExecutionContext context) {
         Query query = null;
         if (resultClass == null) {
@@ -198,7 +198,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param queryOptions The query options.
      * @param generator The query generator.
      */
-    private void addHints(Query query, JpaQueryOptions queryOptions, JpaQueryGenerator generator) {
+    protected void addHints(Query query, JpaQueryOptions queryOptions, JpaQueryGenerator generator) {
         if (queryOptions != null) {
             for (QueryHint hint : queryOptions.queryHints()) {
                 query.setHint(hint.name(), hint.value());
@@ -263,7 +263,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param qmpi The query method parameter info.
      */
     @SuppressWarnings("PMD")
-    private void setNamedParams(JpaQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
+    protected void setNamedParams(JpaQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
         List<String> alreadyHandeledParamNames = new ArrayList<String>();
         if (queryDesc.isGeneratedQuery() && queryDesc.hasDynamicQueryParams()) {
             // first set all dynamic named parameters...
@@ -292,7 +292,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param query The query.
      * @param param The named param.
      */
-    private void setNamedParam(Query query, JpaQueryParam param) {
+    protected void setNamedParam(Query query, JpaQueryParam param) {
         if (param.getTemporalType() != null && (param.getValue() instanceof Calendar)) {
             logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Calendar)param.getValue(), param.getTemporalType());
@@ -314,7 +314,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param queryDesc The query descriptor.
      * @param qmpi The query method parameter info.
      */
-    private void setPositionalParams(JpaQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
+    protected void setPositionalParams(JpaQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
         int index = 1;
         for (int i = 0; i < qmpi.getParameters().size(); i++) {
             if (!qmpi.parameterHasAnnotation(i, MaxResults.class)
@@ -336,7 +336,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param value The value.
      * @param temporalType The temporal type.
      */
-    private void setPositionalParam(JpaQueryDescriptor queryDesc, int index, Object value,
+    protected void setPositionalParam(JpaQueryDescriptor queryDesc, int index, Object value,
             TemporalType temporalType) {
         if (temporalType != null && value instanceof Calendar) {
             logSetParameter(index, value, temporalType);
@@ -360,7 +360,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param value The value.
      * @param temporalType The temporal type.
      */
-    private void logSetParameter(int index, Object value, TemporalType temporalType) {
+    protected void logSetParameter(int index, Object value, TemporalType temporalType) {
         logSetParameter(String.valueOf(index), value, temporalType);
     }
 
@@ -369,7 +369,7 @@ public abstract class AbstractJpaQueryExecutor
      * @param value The parameter value.
      * @param temporalType The temporalType.
      */
-    private void logSetParameter(String name, Object value, TemporalType temporalType) {
+    protected void logSetParameter(String name, Object value, TemporalType temporalType) {
         if (logger.isDebugEnabled()) {
             StringBuilder str = new StringBuilder("Setting parameter '");
             str.append(name);
