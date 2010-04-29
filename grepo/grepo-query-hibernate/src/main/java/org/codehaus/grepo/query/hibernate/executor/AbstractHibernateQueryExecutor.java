@@ -51,6 +51,7 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 /**
  * @author dguggi
@@ -120,6 +121,9 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
                 criteria.setCacheRegion(cacheRegion);
             }
         }
+
+        // apply transaction timeout if necessary...
+        SessionFactoryUtils.applyTransactionTimeout(criteria, context.getSessionFactory());
 
         return criteria;
     }
@@ -195,6 +199,9 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
                 queryDesc.getQuery().setCacheRegion(cacheRegion);
             }
         }
+
+        // apply transaction timeout if necessary...
+        SessionFactoryUtils.applyTransactionTimeout(queryDesc.getQuery(), context.getSessionFactory());
 
         String[] namedParameters = queryDesc.getQuery().getNamedParameters();
         if (namedParameters.length > 0) {
