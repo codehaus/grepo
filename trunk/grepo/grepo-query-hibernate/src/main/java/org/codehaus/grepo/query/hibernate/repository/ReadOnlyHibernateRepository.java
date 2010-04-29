@@ -57,4 +57,12 @@ public interface ReadOnlyHibernateRepository<T, PK extends Serializable>
      * @param entity The entity to evict.
      */
     void evict(T entity);
+
+    /**
+     * Check if this instance is associated with the session.
+     *
+     * @param entity The entity to check.
+     * @return Returns {@code true} if the given instance is associated with the session.
+     */
+    boolean contains(T entity);
 }

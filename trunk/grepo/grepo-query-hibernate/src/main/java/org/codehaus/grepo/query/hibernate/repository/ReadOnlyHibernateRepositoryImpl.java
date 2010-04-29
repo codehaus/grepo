@@ -99,6 +99,17 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
         executeCallback(callback.create(null, true), true);
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
+    public boolean contains(final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().contains(entity);
+            }
+        };
+        return (Boolean)executeCallback(callback.create(null, true), true);
+    }
 
 }
