@@ -105,4 +105,19 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
         executeCallback(callback.create(null, true), false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void flush() {
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
+            @Override
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                context.getEntityManager().flush();
+                return null;
+            }
+        };
+
+        executeCallback(callback.create(null, true), false);
+    }
+
 }
