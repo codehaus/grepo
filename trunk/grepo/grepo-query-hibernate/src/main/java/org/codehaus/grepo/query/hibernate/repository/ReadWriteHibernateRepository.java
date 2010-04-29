@@ -115,4 +115,9 @@ public interface ReadWriteHibernateRepository<T, PK extends Serializable> extend
      * @param replicationMode The replication mode.
      */
     void replicate(T entity, ReplicationMode replicationMode);
+
+    /**
+     * Force the Hibernate session to flush.
+     */
+    void flush();
 }
