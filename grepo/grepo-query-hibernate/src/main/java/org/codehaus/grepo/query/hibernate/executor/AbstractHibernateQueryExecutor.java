@@ -96,7 +96,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         }
 
         // set fetch size if available
-        Integer fetchSize = getFetchSize(queryOptions);
+        Integer fetchSize = getFetchSize(queryOptions, context.getFetchSize());
         if (fetchSize != null) {
             criteria.setFetchSize(fetchSize);
         }
@@ -174,7 +174,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         }
 
         // set fetch size if available
-        Integer fetchSize = getFetchSize(queryOptions);
+        Integer fetchSize = getFetchSize(queryOptions, context.getFetchSize());
         if (fetchSize != null) {
             queryDesc.getQuery().setFetchSize(fetchSize);
         }
@@ -484,12 +484,20 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
     /**
      * The fetch size to read from the given annotation.
      * @param queryOptions The annotation to check.
+     * @param defaultValue The default value.
      * @return Returns the fetch size or {@code null}.
      */
-    protected Integer getFetchSize(HibernateQueryOptions queryOptions) {
+    protected Integer getFetchSize(HibernateQueryOptions queryOptions, Integer defaultValue) {
         Integer retVal = null;
+
+        if (defaultValue != null && defaultValue > 0) {
+            retVal = defaultValue;
+        }
         if (queryOptions != null && queryOptions.fetchSize() > 0) {
             retVal = queryOptions.fetchSize();
+        }
+
+        if (retVal != null) {
             logger.debug("Using fetch size: {}", retVal);
         }
         return retVal;

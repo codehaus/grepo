@@ -39,6 +39,9 @@ public class HibernateQueryExecutionContextImpl
     /** The cache region. */
     private String cacheRegion;
 
+    /** The fetch size. */
+    private Integer fetchSize;
+
     /**
      * {@inheritDoc}
      */
@@ -72,12 +75,26 @@ public class HibernateQueryExecutionContextImpl
         this.caching = caching;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getCacheRegion() {
         return cacheRegion;
     }
 
     public void setCacheRegion(String cacheRegion) {
         this.cacheRegion = cacheRegion;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Integer getFetchSize() {
+        return fetchSize;
+    }
+
+    public void setFetchSize(Integer fetchSize) {
+        this.fetchSize = fetchSize;
     }
 
 }

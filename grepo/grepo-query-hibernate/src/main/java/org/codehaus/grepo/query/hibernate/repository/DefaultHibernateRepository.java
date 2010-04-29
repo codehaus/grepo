@@ -104,6 +104,9 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     /** The default jdbc exception translator. */
     private SQLExceptionTranslator defaultJdbcExceptionTranslator;
 
+    /** The default fetch size for criteria and queries. */
+    private Integer fetchSize;
+
     /**
      * Default constructor.
      */
@@ -172,6 +175,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         context.setCaching(getCaching());
         context.setCacheRegion(getCacheRegion());
         context.setMaxResults(getMaxResults());
+        context.setFetchSize(getFetchSize());
         context.setSessionFactory(getSessionFactory());
 
         if (doExposeNativeSession) {
@@ -596,6 +600,15 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         this.jdbcExceptionTranslator = jdbcExceptionTranslator;
     }
 
+    public Integer getFetchSize() {
+        return fetchSize;
+    }
+
+    public void setFetchSize(Integer fetchSize) {
+        this.fetchSize = fetchSize;
+    }
+
+
     /**
      * @author dguggi
      */
@@ -653,7 +666,6 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         public void setPreviousCacheMode(CacheMode previousCacheMode) {
             this.previousCacheMode = previousCacheMode;
         }
-
 
     }
 
