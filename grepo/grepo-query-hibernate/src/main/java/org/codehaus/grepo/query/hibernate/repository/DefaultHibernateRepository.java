@@ -16,6 +16,11 @@
 
 package org.codehaus.grepo.query.hibernate.repository;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
@@ -36,6 +41,8 @@ import org.hibernate.Interceptor;
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.engine.SessionImplementor;
+import org.hibernate.event.EventSource;
 import org.hibernate.exception.GenericJDBCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,11 +58,15 @@ import org.springframework.transaction.support.TransactionCallback;
  * @param <T> The main entity type.
  */
 public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> implements HibernateRepository<T> {
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class);
 
     /** The session factory. */
     private SessionFactory sessionFactory;
+
+    /** Flag to indicate whether or not the native session should be exposed. */
+    private boolean exposeNativeSession = true;
 
     /** Flag to indicate wether or not we have to use a new session always. */
     private boolean alwaysUseNewSession = false;
@@ -135,6 +146,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         final HibernateQueryExecutor executor = (HibernateQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
 
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) throws HibernateException {
                 Object result = executor.execute(qmpi, context);
@@ -144,22 +156,50 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
         };
 
-        return executeCallback(callback.create(qmpi), executor.isReadOnlyOperation());
+        return executeCallback(callback.create(qmpi, isExposeNativeSession()), executor.isReadOnlyOperation());
     }
 
     /**
      * Creates a hibernate query execution context.
      *
      * @param sessionHolder The mandatory session holder.
+     * @param doExposeNativeSession Controls whether to expose the native Hibernate session to callback code.
      * @return Returns the newly created {@link HibernateQueryExecutionContext}.
      */
-    protected HibernateQueryExecutionContext createQueryExecutionContext(CurrentSessionHolder sessionHolder) {
+    protected HibernateQueryExecutionContext createQueryExecutionContext(CurrentSessionHolder sessionHolder,
+            boolean doExposeNativeSession) {
         HibernateQueryExecutionContextImpl context = new HibernateQueryExecutionContextImpl();
         context.setApplicationContext(getApplicationContext());
-        context.setSession(sessionHolder.getSession());
         context.setCaching(getCaching());
         context.setCacheRegion(getCacheRegion());
+
+        if (doExposeNativeSession) {
+            context.setSession(sessionHolder.getSession());
+        } else {
+            context.setSession(createSessionProxy(sessionHolder.getSession()));
+        }
         return context;
+    }
+
+    /**
+     * Create a close-suppressing proxy for the given Hibernate Session.
+     *
+     * @param session The Hibernate Session to create a proxy for.
+     * @return The Session proxy
+     */
+    protected Session createSessionProxy(Session session) {
+        Class<?>[] sessionIfcs = null;
+        Class<?> mainIfc = (session instanceof org.hibernate.classic.Session ? org.hibernate.classic.Session.class
+            : Session.class);
+        if (session instanceof EventSource) {
+            sessionIfcs = new Class[] { mainIfc, EventSource.class };
+        } else if (session instanceof SessionImplementor) {
+            sessionIfcs = new Class[] { mainIfc, SessionImplementor.class };
+        } else {
+            sessionIfcs = new Class[] { mainIfc };
+        }
+        return (Session)Proxy.newProxyInstance(session.getClass().getClassLoader(), sessionIfcs,
+            new CloseSuppressingInvocationHandler(session));
     }
 
     /**
@@ -198,7 +238,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
             session = SessionFactoryUtils.getNewSession(getSessionFactory(), getEntityInterceptor());
         } else if (isAllowCreate()) {
             session = SessionFactoryUtils.getSession(getSessionFactory(), getEntityInterceptor(),
-                            getJdbcExceptionTranslator());
+                getJdbcExceptionTranslator());
         } else if (SessionFactoryUtils.hasTransactionalSession(getSessionFactory())) {
             session = SessionFactoryUtils.getSession(getSessionFactory(), false);
         } else {
@@ -221,6 +261,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
     /**
      * Closes new (not-transactional) sessions.
+     *
      * @param sessionHolder The session holder.
      */
     protected void closeNewSession(CurrentSessionHolder sessionHolder) {
@@ -245,17 +286,18 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
     /**
      * Flush the given the Hibernate session if necessary.
+     *
      * @param sessionHolder The session holder.
      * @param queryOptions the query options.
      * @throws HibernateException in case of Hibernate flushing errors
      */
     protected void flushIfNecessary(CurrentSessionHolder sessionHolder, HibernateQueryOptions queryOptions)
-        throws HibernateException {
+            throws HibernateException {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
         if (flushModeToUse != null) {
             if (flushModeToUse == HibernateFlushMode.EAGER
-                    || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL)) {
+                || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL)) {
                 logger.debug("Eagerly flushing Hibernate session");
                 sessionHolder.getSession().flush();
             }
@@ -346,6 +388,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
     /**
      * Obtain a default SQLExceptionTranslator, lazily creating it if necessary.
+     *
      * @return Returns the default jdbc exception translator.
      */
     protected synchronized SQLExceptionTranslator getDefaultJdbcExceptionTranslator() {
@@ -358,6 +401,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     /**
      * Convert the given runtime exception to an appropriate exception from the {@code org.springframework.dao}
      * hierarchy if necessary, or return the exception itself if it is not persistence related.
+     *
      * @param e runtime exception that occured, which may or may not be Hibernate-related
      * @return the corresponding DataAccessException instance if wrapping should occur, otherwise the raw exception
      */
@@ -370,24 +414,26 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     }
 
     /**
-     * Convert the given HibernateException to an appropriate exception from the
-     * {@code org.springframework.dao} hierarchy. Will automatically apply a specified SQLExceptionTranslator to a
-     * Hibernate JDBCException, else rely on Hibernate's default translation.
+     * Convert the given HibernateException to an appropriate exception from the {@code org.springframework.dao}
+     * hierarchy. Will automatically apply a specified SQLExceptionTranslator to a Hibernate JDBCException, else rely on
+     * Hibernate's default translation.
+     *
      * @param ex HibernateException that occured
      * @return a corresponding DataAccessException
      */
     public DataAccessException convertHibernateAccessException(HibernateException ex) {
         if (getJdbcExceptionTranslator() != null && ex instanceof JDBCException) {
-            return convertJdbcAccessException((JDBCException) ex, getJdbcExceptionTranslator());
+            return convertJdbcAccessException((JDBCException)ex, getJdbcExceptionTranslator());
         } else if (GenericJDBCException.class.equals(ex.getClass())) {
-            return convertJdbcAccessException((GenericJDBCException) ex, getDefaultJdbcExceptionTranslator());
+            return convertJdbcAccessException((GenericJDBCException)ex, getDefaultJdbcExceptionTranslator());
         }
         return SessionFactoryUtils.convertHibernateAccessException(ex);
     }
 
     /**
-     * Convert the given Hibernate JDBCException to an appropriate exception from the
-     * {@code org.springframework.dao} hierarchy, using the given SQLExceptionTranslator.
+     * Convert the given Hibernate JDBCException to an appropriate exception from the {@code org.springframework.dao}
+     * hierarchy, using the given SQLExceptionTranslator.
+     *
      * @param ex Hibernate JDBCException that occured
      * @param translator the SQLExceptionTranslator to use
      * @return a corresponding DataAccessException
@@ -441,6 +487,14 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public boolean isExposeNativeSession() {
+        return exposeNativeSession;
+    }
+
+    public void setExposeNativeSession(boolean exposeNativeSession) {
+        this.exposeNativeSession = exposeNativeSession;
     }
 
     public boolean isAlwaysUseNewSession() {
@@ -598,6 +652,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
             this.previousCacheMode = previousCacheMode;
         }
 
+
     }
 
     /**
@@ -607,12 +662,13 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
 
         /**
          * Creates a new transaction callback.
-         * @param qmpi The query method parameter info. Note that this parameter is null for methods
-         *        which are not annotated with {@code GenericQuery}.
          *
+         * @param qmpi The query method parameter info. Note that this parameter is null for methods which are not
+         *            annotated with {@code GenericQuery}.
+         * @param doExposeNativeSession Controls whether to expose the native Hibernate session to callback code.
          * @return Returns the call back.
          */
-        public TransactionCallback create(final QueryMethodParameterInfo qmpi) {
+        public TransactionCallback create(final QueryMethodParameterInfo qmpi, final boolean doExposeNativeSession) {
             return new TransactionCallback() {
 
                 public Object doInTransaction(TransactionStatus status) {
@@ -628,7 +684,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
                         applyCacheMode(sessionHolder, queryOptions);
                         enableFilters(qmpi, sessionHolder);
 
-                        Object result = doExecute(createQueryExecutionContext(sessionHolder));
+                        Object result = doExecute(createQueryExecutionContext(sessionHolder, doExposeNativeSession));
 
                         flushIfNecessary(sessionHolder, queryOptions);
                         return result;
@@ -652,4 +708,45 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         protected abstract Object doExecute(HibernateQueryExecutionContext context) throws HibernateException;
     }
 
+    /**
+     * Invocation handler that suppresses close calls on Hibernate session.
+     *
+     * @author dguggi
+     */
+    private class CloseSuppressingInvocationHandler implements InvocationHandler {
+        /** The target session. */
+        private final Session target;
+
+        /**
+         * @param target The target to set.
+         */
+        public CloseSuppressingInvocationHandler(Session target) {
+            this.target = target;
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            if (method.getName().equals("equals")) {
+                // Only consider equal when proxies are identical.
+                return (proxy == args[0]);
+            } else if (method.getName().equals("hashCode")) {
+                // Use hashCode of Session proxy.
+                return System.identityHashCode(proxy);
+            } else if (method.getName().equals("close")) {
+                // Handle close method: suppress, not valid.
+                return null;
+            }
+
+            // Invoke method on target Session.
+            try {
+                Object retVal = method.invoke(this.target, args);
+
+                return retVal;
+            } catch (InvocationTargetException ex) {
+                throw ex.getTargetException();
+            }
+        }
+    }
 }

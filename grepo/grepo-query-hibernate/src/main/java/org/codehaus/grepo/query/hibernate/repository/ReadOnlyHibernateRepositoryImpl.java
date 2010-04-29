@@ -54,7 +54,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().load(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback.create(null), true);
+        return (T)executeCallback(callback.create(null, true), true);
     }
 
     /**
@@ -68,7 +68,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().get(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback.create(null), true);
+        return (T)executeCallback(callback.create(null, true), true);
     }
 
     /**
@@ -82,7 +82,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null), true);
+        executeCallback(callback.create(null, true), true);
     }
 
 }
