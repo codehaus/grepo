@@ -248,7 +248,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The query options.
      * @param generator The native query generator.
      */
-    private void addEntityClasses(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
+    protected void addEntityClasses(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
             HibernateNativeQueryGenerator generator) {
         if (queryOptions != null) {
             for (EntityClass ec : queryOptions.entityClasses()) {
@@ -278,7 +278,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The query options.
      * @param generator The native query generator.
      */
-    private void addScalars(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
+    protected void addScalars(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
             HibernateNativeQueryGenerator generator) {
         if (queryOptions != null) {
             for (Scalar s : queryOptions.scalars()) {
@@ -309,7 +309,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The query options.
      * @param generator The native query generator.
      */
-    private void addJoins(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
+    protected void addJoins(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
             HibernateNativeQueryGenerator generator) {
         if (queryOptions != null) {
             for (Join j : queryOptions.joins()) {
@@ -331,7 +331,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param namedParameters The named parameters of the query.
      * @param qmpi The query method parameter info.
      */
-    private void setNamedParams(HibernateQueryDescriptor queryDesc, String[] namedParameters,
+    protected void setNamedParams(HibernateQueryDescriptor queryDesc, String[] namedParameters,
             QueryMethodParameterInfo qmpi) {
         for (String namedParam : namedParameters) {
             HibernateQueryParam dnp = getNamedParam(namedParam, queryDesc, qmpi);
@@ -364,7 +364,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryDesc The query descriptor.
      * @param qmpi The query method parameter info.
      */
-    private void setPositionalParams(HibernateQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
+    protected void setPositionalParams(HibernateQueryDescriptor queryDesc, QueryMethodParameterInfo qmpi) {
         int index = 0;
         for (int i = 0; i < qmpi.getParameters().size(); i++) {
             Object value = qmpi.getParameter(i);
@@ -393,7 +393,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param qmpi The query method parameter info.
      * @return Returns the argument type or null.
      */
-    private Type getArgumentType(int index, Object value, QueryMethodParameterInfo qmpi) {
+    protected Type getArgumentType(int index, Object value, QueryMethodParameterInfo qmpi) {
         Type retVal = null;
         GType gType = qmpi.getParameterAnnotation(index, GType.class);
         if (gType != null) {
@@ -412,7 +412,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param value The value.
      * @return Returns the argument type or null.
      */
-    private Type getArgumentType(Object value) {
+    protected Type getArgumentType(Object value) {
         Type argType = null;
         if (getArgumentTypeFactory() != null) {
             argType = getArgumentTypeFactory().getArgumentType(value);
@@ -425,7 +425,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param value The value
      * @param argType The argument type.
      */
-    private void logSetParameter(int index, Object value, Type argType) {
+    protected void logSetParameter(int index, Object value, Type argType) {
         logSetParameter(String.valueOf(index), value, argType);
     }
 
@@ -434,7 +434,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param value The parameter value.
      * @param argType The argument type.
      */
-    private void logSetParameter(String name, Object value, Type argType) {
+    protected void logSetParameter(String name, Object value, Type argType) {
         if (logger.isDebugEnabled()) {
             StringBuilder str = new StringBuilder("Setting parameter '");
             str.append(name);
@@ -454,7 +454,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The annotation.
      * @return Returns the result transformer or null.
      */
-    private ResultTransformer getResultTransformer(HibernateQueryOptions queryOptions) {
+    protected ResultTransformer getResultTransformer(HibernateQueryOptions queryOptions) {
         ResultTransformer transformer = null;
         if (hasValidResultTransformer(queryOptions)) {
             if (ToListResultTransformer.class.isAssignableFrom(queryOptions.resultTransformer())) {
@@ -479,7 +479,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The annotation to check.
      * @return Returns the fetch size or {@code null}.
      */
-    private Integer getFetchSize(HibernateQueryOptions queryOptions) {
+    protected Integer getFetchSize(HibernateQueryOptions queryOptions) {
         Integer retVal = null;
         if (queryOptions != null && queryOptions.fetchSize() > 0) {
             retVal = queryOptions.fetchSize();
@@ -495,7 +495,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The annotation.
      * @return Returns {@code true} if caching should be enabled and {@code false} otherwise.
      */
-    private boolean isCachingEnabled(HibernateQueryExecutionContext context, HibernateQueryOptions queryOptions) {
+    protected boolean isCachingEnabled(HibernateQueryExecutionContext context, HibernateQueryOptions queryOptions) {
         boolean retVal = (context.getCaching() != null && context.getCaching() == HibernateCaching.ENABLED);
 
         // check value from annotation
@@ -513,7 +513,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param queryOptions The annotation.
      * @return Returns the cache region or {@code null} if none was specified.
      */
-    private String getCacheRegion(HibernateQueryExecutionContext context, HibernateQueryOptions queryOptions) {
+    protected String getCacheRegion(HibernateQueryExecutionContext context, HibernateQueryOptions queryOptions) {
         String retVal = null;
 
         if (StringUtils.isNotEmpty(context.getCacheRegion())) {
@@ -534,7 +534,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param qmpi The query method parameter info.
      * @return Returns the dynamic named param.
      */
-    private HibernateQueryParam getNamedParam(String name, HibernateQueryDescriptor queryDesc,
+    protected HibernateQueryParam getNamedParam(String name, HibernateQueryDescriptor queryDesc,
             QueryMethodParameterInfo qmpi) {
         HibernateQueryParam retVal = null;
         if (queryDesc.hasDynamicQueryParam(name)) {
