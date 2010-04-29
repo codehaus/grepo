@@ -58,4 +58,9 @@ public interface ReadWriteJpaRepository<T, PK extends Serializable>
      * @param entity The entity.
      */
     void remove(T entity);
+
+    /**
+     * Fore the entity manager to flush.
+     */
+    void flush();
 }
