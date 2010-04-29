@@ -104,7 +104,6 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
     /** The default jdbc exception translator. */
     private SQLExceptionTranslator defaultJdbcExceptionTranslator;
 
-
     /**
      * Default constructor.
      */
@@ -172,6 +171,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
         context.setApplicationContext(getApplicationContext());
         context.setCaching(getCaching());
         context.setCacheRegion(getCacheRegion());
+        context.setMaxResults(getMaxResults());
         context.setSessionFactory(getSessionFactory());
 
         if (doExposeNativeSession) {

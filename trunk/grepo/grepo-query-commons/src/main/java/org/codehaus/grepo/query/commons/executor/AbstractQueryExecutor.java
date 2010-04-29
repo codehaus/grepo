@@ -85,10 +85,12 @@ public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> imp
      *
      * @param qmpi The query method parameter info.
      * @param genericQuery The {@link GenericQuery} annotation.
-     * @return Returns the max-results or null.
+     * @param defaultValue The default value to use.
+     * @return Returns the max-results or {@code null}.
      */
-    protected Integer getMaxResults(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) {
-        Integer retVal = null;
+    protected Integer getMaxResults(QueryMethodParameterInfo qmpi, GenericQuery genericQuery,
+            Integer defaultValue) {
+        Integer retVal = (defaultValue == null ? null : defaultValue);
         if (genericQuery.maxResults() != -1) {
             retVal = genericQuery.maxResults();
         }

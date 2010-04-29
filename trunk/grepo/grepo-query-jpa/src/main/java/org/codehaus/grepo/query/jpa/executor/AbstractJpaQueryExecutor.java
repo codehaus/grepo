@@ -106,7 +106,7 @@ public abstract class AbstractJpaQueryExecutor
         }
 
         // set max results if available
-        Integer maxResults = getMaxResults(qmpi, genericQuery);
+        Integer maxResults = getMaxResults(qmpi, genericQuery, context.getMaxResults());
         if (maxResults != null) {
             queryDesc.getQuery().setMaxResults(maxResults);
         }

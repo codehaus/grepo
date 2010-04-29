@@ -47,6 +47,9 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
     /** The mandatory query executor finding strategy (may be auto-detected). */
     private QueryExecutorFindingStrategy queryExecutorFindingStrategy;
 
+    /** The max results. */
+    private Integer maxResults;
+
     /**
      * {@inheritDoc}
      */
@@ -196,6 +199,9 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
         if (getReadOnlyTransactionTemplate() != null) {
             target.setReadOnlyTransactionTemplate(getReadOnlyTransactionTemplate());
         }
+        if (getMaxResults() != null) {
+            target.setMaxResults(getMaxResults());
+        }
     }
 
     public Class<E> getEntityClass() {
@@ -220,6 +226,14 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
 
     public void setQueryExecutorFindingStrategy(QueryExecutorFindingStrategy queryExecutorFindingStrategy) {
         this.queryExecutorFindingStrategy = queryExecutorFindingStrategy;
+    }
+
+    public Integer getMaxResults() {
+        return maxResults;
+    }
+
+    public void setMaxResults(Integer maxResults) {
+        this.maxResults = maxResults;
     }
 
 }

@@ -186,6 +186,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
             boolean doExposeNativeEntityManager) {
         JpaQueryExecutionContextImpl context = new JpaQueryExecutionContextImpl();
         context.setApplicationContext(getApplicationContext());
+        context.setMaxResults(getMaxResults());
 
         if (doExposeNativeEntityManager) {
             context.setEntityManager(emHolder.getEntityManager());
@@ -392,6 +393,7 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
     public void setFlushMode(JpaFlushMode flushMode) {
         this.flushMode = flushMode;
     }
+
 
     /**
      * @author dguggi
