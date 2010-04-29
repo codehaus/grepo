@@ -199,4 +199,19 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
         executeCallback(callback.create(null, true), false);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void flush() {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().flush();
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+
 }
