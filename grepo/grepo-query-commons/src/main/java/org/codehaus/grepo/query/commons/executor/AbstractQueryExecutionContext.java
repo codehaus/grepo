@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Grepo Committers.
+ * Copyright 2010 Grepo Committers.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,25 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import org.codehaus.grepo.core.executor.GenericExecutionContext;
+import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
 
 /**
- * Represents the context of a generic query execution.
- *
  * @author dguggi
  */
-public interface QueryExecutionContext extends GenericExecutionContext {
+public abstract class AbstractQueryExecutionContext extends AbstractGenericExecutionContext
+    implements QueryExecutionContext {
+
+    /** The max results. */
+    private Integer maxResults;
 
     /**
-     * @return Returns the max results.
+     * {@inheritDoc}
      */
-    Integer getMaxResults();
+    public Integer getMaxResults() {
+        return maxResults;
+    }
+
+    public void setMaxResults(Integer maxResults) {
+        this.maxResults = maxResults;
+    }
 }

@@ -18,12 +18,12 @@ package org.codehaus.grepo.query.jpa.executor;
 
 import javax.persistence.EntityManager;
 
-import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
+import org.codehaus.grepo.query.commons.executor.AbstractQueryExecutionContext;
 
 /**
  * @author dguggi
  */
-public class JpaQueryExecutionContextImpl extends AbstractGenericExecutionContext implements JpaQueryExecutionContext {
+public class JpaQueryExecutionContextImpl extends AbstractQueryExecutionContext implements JpaQueryExecutionContext {
 
     /** The entity manager. */
     private EntityManager entityManager;

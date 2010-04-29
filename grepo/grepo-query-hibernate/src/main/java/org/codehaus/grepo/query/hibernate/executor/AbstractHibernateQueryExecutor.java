@@ -108,7 +108,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         }
 
         // set max results if available
-        Integer maxResults = getMaxResults(qmpi, genericQuery);
+        Integer maxResults = getMaxResults(qmpi, genericQuery, context.getMaxResults());
         if (maxResults != null) {
             criteria.setMaxResults(maxResults);
         }
@@ -186,7 +186,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         }
 
         // set max results if available
-        Integer maxResults = getMaxResults(qmpi, genericQuery);
+        Integer maxResults = getMaxResults(qmpi, genericQuery, context.getMaxResults());
         if (maxResults != null) {
             queryDesc.getQuery().setMaxResults(maxResults);
         }

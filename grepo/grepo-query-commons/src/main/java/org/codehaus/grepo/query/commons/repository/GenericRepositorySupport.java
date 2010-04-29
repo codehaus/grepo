@@ -55,6 +55,9 @@ public abstract class GenericRepositorySupport<T> implements GenericQueryReposit
     /** The entity class. */
     private Class<T> entityClass;
 
+    /** The default max results to use. */
+    private Integer maxResults;
+
     /**
      * Default constructor.
      */
@@ -169,4 +172,11 @@ public abstract class GenericRepositorySupport<T> implements GenericQueryReposit
         this.queryExecutorFactory = queryExecutorFactory;
     }
 
+    public Integer getMaxResults() {
+        return maxResults;
+    }
+
+    public void setMaxResults(Integer maxResults) {
+        this.maxResults = maxResults;
+    }
 }

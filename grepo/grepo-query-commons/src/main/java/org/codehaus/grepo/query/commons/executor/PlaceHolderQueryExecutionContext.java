@@ -31,4 +31,11 @@ public final class PlaceHolderQueryExecutionContext implements QueryExecutionCon
         return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Integer getMaxResults() {
+        return null;
+    }
+
 }
