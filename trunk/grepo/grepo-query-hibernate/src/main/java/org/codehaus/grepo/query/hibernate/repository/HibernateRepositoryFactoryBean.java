@@ -81,6 +81,9 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
     /** The jdbc exception translator. */
     private SQLExceptionTranslator jdbcExceptionTranslator;
 
+    /** The fetch size. */
+    private Integer fetchSize;
+
     /**
      * {@inheritDoc}
      */
@@ -174,6 +177,9 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
         }
         if (exposeNativeSession != null) {
             hibernateTarget.setExposeNativeSession(exposeNativeSession);
+        }
+        if (fetchSize != null) {
+            hibernateTarget.setFetchSize(fetchSize);
         }
     }
 
@@ -283,6 +289,14 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
 
     public void setJdbcExceptionTranslator(SQLExceptionTranslator jdbcExceptionTranslator) {
         this.jdbcExceptionTranslator = jdbcExceptionTranslator;
+    }
+
+    public Integer getFetchSize() {
+        return fetchSize;
+    }
+
+    public void setFetchSize(Integer fetchSize) {
+        this.fetchSize = fetchSize;
     }
 
 }

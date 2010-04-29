@@ -46,4 +46,9 @@ public interface HibernateQueryExecutionContext extends QueryExecutionContext {
      * @return Returns the hibernate session factory.
      */
     SessionFactory getSessionFactory();
+
+    /**
+     * @return Returns the fetch size.
+     */
+    Integer getFetchSize();
 }
