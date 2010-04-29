@@ -42,4 +42,12 @@ public interface ReadOnlyJpaRepository <T,PK extends Serializable> extends JpaRe
      * @param entity The entity.
      */
     void refresh(T entity);
+
+    /**
+     * Check if the given {@code entity} is associated with the entity manager.
+     *
+     * @param entity The entity to check.
+     * @return Returns {@code true} if the given {@code entity} is associated with the entity manager.
+     */
+    boolean contains(T entity);
 }
