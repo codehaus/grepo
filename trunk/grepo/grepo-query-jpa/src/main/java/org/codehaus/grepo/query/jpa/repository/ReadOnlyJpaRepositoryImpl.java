@@ -84,4 +84,17 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
         executeCallback(callback.create(null, true), true);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public boolean contains(final T entity) {
+        JpaCallbackCreator callback = new JpaCallbackCreator() {
+            @Override
+            protected Object doExecute(JpaQueryExecutionContext context) {
+                return context.getEntityManager().contains(entity);
+            }
+        };
+        return (Boolean)executeCallback(callback.create(null, true), true);
+    }
+
 }
