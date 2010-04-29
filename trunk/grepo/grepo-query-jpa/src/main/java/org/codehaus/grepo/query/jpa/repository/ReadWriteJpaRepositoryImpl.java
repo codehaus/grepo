@@ -56,7 +56,6 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-
         executeCallback(callback.create(null, true), false);
     }
 
@@ -71,7 +70,6 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return context.getEntityManager().merge(entity);
             }
         };
-
         return (T)executeCallback(callback.create(null, true), false);
     }
 
@@ -86,7 +84,6 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-
         executeCallback(callback.create(null, true), false);
     }
 
@@ -101,7 +98,6 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-
         executeCallback(callback.create(null, true), false);
     }
 
@@ -116,7 +112,6 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-
         executeCallback(callback.create(null, true), false);
     }
 
