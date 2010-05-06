@@ -20,7 +20,7 @@
         <!-- build properties -->
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
         <build.jdk.version>1.5</build.jdk.version>
-        <grepo-buildtools.version>1.0.0</grepo-buildtools.version>
+        <grepo-buildtools.version>1.1.0-SNAPSHOT</grepo-buildtools.version>
         <grepo-osgi.version>1.5.0</grepo-osgi.version>
 
         <grepo.checkstyle.config.location>dev/config/checkstyle/grepo-style.xml</grepo.checkstyle.config.location>
@@ -442,14 +442,6 @@
             </plugin>
         </plugins>
     </reporting>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>com.springsource.repository.bundles.release</id>
-            <name>SpringSource Enterprise Bundle Repository</name>
-            <url>http://repository.springsource.com/maven/bundles/release</url>
-        </pluginRepository>
-    </pluginRepositories>
 
     <profiles>
         <!-- profile using spring 2.5.6 -->
