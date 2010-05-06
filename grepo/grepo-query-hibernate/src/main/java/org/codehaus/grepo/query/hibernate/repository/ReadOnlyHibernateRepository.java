@@ -37,12 +37,30 @@ public interface ReadOnlyHibernateRepository<T, PK extends Serializable>
     T load(PK id);
 
     /**
+     * Loads the entity by entityName and primary key.
+     *
+     * @param entityName The entity name.
+     * @param id The primary key.
+     * @return Returns the found entity.
+     */
+    T load(String entityName, PK id);
+
+    /**
      * Gets the entity by primary key.
      *
      * @param id The primary key.
      * @return Returns the found entity.
      */
     T get(PK id);
+
+    /**
+     * Gets the entity by entityName and primary key.
+     *
+     * @param entityName The entity name.
+     * @param id The primary key.
+     * @return Returns the found entity.
+     */
+    T get(String entityName, PK id);
 
     /**
      * Refreshes an entity.

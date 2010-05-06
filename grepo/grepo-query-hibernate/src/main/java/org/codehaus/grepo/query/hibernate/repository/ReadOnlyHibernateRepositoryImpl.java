@@ -61,11 +61,39 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
+    public T load(final String entityName, final PK id) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().load(entityName, id);
+            }
+        };
+        return (T)executeCallback(callback.create(null, true), true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
     public T get(final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().get(getEntityClass(), id);
+            }
+        };
+        return (T)executeCallback(callback.create(null, true), true);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public T get(final String entityName, final PK id) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().get(entityName, id);
             }
         };
         return (T)executeCallback(callback.create(null, true), true);
