@@ -62,6 +62,21 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")  // NOPMD
+    public T get(final String entityName, final PK id, final LockMode lockMode) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().get(entityName, id, lockMode);
+            }
+        };
+        return (T)executeCallback(callback.create(null, true), false);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public T load(final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
@@ -72,6 +87,21 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
         };
         return (T)executeCallback(callback.create(null, true), false);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @SuppressWarnings("unchecked")
+    public T load(final String entityName, final PK id, final LockMode lockMode) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().load(entityName, id, lockMode);
+            }
+        };
+        return (T)executeCallback(callback.create(null, true), false);
+    }
+
 
     /**
      * {@inheritDoc}
@@ -104,6 +134,21 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
+    public void lock(final String entityName, final T entity, final LockMode lockMode) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().lock(entityName, entity, lockMode);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public PK save(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
@@ -118,11 +163,39 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    public PK save(final String entityName, final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().save(entityName, entity);
+            }
+        };
+        return (PK)executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void update(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().update(entity);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void update(final String entityName, final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().update(entityName, entity);
                 return null;
             }
         };
@@ -146,11 +219,39 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
+    public void saveOrUpdate(final String entityName, final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().saveOrUpdate(entityName, entity);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void persist(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().persist(entity);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void persist(final String entityName, final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().persist(entityName, entity);
                 return null;
             }
         };
@@ -174,6 +275,20 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
+    public void delete(final String entityName, final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().delete(entityName, entity);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @SuppressWarnings("unchecked")
     public T merge(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
@@ -188,11 +303,39 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("unchecked")
+    public T merge(final String entityName, final T entity) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                return context.getSession().merge(entityName, entity);
+            }
+        };
+        return (T)executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void replicate(final T entity, final ReplicationMode replicationMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().replicate(entity, replicationMode);
+                return null;
+            }
+        };
+        executeCallback(callback.create(null, true), false);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void replicate(final String entityName, final T entity, final ReplicationMode replicationMode) {
+        HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+            @Override
+            protected Object doExecute(HibernateQueryExecutionContext context) {
+                context.getSession().replicate(entityName, entity, replicationMode);
                 return null;
             }
         };
