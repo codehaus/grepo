@@ -205,7 +205,10 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
                             getProxyClass().getName());
 
                         setProxyInterface(intf);
-                        setTargetClass(getProxyClass());
+                        // if target class wasn't set, then use default target class..
+                        if (getTargetClass() == null) {
+                            setTargetClass(getProxyClass());
+                        }
                         foundProxyInterface = true;
                         break;
                     }
