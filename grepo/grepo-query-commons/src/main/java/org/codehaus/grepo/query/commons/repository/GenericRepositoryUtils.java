@@ -34,9 +34,17 @@ public final class GenericRepositoryUtils {
         for (Type type : clazz.getGenericInterfaces()) {
             if (type instanceof ParameterizedType) {
                 ParameterizedType pType = (ParameterizedType)type;
-                if (isGenericQueryRepository(pType) && pType.getActualTypeArguments().length > 0
-                    && pType.getActualTypeArguments()[0] instanceof Class<?>) {
-                    return (Class<?>)pType.getActualTypeArguments()[0];
+                if (isGenericQueryRepository(pType) && pType.getActualTypeArguments().length > 0) {
+
+                    Type actualType = pType.getActualTypeArguments()[0];
+                    if (actualType instanceof Class<?>) {
+                        return (Class<?>)actualType;
+                    } else if (actualType instanceof ParameterizedType) {
+                        Type rawType = ((ParameterizedType)actualType).getRawType();
+                        if (rawType instanceof Class<?>) {
+                            return (Class<?>)rawType;
+                        }
+                    }
                 }
             }
 
