@@ -8,7 +8,6 @@
     <description>Generic Repository</description>
     <url>http://grepo.codehaus.org</url>
 
-<!--
     <modules>
         <module>grepo-core</module>
         <module>grepo-query-commons</module>
@@ -16,7 +15,6 @@
         <module>grepo-query-jpa</module>
         <module>grepo-procedure</module>
     </modules>
- -->
 
     <properties>
         <!-- build properties -->
