@@ -157,7 +157,7 @@
     The name of the factory (parent) bean definition.
 
     Will use the bean class of the factory (parent) if none is specified, but can
-    also override it. In the latter case, the child bean class must be
+    also override it. In the later case, the child bean class must be
     compatible with the parent, i.e. accept the parent's property values, if any.
 
     A child bean definition will inherit property values from the parent, with
