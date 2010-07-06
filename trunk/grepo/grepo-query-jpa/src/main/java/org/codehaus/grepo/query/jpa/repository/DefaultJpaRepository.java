@@ -30,7 +30,7 @@ import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
-import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport;
 import org.codehaus.grepo.query.jpa.annotation.JpaFlushMode;
 import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
@@ -55,7 +55,8 @@ import org.springframework.util.CollectionUtils;
  *
  * @param <T> The main entity type.
  */
-public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> implements JpaRepository<T>, InitializingBean {
+public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
+                implements JpaRepository<T>, InitializingBean {
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class);
 
@@ -96,13 +97,17 @@ public class DefaultJpaRepository<T> extends GenericRepositorySupport<T> impleme
      */
     @SuppressWarnings("PMD")
     public Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) throws Exception {
-        Object result = executeQuery(qmpi, genericQuery);
+        createStatisticsEntry(qmpi);
+        try {
+            Object result = executeQuery(qmpi, genericQuery);
 
-        result = convertResult(result, qmpi, genericQuery);
+            result = convertResult(result, qmpi, genericQuery);
 
-        validateResult(result, qmpi, genericQuery);
-
-        return result;
+            validateResult(result, qmpi, genericQuery);
+            return result;
+        } finally {
+            completeStatisticsEntry(qmpi.getStatisticsEntry());
+        }
     }
 
     /**

@@ -46,13 +46,18 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
     @SuppressWarnings("PMD")
     public Object executeGenericProcedure(final ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
         throws Exception {
-        Map<String, Object> resultMap = executeProcedure(pmpi, genericProcedure);
+        createStatisticsEntry(pmpi);
+        try {
+            Map<String, Object> resultMap = executeProcedure(pmpi, genericProcedure);
 
-        Object result = convertResult(resultMap, pmpi, genericProcedure);
+            Object result = convertResult(resultMap, pmpi, genericProcedure);
 
-        validateResult(result, pmpi, genericProcedure);
+            validateResult(result, pmpi, genericProcedure);
 
-        return result;
+            return result;
+        } finally {
+            completeStatisticsEntry(pmpi.getStatisticsEntry());
+        }
     }
 
     /**

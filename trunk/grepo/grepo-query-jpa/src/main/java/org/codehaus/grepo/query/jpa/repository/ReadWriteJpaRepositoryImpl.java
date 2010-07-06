@@ -56,7 +56,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("lock", callback.create(null, true), false);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return context.getEntityManager().merge(entity);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("merge", callback.create(null, true), false);
     }
 
     /**
@@ -84,7 +84,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("persist", callback.create(null, true), false);
     }
 
     /**
@@ -98,7 +98,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("remove", callback.create(null, true), false);
     }
 
     /**
@@ -112,7 +112,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("flush", callback.create(null, true), false);
     }
 
 }

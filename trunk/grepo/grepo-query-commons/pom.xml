@@ -20,6 +20,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.codehaus.grepo</groupId>
+            <artifactId>grepo-statistics</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
             <optional>true</optional>

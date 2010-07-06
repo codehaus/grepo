@@ -16,14 +16,14 @@
 
 package org.codehaus.grepo.query.commons.aop;
 
-import org.codehaus.grepo.core.aop.MethodParameterInfo;
+import org.codehaus.grepo.statistics.aop.StatisticsMethodParameterInfo;
 
 /**
  * Method parameter info for methods annotated with {@link org.codehaus.grepo.query.commons.annotation.GenericQuery}.
  *
  * @author dguggi
  */
-public interface QueryMethodParameterInfo extends MethodParameterInfo {
+public interface QueryMethodParameterInfo extends StatisticsMethodParameterInfo {
 
     /**
      * @return Returns the entity class.

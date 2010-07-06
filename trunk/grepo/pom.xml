@@ -10,6 +10,7 @@
 
     <modules>
         <module>grepo-core</module>
+        <module>grepo-statistics</module>
         <module>grepo-query-commons</module>
         <module>grepo-query-hibernate</module>
         <module>grepo-query-jpa</module>
@@ -155,6 +156,30 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>3.0.2.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>3.0.2.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aspects</artifactId>
+                <version>3.0.2.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjrt</artifactId>
+                <version>1.6.8</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.aspectj</groupId>
+                <artifactId>aspectjweaver</artifactId>
+                <version>1.6.8</version>
             </dependency>
 
             <dependency>

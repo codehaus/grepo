@@ -13,4 +13,5 @@ Import-Template:
  org.hibernate.*;version="[3.0.0,4.0.0)",
  org.dom4j.*;version="0.0.0",
  org.codehaus.grepo.core.*;version="${grepo-osgi.version}",
- org.codehaus.grepo.query.commons.*;version="${grepo-osgi.version}"
+ org.codehaus.grepo.query.commons.*;version="${grepo-osgi.version}",
+ org.codehaus.grepo.statistics.*;version="${grepo-osgi.version}"

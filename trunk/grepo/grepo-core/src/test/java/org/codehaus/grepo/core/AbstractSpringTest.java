@@ -17,6 +17,8 @@
 package org.codehaus.grepo.core;
 
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -29,6 +31,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractSpringTest implements BeanFactoryAware {
+
+    /** The logger. */
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     /** The bean factory for this test. */
     private BeanFactory beanFactory;

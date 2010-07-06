@@ -12,4 +12,5 @@ Import-Template:
  org.springframework.*;version="[2.5.0,4.0.0)",
  org.slf4j.*;version="[1.5.0,2.0.0)",
  org.codehaus.grepo.core.*;version="${grepo-osgi.version}",
- org.codehaus.grepo.query.commons.*;version="${grepo-osgi.version}"
+ org.codehaus.grepo.query.commons.*;version="${grepo-osgi.version}",
+ org.codehaus.grepo.statistics.*;version="${grepo-osgi.version}"

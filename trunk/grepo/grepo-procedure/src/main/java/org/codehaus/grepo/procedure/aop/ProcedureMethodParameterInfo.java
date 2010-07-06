@@ -16,14 +16,14 @@
 
 package org.codehaus.grepo.procedure.aop;
 
-import org.codehaus.grepo.core.aop.MethodParameterInfo;
+import org.codehaus.grepo.statistics.aop.StatisticsMethodParameterInfo;
 
 /**
  * Method parameter info for methods annotated with {@link org.codehaus.grepo.procedure.annotation.GenericProcedure}.
  *
  * @author dguggi
  */
-public interface ProcedureMethodParameterInfo extends MethodParameterInfo {
+public interface ProcedureMethodParameterInfo extends StatisticsMethodParameterInfo {
 
     /**
      * Retrieves the procedure parameter name at the specified parameter index. The name retrieved using the

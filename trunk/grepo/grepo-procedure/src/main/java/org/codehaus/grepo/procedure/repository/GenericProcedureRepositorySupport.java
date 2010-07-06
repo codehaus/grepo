@@ -20,20 +20,21 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.procedure.cache.ProcedureCachingStrategy;
 import org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategy;
 import org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategy;
+import org.codehaus.grepo.statistics.repository.GenericStatisticsRepositorySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * @author dguggi
  */
-public abstract class GenericProcedureRepositorySupport implements GenericProcedureRepository {
+public abstract class GenericProcedureRepositorySupport extends GenericStatisticsRepositorySupport
+        implements GenericProcedureRepository {
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositorySupport.class);
 
@@ -46,32 +47,11 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
     /** The input generation strategy. */
     private ProcedureInputGenerationStrategy procedureInputGenerationStrategy;
 
-    /** The result conversion service. */
-    private ResultConversionService resultConversionService;
-
     /** The datasource. */
     private DataSource dataSource;
 
-    /** The application context. */
-    private ApplicationContext applicationContext;
-
-    /** The transaction template to use. */
-    private TransactionTemplate transactionTemplate;
-
-    /** The read-only transaction template to use (optional). */
-    private TransactionTemplate readOnlyTransactionTemplate;
-
     /**
-     * @param callback The callback to execute.
-     * @return Returns the result.
-     * @see #executeCallback(TransactionCallback, boolean)
-     */
-    protected Map<String, Object> executeCallback(TransactionCallback callback) {
-        return executeCallback(callback, false);
-    }
-
-    /**
-     * Executes the given {@code callback} with either an normal or none transaction template.
+     * Executes the given {@code callback} with either an read-only, normal or none transaction template.
      *
      * @param callback The callback to execute.
      * @param preferReadOnlyTransactionTemplate Flag to indicate if the read-only template should be prefered.
@@ -82,11 +62,11 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
             boolean preferReadOnlyTransactionTemplate) {
         boolean isReadOnlyTemplateUsed = false;
         TransactionTemplate templateToUse = null;
-        if (preferReadOnlyTransactionTemplate && readOnlyTransactionTemplate != null) {
+        if (preferReadOnlyTransactionTemplate && getReadOnlyTransactionTemplate() != null) {
             isReadOnlyTemplateUsed = true;
-            templateToUse = readOnlyTransactionTemplate;
+            templateToUse = getReadOnlyTransactionTemplate();
         } else {
-            templateToUse = transactionTemplate;
+            templateToUse = getTransactionTemplate();
         }
 
         Map<String, Object> retVal = null;
@@ -133,38 +113,6 @@ public abstract class GenericProcedureRepositorySupport implements GenericProced
 
     protected DataSource getDataSource() {
         return dataSource;
-    }
-
-    public void setTransactionTemplate(TransactionTemplate transactionTemplate) {
-        this.transactionTemplate = transactionTemplate;
-    }
-
-    protected TransactionTemplate getTransactionTemplate() {
-        return this.transactionTemplate;
-    }
-
-    protected TransactionTemplate getReadOnlyTransactionTemplate() {
-        return readOnlyTransactionTemplate;
-    }
-
-    public void setReadOnlyTransactionTemplate(TransactionTemplate readOnlyTransactionTemplate) {
-        this.readOnlyTransactionTemplate = readOnlyTransactionTemplate;
-    }
-
-    protected ResultConversionService getResultConversionService() {
-        return resultConversionService;
-    }
-
-    public void setResultConversionService(ResultConversionService resultConversionService) {
-        this.resultConversionService = resultConversionService;
-    }
-
-    protected ApplicationContext getApplicationContext() {
-        return applicationContext;
-    }
-
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
     }
 
 }

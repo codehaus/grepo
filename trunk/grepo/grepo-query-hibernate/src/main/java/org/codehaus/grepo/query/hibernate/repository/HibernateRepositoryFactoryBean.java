@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepositoryFactoryBean;
-import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
@@ -138,7 +138,7 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
      * {@inheritDoc}
      */
     @Override
-    protected void configureTarget(GenericRepositorySupport<T> target) {
+    protected void configureTarget(GenericQueryRepositorySupport<T> target) {
         super.configureTarget(target);
 
         // set session factory...

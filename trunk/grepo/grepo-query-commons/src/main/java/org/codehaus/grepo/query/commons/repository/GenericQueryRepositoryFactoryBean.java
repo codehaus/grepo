@@ -19,9 +19,9 @@ package org.codehaus.grepo.query.commons.repository;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.codehaus.grepo.core.repository.GenericRepositoryFactoryBean;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFactory;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategy;
+import org.codehaus.grepo.statistics.repository.GenericStatisticsRepositoryFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -34,7 +34,7 @@ import org.springframework.util.Assert;
  * @param <E> The factory class type.
  */
 public abstract class GenericQueryRepositoryFactoryBean<E> //
-        extends GenericRepositoryFactoryBean<GenericRepositorySupport<E>> {
+        extends GenericStatisticsRepositoryFactoryBean<GenericQueryRepositorySupport<E>> {
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositoryFactoryBean.class);
 
@@ -59,6 +59,8 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
         initEntityClass();
         initQueryExecutorFactory();
         initQueryExecutorFindingStrategy();
+        initStatisticsManager();
+        initStatisticsEntryIdentifierGenerationStrategy();
     }
 
     /**
@@ -175,32 +177,23 @@ public abstract class GenericQueryRepositoryFactoryBean<E> //
     @Override
     protected void validateTargetClass() {
         super.validateTargetClass();
-        Assert.isAssignable(GenericRepositorySupport.class, getTargetClass());
+        Assert.isAssignable(GenericQueryRepositorySupport.class, getTargetClass());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    protected void configureTarget(GenericRepositorySupport<E> target) {
+    protected void configureTarget(GenericQueryRepositorySupport<E> target) {
+        super.configureTarget(target);
         // set mandatory properties...
-        target.setApplicationContext(getApplicationContext());
         target.setEntityClass(entityClass);
         target.setQueryExecutorFactory(queryExecutorFactory);
         target.setQueryExecutorFindingStrategy(queryExecutorFindingStrategy);
 
         // set optional properties...
-        if (getResultConversionService() != null) {
-            target.setResultConversionService(getResultConversionService());
-        }
-        if (getTransactionTemplate() != null) {
-            target.setTransactionTemplate(getTransactionTemplate());
-        }
-        if (getReadOnlyTransactionTemplate() != null) {
-            target.setReadOnlyTransactionTemplate(getReadOnlyTransactionTemplate());
-        }
-        if (getMaxResults() != null) {
-            target.setMaxResults(getMaxResults());
+        if (maxResults != null) {
+            target.setMaxResults(maxResults);
         }
     }
 

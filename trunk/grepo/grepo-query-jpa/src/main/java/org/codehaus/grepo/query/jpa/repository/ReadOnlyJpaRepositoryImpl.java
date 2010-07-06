@@ -53,7 +53,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
                 return context.getEntityManager().find(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback.create(null, true), true);
+        return (T)executeCallbackWithStatistics("find", callback.create(null, true), true);
     }
 
     /**
@@ -67,7 +67,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
                 return context.getEntityManager().getReference(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback.create(null, true), true);
+        return (T)executeCallbackWithStatistics("getReference", callback.create(null, true), true);
     }
 
     /**
@@ -81,7 +81,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), true);
+        executeCallbackWithStatistics("refresh", callback.create(null, true), true);
     }
 
     /**
@@ -94,7 +94,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
                 return context.getEntityManager().contains(entity);
             }
         };
-        return (Boolean)executeCallback(callback.create(null, true), true);
+        return (Boolean)executeCallbackWithStatistics("contains", callback.create(null, true), true);
     }
 
 }

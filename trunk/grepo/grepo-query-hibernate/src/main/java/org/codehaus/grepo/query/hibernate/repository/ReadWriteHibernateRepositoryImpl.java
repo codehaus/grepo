@@ -56,7 +56,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().get(getEntityClass(), id, lockMode);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("get", callback.create(null, true), false);
     }
 
     /**
@@ -70,7 +70,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().get(entityName, id, lockMode);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("get", callback.create(null, true), false);
     }
 
 
@@ -85,7 +85,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().load(getEntityClass(), id, lockMode);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("load", callback.create(null, true), false);
     }
 
     /**
@@ -99,7 +99,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().load(entityName, id, lockMode);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("load", callback.create(null, true), false);
     }
 
 
@@ -114,7 +114,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("refresh", callback.create(null, true), false);
     }
 
     /**
@@ -128,7 +128,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("lock", callback.create(null, true), false);
     }
 
     /**
@@ -142,7 +142,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("lock", callback.create(null, true), false);
     }
 
 
@@ -157,7 +157,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().save(entity);
             }
         };
-        return (PK)executeCallback(callback.create(null, true), false);
+        return (PK)executeCallbackWithStatistics("save", callback.create(null, true), false);
     }
 
     /**
@@ -171,7 +171,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().save(entityName, entity);
             }
         };
-        return (PK)executeCallback(callback.create(null, true), false);
+        return (PK)executeCallbackWithStatistics("save", callback.create(null, true), false);
     }
 
     /**
@@ -185,7 +185,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("update", callback.create(null, true), false);
     }
 
     /**
@@ -199,7 +199,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("update", callback.create(null, true), false);
     }
 
     /**
@@ -213,7 +213,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("saveOrUpdate", callback.create(null, true), false);
     }
 
     /**
@@ -227,7 +227,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("saveOrUpdate", callback.create(null, true), false);
     }
 
     /**
@@ -241,7 +241,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("persist", callback.create(null, true), false);
     }
 
     /**
@@ -255,7 +255,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("persist", callback.create(null, true), false);
     }
 
     /**
@@ -269,7 +269,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("delete", callback.create(null, true), false);
     }
 
     /**
@@ -283,7 +283,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("delete", callback.create(null, true), false);
     }
 
     /**
@@ -297,7 +297,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().merge(entity);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("merge", callback.create(null, true), false);
     }
 
     /**
@@ -311,7 +311,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().merge(entityName, entity);
             }
         };
-        return (T)executeCallback(callback.create(null, true), false);
+        return (T)executeCallbackWithStatistics("merge", callback.create(null, true), false);
     }
 
     /**
@@ -325,7 +325,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("replicate", callback.create(null, true), false);
     }
 
     /**
@@ -339,7 +339,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("replicate", callback.create(null, true), false);
     }
 
     /**
@@ -353,7 +353,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), false);
+        executeCallbackWithStatistics("flush", callback.create(null, true), false);
     }
 
 

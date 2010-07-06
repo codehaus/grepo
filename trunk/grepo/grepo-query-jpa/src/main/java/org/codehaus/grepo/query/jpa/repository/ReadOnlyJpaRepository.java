@@ -24,7 +24,7 @@ import java.io.Serializable;
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public interface ReadOnlyJpaRepository <T,PK extends Serializable> extends JpaRepository<T> {
+public interface ReadOnlyJpaRepository<T, PK extends Serializable> extends JpaRepository<T> {
 
     /**
      * @param id The primary key.
