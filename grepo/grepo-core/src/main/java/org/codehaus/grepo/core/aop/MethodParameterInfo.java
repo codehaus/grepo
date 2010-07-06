@@ -165,4 +165,9 @@ public interface MethodParameterInfo {
      * @return Returns the parameter or {@code null}.
      */
     <T> T getParameterByParamName(String paramName, Class<T> clazz);
+
+    /**
+     * @return Returns the method's declaring type.
+     */
+    Class<?> getDeclaringClass();
 }

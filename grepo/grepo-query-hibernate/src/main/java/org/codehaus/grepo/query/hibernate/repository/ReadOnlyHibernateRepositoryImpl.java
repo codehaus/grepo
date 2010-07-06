@@ -54,7 +54,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().load(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback.create(null, true), true);
+        return (T)executeCallbackWithStatistics("load", callback.create(null, true), true);
     }
 
     /**
@@ -68,7 +68,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().load(entityName, id);
             }
         };
-        return (T)executeCallback(callback.create(null, true), true);
+        return (T)executeCallbackWithStatistics("load", callback.create(null, true), true);
     }
 
     /**
@@ -82,7 +82,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().get(getEntityClass(), id);
             }
         };
-        return (T)executeCallback(callback.create(null, true), true);
+        return (T)executeCallbackWithStatistics("get", callback.create(null, true), true);
     }
 
     /**
@@ -96,7 +96,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().get(entityName, id);
             }
         };
-        return (T)executeCallback(callback.create(null, true), true);
+        return (T)executeCallbackWithStatistics("get", callback.create(null, true), true);
     }
 
     /**
@@ -110,7 +110,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), true);
+        executeCallbackWithStatistics("refresh", callback.create(null, true), true);
     }
 
     /**
@@ -124,7 +124,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return null;
             }
         };
-        executeCallback(callback.create(null, true), true);
+        executeCallbackWithStatistics("evict", callback.create(null, true), true);
     }
 
     /**
@@ -137,7 +137,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
                 return context.getSession().contains(entity);
             }
         };
-        return (Boolean)executeCallback(callback.create(null, true), true);
+        return (Boolean)executeCallbackWithStatistics("contains", callback.create(null, true), true);
     }
 
 }

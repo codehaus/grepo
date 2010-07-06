@@ -268,4 +268,11 @@ public class MethodParameterInfoImpl implements MethodParameterInfo {
         }
         return -1;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Class<?> getDeclaringClass() {
+        return method.getDeclaringClass();
+    }
 }

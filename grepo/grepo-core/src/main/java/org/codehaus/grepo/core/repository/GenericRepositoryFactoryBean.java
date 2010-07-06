@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The target class (base) type.
  */
-public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
+public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySupport> implements FactoryBean,
             InitializingBean, ApplicationContextAware {
     /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =
@@ -267,7 +267,20 @@ public abstract class GenericRepositoryFactoryBean<T> implements FactoryBean,
      *
      * @param target The instance to configure.
      */
-    protected abstract void configureTarget(T target);
+    protected void configureTarget(T target) {
+        target.setApplicationContext(applicationContext);
+        target.setProxyInterface(proxyInterface);
+
+        if (resultConversionService != null) {
+            target.setResultConversionService(resultConversionService);
+        }
+        if (transactionTemplate != null) {
+            target.setTransactionTemplate(transactionTemplate);
+        }
+        if (readOnlyTransactionTemplate != null) {
+            target.setReadOnlyTransactionTemplate(readOnlyTransactionTemplate);
+        }
+    }
 
     /**
      * @return Returns the required {@link GenericRepository} type for this factory.

@@ -19,14 +19,15 @@ package org.codehaus.grepo.query.commons.aop;
 import java.lang.reflect.Method;
 import java.util.Collection;
 
-import org.codehaus.grepo.core.aop.MethodParameterInfoImpl;
+import org.codehaus.grepo.statistics.aop.StatisticsMethodParameterInfoImpl;
 
 /**
  * Implementation of {@link QueryMethodParameterInfo}.
  *
  * @author dguggi
  */
-public class QueryMethodParameterInfoImpl extends MethodParameterInfoImpl implements QueryMethodParameterInfo {
+public class QueryMethodParameterInfoImpl extends StatisticsMethodParameterInfoImpl //
+                implements QueryMethodParameterInfo {
 
     /** The entityClass of the target repository. */
     private Class<?> entityClass;
@@ -51,6 +52,9 @@ public class QueryMethodParameterInfoImpl extends MethodParameterInfoImpl implem
         this.entityClass = entityClass;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Class<?> getEntityClass() {
         return entityClass;
     }

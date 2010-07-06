@@ -21,10 +21,10 @@ import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
-import org.codehaus.grepo.core.repository.GenericRepositoryFactoryBean;
 import org.codehaus.grepo.procedure.cache.ProcedureCachingStrategy;
 import org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategy;
 import org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategy;
+import org.codehaus.grepo.statistics.repository.GenericStatisticsRepositoryFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
@@ -35,7 +35,8 @@ import org.springframework.util.Assert;
  * @author dguggi
  */
 public class GenericProcedureRepositoryFactoryBean //
-        extends GenericRepositoryFactoryBean<GenericProcedureRepositorySupport> {
+        extends GenericStatisticsRepositoryFactoryBean<GenericProcedureRepositorySupport> {
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryFactoryBean.class);
 
@@ -205,23 +206,12 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     @Override
     protected void configureTarget(GenericProcedureRepositorySupport target) {
+        super.configureTarget(target);
         // set mandatory properties...
         target.setDataSource(dataSource);
-        target.setApplicationContext(getApplicationContext());
         target.setProcedureInputGenerationStrategy(procedureInputGenerationStrategy);
         target.setProcedureCachingStrategy(procedureCachingStrategy);
         target.setProcedureCompilationStrategy(procedureCompilationStrategy);
-
-        // set optional properties...
-        if (getResultConversionService() != null) {
-            target.setResultConversionService(getResultConversionService());
-        }
-        if (getTransactionTemplate() != null) {
-            target.setTransactionTemplate(getTransactionTemplate());
-        }
-        if (getReadOnlyTransactionTemplate() != null) {
-            target.setReadOnlyTransactionTemplate(getReadOnlyTransactionTemplate());
-        }
     }
 
     /**

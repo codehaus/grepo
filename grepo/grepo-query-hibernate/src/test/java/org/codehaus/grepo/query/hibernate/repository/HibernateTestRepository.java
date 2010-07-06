@@ -22,7 +22,6 @@ import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.annotation.MaxResults;
-import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.codehaus.grepo.query.hibernate.annotation.EntityClass;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
@@ -30,7 +29,7 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 /**
  * @author dguggi
  */
-public interface HibernateTestRepository extends GenericQueryRepository<TestEntity> {
+public interface HibernateTestRepository extends ReadWriteHibernateRepository<TestEntity, Long> {
     /**
      * @param username The username.
      * @return Returns the entity.

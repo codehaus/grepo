@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManagerFactory;
 
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepositoryFactoryBean;
-import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport;
 import org.codehaus.grepo.query.jpa.annotation.JpaFlushMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -111,7 +111,7 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
      * {@inheritDoc}
      */
     @Override
-    protected void configureTarget(GenericRepositorySupport<T> target) {
+    protected void configureTarget(GenericQueryRepositorySupport<T> target) {
         super.configureTarget(target);
 
         // set entitymanager factory and property map...

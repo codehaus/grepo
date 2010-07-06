@@ -19,16 +19,17 @@ package org.codehaus.grepo.procedure.aop;
 import java.lang.reflect.Method;
 
 import org.codehaus.grepo.core.annotation.Param;
-import org.codehaus.grepo.core.aop.MethodParameterInfoImpl;
 import org.codehaus.grepo.procedure.annotation.In;
 import org.codehaus.grepo.procedure.annotation.InOut;
+import org.codehaus.grepo.statistics.aop.StatisticsMethodParameterInfoImpl;
 
 /**
  * Implementation of {@link ProcedureMethodParameterInfo}.
  *
  * @author dguggi
  */
-public class ProcedureMethodParameterInfoImpl extends MethodParameterInfoImpl implements ProcedureMethodParameterInfo {
+public class ProcedureMethodParameterInfoImpl extends StatisticsMethodParameterInfoImpl //
+                implements ProcedureMethodParameterInfo {
     /**
      * @param method The method.
      * @param parameters The parameters.

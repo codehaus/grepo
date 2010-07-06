@@ -25,7 +25,7 @@ import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
-import org.codehaus.grepo.query.commons.repository.GenericRepositorySupport;
+import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
@@ -57,7 +57,7 @@ import org.springframework.transaction.support.TransactionCallback;
  * @author dguggi
  * @param <T> The main entity type.
  */
-public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> implements HibernateRepository<T> {
+public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport<T> implements HibernateRepository<T> {
 
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class);
@@ -126,14 +126,18 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
      */
     @SuppressWarnings("PMD")
     public Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery annotation) throws Exception {
+        createStatisticsEntry(qmpi);
+        try {
+            Object result = executeQuery(qmpi, annotation);
 
-        Object result = executeQuery(qmpi, annotation);
+            result = convertResult(result, qmpi, annotation);
 
-        result = convertResult(result, qmpi, annotation);
+            validateResult(result, qmpi, annotation);
 
-        validateResult(result, qmpi, annotation);
-
-        return result;
+            return result;
+        } finally {
+            completeStatisticsEntry(qmpi.getStatisticsEntry());
+        }
     }
 
     /**
@@ -728,6 +732,7 @@ public class DefaultHibernateRepository<T> extends GenericRepositorySupport<T> i
      * @author dguggi
      */
     private class CloseSuppressingInvocationHandler implements InvocationHandler {
+
         /** The target session. */
         private final Session target;
 
