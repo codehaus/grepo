@@ -37,7 +37,7 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
     private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositoryFactoryBean.class);
 
     /** The optional statistics enabled flag (default is false). */
-    private Boolean statisticsEnabled;
+    private boolean statisticsEnabled = false;
 
     /** The statistics manager (required if statisticsEnabled is true). */
     private StatisticsManager statisticsManager;
@@ -61,7 +61,7 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
     @Override
     protected void configureTarget(T target) {
         super.configureTarget(target);
-        if (statisticsEnabled != null) {
+        if (statisticsEnabled) {
             target.setStatisticsEnabled(statisticsEnabled);
         }
         if (statisticsEntryIdentifierGenerationStrategy != null) {
@@ -78,7 +78,7 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
     @Override
     protected void validate() {
         super.validate();
-        if (statisticsEnabled != null && statisticsEnabled.booleanValue()) {
+        if (statisticsEnabled) {
             Assert.notNull(statisticsManager, "statisticsManager must not be null if statistics is enabled");
             Assert.notNull(statisticsEntryIdentifierGenerationStrategy, //
                 "statisticsEntryIdentifierGenerationStrategy must not be null if statistics is enabled");
@@ -152,11 +152,12 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
         }
     }
 
-    public Boolean getStatisticsEnabled() {
+
+    public boolean isStatisticsEnabled() {
         return statisticsEnabled;
     }
 
-    public void setStatisticsEnabled(Boolean statisticsEnabled) {
+    public void setStatisticsEnabled(boolean statisticsEnabled) {
         this.statisticsEnabled = statisticsEnabled;
     }
 
