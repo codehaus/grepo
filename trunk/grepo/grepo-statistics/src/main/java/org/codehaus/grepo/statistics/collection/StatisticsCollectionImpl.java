@@ -48,7 +48,7 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
             collectionEntry.addStatisticsEntry(entry, maxStatisticsEntries);
             collectionEntries.put(entry.getIdentifier(), collectionEntry);
         } else {
-            collectionEntry.addStatisticsEntry(entry);
+            collectionEntry.addStatisticsEntry(entry, maxStatisticsEntries);
         }
     }
 

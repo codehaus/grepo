@@ -77,9 +77,12 @@ public class SimpleStatisticsCollectionPrinter {
      * @return Returns the summary.
      */
     @ManagedOperation(description = "Prints summary")
-    @ManagedOperationParameter(name = "sorter",
-        description = "optional (IDENTIFIER_ASC, IDENTIFIER_DESC, NUMER_OF_INVOCATIONS_ASC, NUMER_OF_INVOCATIONS_DESC, "
-                      + "MAX_DURATION_ASC, MAX_DURATION_DESC, MIN_DURATION_ASC, MIN_DURATION_DESC)")
+    @ManagedOperationParameters({
+        @ManagedOperationParameter(name = "sorter",
+            description = "optional (IDENTIFIER_ASC, IDENTIFIER_DESC, NUMER_OF_INVOCATIONS_ASC, "
+                        + "NUMER_OF_INVOCATIONS_DESC, MAX_DURATION_ASC, MAX_DURATION_DESC, MIN_DURATION_ASC, "
+                        + "MIN_DURATION_DESC)")
+    })
     public String printSummary(String sorter) {
         StatisticsCollectionEntryComparator comparator = StatisticsCollectionEntryComparator.fromString(sorter);
         if (comparator == null) {
@@ -149,7 +152,8 @@ public class SimpleStatisticsCollectionPrinter {
     @ManagedOperation(description = "Prints detail")
     @ManagedOperationParameters({
         @ManagedOperationParameter(name = "identifier", description = "The identifier"),
-        @ManagedOperationParameter(name = "sorter", description = "optional ()")
+        @ManagedOperationParameter(name = "sorter",
+            description = "optional (DURATION_MILLIS_AS, DURATION_MILLIS_DESC, CREATION_ASC, CREATION_DESC)")
     })
     public String printDetail(String identifier, String sorter) {
         StatisticsEntryComparator comparator = StatisticsEntryComparator.fromString(sorter);

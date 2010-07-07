@@ -16,69 +16,33 @@
 
 package org.codehaus.grepo.statistics.service;
 
-import org.codehaus.grepo.statistics.collection.StatisticsCollection;
-import org.springframework.jmx.export.annotation.ManagedAttribute;
-import org.springframework.jmx.export.annotation.ManagedOperation;
-import org.springframework.jmx.export.annotation.ManagedResource;
-
 /**
  * @author dguggi
  */
-@ManagedResource("Statistics controller")
-public class StatisticsController {
-
-    /** The statistics manager. */
-    private StatisticsManager statisticsManager;
-
-    /** The collection. */
-    private StatisticsCollection statisticsCollection;
+public interface StatisticsController {
 
     /**
      * @param statisticsEnabled The flag to set.
      */
-    @ManagedAttribute(description = "Enables/Disables statistics")
-    public void setStatisticsEnabled(boolean statisticsEnabled) {
-        statisticsManager.setEnabled(statisticsEnabled);
-    }
+    void setStatisticsEnabled(boolean statisticsEnabled);
 
     /**
-     * @return Returns the flag.
+     * @return Returns the statistics enabled flag.
      */
-    @ManagedAttribute
-    public boolean getStatisticsEnabled() {
-        return statisticsManager.isEnabled();
-    }
+    boolean getStatisticsEnabled();
 
     /**
-     * @param maxStatisticsEntries The number to set.
+     * @param maxStatisticsEntries The max entries to set.
      */
-    @ManagedAttribute(description = "Sets the max number of statistics entries")
-    public void setMaxStatisticsEntries(Long maxStatisticsEntries) {
-        statisticsCollection.setMaxStatisticsEntries(maxStatisticsEntries);
-    }
+    void setMaxStatisticsEntries(Long maxStatisticsEntries);
 
     /**
-     * @return Returns the max number of statistics entries.
+     * @return Returns the max entries.
      */
-    @ManagedAttribute
-    public Long getMaxStatisticsEntries() {
-        return statisticsCollection.getMaxStatisticsEntries();
-    }
+    Long getMaxStatisticsEntries();
 
     /**
      * Clears statistics.
      */
-    @ManagedOperation(description = "Clears statistics")
-    public void clearStatistics() {
-        statisticsCollection.clear();
-    }
-
-    public void setStatisticsManager(StatisticsManager statisticsManager) {
-        this.statisticsManager = statisticsManager;
-    }
-
-    public void setStatisticsCollection(StatisticsCollection statisticsCollection) {
-        this.statisticsCollection = statisticsCollection;
-    }
-
+    void clearStatistics();
 }
