@@ -63,9 +63,9 @@ public class ProcedureRepositoryStatisticsOracleTest extends AbstractProcedureRe
     public void testSimpleProcWithSimpleConfig() {
         repo.executeSimpleProcWithSimpleConfig("value", 42);
         Assert.assertEquals(1, collection.size());
-        Assert.assertEquals(1, collection.getCollectionEntryIdentifiers().size());
+        Assert.assertEquals(1, collection.size());
         repo.executeSimpleProcWithSimpleConfig(null, null);
         Assert.assertEquals(1, collection.size());
-        Assert.assertEquals(2, collection.getCollectionEntriesList().get(0).getStatisticsEntries().size());
+        Assert.assertEquals(2, collection.getCollectionEntriesList().get(0).getStatisticsEntriesReadOnly().size());
     }
 }

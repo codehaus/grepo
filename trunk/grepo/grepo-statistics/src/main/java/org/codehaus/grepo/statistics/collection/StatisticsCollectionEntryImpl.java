@@ -95,8 +95,15 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /**
      * {@inheritDoc}
      */
-    public List<StatisticsEntry> getStatisticsEntries() {
+    public List<StatisticsEntry> getStatisticsEntriesReadOnly() {
         return Collections.unmodifiableList(statisticsEntries);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StatisticsEntry> getStatisticsEntriesList() {
+        return new ArrayList<StatisticsEntry>(statisticsEntries);
     }
 
     protected void setStatisticsEntries(List<StatisticsEntry> statisticsEntries) {

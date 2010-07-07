@@ -51,9 +51,9 @@ public class HibernateRepositoryStatisticsTest extends AbstractHibernateReposito
     @Test
     public void testStatisticsWithNamedQuery() {
         Assert.assertNotNull(repo.getByUsername("username"));
-        Assert.assertEquals(1, collection.getCollectionEntries().size());
+        Assert.assertEquals(1, collection.size());
         repo.get(-1L);
-        Assert.assertEquals(2, collection.getCollectionEntries().size());
+        Assert.assertEquals(2, collection.size());
     }
 
 }
