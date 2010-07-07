@@ -92,7 +92,7 @@ public class MethodStatisticsAspect {
             try {
                 statisticsManager.completeStatisticsEntry(entry);
             } catch (Exception e) {
-                logger.error("Unable to complete StatisticsEntry: " + e.getMessage(), e);
+                logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
             }
         }
     }
