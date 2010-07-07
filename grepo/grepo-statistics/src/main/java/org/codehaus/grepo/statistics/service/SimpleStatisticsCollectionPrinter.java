@@ -101,7 +101,8 @@ public class SimpleStatisticsCollectionPrinter {
                 collection, comparator);
         StringBuilder sb = new StringBuilder();
         sb.append("STATISTICS SUMMARY").append(nl()).append(nl());
-        sb.append("Number of collection entries: " + list.size()).append(nl()).append(nl());
+        sb.append("Number of collection entries: " + list.size()).append(" (sorted: " + comparator + ")");
+        sb.append(nl()).append(nl());
 
         if (isHtml()) {
             sb.append("<table border=\"1\"><tr><td><b>identifier</b></td>");
