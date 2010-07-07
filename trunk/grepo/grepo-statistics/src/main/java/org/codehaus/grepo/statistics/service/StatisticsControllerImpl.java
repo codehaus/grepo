@@ -17,6 +17,7 @@
 package org.codehaus.grepo.statistics.service;
 
 import org.codehaus.grepo.statistics.collection.StatisticsCollection;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
@@ -73,12 +74,23 @@ public class StatisticsControllerImpl implements StatisticsController {
         statisticsCollection.clear();
     }
 
+    @Required
     public void setStatisticsManager(StatisticsManager statisticsManager) {
         this.statisticsManager = statisticsManager;
     }
 
+    protected StatisticsManager getStatisticsManager() {
+        return statisticsManager;
+    }
+
+    @Required
     public void setStatisticsCollection(StatisticsCollection statisticsCollection) {
         this.statisticsCollection = statisticsCollection;
     }
+
+    protected StatisticsCollection getStatisticsCollection() {
+        return statisticsCollection;
+    }
+
 
 }
