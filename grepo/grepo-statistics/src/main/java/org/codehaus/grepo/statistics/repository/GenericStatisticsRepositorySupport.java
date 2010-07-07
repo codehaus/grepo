@@ -83,7 +83,7 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to complete StatisticsEntry: " + e.getMessage(), e);
+            logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
         }
         return entry;
     }
@@ -102,7 +102,7 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to complete StatisticsEntry: " + e.getMessage(), e);
+            logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
         }
     }
 

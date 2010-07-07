@@ -58,7 +58,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to complete StatisticsEntry: " + e.getMessage(), e);
+            logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
         }
     }
 
@@ -73,7 +73,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
                 entry = statisticsEntryFactory.createStatisticsEntry(identifier, Calendar.getInstance());
             }
         } catch (Exception e) {
-            logger.warn("Unable to create StatisticsEntry: " + e.getMessage(), e);
+            logger.warn("Unable to create StatisticsEntry: " + e.getMessage());
         }
         return entry;
     }
