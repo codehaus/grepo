@@ -139,7 +139,9 @@ public class SimpleStatisticsCollectionPrinter {
      * @return Returns the detail.
      */
     @ManagedOperation(description = "Prints detail")
-    @ManagedOperationParameter(name = "identifier", description = "The identifier")
+    @ManagedOperationParameters({
+        @ManagedOperationParameter(name = "identifier", description = "The identifier")
+    })
     public String printDetail(String identifier) {
         return printDetail(identifier, StatisticsEntryComparator.CREATION_ASC);
     }
