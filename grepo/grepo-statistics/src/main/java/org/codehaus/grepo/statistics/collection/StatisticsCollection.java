@@ -17,7 +17,6 @@
 package org.codehaus.grepo.statistics.collection;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ public interface StatisticsCollection extends Serializable {
     /**
      * @return Returns a read only map of {@link StatisticsCollectionEntry} objects.
      */
-    Map<String, StatisticsCollectionEntry> getCollectionEntriesMap();
+    Map<String, StatisticsCollectionEntry> getCollectionEntriesMapReadOnly();
 
     /**
      * @return Returns a read only list of {@link StatisticsCollectionEntry} objects.
@@ -50,22 +49,28 @@ public interface StatisticsCollection extends Serializable {
     List<StatisticsCollectionEntry> getCollectionEntriesList();
 
     /**
-     * @return Returns a read only collection of {@link StatisticsCollectionEntry} objects.
-     */
-    Collection<StatisticsCollectionEntry> getCollectionEntries();
-
-    /**
      * @return Returns a read only list of (distinct) collection entry identifiers.
      */
     List<String> getCollectionEntryIdentifiersList();
 
     /**
-     * @return Returns a read only collection of (distinct) collection entry identifiers.
-     */
-    Collection<String> getCollectionEntryIdentifiers();
-
-    /**
      * @return Returns the size of this collection.
      */
     int size();
+
+    /**
+     * Clears the collection.
+     */
+    void clear();
+
+    /**
+     * @param maxStatisticsEntries The max number of statistics entries.
+     */
+    void setMaxStatisticsEntries(Long maxStatisticsEntries);
+
+    /**
+     * @return Returns the max number of statistics entries.
+     */
+    Long getMaxStatisticsEntries();
+
 }

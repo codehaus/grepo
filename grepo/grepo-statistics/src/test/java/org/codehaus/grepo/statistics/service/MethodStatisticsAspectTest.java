@@ -48,14 +48,14 @@ public class MethodStatisticsAspectTest extends AbstractSpringTest {
         testInterface.statsMethod1(430L);
         testInterface.statsMethod1(10L);
 
-        Assert.assertEquals(1, collection.getCollectionEntries().size());
+        Assert.assertEquals(1, collection.size());
 
         StatisticsCollectionEntry entry = collection.get(
             TestStatisticsInterface.class.getName() + ".statsMethod1");
         Assert.assertNotNull(entry);
-        Assert.assertEquals(3, entry.getStatisticsEntries().size());
+        Assert.assertEquals(3, entry.getStatisticsEntriesReadOnly().size());
 
-        for (StatisticsEntry e : entry.getStatisticsEntries()) {
+        for (StatisticsEntry e : entry.getStatisticsEntriesReadOnly()) {
             logger.info(e.toString());
         }
 

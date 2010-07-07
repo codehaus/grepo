@@ -51,9 +51,9 @@ public class JpaRepositoryStatisticsTest extends AbstractJpaRepositoryTest {
     @Test
     public void testStatisticsWithNamedQuery() {
         Assert.assertNotNull(repo.getByUsername("username"));
-        Assert.assertEquals(1, collection.getCollectionEntries().size());
+        Assert.assertEquals(1, collection.size());
         repo.find(-1L);
-        Assert.assertEquals(2, collection.getCollectionEntries().size());
+        Assert.assertEquals(2, collection.size());
     }
 
 }

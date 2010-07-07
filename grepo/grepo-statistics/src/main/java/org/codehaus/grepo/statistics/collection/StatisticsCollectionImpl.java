@@ -17,7 +17,6 @@
 package org.codehaus.grepo.statistics.collection;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +62,7 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
     /**
      * {@inheritDoc}
      */
-    public Map<String, StatisticsCollectionEntry> getCollectionEntriesMap() {
+    public Map<String, StatisticsCollectionEntry> getCollectionEntriesMapReadOnly() {
         return Collections.unmodifiableMap(collectionEntries);
     }
 
@@ -71,28 +70,14 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
      * {@inheritDoc}
      */
     public List<StatisticsCollectionEntry> getCollectionEntriesList() {
-        return Collections.unmodifiableList(new ArrayList<StatisticsCollectionEntry>(collectionEntries.values()));
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Collection<StatisticsCollectionEntry> getCollectionEntries() {
-        return Collections.unmodifiableCollection(collectionEntries.values());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Collection<String> getCollectionEntryIdentifiers() {
-        return Collections.unmodifiableCollection(collectionEntries.keySet());
+        return new ArrayList<StatisticsCollectionEntry>(collectionEntries.values());
     }
 
     /**
      * {@inheritDoc}
      */
     public List<String> getCollectionEntryIdentifiersList() {
-        return Collections.unmodifiableList(new ArrayList<String>(collectionEntries.keySet()));
+        return new ArrayList<String>(collectionEntries.keySet());
     }
 
     /**
@@ -102,8 +87,25 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
         return collectionEntries.size();
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void clear() {
+        collectionEntries.clear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void setMaxStatisticsEntries(Long maxStatisticsEntries) {
         this.maxStatisticsEntries = maxStatisticsEntries;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Long getMaxStatisticsEntries() {
+        return maxStatisticsEntries;
     }
 
 }

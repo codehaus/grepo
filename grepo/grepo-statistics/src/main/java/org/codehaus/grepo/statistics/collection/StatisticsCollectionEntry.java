@@ -51,7 +51,12 @@ public interface StatisticsCollectionEntry extends Serializable {
     /**
      * @return Returns a read-only list of {@link StatisticsEntry} objects.
      */
-    List<StatisticsEntry> getStatisticsEntries();
+    List<StatisticsEntry> getStatisticsEntriesReadOnly();
+
+    /**
+     * @return Returns the list of {@link StatisticsEntry} objects.
+     */
+    List<StatisticsEntry> getStatisticsEntriesList();
 
     /**
      * @return Returns the number of invocations.
