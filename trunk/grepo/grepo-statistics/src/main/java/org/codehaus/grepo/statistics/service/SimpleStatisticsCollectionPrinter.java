@@ -156,7 +156,7 @@ public class SimpleStatisticsCollectionPrinter {
     @ManagedOperationParameters({
         @ManagedOperationParameter(name = "identifier", description = "The identifier"),
         @ManagedOperationParameter(name = "sorter",
-            description = "optional (DURATION_MILLIS_AS, DURATION_MILLIS_DESC, CREATION_ASC, CREATION_DESC)")
+            description = "optional (DURATION_MILLIS_ASC, DURATION_MILLIS_DESC, CREATION_ASC, CREATION_DESC)")
     })
     public String printDetail(String identifier, String sorter) {
         StatisticsEntryComparator comparator = StatisticsEntryComparator.fromString(sorter);
