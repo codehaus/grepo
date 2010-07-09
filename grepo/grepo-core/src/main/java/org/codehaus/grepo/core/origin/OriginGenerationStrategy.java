@@ -14,24 +14,15 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.statistics.annotation;
-
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+package org.codehaus.grepo.core.origin;
 
 /**
- * This annotation is used to collect method statistics at runtime.
- *
  * @author dguggi
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
-public @interface MethodStatistics {
-    /** A String that identifies the method statistics record. */
-    String identifier() default "";
+public interface OriginGenerationStrategy {
 
-    /** The origin. */
-    String origin() default "";
+    /**
+     * @return Returns the generated origin.
+     */
+    String generateOrigin();
 }

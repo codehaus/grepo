@@ -66,11 +66,18 @@ public class StatisticsManagerImpl implements StatisticsManager {
      * {@inheritDoc}
      */
     public StatisticsEntry createStatisticsEntry(String identifier) {
+        return createStatisticsEntry(identifier);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public StatisticsEntry createStatisticsEntry(String identifier, String origin) {
         StatisticsEntry entry = null;
         try {
             if (isEnabled()) {
                 Assert.hasText(identifier, "identifier must not be empty");
-                entry = statisticsEntryFactory.createStatisticsEntry(identifier, Calendar.getInstance());
+                entry = statisticsEntryFactory.createStatisticsEntry(identifier, Calendar.getInstance(), origin);
 
                 if (statisticsCollectionStrategy != null) {
                     statisticsCollectionStrategy.startStatistics(entry);

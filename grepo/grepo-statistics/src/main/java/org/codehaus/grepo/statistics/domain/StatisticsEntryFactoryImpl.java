@@ -18,10 +18,16 @@ package org.codehaus.grepo.statistics.domain;
 
 import java.util.Calendar;
 
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.grepo.core.origin.OriginGenerationStrategy;
+
 /**
  * @author dguggi
  */
 public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
+
+    /** The origin generation strategy. */
+    private OriginGenerationStrategy originGenerationStrategy;
 
     /**
      * {@inheritDoc}
@@ -37,8 +43,20 @@ public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
         StatisticsEntry entry = new StatisticsEntryImpl();
         entry.setIdentifier(identifier);
         entry.setCreation(creation);
-        entry.setOrigin(origin);
+
+        String originToSet = origin;
+        if (StringUtils.isEmpty(originToSet) && originGenerationStrategy != null) {
+            originToSet = originGenerationStrategy.generateOrigin();
+        }
+        if (StringUtils.isNotEmpty(originToSet)) {
+            entry.setOrigin(originToSet);
+        }
         return entry;
+    }
+
+
+    public void setOriginGenerationStrategy(OriginGenerationStrategy originGenerationStrategy) {
+        this.originGenerationStrategy = originGenerationStrategy;
     }
 
 }
