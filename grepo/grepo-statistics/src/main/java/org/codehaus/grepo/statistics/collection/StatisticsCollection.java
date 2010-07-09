@@ -64,13 +64,22 @@ public interface StatisticsCollection extends Serializable {
     void clear();
 
     /**
-     * @param maxStatisticsEntries The max number of statistics entries.
+     * @return The max number of top duration {@link StatisticsEntry} objects.
      */
-    void setMaxStatisticsEntries(Long maxStatisticsEntries);
+    Long getMaxNumberOfTopDurationStatisticsEntries();
 
     /**
-     * @return Returns the max number of statistics entries.
+     * @param maxNumberOfTopDurationStatisticsEntries The max number of top duration {@link StatisticsEntry} objects.
      */
-    Long getMaxStatisticsEntries();
+    void setMaxNumberOfTopDurationStatisticsEntries(Long maxNumberOfTopDurationStatisticsEntries);
 
+    /**
+     * @return The max number of recent statistic entries.
+     */
+    Long getMaxNumberOfRecentStatisticsEntries();
+
+    /**
+     * @param maxNumberOfRecentStatsticsEntries The max number of recent statistic entries.
+     */
+    void setMaxNumberOfRecentStatisticsEntries(Long maxNumberOfRecentStatsticsEntries);
 }

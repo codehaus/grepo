@@ -16,15 +16,17 @@
 
 package org.codehaus.grepo.statistics.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.statistics.collection.StatisticsCollection;
 import org.codehaus.grepo.statistics.collection.StatisticsCollectionEntry;
 import org.codehaus.grepo.statistics.collection.StatisticsCollectionEntryComparator;
 import org.codehaus.grepo.statistics.collection.StatisticsCollectionUtils;
 import org.codehaus.grepo.statistics.collection.StatisticsEntryComparator;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedOperationParameter;
 import org.springframework.jmx.export.annotation.ManagedOperationParameters;
@@ -47,6 +49,15 @@ public class SimpleStatisticsCollectionPrinter {
         TXT,
     };
 
+    /** The collection. */
+    private StatisticsCollection collection;
+
+    /** The output type. */
+    private OutputType type = OutputType.TXT;
+
+    /** The date format. */
+    private SimpleDateFormat dateFormat = null;
+
     /** Default constructor. */
     public SimpleStatisticsCollectionPrinter() {
     }
@@ -58,78 +69,70 @@ public class SimpleStatisticsCollectionPrinter {
         this.collection = collection;
     }
 
-    /** The collection. */
-    private StatisticsCollection collection;
-
-    /** The output type. */
-    private OutputType type = OutputType.TXT;
-
     /**
      * @return Returns the summary.
      */
     @ManagedOperation(description = "Prints summary")
     public String printSummary() {
-        return printSummary(StatisticsCollectionEntryComparator.IDENTIFIER_ASC);
+        return printSummary(false);
     }
 
     /**
+     * @param calcAverageDuration The flag.
+     * @return Returns the summary.
+     */
+    @ManagedOperation(description = "Prints summary")
+    @ManagedOperationParameters({
+        @ManagedOperationParameter(name = "calcAverageDuration",
+            description = "Flag to determine whether or not to calcualate average duration")
+    })
+    public String printSummary(boolean calcAverageDuration) {
+        return printSummary(calcAverageDuration, StatisticsCollectionEntryComparator.IDENTIFIER_ASC);
+    }
+
+    /**
+     * @param calcAverageDuration The flag.
      * @param sorter The comparator string.
      * @return Returns the summary.
      */
     @ManagedOperation(description = "Prints summary")
     @ManagedOperationParameters({
+        @ManagedOperationParameter(name = "calcAverageDuration",
+            description = "Flag to determine whether or not to calcualate average duration"),
         @ManagedOperationParameter(name = "sorter",
             description = "optional (IDENTIFIER_ASC, IDENTIFIER_DESC, NUMER_OF_INVOCATIONS_ASC, "
                         + "NUMER_OF_INVOCATIONS_DESC, MAX_DURATION_ASC, MAX_DURATION_DESC, MIN_DURATION_ASC, "
                         + "MIN_DURATION_DESC)")
     })
-    public String printSummary(String sorter) {
+    public String printSummary(boolean calcAverageDuration, String sorter) {
         StatisticsCollectionEntryComparator comparator = StatisticsCollectionEntryComparator.fromString(sorter);
         if (comparator == null) {
-            return printSummary();
+            return printSummary(calcAverageDuration);
         } else {
-            return printSummary(comparator);
+            return printSummary(calcAverageDuration, comparator);
         }
     }
 
     /**
+     * @param includeAverageDuration The flag.
      * @param comparator The comparator.
      * @return Returns the summary.
      */
-    public String printSummary(StatisticsCollectionEntryComparator comparator) {
-        List<StatisticsCollectionEntry> list = StatisticsCollectionUtils.getCollectionEntries(
-                collection, comparator);
+    public String printSummary(boolean includeAverageDuration, StatisticsCollectionEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
-        sb.append("STATISTICS SUMMARY").append(nl()).append(nl());
-        sb.append("Number of collection entries: " + list.size()).append(" (sorted: " + comparator + ")");
-        sb.append(nl()).append(nl());
+        sb.append("STATISTICS SUMMARY").append(nl(2));
 
-        if (isHtml()) {
-            sb.append("<table border=\"1\"><tr><td><b>identifier</b></td>");
-            sb.append("<td><b>numberOfInvocations</b></td>");
-            sb.append("<td><b>minDurationMillis</b></td>");
-            sb.append("<td><b>maxDurationMillis</b></td></tr>");
-        }
-
-        for (StatisticsCollectionEntry entry : list) {
-            if (isHtml()) {
-                sb.append("<tr>");
-                sb.append("<td>").append(entry.getStatisticsEntriesReadOnly().get(0).getIdentifier()).append("</td>");
-                sb.append("<td>").append(entry.getNumberOfInvocations()).append("</td>");
-                sb.append("<td>").append(entry.getMinDurationMillis()).append("</td>");
-                sb.append("<td>").append(entry.getMaxDurationMillis()).append("</td>");
-                sb.append("</tr>");
-            } else {
-                sb.append(entry.getStatisticsEntriesReadOnly().get(0).getIdentifier()).append(":");
-                sb.append(" numberOfInvocations=").append(entry.getNumberOfInvocations());
-                sb.append(" minDurationMillis=").append(entry.getMinDurationMillis());
-                sb.append(" maxDurationMillis=").append(entry.getMaxDurationMillis());
-                sb.append(nl());
+        // print recent statistics...
+        List<StatisticsCollectionEntry> list = StatisticsCollectionUtils.getCollectionEntries(
+            collection, comparator);
+        if (list.size() > 0) {
+            sb.append("" + list.size() + " collection entries (sorted by " + comparator + "):");
+            sb.append(nl(2));
+            printStartCollectionEntryHeader(sb, includeAverageDuration);
+            for (StatisticsCollectionEntry entry : list) {
+                printCollectionEntryRow(entry, sb, includeAverageDuration);
             }
-        }
-
-        if (isHtml()) {
-            sb.append("</table>");
+            printEndCollectionEntryHeader(sb);
         }
 
         return sb.toString();
@@ -144,7 +147,7 @@ public class SimpleStatisticsCollectionPrinter {
         @ManagedOperationParameter(name = "identifier", description = "The identifier")
     })
     public String printDetail(String identifier) {
-        return printDetail(identifier, StatisticsEntryComparator.CREATION_ASC);
+        return printDetail(identifier, StatisticsEntryComparator.CREATION_DESC);
     }
 
     /**
@@ -178,47 +181,234 @@ public class SimpleStatisticsCollectionPrinter {
         if (entry == null) {
             sb.append("identifier '" + identifier + "' not found");
         } else {
-            sb.append("STATISTICS DETAIL").append(nl()).append(nl());
-            sb.append("identifier: ").append(identifier).append(nl());
-            sb.append("numberOfInvocations: " + entry.getNumberOfInvocations()).append(nl());
-            sb.append("minDurationMillis: " + entry.getMinDurationMillis()).append(nl());
-            sb.append("maxDurationMillis: " + entry.getMaxDurationMillis()).append(nl());
+            sb.append("STATISTICS DETAIL").append(nl(2));
+
+            String minDurationMillis = "";
+            String minDurationDate = "";
+            StatisticsEntry minEntry = entry.getMinDurationStatisticsEntry();
+            if (minEntry != null) {
+                if (minEntry.getDurationMillis() != null) {
+                    minDurationMillis = String.valueOf(minEntry.getDurationMillis());
+                }
+                minDurationDate = formatDate(minEntry.getCreationDate());
+            }
+
+            String maxDurationMillis = "";
+            String maxDurationDate = "";
+            StatisticsEntry maxEntry = entry.getMaxDurationStatisticsEntry();
+            if (maxEntry != null) {
+                if (maxEntry.getDurationMillis() != null) {
+                    maxDurationMillis = String.valueOf(maxEntry.getDurationMillis());
+                }
+                maxDurationDate = formatDate(maxEntry.getCreationDate());
+            }
+
+            // calculate average duration millis
+            String avgDuration = "";
+            Long avgDurationValue = StatisticsCollectionUtils.getAverageDuration(
+                entry.getRecentStatisticsEntriesReadOnly());
+            if (avgDuration != null) {
+                avgDuration = String.valueOf(avgDurationValue);
+            }
+
+            sb.append("identifier: " + identifier + nl());
+            sb.append("invocations: " + entry.getNumberOfInvocations() + nl());
+            sb.append("minDuration: " + minDurationMillis + " (" + minDurationDate + ")" + nl());
+            sb.append("maxDuration: " + maxDurationMillis + " (" + maxDurationDate + ")" + nl());
+            sb.append("avgDuration: " + avgDuration + nl());
             sb.append(nl());
 
-            List<StatisticsEntry> list = StatisticsCollectionUtils.getStatisticEntries(
-                entry, comparator);
-            sb.append("" + list.size() + " invocations (sorted: " + comparator + ")").append(nl()).append(nl());
-
-            if (isHtml()) {
-                sb.append("<table border=\"1\">");
-                sb.append("<tr><td><b>durationMillis</b></td>");
-                sb.append("<td><b>creation</b></td>");
-                sb.append("<td><b>completion</b></td>");
-                sb.append("<td><b>origin</b></td></tr>");
-            }
-
-            for (StatisticsEntry se : list) {
-                if (isHtml()) {
-                    sb.append("<tr>");
-                    sb.append("<td>").append(se.getDurationMillis()).append("</td>");
-                    sb.append("<td>").append(se.getCreationDate()).append("</td>");
-                    sb.append("<td>").append(se.getCompletionDate()).append("</td>");
-                    sb.append("<td>").append(se.getOrigin()).append("</td>");
-                    sb.append("</tr>");
-                } else {
-                    sb.append(" durationMillis: " + se.getDurationMillis());
-                    sb.append(" creation: " + se.getCreationDate());
-                    sb.append(" completion: " + se.getCompletionDate());
-                    sb.append(" origin: " + se.getOrigin()).append(nl());
+            List<StatisticsEntry> topDurationList = StatisticsCollectionUtils.getTopDurationStatisticsEntries(entry,
+                    StatisticsEntryComparator.DURATION_MILLIS_DESC);
+            if (topDurationList.size() > 0) {
+                sb.append("" + topDurationList.size() + " top durations (sorted by "
+                    + StatisticsEntryComparator.DURATION_MILLIS_DESC + "):");
+                sb.append(nl(2));
+                printStartStatisticsEntryHeader(sb);
+                for (StatisticsEntry e : topDurationList) {
+                    printStatisticsEntryRow(e, sb);
                 }
+                printEndStatisticsEntryHeader(sb);
+                sb.append(nl(2));
+
             }
 
-            if (isHtml()) {
-                sb.append("</table>");
+            List<StatisticsEntry> recentList = StatisticsCollectionUtils.getRecentStatisticsEntries(
+                entry, comparator);
+            if (recentList.size() > 0) {
+                sb.append("" + recentList.size() + " recent invocations (sorted by " + comparator + "):");
+                sb.append(nl(2));
+                printStartStatisticsEntryHeader(sb);
+                for (StatisticsEntry e : recentList) {
+                    printStatisticsEntryRow(e, sb);
+                }
+                printEndStatisticsEntryHeader(sb);
+                sb.append(nl(2));
             }
 
         }
         return sb.toString();
+    }
+
+    /**
+     * @param sb The string builder.
+     * @param includeAverageDuration The flag.
+     */
+    private void printStartCollectionEntryHeader(StringBuilder sb, boolean includeAverageDuration) {
+        if (isHtml()) {
+            sb.append("<table border=\"1\" cellpadding=\"2px\"><tr>");
+            sb.append("<td><b>identifier</b></td>");
+            sb.append("<td><b>invocations</b></td>");
+            sb.append("<td><b>minDuration</b></td>");
+            sb.append("<td><b>maxDuration</b></td>");
+            if (includeAverageDuration) {
+                sb.append("<td><b>avgDuration</b></td>");
+            }
+            sb.append("</tr>");
+        }
+    }
+
+    /**
+     * @param sb The string builder.
+     */
+    private void printStartStatisticsEntryHeader(StringBuilder sb) {
+        if (isHtml()) {
+            sb.append("<table border=\"1\" cellpadding=\"2px\">");
+            sb.append("<tr><td><b>duration</b></td>");
+            sb.append("<td><b>creation</b></td>");
+            sb.append("<td><b>completion</b></td>");
+            sb.append("<td><b>origin</b></td></tr>");
+        }
+    }
+
+    /**
+     * @param sb The string builder.
+     */
+    private void printEndStatisticsEntryHeader(StringBuilder sb) {
+        if (isHtml()) {
+            sb.append("</table>");
+        }
+    }
+
+
+    /**
+     * @param sb The string builder.
+     */
+    private void printEndCollectionEntryHeader(StringBuilder sb) {
+        if (isHtml()) {
+            sb.append("</table>");
+        }
+    }
+
+    /**
+     * @param entry The entry.
+     * @param sb The string builder.
+     * @param includeAverageDuration The flag.
+     */
+    private void printCollectionEntryRow(StatisticsCollectionEntry entry, StringBuilder sb,
+            boolean includeAverageDuration) {
+        if (entry != null) {
+            String minDurationMillis = "";
+            String minDurationDate = "";
+            String identifier = "";
+            StatisticsEntry minEntry = entry.getMinDurationStatisticsEntry();
+            if (minEntry != null) {
+                identifier = StringUtils.defaultString(minEntry.getIdentifier());
+                if (minEntry.getDurationMillis() != null) {
+                    minDurationMillis = String.valueOf(minEntry.getDurationMillis());
+                }
+                minDurationDate = formatDate(minEntry.getCreationDate());
+            }
+
+            String maxDurationMillis = "";
+            String maxDurationDate = "";
+            StatisticsEntry maxEntry = entry.getMaxDurationStatisticsEntry();
+            if (maxEntry != null) {
+                if (maxEntry.getDurationMillis() != null) {
+                    maxDurationMillis = String.valueOf(maxEntry.getDurationMillis());
+                }
+                maxDurationDate = formatDate(maxEntry.getCreationDate());
+            }
+
+            // calculate average duration millis
+            String avgDuration = "";
+            if (includeAverageDuration) {
+                Long avgDurationValue = StatisticsCollectionUtils.getAverageDuration(
+                        entry.getRecentStatisticsEntriesReadOnly());
+                if (avgDuration != null) {
+                    avgDuration = String.valueOf(avgDurationValue);
+                }
+            }
+
+            if (isHtml()) {
+                sb.append("<tr>");
+                sb.append("<td>" + identifier + "</td>");
+                sb.append("<td>" + entry.getNumberOfInvocations() + "</td>");
+                sb.append("<td>" + minDurationMillis + " (" + minDurationDate + ")" + "</td>");
+                sb.append("<td>" + maxDurationMillis + " (" + maxDurationDate + ")" + "</td>");
+                if (includeAverageDuration) {
+                    sb.append("<td>" + avgDuration + "</td>");
+                }
+                sb.append("</tr>");
+            } else {
+                sb.append(identifier).append(":");
+                sb.append(" invocations=" + entry.getNumberOfInvocations());
+                sb.append(" minDuration=" + minDurationMillis + " (" + minDurationDate + ")");
+                sb.append(" minDuration=" + maxDurationMillis + " (" + maxDurationDate + ")");
+                if (includeAverageDuration) {
+                    sb.append(" avgDuration=" + avgDuration);
+                }
+                sb.append(nl());
+            }
+        }
+    }
+
+    /**
+     * @param entry The entry.
+     * @param sb The string builder.
+     */
+    private void printStatisticsEntryRow(StatisticsEntry entry, StringBuilder sb) {
+        if (entry != null) {
+            String duration = "";
+            if (entry.getDurationMillis() != null) {
+                duration = entry.getDurationMillis().toString();
+            }
+
+            String creationDate = formatDate(entry.getCreationDate());
+            String completionDate = formatDate(entry.getCompletionDate());
+
+            String origin = StringUtils.defaultString(entry.getOrigin());
+
+            if (isHtml()) {
+                sb.append("<tr>");
+                sb.append("<td>" + duration + "</td>");
+                sb.append("<td>" + creationDate + "</td>");
+                sb.append("<td>" + completionDate + "</td>");
+                sb.append("<td>" + (StringUtils.isEmpty(origin) ? "&nbsp;" : origin) + "</td>");
+                sb.append("</tr>");
+            } else {
+                sb.append(" duration: " + duration);
+                sb.append(" creation: " + creationDate);
+                sb.append(" completion: " + completionDate);
+                sb.append(" origin: " + origin + nl());
+            }
+        }
+    }
+
+    /**
+     * @param date The date to format.
+     * @return Returns the date as string.
+     */
+    private String formatDate(Date date) {
+        String result = "";
+        if (date != null) {
+            if (dateFormat != null) {
+                result = dateFormat.format(date);
+            } else {
+                result = date.toString();
+            }
+        }
+        return result;
     }
 
     /**
@@ -228,16 +418,25 @@ public class SimpleStatisticsCollectionPrinter {
         return (isTxt() ? "\n" : "<br/>");
     }
 
-    @Required
+    /**
+     * @param count The count.
+     * @return Returns the newline.
+     */
+    private String nl(int count) {
+        String result = "";
+        for (int i = 0; i < count; i++) {
+            result += nl();
+        }
+        return result;
+    }
+
     public void setCollection(StatisticsCollection collection) {
         this.collection = collection;
     }
 
-
     public OutputType getType() {
         return type;
     }
-
 
     public void setType(OutputType type) {
         this.type = type;
@@ -250,4 +449,9 @@ public class SimpleStatisticsCollectionPrinter {
     public boolean isTxt() {
         return (type == OutputType.TXT);
     }
+
+    public void setDateFormat(String pattern) {
+        dateFormat = new SimpleDateFormat(pattern);
+    }
+
 }

@@ -35,8 +35,11 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
     /** The collection entries. */
     private Map<String, StatisticsCollectionEntry> collectionEntries = new HashMap<String, StatisticsCollectionEntry>();
 
-    /** The max statistics entries to hold in memory (per identifier). */
-    private Long maxStatisticsEntries;
+    /** Specifies the max number of top duration statistics entries to hold. */
+    private Long maxNumberOfTopDurationStatisticsEntries;
+
+    /** Specifies the max number of recent statistics entries to hold. */
+    private Long maxNumberOfRecentStatisticsEntries;
 
     /**
      * {@inheritDoc}
@@ -45,10 +48,12 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
         StatisticsCollectionEntry collectionEntry = collectionEntries.get(entry.getIdentifier());
         if (collectionEntry == null) {
             collectionEntry = new StatisticsCollectionEntryImpl();
-            collectionEntry.addStatisticsEntry(entry, maxStatisticsEntries);
+            collectionEntry.addStatisticsEntry(entry, maxNumberOfRecentStatisticsEntries,
+                maxNumberOfTopDurationStatisticsEntries);
             collectionEntries.put(entry.getIdentifier(), collectionEntry);
         } else {
-            collectionEntry.addStatisticsEntry(entry, maxStatisticsEntries);
+            collectionEntry.addStatisticsEntry(entry, maxNumberOfRecentStatisticsEntries,
+                maxNumberOfTopDurationStatisticsEntries);
         }
     }
 
@@ -94,18 +99,20 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
         collectionEntries.clear();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public void setMaxStatisticsEntries(Long maxStatisticsEntries) {
-        this.maxStatisticsEntries = maxStatisticsEntries;
+    public Long getMaxNumberOfTopDurationStatisticsEntries() {
+        return maxNumberOfTopDurationStatisticsEntries;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public Long getMaxStatisticsEntries() {
-        return maxStatisticsEntries;
+    public void setMaxNumberOfTopDurationStatisticsEntries(Long maxNumberOfTopDurationStatisticsEntries) {
+        this.maxNumberOfTopDurationStatisticsEntries = maxNumberOfTopDurationStatisticsEntries;
+    }
+
+    public Long getMaxNumberOfRecentStatisticsEntries() {
+        return maxNumberOfRecentStatisticsEntries;
+    }
+
+    public void setMaxNumberOfRecentStatisticsEntries(Long maxNumberOfRecentStatisticsEntries) {
+        this.maxNumberOfRecentStatisticsEntries = maxNumberOfRecentStatisticsEntries;
     }
 
 }

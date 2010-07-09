@@ -54,7 +54,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
                 entry.setDurationMillis(duration);
 
                 if (statisticsCollectionStrategy != null) {
-                    statisticsCollectionStrategy.collectStatistics(entry);
+                    statisticsCollectionStrategy.completeStatistics(entry);
                 }
             }
         } catch (Exception e) {
@@ -71,6 +71,10 @@ public class StatisticsManagerImpl implements StatisticsManager {
             if (isEnabled()) {
                 Assert.hasText(identifier, "identifier must not be empty");
                 entry = statisticsEntryFactory.createStatisticsEntry(identifier, Calendar.getInstance());
+
+                if (statisticsCollectionStrategy != null) {
+                    statisticsCollectionStrategy.startStatistics(entry);
+                }
             }
         } catch (Exception e) {
             logger.warn("Unable to create StatisticsEntry: " + e.getMessage());

@@ -29,9 +29,16 @@ public class InMemoryStatisticsCollectionStrategy implements StatisticsCollectio
     /**
      * {@inheritDoc}
      */
-    public void collectStatistics(StatisticsEntry entry) {
+    public void completeStatistics(StatisticsEntry entry) {
         statisticsCollection.addStatisticsEntry(entry);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void startStatistics(StatisticsEntry entry) {
+    }
+
 
     @Required
     public void setStatisticsCollection(StatisticsCollection statisticsCollection) {

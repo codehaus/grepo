@@ -31,83 +31,131 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /** SerialVersionUid. */
     private static final long serialVersionUID = 9122661088316356000L;
 
-    /** The statistics entires. */
-    private List<StatisticsEntry> statisticsEntries = new ArrayList<StatisticsEntry>(10);
+    /** Holds recent statistics entires. */
+    private List<StatisticsEntry> recentStatisticsEntries = new ArrayList<StatisticsEntry>(10);
+
+    /** Holds statistic entries with maximum duration. */
+    private List<StatisticsEntry> topDurationStatisticsEntries = new ArrayList<StatisticsEntry>(10);
 
     /** The number of invocations. */
     private long numberOfInvocations = 0L;
 
-    /** The max duration in millis. */
-    private Long maxDurationMillis;
+    /** The max duration statistics entry. */
+    private StatisticsEntry maxDurationStatisticsEntry;
 
-    /** The min duration in millis. */
-    private Long minDurationMillis;
-
-    /**
-     * {@inheritDoc}
-     */
-    public void addStatisticsEntry(StatisticsEntry entry) {
-        addStatisticsEntry(entry, null);
-    }
+    /** The min duration statistics entry. */
+    private StatisticsEntry minDurationStatisticsEntry;
 
     /**
      * {@inheritDoc}
      */
-    public void addStatisticsEntry(StatisticsEntry entry, Long maxEntries) {
+    public void addStatisticsEntry(StatisticsEntry entry, Long maxNumberOfRecentStatsticsEntries,
+            Long maxNumberOfTopDurationStatisticsEntries) {
         if (entry != null) {
             numberOfInvocations += 1;
 
-            if (maxDurationMillis == null) {
-                maxDurationMillis = entry.getDurationMillis();
-            } else {
-                maxDurationMillis = Math.max(maxDurationMillis, entry.getDurationMillis());
+            if (entry.getDurationMillis() != null) {
+                // set top max duration statistics entry...
+                if (maxDurationStatisticsEntry == null) {
+                    maxDurationStatisticsEntry = entry;
+                } else {
+                    if (maxDurationStatisticsEntry.getDurationMillis() < entry.getDurationMillis()) {
+                        maxDurationStatisticsEntry = entry;
+                    }
+                }
+
+                // set top min duration statistics entry...
+                if (minDurationStatisticsEntry == null) {
+                    minDurationStatisticsEntry = entry;
+                } else {
+                    if (minDurationStatisticsEntry.getDurationMillis() > entry.getDurationMillis()) {
+                        minDurationStatisticsEntry = entry;
+                    }
+                }
+
+                // handle top duration statistics...
+                if (maxNumberOfTopDurationStatisticsEntries == null) {
+                    topDurationStatisticsEntries.add(entry);
+                } else {
+                    if (maxNumberOfTopDurationStatisticsEntries > topDurationStatisticsEntries.size()) {
+                        topDurationStatisticsEntries.add(entry);
+                    } else {
+                        StatisticsEntry min = StatisticsCollectionUtils
+                                                    .getMinDurationEntry(topDurationStatisticsEntries);
+                        if (min != null && min.getDurationMillis() < entry.getDurationMillis()) {
+                            topDurationStatisticsEntries.remove(min);
+                            topDurationStatisticsEntries.add(entry);
+                        }
+                    }
+                }
             }
 
-            if (minDurationMillis == null) {
-                minDurationMillis = entry.getDurationMillis();
+            // handle recent statistics...
+            if (maxNumberOfRecentStatsticsEntries == null) {
+                recentStatisticsEntries.add(entry);
             } else {
-                minDurationMillis = Math.min(minDurationMillis, entry.getDurationMillis());
+                if (maxNumberOfRecentStatsticsEntries > recentStatisticsEntries.size()) {
+                    recentStatisticsEntries.add(entry);
+                } else {
+                    recentStatisticsEntries.remove(0);
+                    recentStatisticsEntries.add(entry);
+                }
             }
-
-            if (maxEntries != null && statisticsEntries.size() >= maxEntries) {
-                statisticsEntries.remove(0);
-            }
-            statisticsEntries.add(entry);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public void addStatisticsEntries(Collection<StatisticsEntry> entries) {
-        addStatisticsEntries(entries, null);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void addStatisticsEntries(Collection<StatisticsEntry> entries, Long maxEntries) {
+    public void addStatisticsEntries(Collection<StatisticsEntry> entries, Long maxNumberOfRecentStatsticsEntries,
+            Long maxNumberOfTopDurationStatisticsEntries) {
         for (StatisticsEntry entry : entries) {
-            addStatisticsEntry(entry, maxEntries);
+            addStatisticsEntry(entry, maxNumberOfRecentStatsticsEntries, maxNumberOfTopDurationStatisticsEntries);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<StatisticsEntry> getStatisticsEntriesReadOnly() {
-        return Collections.unmodifiableList(statisticsEntries);
+    public List<StatisticsEntry> getRecentStatisticsEntriesReadOnly() {
+        return Collections.unmodifiableList(recentStatisticsEntries);
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<StatisticsEntry> getStatisticsEntriesList() {
-        return new ArrayList<StatisticsEntry>(statisticsEntries);
+    public List<StatisticsEntry> getRecentStatisticsEntriesList() {
+        return new ArrayList<StatisticsEntry>(recentStatisticsEntries);
     }
 
-    protected void setStatisticsEntries(List<StatisticsEntry> statisticsEntries) {
-        this.statisticsEntries = statisticsEntries;
+    protected List<StatisticsEntry> getRecentStatisticsEntries() {
+        return recentStatisticsEntries;
+    }
+
+    protected void setRecentStatisticsEntries(List<StatisticsEntry> recentStatisticsEntries) {
+        this.recentStatisticsEntries = recentStatisticsEntries;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StatisticsEntry> getTopDurationStatisticsEntriesReadOnly() {
+        return Collections.unmodifiableList(topDurationStatisticsEntries);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public List<StatisticsEntry> getTopDurationStatisticsEntriesList() {
+        return new ArrayList<StatisticsEntry>(topDurationStatisticsEntries);
+    }
+
+    protected List<StatisticsEntry> getTopDurationStatisticsEntries() {
+        return topDurationStatisticsEntries;
+    }
+
+    protected void setTopDurationStatisticsEntries(List<StatisticsEntry> topDurationStatisticsEntries) {
+        this.topDurationStatisticsEntries = topDurationStatisticsEntries;
     }
 
     /**
@@ -120,15 +168,15 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /**
      * {@inheritDoc}
      */
-    public long getMaxDurationMillis() {
-        return maxDurationMillis;
+    public StatisticsEntry getMaxDurationStatisticsEntry() {
+        return maxDurationStatisticsEntry;
     }
 
     /**
      * {@inheritDoc}
      */
-    public long getMinDurationMillis() {
-        return minDurationMillis;
+    public StatisticsEntry getMinDurationStatisticsEntry() {
+        return minDurationStatisticsEntry;
     }
 
 }
