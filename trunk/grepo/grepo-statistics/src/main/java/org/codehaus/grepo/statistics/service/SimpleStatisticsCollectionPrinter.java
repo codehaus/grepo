@@ -56,7 +56,7 @@ public class SimpleStatisticsCollectionPrinter {
     private OutputType type = OutputType.TXT;
 
     /** The date format. */
-    private SimpleDateFormat dateFormat = null;
+    private SimpleDateFormat dateFormat;
 
     /** Default constructor. */
     public SimpleStatisticsCollectionPrinter() {
@@ -402,11 +402,7 @@ public class SimpleStatisticsCollectionPrinter {
     private String formatDate(Date date) {
         String result = "";
         if (date != null) {
-            if (dateFormat != null) {
-                result = dateFormat.format(date);
-            } else {
-                result = date.toString();
-            }
+            result = (dateFormat == null ? date.toString() : dateFormat.format(date));
         }
         return result;
     }
