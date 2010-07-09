@@ -17,6 +17,7 @@
 package org.codehaus.grepo.statistics.repository;
 
 import org.codehaus.grepo.core.repository.GenericRepositorySupport;
+import org.codehaus.grepo.statistics.annotation.MethodStatistics;
 import org.codehaus.grepo.statistics.aop.StatisticsMethodParameterInfo;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.codehaus.grepo.statistics.service.StatisticsEntryIdentifierGenerationStrategy;
@@ -57,7 +58,9 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
                             + "statisticsEntryIdentifierGenerationStrategy is null");
                     } else {
                         String identifier = statisticsEntryIdentifierGenerationStrategy.getIdentifier(mpi);
-                        entry = statisticsManager.createStatisticsEntry(identifier);
+                        MethodStatistics annotation = mpi.getMethodAnnotation(MethodStatistics.class);
+                        String origin = (annotation == null ? null : annotation.origin());
+                        entry = statisticsManager.createStatisticsEntry(identifier, origin);
                         mpi.setStatisticsEntry(entry);
                     }
                 }

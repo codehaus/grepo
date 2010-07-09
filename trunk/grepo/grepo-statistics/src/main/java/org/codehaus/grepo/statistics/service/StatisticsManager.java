@@ -30,6 +30,13 @@ public interface StatisticsManager {
     StatisticsEntry createStatisticsEntry(String identifier);
 
     /**
+     * @param identifier The identifier.
+     * @param origin The origin.
+     * @return The statistics entry.
+     */
+    StatisticsEntry createStatisticsEntry(String identifier, String origin);
+
+    /**
      * @param entry The statistics entry.
      */
     void completeStatisticsEntry(StatisticsEntry entry);

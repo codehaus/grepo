@@ -53,7 +53,7 @@ public class MethodStatisticsAspect {
      */
     @Around("@annotation(org.codehaus.grepo.statistics.annotation.MethodStatistics) && @annotation(annotation)")
     public Object methodStatistics(ProceedingJoinPoint pjp, MethodStatistics annotation) throws Throwable {
-        StatisticsEntry entry = createEntry(pjp);
+        StatisticsEntry entry = createEntry(pjp, annotation.origin());
         try {
             Object result = pjp.proceed();
             return result;
@@ -64,9 +64,10 @@ public class MethodStatisticsAspect {
 
     /**
      * @param pjp The proceeding join point.
+     * @param origin The origin.
      * @return Returns the entry.
      */
-    private StatisticsEntry createEntry(ProceedingJoinPoint pjp) {
+    private StatisticsEntry createEntry(ProceedingJoinPoint pjp, String origin) {
         StatisticsEntry entry = null;
         try {
             MethodSignature methodSig = (MethodSignature)pjp.getSignature();
@@ -77,7 +78,7 @@ public class MethodStatisticsAspect {
             String identifier = statisticsIdentifierNamingStrategy.getIdentifier(mpi);
 
 
-            entry = statisticsManager.createStatisticsEntry(identifier);
+            entry = statisticsManager.createStatisticsEntry(identifier, origin);
         } catch (Exception e) {
             logger.error("Unable to create StatisticsEntry: " + e.getMessage(), e);
         }
