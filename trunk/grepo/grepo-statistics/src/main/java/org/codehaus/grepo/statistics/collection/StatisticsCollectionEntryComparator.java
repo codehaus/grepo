@@ -19,6 +19,7 @@ package org.codehaus.grepo.statistics.collection;
 import java.util.Comparator;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 
 /**
  * @author dguggi
@@ -27,26 +28,29 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
     /** Sorts by identfier asc. */
     IDENTIFIER_ASC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            String o1i = o1.getStatisticsEntriesReadOnly().get(0).getIdentifier();
-            String o2i = o2.getStatisticsEntriesReadOnly().get(0).getIdentifier();
+            String o1i = o1.getRecentStatisticsEntriesReadOnly().get(0).getIdentifier();
+            String o2i = o2.getRecentStatisticsEntriesReadOnly().get(0).getIdentifier();
             return o1i.compareTo(o2i);
         }
     },
 
     /** Sorts by identifier desc. */
     IDENTIFIER_DESC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            String o1i = o1.getStatisticsEntriesReadOnly().get(0).getIdentifier();
-            String o2i = o2.getStatisticsEntriesReadOnly().get(0).getIdentifier();
+            String o1i = o1.getRecentStatisticsEntriesReadOnly().get(0).getIdentifier();
+            String o2i = o2.getRecentStatisticsEntriesReadOnly().get(0).getIdentifier();
             return -o1i.compareTo(o2i);
         }
     },
 
     /** Sorts by number of invocations asc. */
     NUMER_OF_INVOCATIONS_ASC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
             if (o1.getNumberOfInvocations() < o2.getNumberOfInvocations()) {
@@ -61,6 +65,7 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
     /** Sorts by number of invocations desc. */
     NUMER_OF_INVOCATIONS_DESC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
             if (o1.getNumberOfInvocations() < o2.getNumberOfInvocations()) {
@@ -75,11 +80,25 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
     /** Max duration asc. */
     MAX_DURATION_ASC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            if (o1.getMaxDurationMillis() < o2.getMaxDurationMillis()) {
+            StatisticsEntry o1e = o1.getMaxDurationStatisticsEntry();
+            StatisticsEntry o2e = o2.getMaxDurationStatisticsEntry();
+
+            long o1Duration = 0L;
+            if (o1e != null && o1e.getDurationMillis() != null) {
+                o1Duration = o1e.getDurationMillis();
+            }
+
+            long o2Duration = 0L;
+            if (o2e != null && o2e.getDurationMillis() != null) {
+                o2Duration = o2e.getDurationMillis();
+            }
+
+            if (o1Duration < o2Duration) {
                 return -1;
-            } else if (o1.getMaxDurationMillis() > o2.getMaxDurationMillis()) {
+            } else if (o1Duration > o2Duration) {
                 return 1;
             }
             return 0;
@@ -88,11 +107,25 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
     /** Max duration desc. */
     MAX_DURATION_DESC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            if (o1.getMaxDurationMillis() < o2.getMaxDurationMillis()) {
+            StatisticsEntry o1e = o1.getMaxDurationStatisticsEntry();
+            StatisticsEntry o2e = o2.getMaxDurationStatisticsEntry();
+
+            long o1Duration = 0L;
+            if (o1e != null && o1e.getDurationMillis() != null) {
+                o1Duration = o1e.getDurationMillis();
+            }
+
+            long o2Duration = 0L;
+            if (o2e != null && o2e.getDurationMillis() != null) {
+                o2Duration = o2e.getDurationMillis();
+            }
+
+            if (o1Duration < o2Duration) {
                 return 1;
-            } else if (o1.getMaxDurationMillis() > o2.getMaxDurationMillis()) {
+            } else if (o1Duration > o2Duration) {
                 return -1;
             }
             return 0;
@@ -101,11 +134,25 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
     /** Max duration asc. */
     MIN_DURATION_ASC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            if (o1.getMinDurationMillis() < o2.getMinDurationMillis()) {
+            StatisticsEntry o1e = o1.getMinDurationStatisticsEntry();
+            StatisticsEntry o2e = o2.getMinDurationStatisticsEntry();
+
+            long o1Duration = 0L;
+            if (o1e != null && o1e.getDurationMillis() != null) {
+                o1Duration = o1e.getDurationMillis();
+            }
+
+            long o2Duration = 0L;
+            if (o2e != null && o2e.getDurationMillis() != null) {
+                o2Duration = o2e.getDurationMillis();
+            }
+
+            if (o1Duration < o2Duration) {
                 return -1;
-            } else if (o1.getMinDurationMillis() > o2.getMinDurationMillis()) {
+            } else if (o1Duration > o2Duration) {
                 return 1;
             }
             return 0;
@@ -114,11 +161,25 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
     /** Min duration desc. */
     MIN_DURATION_DESC {
+
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            if (o1.getMinDurationMillis() < o2.getMinDurationMillis()) {
+            StatisticsEntry o1e = o1.getMinDurationStatisticsEntry();
+            StatisticsEntry o2e = o2.getMinDurationStatisticsEntry();
+
+            long o1Duration = 0L;
+            if (o1e != null && o1e.getDurationMillis() != null) {
+                o1Duration = o1e.getDurationMillis();
+            }
+
+            long o2Duration = 0L;
+            if (o2e != null && o2e.getDurationMillis() != null) {
+                o2Duration = o2e.getDurationMillis();
+            }
+
+            if (o1Duration < o2Duration) {
                 return 1;
-            } else if (o1.getMinDurationMillis() > o2.getMinDurationMillis()) {
+            } else if (o1Duration > o2Duration) {
                 return -1;
             }
             return 0;

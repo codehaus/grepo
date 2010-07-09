@@ -53,9 +53,9 @@ public class MethodStatisticsAspectTest extends AbstractSpringTest {
         StatisticsCollectionEntry entry = collection.get(
             TestStatisticsInterface.class.getName() + ".statsMethod1");
         Assert.assertNotNull(entry);
-        Assert.assertEquals(3, entry.getStatisticsEntriesReadOnly().size());
+        Assert.assertEquals(3, entry.getRecentStatisticsEntriesReadOnly().size());
 
-        for (StatisticsEntry e : entry.getStatisticsEntriesReadOnly()) {
+        for (StatisticsEntry e : entry.getRecentStatisticsEntriesReadOnly()) {
             logger.info(e.toString());
         }
 

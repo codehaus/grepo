@@ -34,16 +34,17 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class ProcedureRepositoryStatisticsOracleTest extends AbstractProcedureRepositoryTest {
+
     /** The repo to test. */
     @Autowired
-    private ProcedureTestRepository repo;    //NOPMD
+    private ProcedureTestRepository repo; // NOPMD
 
     /** The statistics collection. */
     @Autowired
     private StatisticsCollection collection;
 
     /**
-     * @throws IOException  in case of errors.
+     * @throws IOException in case of errors.
      * @throws FileNotFoundException in case of errors.
      */
     @Before
@@ -66,6 +67,7 @@ public class ProcedureRepositoryStatisticsOracleTest extends AbstractProcedureRe
         Assert.assertEquals(1, collection.size());
         repo.executeSimpleProcWithSimpleConfig(null, null);
         Assert.assertEquals(1, collection.size());
-        Assert.assertEquals(2, collection.getCollectionEntriesList().get(0).getStatisticsEntriesReadOnly().size());
+        Assert.assertEquals(2, collection.getCollectionEntriesList().get(0) //
+            .getRecentStatisticsEntriesReadOnly().size());
     }
 }

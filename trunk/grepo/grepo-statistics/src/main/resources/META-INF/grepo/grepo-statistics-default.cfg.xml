@@ -33,7 +33,8 @@
     </bean>
 
     <bean id="grepo.statisticsCollection" class="org.codehaus.grepo.statistics.collection.StatisticsCollectionImpl">
-        <property name="maxStatisticsEntries" value="10" />
+        <property name="maxNumberOfRecentStatisticsEntries" value="30" />
+        <property name="maxNumberOfTopDurationStatisticsEntries" value="5" />
     </bean>
 
     <bean id="grepo.statisticsEntryFactory" class="org.codehaus.grepo.statistics.domain.StatisticsEntryFactoryImpl">

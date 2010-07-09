@@ -28,35 +28,39 @@ import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 public interface StatisticsCollectionEntry extends Serializable {
     /**
      * @param entry The entry to add.
+     * @param maxNumberOfRecentStatsticsEntries The number.
+     * @param maxNumberOfTopDurationStatisticsEntries The number.
      */
-    void addStatisticsEntry(StatisticsEntry entry);
-
-    /**
-     * @param entry The entry to add.
-     * @param maxEntries The max entries configuration.
-     */
-    void addStatisticsEntry(StatisticsEntry entry, Long maxEntries);
+    void addStatisticsEntry(StatisticsEntry entry, Long maxNumberOfRecentStatsticsEntries,
+            Long maxNumberOfTopDurationStatisticsEntries);
 
     /**
      * @param entries The entries to add.
+     * @param maxNumberOfRecentStatsticsEntries The number.
+     * @param maxNumberOfTopDurationStatisticsEntries The number.
      */
-    void addStatisticsEntries(Collection<StatisticsEntry> entries);
+    void addStatisticsEntries(Collection<StatisticsEntry> entries, Long maxNumberOfRecentStatsticsEntries,
+            Long maxNumberOfTopDurationStatisticsEntries);
 
     /**
-     * @param entries The entries to add.
-     * @param maxEntries The max entries configuration.
+     * @return Returns a read-only list of recent {@link StatisticsEntry} objects.
      */
-    void addStatisticsEntries(Collection<StatisticsEntry> entries, Long maxEntries);
+    List<StatisticsEntry> getRecentStatisticsEntriesReadOnly();
 
     /**
-     * @return Returns a read-only list of {@link StatisticsEntry} objects.
+     * @return Returns a list of recent {@link StatisticsEntry} objects.
      */
-    List<StatisticsEntry> getStatisticsEntriesReadOnly();
+    List<StatisticsEntry> getRecentStatisticsEntriesList();
 
     /**
-     * @return Returns the list of {@link StatisticsEntry} objects.
+     * @return Returns a read-only list of top duration {@link StatisticsEntry} objects.
      */
-    List<StatisticsEntry> getStatisticsEntriesList();
+    List<StatisticsEntry> getTopDurationStatisticsEntriesReadOnly();
+
+    /**
+     * @return Returns the list of top duration {@link StatisticsEntry} objects.
+     */
+    List<StatisticsEntry> getTopDurationStatisticsEntriesList();
 
     /**
      * @return Returns the number of invocations.
@@ -64,12 +68,12 @@ public interface StatisticsCollectionEntry extends Serializable {
     long getNumberOfInvocations();
 
     /**
-     * @return Returns the max duration in millis.
+     * @return Returns the top max duration statistics entry.
      */
-    long getMaxDurationMillis();
+    StatisticsEntry getMaxDurationStatisticsEntry();
 
     /**
-     * @return Returns the min duration in millis.
+     * @return Returns the top min duration statistics entry.
      */
-    long getMinDurationMillis();
+    StatisticsEntry getMinDurationStatisticsEntry();
 }

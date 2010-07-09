@@ -24,8 +24,13 @@ import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 public interface StatisticsCollectionStrategy {
 
     /**
-     * @param entry The entry to collect.
+     * @param entry The entry to start.
      */
-    void collectStatistics(StatisticsEntry entry);
+    void startStatistics(StatisticsEntry entry);
+
+    /**
+     * @param entry The entry to complete.
+     */
+    void completeStatistics(StatisticsEntry entry);
 
 }
