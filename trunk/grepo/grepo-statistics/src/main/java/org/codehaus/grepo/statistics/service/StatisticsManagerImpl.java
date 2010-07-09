@@ -18,13 +18,13 @@ package org.codehaus.grepo.statistics.service;
 
 import java.util.Calendar;
 
+import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.statistics.collection.StatisticsCollectionStrategy;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntryFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.util.Assert;
 
 /**
  * @author dguggi
@@ -46,6 +46,35 @@ public class StatisticsManagerImpl implements StatisticsManager {
     /**
      * {@inheritDoc}
      */
+    public StatisticsEntry createStatisticsEntry(String identifier) {
+        return createStatisticsEntry(identifier);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public StatisticsEntry createStatisticsEntry(String identifier, String origin) {
+        StatisticsEntry entry = null;
+        try {
+            if (isEnabled() && StringUtils.isNotEmpty(identifier)) {
+                entry = statisticsEntryFactory.createStatisticsEntry(identifier, Calendar.getInstance(), origin);
+
+                if (statisticsCollectionStrategy != null) {
+                    statisticsCollectionStrategy.startStatistics(entry);
+                }
+            }
+        } catch (Exception e) {
+            logger.warn("Unable to create StatisticsEntry: " + e.getMessage());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Got unexpected exception: " + e.getMessage(), e);
+            }
+        }
+        return entry;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public void completeStatisticsEntry(StatisticsEntry entry) {
         try {
             if (isEnabled()) {
@@ -59,34 +88,10 @@ public class StatisticsManagerImpl implements StatisticsManager {
             }
         } catch (Exception e) {
             logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public StatisticsEntry createStatisticsEntry(String identifier) {
-        return createStatisticsEntry(identifier);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public StatisticsEntry createStatisticsEntry(String identifier, String origin) {
-        StatisticsEntry entry = null;
-        try {
-            if (isEnabled()) {
-                Assert.hasText(identifier, "identifier must not be empty");
-                entry = statisticsEntryFactory.createStatisticsEntry(identifier, Calendar.getInstance(), origin);
-
-                if (statisticsCollectionStrategy != null) {
-                    statisticsCollectionStrategy.startStatistics(entry);
-                }
+            if (logger.isDebugEnabled()) {
+                logger.debug("Got unexpected exception: " + e.getMessage(), e);
             }
-        } catch (Exception e) {
-            logger.warn("Unable to create StatisticsEntry: " + e.getMessage());
         }
-        return entry;
     }
 
     /**
