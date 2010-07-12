@@ -47,7 +47,7 @@ public class StatisticsManagerImpl implements StatisticsManager {
      * {@inheritDoc}
      */
     public StatisticsEntry createStatisticsEntry(String identifier) {
-        return createStatisticsEntry(identifier);
+        return createStatisticsEntry(identifier, null);
     }
 
     /**

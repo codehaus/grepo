@@ -46,7 +46,7 @@ public class SystemPropertiesOriginGenerationStrategy {
         return propertyDelimiter;
     }
 
-    public void setPropertyDelimiter(final String propertyDelimiter) {
+    public void setPropertyDelimiter(String propertyDelimiter) {
         this.propertyDelimiter = propertyDelimiter;
     }
 
@@ -54,7 +54,7 @@ public class SystemPropertiesOriginGenerationStrategy {
         return defaultOrigin;
     }
 
-    public void setDefaultOrigin(final String defaultOrigin) {
+    public void setDefaultOrigin(String defaultOrigin) {
         this.defaultOrigin = defaultOrigin;
     }
 
@@ -62,7 +62,7 @@ public class SystemPropertiesOriginGenerationStrategy {
         return propertyDefinitions;
     }
 
-    public void setPropertyDefinitions(final Map<String,String> propertyDefinitions) {
+    public void setPropertyDefinitions(Map<String,String> propertyDefinitions) {
         this.propertyDefinitions = propertyDefinitions;
     }
 
