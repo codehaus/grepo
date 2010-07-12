@@ -98,21 +98,15 @@ public class MethodStatisticsAspect {
         }
     }
 
-
     @Required
     public void setStatisticsManager(StatisticsManager statisticsManager) {
         this.statisticsManager = statisticsManager;
     }
-
 
     @Required
     public void setStatisticsIdentifierNamingStrategy(
             StatisticsEntryIdentifierGenerationStrategy statisticsIdentifierNamingStrategy) {
         this.statisticsIdentifierNamingStrategy = statisticsIdentifierNamingStrategy;
     }
-
-
-
-
 
 }
