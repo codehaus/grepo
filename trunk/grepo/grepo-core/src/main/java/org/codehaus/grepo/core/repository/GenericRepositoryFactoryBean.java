@@ -54,7 +54,7 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected grepo bean of type '{}' (id={})";
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryFactoryBean.class); // NOPMD
 
     /** The mandatory interface to proxy. */
     private Class<?> proxyInterface;

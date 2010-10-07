@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ResultConversionServiceImpl implements ResultConversionService {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ResultConversionServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ResultConversionServiceImpl.class); // NOPMD
 
     /** The result converter finding strategy to be used. */
     private ResultConverterFindingStrategy converterFindingStrategy;

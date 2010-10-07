@@ -60,7 +60,7 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
     private static final String FILTER_EXPRESSION_ATTRIBUTE = "expression";
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryScanBeanDefinitionParser.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryScanBeanDefinitionParser.class); // NOPMD
 
     /** The bean name generator. */
     private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator(); // NOPMD
@@ -100,22 +100,8 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition candidate : candidates) {
-                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition();
-                builder.getRawBeanDefinition().setSource(source);
-
-                if (!configContext.hasFactory() && !configContext.hasFactoryClass()) { // NOPMD
-                    // neither 'factory' nor 'factory-class' attribute is set, so use default bean class...
-                    if (defaultGenericRepositoryFactoryType != null) {
-                        builder.getRawBeanDefinition().setBeanClass(defaultGenericRepositoryFactoryType);
-                    }
-                } else {
-                    if (configContext.hasFactory()) {
-                        builder.getRawBeanDefinition().setParentName(configContext.getFactory());
-                    }
-                    if (configContext.hasFactoryClass()) {
-                        builder.getRawBeanDefinition().setBeanClassName(configContext.getFactoryClass());
-                    }
-                }
+                BeanDefinitionBuilder builder = BeanDefinitionParserHelper.createBuilderFromConfigContext(
+                    configContext, source, defaultGenericRepositoryFactoryType);
 
                 delegate.parsePropertyElements(configContext.getElement(), builder.getRawBeanDefinition());
 

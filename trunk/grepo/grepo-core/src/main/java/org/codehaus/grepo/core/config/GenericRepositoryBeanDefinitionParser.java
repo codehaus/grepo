@@ -51,22 +51,8 @@ public class GenericRepositoryBeanDefinitionParser extends AbstractBeanDefinitio
         BeanDefinitionParserDelegate delegate = new BeanDefinitionParserDelegate(parserContext.getReaderContext());
         delegate.initDefaults(element.getOwnerDocument().getDocumentElement());
 
-        BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition();
-        builder.getRawBeanDefinition().setSource(source);
-
-        if (!configContext.hasFactory() && !configContext.hasFactoryClass()) { // NOPMD
-            // neither 'factory' nor 'factory-class' attribute is set, so use default bean class...
-            if (defaultGenericRepositoryFactoryType != null) {
-                builder.getRawBeanDefinition().setBeanClass(defaultGenericRepositoryFactoryType);
-            }
-        } else {
-            if (configContext.hasFactory()) {
-                builder.getRawBeanDefinition().setParentName(configContext.getFactory());
-            }
-            if (configContext.hasFactoryClass()) {
-                builder.getRawBeanDefinition().setBeanClassName(configContext.getFactoryClass());
-            }
-        }
+        BeanDefinitionBuilder builder = BeanDefinitionParserHelper.createBuilderFromConfigContext(
+            configContext, source, defaultGenericRepositoryFactoryType);
 
         delegate.parsePropertyElements(configContext.getElement(), builder.getRawBeanDefinition());
 

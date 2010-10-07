@@ -23,7 +23,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * @author dguggi
  */
-public abstract class GenericRepositorySupport {
+public class GenericRepositorySupport {
 
     /** The application context. */
     private ApplicationContext applicationContext;
@@ -39,6 +39,11 @@ public abstract class GenericRepositorySupport {
 
     /** The proxy interface. */
     private Class<?> proxyInterface;
+
+    /** Default constructor. */
+    protected GenericRepositorySupport() {
+        // protected in order to ensure that this class cannot be instantiated directly.
+    }
 
     protected ApplicationContext getApplicationContext() {
         return applicationContext;
