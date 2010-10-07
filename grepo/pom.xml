@@ -327,14 +327,28 @@
                     <configuration>
                         <additionalBuildcommands>
                             <buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
+                            <buildcommand>net.sourceforge.pmd.eclipse.plugin.pmdBuilder</buildcommand>
                         </additionalBuildcommands>
                         <additionalProjectnatures>
                             <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
+                            <projectnature>net.sourceforge.pmd.eclipse.plugin.pmdNature</projectnature>
                         </additionalProjectnatures>
                         <additionalConfig>
                             <file>
                                 <name>.checkstyle</name>
                                 <location>/dev/config/checkstyle/checkstyle-config.xml</location>
+                            </file>
+                            <file>
+                                <name>.pmd</name>
+                                <content>
+                                    <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+                                        <pmd>
+                                            <useProjectRuleSet>true</useProjectRuleSet>
+                                            <ruleSetFile>${pmd.ruleset-file}</ruleSetFile>
+                                            <includeDerivedFiles>false</includeDerivedFiles>
+                                            <violationsAsErrors>true</violationsAsErrors>
+                                        </pmd>]]>
+                                </content>
                             </file>
                         </additionalConfig>
                     </configuration>
