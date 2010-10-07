@@ -87,7 +87,8 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
 
             if (StringUtils.isNotEmpty(managerName)) {
                 // use statistics manager configured via annotation...
-                StatisticsManager manager = applicationContext.getBean(managerName, StatisticsManager.class);
+                StatisticsManager manager = (StatisticsManager) applicationContext.getBean(managerName,
+                    StatisticsManager.class);
                 entry = manager.createStatisticsEntry(identifier, origin);
             } else {
                 // use default statistics manager...
