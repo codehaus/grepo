@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> implements QueryExecutor<T> {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(AbstractQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractQueryExecutor.class); // NOPMD
 
     /** The query naming strategy. */
     private QueryNamingStrategy queryNamingStrategy;

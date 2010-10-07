@@ -30,6 +30,7 @@ public final class GenericRepositoryUtils {
      * @param clazz The class to check.
      * @return Returns the entity class or {@code null}.
      */
+    @SuppressWarnings("PMD")
     public static Class<?> getEntityClass(Class<?> clazz) {
         for (Type type : clazz.getGenericInterfaces()) {
             if (type instanceof ParameterizedType) {
