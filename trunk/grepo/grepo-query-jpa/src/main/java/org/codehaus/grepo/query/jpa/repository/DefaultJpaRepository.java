@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.jpa.repository;
+package org.codehaus.grepo.query.jpa.repository; // NOPMD
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -58,7 +58,7 @@ import org.springframework.util.CollectionUtils;
 public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
                 implements JpaRepository<T>, InitializingBean {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class); // NOPMD
 
     /** Flag to indicate whether or not the native entity manager should be exposed. */
     private boolean exposeNativeEntityManager = true;
@@ -113,6 +113,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("PMD")
     public void afterPropertiesSet() throws Exception {
         EntityManagerFactory emf = getEntityManagerFactory();
         if (emf instanceof EntityManagerFactoryInfo) {
@@ -505,7 +506,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      */
     private class CloseSuppressingInvocationHandler implements InvocationHandler {
         /** The target entity manager. */
-        private final EntityManager target;
+        private final EntityManager target; // NOPMD
 
         /**
          * @param target The target to set.

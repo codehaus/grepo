@@ -55,7 +55,7 @@ public abstract class AbstractJpaQueryExecutor
         + " has unsupported type (either '{}' or '{}' is required) - ignoring specified temporal-type...";
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(AbstractJpaQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractJpaQueryExecutor.class); // NOPMD
 
     /**
      * @param genericQuery The annotation.
