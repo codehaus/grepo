@@ -50,16 +50,17 @@ public class SimpleStatisticsCollectionPrinter {
     };
 
     /** The collection. */
-    private StatisticsCollection collection;
+    private StatisticsCollection collection; // NOPMD
 
     /** The output type. */
     private OutputType type = OutputType.TXT;
 
     /** The date format. */
-    private SimpleDateFormat dateFormat;
+    private SimpleDateFormat dateFormat; // NOPMD
 
     /** Default constructor. */
     public SimpleStatisticsCollectionPrinter() {
+        // default constructor
     }
 
     /**
@@ -118,6 +119,7 @@ public class SimpleStatisticsCollectionPrinter {
      * @param comparator The comparator.
      * @return Returns the summary.
      */
+    @SuppressWarnings("PMD")
     public String printSummary(boolean includeAverageDuration, StatisticsCollectionEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
         sb.append("STATISTICS SUMMARY").append(nl(2));
@@ -175,6 +177,7 @@ public class SimpleStatisticsCollectionPrinter {
      * @param comparator The comparator.
      * @return Returns the detail.
      */
+    @SuppressWarnings("PMD")
     public String printDetail(String identifier,StatisticsEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
         StatisticsCollectionEntry entry = collection.get(identifier);
@@ -305,6 +308,7 @@ public class SimpleStatisticsCollectionPrinter {
      * @param sb The string builder.
      * @param includeAverageDuration The flag.
      */
+    @SuppressWarnings("PMD")
     private void printCollectionEntryRow(StatisticsCollectionEntry entry, StringBuilder sb,
             boolean includeAverageDuration) {
         if (entry != null) {
@@ -410,6 +414,7 @@ public class SimpleStatisticsCollectionPrinter {
     /**
      * @return Returns the newline.
      */
+    @SuppressWarnings("PMD")
     private String nl() {
         return (isTxt() ? "\n" : "<br/>");
     }
@@ -418,6 +423,7 @@ public class SimpleStatisticsCollectionPrinter {
      * @param count The count.
      * @return Returns the newline.
      */
+    @SuppressWarnings("PMD")
     private String nl(int count) {
         String result = "";
         for (int i = 0; i < count; i++) {
@@ -447,7 +453,7 @@ public class SimpleStatisticsCollectionPrinter {
     }
 
     public void setDateFormat(String pattern) {
-        dateFormat = new SimpleDateFormat(pattern);
+        dateFormat = new SimpleDateFormat(pattern); // NOPMD
     }
 
 }

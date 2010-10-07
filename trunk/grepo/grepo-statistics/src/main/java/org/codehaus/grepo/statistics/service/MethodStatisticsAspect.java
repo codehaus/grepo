@@ -41,16 +41,16 @@ import org.springframework.context.ApplicationContextAware;
 public class MethodStatisticsAspect implements ApplicationContextAware {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(MethodStatisticsAspect.class);
+    private final Logger logger = LoggerFactory.getLogger(MethodStatisticsAspect.class); // NOPMD
 
     /** The statistics manager. */
-    private StatisticsManager statisticsManager;
+    private StatisticsManager statisticsManager; // NOPMD
 
     /** The identifier naming strategy. */
-    private StatisticsEntryIdentifierGenerationStrategy statisticsIdentifierNamingStrategy;
+    private StatisticsEntryIdentifierGenerationStrategy statisticsIdentifierNamingStrategy; // NOPMD
 
     /** The application context. */
-    private ApplicationContext applicationContext;
+    private ApplicationContext applicationContext; // NOPMD
 
     /**
      * @param pjp The join point.
@@ -62,8 +62,7 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
     public Object methodStatistics(ProceedingJoinPoint pjp, MethodStatistics annotation) throws Throwable {
         StatisticsEntry entry = createEntry(pjp, annotation.manager(), annotation.origin());
         try {
-            Object result = pjp.proceed();
-            return result;
+            return pjp.proceed();
         } finally {
             completeEntry(entry);
         }

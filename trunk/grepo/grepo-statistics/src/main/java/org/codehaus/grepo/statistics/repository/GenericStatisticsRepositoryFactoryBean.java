@@ -34,16 +34,16 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
                     extends GenericRepositoryFactoryBean<T> {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositoryFactoryBean.class); // NOPMD
 
     /** The optional statistics enabled flag (default is false). */
-    private boolean statisticsEnabled = false;
+    private boolean statisticsEnabled = false; // NOPMD
 
     /** The statistics manager (required if statisticsEnabled is true). */
-    private StatisticsManager statisticsManager;
+    private StatisticsManager statisticsManager; // NOPMD
 
     /** The statistics entry identifier generation strategy (required if statisticsEnables is true). */
-    private StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy;
+    private StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy; // NOPMD
 
     /**
      * {@inheritDoc}
@@ -153,16 +153,8 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
     }
 
 
-    public boolean isStatisticsEnabled() {
-        return statisticsEnabled;
-    }
-
     public void setStatisticsEnabled(boolean statisticsEnabled) {
         this.statisticsEnabled = statisticsEnabled;
-    }
-
-    public StatisticsManager getStatisticsManager() {
-        return statisticsManager;
     }
 
     public void setStatisticsManager(StatisticsManager statisticsManager) {

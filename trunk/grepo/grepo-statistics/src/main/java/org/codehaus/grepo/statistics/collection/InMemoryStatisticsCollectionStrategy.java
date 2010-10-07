@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class InMemoryStatisticsCollectionStrategy implements StatisticsCollectionStrategy {
     /** The statistics collection. */
-    private StatisticsCollection statisticsCollection;
+    private StatisticsCollection statisticsCollection; // NOPMD
 
     /**
      * {@inheritDoc}
@@ -37,6 +37,7 @@ public class InMemoryStatisticsCollectionStrategy implements StatisticsCollectio
      * {@inheritDoc}
      */
     public void startStatistics(StatisticsEntry entry) {
+        // do nothing
     }
 
 

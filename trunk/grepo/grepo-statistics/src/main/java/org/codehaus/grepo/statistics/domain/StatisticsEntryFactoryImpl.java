@@ -27,7 +27,7 @@ import org.codehaus.grepo.core.origin.OriginGenerationStrategy;
 public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
 
     /** The origin generation strategy. */
-    private OriginGenerationStrategy originGenerationStrategy;
+    private OriginGenerationStrategy originGenerationStrategy; // NOPMD
 
     /**
      * {@inheritDoc}

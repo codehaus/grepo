@@ -36,11 +36,11 @@ public class StatisticsCollectionUtilsTest extends AbstractSpringTest {
 
     /** The statistics manager. */
     @Autowired
-    private StatisticsManager manager;
+    private StatisticsManager manager; // NOPMD
 
     /** The collection. */
     @Autowired
-    private StatisticsCollection collection;
+    private StatisticsCollection collection; // NOPMD
 
     /** after. */
     @After
