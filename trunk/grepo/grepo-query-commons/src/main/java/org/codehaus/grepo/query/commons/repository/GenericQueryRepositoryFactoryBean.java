@@ -36,7 +36,7 @@ import org.springframework.util.Assert;
 public abstract class GenericQueryRepositoryFactoryBean<E> //
         extends GenericStatisticsRepositoryFactoryBean<GenericQueryRepositorySupport<E>> {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositoryFactoryBean.class); // NOPMD
 
     /** The mandatory entity class  (may be retrieved automatically). */
     private Class<E> entityClass;

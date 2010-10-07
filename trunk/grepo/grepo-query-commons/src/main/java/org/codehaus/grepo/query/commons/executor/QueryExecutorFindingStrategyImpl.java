@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  */
 public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(QueryExecutorFindingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryExecutorFindingStrategyImpl.class); // NOPMD
 
     /** Class registry. */
     private GenericRegistryMap<String, Class<? extends QueryExecutor<?>>> executorRegistry;

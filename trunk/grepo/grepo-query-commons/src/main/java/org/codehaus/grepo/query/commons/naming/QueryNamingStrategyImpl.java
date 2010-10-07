@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class QueryNamingStrategyImpl implements QueryNamingStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(QueryNamingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryNamingStrategyImpl.class); // NOPMD
 
     /** The pattern to match method names. */
     private Pattern methodNamePattern;

@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class QueryExecutorNamingStrategyImpl implements QueryExecutorNamingStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(QueryExecutorNamingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(QueryExecutorNamingStrategyImpl.class); // NOPMD
 
     /** The pattern. */
     private Pattern pattern;

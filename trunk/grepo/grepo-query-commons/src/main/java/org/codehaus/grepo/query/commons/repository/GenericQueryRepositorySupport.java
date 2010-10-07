@@ -33,7 +33,7 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
     implements GenericQueryRepository<T> {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositorySupport.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositorySupport.class); // NOPMD
 
     /** The executor finding strategy. */
     private QueryExecutorFindingStrategy queryExecutorFindingStrategy;
