@@ -37,7 +37,7 @@ import org.springframework.util.Assert;
  */
 public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(JpaRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(JpaRepositoryFactoryBean.class); // NOPMD
 
     /** The entity manager factory. */
     private EntityManagerFactory entityManagerFactory;

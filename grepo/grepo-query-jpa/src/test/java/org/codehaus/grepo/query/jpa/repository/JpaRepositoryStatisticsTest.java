@@ -38,7 +38,7 @@ public class JpaRepositoryStatisticsTest extends AbstractJpaRepositoryTest {
 
     /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection;
+    private StatisticsCollection collection; // NOPMD
 
     /** before. */
     @Before
