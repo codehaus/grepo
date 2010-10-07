@@ -99,7 +99,7 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
     @Test
     public void testWithToListResultTransformer() {
         List<List<Object>> list = repo.findAllWithToListResultTransformer();
-        Assert.assertTrue(list.get(0) instanceof List);
+        Assert.assertTrue(list.get(0) instanceof List<?>);
         Assert.assertEquals("username", list.get(0).get(0));
         Assert.assertEquals("firstname", list.get(0).get(1));
     }
@@ -110,7 +110,7 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
     @Test
     public void testWithAliasToEntityMapResultTransformer() {
         List<Map<String,Object>> list = repo.findAllWithAliasToEntityMapResultTransformer();
-        Assert.assertTrue(list.get(0) instanceof Map);
+        Assert.assertTrue(list.get(0) instanceof Map<?,?>);
         Map<String, Object> map = list.get(0);
         Assert.assertEquals("username", map.get("un"));
         Assert.assertEquals("firstname", map.get("fn"));
