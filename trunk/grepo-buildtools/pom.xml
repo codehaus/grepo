@@ -37,6 +37,7 @@
             <id>codehaus.org</id>
             <name>grepo central development repository</name>
             <url>dav:https://dav.codehaus.org/snapshots.repository/grepo/</url>
+            <uniqueVersion>false</uniqueVersion>
         </snapshotRepository>
     </distributionManagement>
 
