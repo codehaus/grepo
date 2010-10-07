@@ -25,6 +25,18 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- hibernate-core and required libs -->
         <dependency>
             <groupId>org.hibernate</groupId>
