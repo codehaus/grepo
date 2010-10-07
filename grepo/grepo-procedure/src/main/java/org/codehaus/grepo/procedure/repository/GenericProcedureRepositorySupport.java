@@ -36,7 +36,7 @@ public abstract class GenericProcedureRepositorySupport extends GenericStatistic
         implements GenericProcedureRepository {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositorySupport.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositorySupport.class); // NOPMD
 
     /** The caching strategy. */
     private ProcedureCachingStrategy procedureCachingStrategy;

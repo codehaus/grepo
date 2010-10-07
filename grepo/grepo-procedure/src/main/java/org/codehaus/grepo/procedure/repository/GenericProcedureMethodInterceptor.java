@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenericProcedureMethodInterceptor implements MethodInterceptor {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureMethodInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureMethodInterceptor.class); // NOPMD
 
     /**
      * {@inheritDoc}

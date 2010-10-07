@@ -34,7 +34,7 @@ import org.springframework.jdbc.object.StoredProcedure;
  */
 public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ProcedureCachingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcedureCachingStrategyImpl.class); // NOPMD
 
     /** The cache. */
     private Map<String, StoredProcedure> cache = new HashMap<String, StoredProcedure>();
