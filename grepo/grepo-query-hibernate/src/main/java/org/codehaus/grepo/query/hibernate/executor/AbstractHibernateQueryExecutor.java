@@ -59,7 +59,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
 public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecutor<HibernateQueryExecutionContext>
     implements HibernateQueryExecutor {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(AbstractHibernateQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(AbstractHibernateQueryExecutor.class); // NOPMD
 
     /** The argument type factory. */
     private ArgumentTypeFactory argumentTypeFactory;
@@ -136,6 +136,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param context The query execution context.
      * @return Returns prepared query instance.
      */
+    @SuppressWarnings("PMD")
     protected Query prepareQuery(GenericQuery genericQuery, QueryMethodParameterInfo qmpi,
                 HibernateQueryExecutionContext context) {
         HibernateQueryDescriptor queryDesc = null;

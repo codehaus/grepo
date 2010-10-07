@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  */
 public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(HibernateRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(HibernateRepositoryFactoryBean.class); // NOPMD
 
     /** The session factory. */
     private SessionFactory sessionFactory;
@@ -138,6 +138,7 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
      * {@inheritDoc}
      */
     @Override
+    @SuppressWarnings("PMD")
     protected void configureTarget(GenericQueryRepositorySupport<T> target) {
         super.configureTarget(target);
 

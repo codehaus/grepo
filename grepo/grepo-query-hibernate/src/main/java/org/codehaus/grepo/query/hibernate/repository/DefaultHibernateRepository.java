@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.repository;
+package org.codehaus.grepo.query.hibernate.repository;  // NOPMD
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -60,7 +60,7 @@ import org.springframework.transaction.support.TransactionCallback;
 public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport<T> implements HibernateRepository<T> {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class);
+    private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class); // NOPMD
 
     /** The session factory. */
     private SessionFactory sessionFactory;
@@ -102,7 +102,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
     private SQLExceptionTranslator jdbcExceptionTranslator;
 
     /** The default jdbc exception translator. */
-    private SQLExceptionTranslator defaultJdbcExceptionTranslator;
+    private SQLExceptionTranslator defaultJdbcExceptionTranslator; // NOPMD
 
     /** The default fetch size for criteria and queries. */
     private Integer fetchSize;
@@ -305,12 +305,10 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
             throws HibernateException {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
-        if (flushModeToUse != null) {
-            if (flushModeToUse == HibernateFlushMode.EAGER
-                || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL)) {
-                logger.debug("Eagerly flushing Hibernate session");
-                sessionHolder.getSession().flush();
-            }
+        if (flushModeToUse != null && (flushModeToUse == HibernateFlushMode.EAGER
+                || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL))) {
+            logger.debug("Eagerly flushing Hibernate session");
+            sessionHolder.getSession().flush();
         }
     }
 
@@ -320,6 +318,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @param sessionHolder The current session holder.
      * @param queryOptions the query options.
      */
+    @SuppressWarnings("PMD")
     protected void applyFlushMode(CurrentSessionHolder sessionHolder, HibernateQueryOptions queryOptions) {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
@@ -401,7 +400,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      *
      * @return Returns the default jdbc exception translator.
      */
-    protected synchronized SQLExceptionTranslator getDefaultJdbcExceptionTranslator() {
+    protected SQLExceptionTranslator getDefaultJdbcExceptionTranslator() {
         if (this.defaultJdbcExceptionTranslator == null) {
             this.defaultJdbcExceptionTranslator = SessionFactoryUtils.newJdbcExceptionTranslator(getSessionFactory());
         }
@@ -734,7 +733,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
     private class CloseSuppressingInvocationHandler implements InvocationHandler {
 
         /** The target session. */
-        private final Session target;
+        private final Session target; // NOPMD
 
         /**
          * @param target The target to set.

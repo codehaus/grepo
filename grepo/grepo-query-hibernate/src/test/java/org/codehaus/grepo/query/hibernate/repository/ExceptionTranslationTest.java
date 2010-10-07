@@ -36,20 +36,20 @@ public class ExceptionTranslationTest extends AbstractHibernateRepositoryTest {
 
     /** Not translating repo. */
     @Resource(name = "notTranslatingTestRepository")
-    private ExceptionTranslationTestRepository1 notTranslatingRepository;
+    private ExceptionTranslationTestRepository1 notTranslatingRepository; // NOPMD
 
     /** Translating repo. */
     @Resource(name = "translatingTestRepository")
-    private ExceptionTranslationTestRepository1 translatingRepository;
+    private ExceptionTranslationTestRepository1 translatingRepository; // NOPMD
 
     /** Scanned test repo. */
     @Autowired
-    private ExceptionTranslationTestRepository2 scannedRepository;
+    private ExceptionTranslationTestRepository2 scannedRepository; // NOPMD
 
     /** before. */
     @Before
     public void before() {
-        TestEntity entity1 = new TestEntity("username", 1, "firstname");
+        TestEntity entity1 = new TestEntity("username", 1, "firstname"); // NOPMD
         TestEntity entity2 = new TestEntity("username1", 1, "firstname");
         saveFlushEvict(entity1, entity2);
     }
