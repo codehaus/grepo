@@ -345,7 +345,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
 
             logSetParameter(namedParam, dnp.getValue(), dnp.getType());
 
-            if (dnp.getValue() instanceof Collection) {
+            if (dnp.getValue() instanceof Collection<?>) {
                 if (dnp.getType() == null) {
                     queryDesc.getQuery().setParameterList(namedParam, (Collection<?>)dnp.getValue());
                 } else {
