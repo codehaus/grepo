@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ScrollQueryExecutor.class);
+    private final Logger logger = LoggerFactory.getLogger(ScrollQueryExecutor.class); // NOPMD
 
     /**
      * {@inheritDoc}

@@ -46,7 +46,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") // NOPMD
     public T load(final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
             @Override

@@ -29,7 +29,7 @@ import org.hibernate.ReplicationMode;
  * @param <PK> The primary key type.
  */
 public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
-    extends ReadOnlyHibernateRepositoryImpl<T,PK> implements ReadWriteHibernateRepository<T,PK> {
+    extends ReadOnlyHibernateRepositoryImpl<T,PK> implements ReadWriteHibernateRepository<T,PK> { // NOPMD
 
     /**
      * Default constructor.
