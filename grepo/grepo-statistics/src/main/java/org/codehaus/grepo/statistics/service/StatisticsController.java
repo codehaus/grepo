@@ -29,7 +29,7 @@ public interface StatisticsController {
     /**
      * @return Returns the statistics enabled flag.
      */
-    boolean getStatisticsEnabled();
+    boolean isStatisticsEnabled();
 
     /**
      * @param maxNumberOfRecentStatsticsEntries The max number of recent statistics entries to set.

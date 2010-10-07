@@ -30,11 +30,11 @@ public class SimpleStatisticsCollectionPrinterTest extends AbstractSpringTest {
 
     /** The printer to test. */
     @Autowired
-    private SimpleStatisticsCollectionPrinter printer;
+    private SimpleStatisticsCollectionPrinter printer; // NOPMD
 
     /** The test interface. */
     @Autowired
-    private TestStatisticsInterface testInterface;
+    private TestStatisticsInterface testInterface; // NOPMD
 
     /** Test print summary. */
     @Test

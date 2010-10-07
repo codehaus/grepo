@@ -35,11 +35,11 @@ public class MethodStatisticsAspectTest extends AbstractSpringTest {
 
     /** The test interface. */
     @Autowired
-    private TestStatisticsInterface testInterface;
+    private TestStatisticsInterface testInterface; // NOPMD
 
     /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection;
+    private StatisticsCollection collection; // NOPMD
 
     /** Tests some invocations. */
     @Test

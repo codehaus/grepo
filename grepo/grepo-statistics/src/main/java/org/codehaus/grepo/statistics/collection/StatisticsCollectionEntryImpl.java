@@ -38,17 +38,18 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     private List<StatisticsEntry> topDurationStatisticsEntries = new ArrayList<StatisticsEntry>(10);
 
     /** The number of invocations. */
-    private long numberOfInvocations = 0L;
+    private long numberOfInvocations = 0L; // NOPMD
 
     /** The max duration statistics entry. */
-    private StatisticsEntry maxDurationStatisticsEntry;
+    private StatisticsEntry maxDurationStatisticsEntry; // NOPMD
 
     /** The min duration statistics entry. */
-    private StatisticsEntry minDurationStatisticsEntry;
+    private StatisticsEntry minDurationStatisticsEntry; // NOPMD
 
     /**
      * {@inheritDoc}
      */
+    @SuppressWarnings("PMD")
     public void addStatisticsEntry(StatisticsEntry entry, Long maxNumberOfRecentStatsticsEntries,
             Long maxNumberOfTopDurationStatisticsEntries) {
         if (entry != null) {

@@ -32,13 +32,13 @@ import org.springframework.beans.factory.annotation.Required;
 public class StatisticsManagerImpl implements StatisticsManager {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(StatisticsManagerImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(StatisticsManagerImpl.class); // NOPMD
 
     /** The statistics entry factory. */
-    private StatisticsEntryFactory statisticsEntryFactory;
+    private StatisticsEntryFactory statisticsEntryFactory; // NOPMD
 
     /** The collection strategy (optional). */
-    private StatisticsCollectionStrategy statisticsCollectionStrategy;
+    private StatisticsCollectionStrategy statisticsCollectionStrategy; // NOPMD
 
     /** The enabled flag. */
     private boolean enabled = true;

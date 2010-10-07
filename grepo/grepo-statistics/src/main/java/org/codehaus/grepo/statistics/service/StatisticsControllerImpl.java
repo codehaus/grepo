@@ -46,7 +46,7 @@ public class StatisticsControllerImpl implements StatisticsController {
      * {@inheritDoc}
      */
     @ManagedAttribute
-    public boolean getStatisticsEnabled() {
+    public boolean isStatisticsEnabled() {
         return statisticsManager.isEnabled();
     }
 

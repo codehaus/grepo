@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 public class GenericStatisticsRepositorySupport extends GenericRepositorySupport {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositorySupport.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositorySupport.class); // NOPMD
 
     /** The statistics enabled flag (default is false). */
     private boolean statisticsEnabled = false;
