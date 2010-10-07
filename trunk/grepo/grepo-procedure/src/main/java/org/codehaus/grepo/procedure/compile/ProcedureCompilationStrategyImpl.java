@@ -37,7 +37,7 @@ import org.springframework.jdbc.object.StoredProcedure;
  */
 public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ProcedureCompilationStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcedureCompilationStrategyImpl.class); // NOPMD
 
     /**
      * {@inheritDoc}

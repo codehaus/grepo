@@ -41,7 +41,7 @@ public class ProcedureRepositoryStatisticsOracleTest extends AbstractProcedureRe
 
     /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection;
+    private StatisticsCollection collection; // NOPMD
 
     /**
      * @throws IOException in case of errors.

@@ -38,7 +38,7 @@ public class GenericProcedureRepositoryFactoryBean //
         extends GenericStatisticsRepositoryFactoryBean<GenericProcedureRepositorySupport> {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryFactoryBean.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryFactoryBean.class); // NOPMD
 
     /** The mandatory datasource. */
     private DataSource dataSource;

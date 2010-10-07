@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ProcedureInputGenerationStrategyImpl implements ProcedureInputGenerationStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ProcedureInputGenerationStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ProcedureInputGenerationStrategyImpl.class); // NOPMD
 
     /**
      * {@inheritDoc}

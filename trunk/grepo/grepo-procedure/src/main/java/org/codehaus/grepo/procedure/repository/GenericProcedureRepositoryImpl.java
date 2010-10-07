@@ -38,7 +38,7 @@ import org.springframework.transaction.support.TransactionCallback;
  */
 public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySupport {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryImpl.class); // NOPMD
 
     /**
      * {@inheritDoc}
