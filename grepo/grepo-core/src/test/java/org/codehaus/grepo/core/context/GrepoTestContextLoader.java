@@ -37,7 +37,7 @@ import org.springframework.test.context.support.GenericXmlContextLoader;
 public class GrepoTestContextLoader extends GenericXmlContextLoader {
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GrepoTestContextLoader.class);
+    private final Logger logger = LoggerFactory.getLogger(GrepoTestContextLoader.class); // NOPMD
 
     /**
      * {@inheritDoc}

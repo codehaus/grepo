@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ResultConverterFindingStrategyImpl implements ResultConverterFindingStrategy {
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ResultConverterFindingStrategyImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(ResultConverterFindingStrategyImpl.class); // NOPMD
 
     /** The converter registry. */
     private ResultConverterRegistry converterRegistry;
