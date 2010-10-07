@@ -32,6 +32,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
             <groupId>org.codehaus.grepo</groupId>
             <artifactId>grepo-core</artifactId>
             <version>${project.version}</version>
