@@ -18,6 +18,7 @@ package org.codehaus.grepo.statistics.service;
 
 import java.lang.reflect.Method;
 
+import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -28,13 +29,16 @@ import org.codehaus.grepo.statistics.annotation.MethodStatistics;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 /**
  * @author dguggi
  */
 @Aspect
-public class MethodStatisticsAspect {
+public class MethodStatisticsAspect implements ApplicationContextAware {
 
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(MethodStatisticsAspect.class);
@@ -45,6 +49,9 @@ public class MethodStatisticsAspect {
     /** The identifier naming strategy. */
     private StatisticsEntryIdentifierGenerationStrategy statisticsIdentifierNamingStrategy;
 
+    /** The application context. */
+    private ApplicationContext applicationContext;
+
     /**
      * @param pjp The join point.
      * @param annotation The annotation.
@@ -53,7 +60,7 @@ public class MethodStatisticsAspect {
      */
     @Around("@annotation(org.codehaus.grepo.statistics.annotation.MethodStatistics) && @annotation(annotation)")
     public Object methodStatistics(ProceedingJoinPoint pjp, MethodStatistics annotation) throws Throwable {
-        StatisticsEntry entry = createEntry(pjp, annotation.origin());
+        StatisticsEntry entry = createEntry(pjp, annotation.manager(), annotation.origin());
         try {
             Object result = pjp.proceed();
             return result;
@@ -64,10 +71,11 @@ public class MethodStatisticsAspect {
 
     /**
      * @param pjp The proceeding join point.
+     * @param managerName The statistics manager name to use.
      * @param origin The origin.
      * @return Returns the entry.
      */
-    private StatisticsEntry createEntry(ProceedingJoinPoint pjp, String origin) {
+    private StatisticsEntry createEntry(ProceedingJoinPoint pjp, String managerName, String origin) {
         StatisticsEntry entry = null;
         try {
             MethodSignature methodSig = (MethodSignature)pjp.getSignature();
@@ -77,8 +85,14 @@ public class MethodStatisticsAspect {
 
             String identifier = statisticsIdentifierNamingStrategy.getIdentifier(mpi);
 
-
-            entry = statisticsManager.createStatisticsEntry(identifier, origin);
+            if (StringUtils.isNotEmpty(managerName)) {
+                // use statistics manager configured via annotation...
+                StatisticsManager manager = applicationContext.getBean(managerName, StatisticsManager.class);
+                entry = manager.createStatisticsEntry(identifier, origin);
+            } else {
+                // use default statistics manager...
+                entry = statisticsManager.createStatisticsEntry(identifier, origin);
+            }
         } catch (Exception e) {
             logger.error("Unable to create StatisticsEntry: " + e.getMessage(), e);
         }
@@ -98,6 +112,13 @@ public class MethodStatisticsAspect {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
+
     @Required
     public void setStatisticsManager(StatisticsManager statisticsManager) {
         this.statisticsManager = statisticsManager;
@@ -108,5 +129,6 @@ public class MethodStatisticsAspect {
             StatisticsEntryIdentifierGenerationStrategy statisticsIdentifierNamingStrategy) {
         this.statisticsIdentifierNamingStrategy = statisticsIdentifierNamingStrategy;
     }
+
 
 }

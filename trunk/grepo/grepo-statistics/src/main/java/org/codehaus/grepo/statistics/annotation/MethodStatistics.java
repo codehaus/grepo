@@ -34,4 +34,7 @@ public @interface MethodStatistics {
 
     /** The origin. */
     String origin() default "";
+
+    /** The statistics manager to use. */
+    String manager() default "";
 }
