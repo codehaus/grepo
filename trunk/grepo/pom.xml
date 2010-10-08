@@ -21,8 +21,9 @@
         <!-- build properties -->
         <project.build.sourceEncoding>ISO-8859-1</project.build.sourceEncoding>
         <build.jdk.version>1.5</build.jdk.version>
-        <grepo-buildtools.version>1.1.0</grepo-buildtools.version>
+        <grepo-buildtools.version>1.2.0</grepo-buildtools.version>
         <grepo-osgi.version>1.5.0</grepo-osgi.version>
+        <eclipseplugin.addVersionToProjectName>false</eclipseplugin.addVersionToProjectName>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
@@ -334,6 +335,7 @@
                             <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
                             <projectnature>net.sourceforge.pmd.eclipse.plugin.pmdNature</projectnature>
                         </additionalProjectnatures>
+                        <addVersionToProjectName>${eclipseplugin.addVersionToProjectName}</addVersionToProjectName>
                         <additionalConfig>
                             <file>
                                 <name>.checkstyle</name>
