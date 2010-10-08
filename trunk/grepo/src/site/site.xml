@@ -48,6 +48,7 @@
             <item name="grepo-query-hibernate" href="grepo-query-hibernate/index.html" />
             <item name="grepo-query-jpa" href="grepo-query-jpa/index.html" />
             <item name="grepo-procedure" href="grepo-procedure/index.html" />
+            <item name="grepo-statistics" href="grepo-statistics/index.html" />
         </menu>
 
         <menu ref="reports" />
