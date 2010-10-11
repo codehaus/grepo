@@ -8,6 +8,18 @@
     <description>Generic Repository: Buildtools</description>
     <url>http://grepo.codehaus.org</url>
 
+    <developers>
+        <developer>
+            <id>dguggi</id>
+            <name>Daniel Guggi</name>
+            <email>daniel.guggi@gmail.com</email>
+            <roles>
+                <role>Despot</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
     <organization>
         <name>Generic Repository Framework</name>
         <url>http://grepo.codehaus.org</url>
