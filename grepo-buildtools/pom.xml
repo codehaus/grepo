@@ -66,7 +66,7 @@
                     <configuration>
                         <mavenExecutorId>forked-path</mavenExecutorId>
                         <useReleaseProfile>false</useReleaseProfile>
-                        <arguments>-Pcodehaus-release</arguments>
+                        <arguments>-Pcodehaus-release -DskipTests=true</arguments>
                     </configuration>
                 </plugin>
             </plugins>
