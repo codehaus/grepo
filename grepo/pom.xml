@@ -95,14 +95,14 @@
 
     <distributionManagement>
         <repository>
-            <id>codehaus.org</id>
-            <name>grepo central repository</name>
-            <url>dav:https://dav.codehaus.org/repository/grepo/</url>
+            <id>codehaus-nexus-staging</id>
+            <name>Codehaus Release Repository</name>
+            <url>https://nexus.codehaus.org/service/local/staging/deploy/maven2/</url>
         </repository>
         <snapshotRepository>
-            <id>codehaus.org</id>
-            <name>grepo central development repository</name>
-            <url>dav:https://dav.codehaus.org/snapshots.repository/grepo/</url>
+            <id>codehaus-nexus-snapshots</id>
+            <name>Codehaus Nexus Snapshots</name>
+            <url>https://nexus.codehaus.org/content/repositories/snapshots/</url>
         </snapshotRepository>
         <site>
             <id>codehaus.org</id>
@@ -217,6 +217,7 @@
     </dependencyManagement>
 
     <build>
+        <!--
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -224,6 +225,7 @@
                 <version>1.0-beta-2</version>
             </extension>
         </extensions>
+         -->
 
         <pluginManagement>
             <plugins>
