@@ -26,17 +26,6 @@
             </properties>
 
             <repositories>
-                <!-- codehaus repos -->
-                <repository>
-                    <id>codehaus-nexus-staging</id>
-                    <url>https://nexus.codehaus.org/content/repositories/releases/</url>
-                    <snapshots>
-                        <enabled>false</enabled>
-                    </snapshots>
-                    <releases>
-                        <enabled>true</enabled>
-                    </releases>
-                </repository>
                 <repository>
                     <id>codehaus-nexus-snapshots</id>
                     <name>Codehaus Nexus Snapshots</name>
