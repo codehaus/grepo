@@ -9,7 +9,6 @@
             <username>user</username>
             <password>pass</password>
         </server>
-
         <server>
             <id>codehaus-nexus-snapshots</id>
             <username>user</username>
