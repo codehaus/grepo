@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo-buildtools</artifactId>
-    <version>1.3.2-SNAPSHOT</version>
+    <version>1.3.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Generic Repository: Buildtools</name>
     <description>Generic Repository: Buildtools</description>
