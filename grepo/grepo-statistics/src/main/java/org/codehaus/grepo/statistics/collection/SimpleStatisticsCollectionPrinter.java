@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.statistics.service;
+package org.codehaus.grepo.statistics.collection;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.grepo.statistics.collection.StatisticsCollection;
-import org.codehaus.grepo.statistics.collection.StatisticsCollectionEntry;
-import org.codehaus.grepo.statistics.collection.StatisticsCollectionEntryComparator;
-import org.codehaus.grepo.statistics.collection.StatisticsCollectionUtils;
-import org.codehaus.grepo.statistics.collection.StatisticsEntryComparator;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedOperationParameter;
