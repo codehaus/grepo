@@ -13,7 +13,7 @@
 
     <bean id="testStatisticsInterface" class="org.codehaus.grepo.statistics.service.TestStatisticsInterfaceImpl" />
 
-    <bean id="simpleStatisticsCollectionPrinter" class="org.codehaus.grepo.statistics.service.SimpleStatisticsCollectionPrinter">
+    <bean id="simpleStatisticsCollectionPrinter" class="org.codehaus.grepo.statistics.collection.SimpleStatisticsCollectionPrinter">
         <property name="type" value="TXT" />
         <property name="collection" ref="grepo.statisticsCollection" />
         <property name="dateFormat" value="dd.MM.yyyy HH:mm:ss.S" />

@@ -16,56 +16,51 @@
 
 package org.codehaus.grepo.statistics.domain;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
 /**
  * @author dguggi
  */
-public interface StatisticsEntry extends Serializable {
-    /**
-     * @param identifier The identifier.
-     */
-    void setIdentifier(String identifier);
+public interface DurationAwareStatisticsEntry extends StatisticsEntry {
 
     /**
-     * @return Returns the identifier.
+     * @param completion The completion calendar.
      */
-    String getIdentifier();
+    void setCompletion(Calendar completion);
 
     /**
-     * @param creation The creation calendar.
+     * @return Returns the completion caleandar.
      */
-    void setCreation(Calendar creation);
+    Calendar getCompletion();
 
     /**
-     * @return Returns the creation calendar.
+     * @return Returns the completion date.
      */
-    Calendar getCreation();
+    Date getCompletionDate();
 
     /**
-     * @return Returns the creation date.
+     * @return Returns the completion millis.
      */
-    Date getCreationDate();
+    Long getCompletionMillis();
 
     /**
-     * @return Returns the creation millis.
+     * @return Returns {@code true} if {@code completion} is set and {@code false} otherwise.
      */
-    Long getCreationMillis();
+    boolean hasCompletion();
 
     /**
-     * @return Returns {@code true} if {@code creation} is set and {@code false} otherwise.
+     * @param durationMillis The duration millis.
      */
-    boolean hasCreation();
+    void setDurationMillis(Long durationMillis);
 
     /**
-     * @param origin The origin.
+     * @return Returns the duration millis.
      */
-    void setOrigin(String origin);
+    Long getDurationMillis();
 
     /**
-     * @return Returns the origin.
+     * @return Returns {@code true} if {@code durationMillis} is set and {@code false} otherwise.
      */
-    String getOrigin();
+    boolean hasDurationMillis();
 }

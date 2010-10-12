@@ -20,6 +20,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import org.codehaus.grepo.statistics.domain.DurationAwareStatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 
 /**
@@ -55,12 +56,12 @@ public interface StatisticsCollectionEntry extends Serializable {
     /**
      * @return Returns a read-only list of top duration {@link StatisticsEntry} objects.
      */
-    List<StatisticsEntry> getTopDurationStatisticsEntriesReadOnly();
+    List<DurationAwareStatisticsEntry> getTopDurationStatisticsEntriesReadOnly();
 
     /**
      * @return Returns the list of top duration {@link StatisticsEntry} objects.
      */
-    List<StatisticsEntry> getTopDurationStatisticsEntriesList();
+    List<DurationAwareStatisticsEntry> getTopDurationStatisticsEntriesList();
 
     /**
      * @return Returns the number of invocations.
@@ -70,10 +71,10 @@ public interface StatisticsCollectionEntry extends Serializable {
     /**
      * @return Returns the top max duration statistics entry.
      */
-    StatisticsEntry getMaxDurationStatisticsEntry();
+    DurationAwareStatisticsEntry getMaxDurationStatisticsEntry();
 
     /**
      * @return Returns the top min duration statistics entry.
      */
-    StatisticsEntry getMinDurationStatisticsEntry();
+    DurationAwareStatisticsEntry getMinDurationStatisticsEntry();
 }

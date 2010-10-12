@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.codehaus.grepo.statistics.domain.DurationAwareStatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,16 +41,17 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     private List<StatisticsEntry> recentStatisticsEntries = new ArrayList<StatisticsEntry>(10);
 
     /** Holds statistic entries with maximum duration. */
-    private List<StatisticsEntry> topDurationStatisticsEntries = new ArrayList<StatisticsEntry>(10);
+    private List<DurationAwareStatisticsEntry> topDurationStatisticsEntries = //
+            new ArrayList<DurationAwareStatisticsEntry>(10);
 
     /** The number of invocations. */
     private long numberOfInvocations = 0L; // NOPMD
 
     /** The max duration statistics entry. */
-    private StatisticsEntry maxDurationStatisticsEntry; // NOPMD
+    private DurationAwareStatisticsEntry maxDurationStatisticsEntry; // NOPMD
 
     /** The min duration statistics entry. */
-    private StatisticsEntry minDurationStatisticsEntry; // NOPMD
+    private DurationAwareStatisticsEntry minDurationStatisticsEntry; // NOPMD
 
     /**
      * {@inheritDoc}
@@ -58,13 +60,18 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
             Integer maxNumberOfTopDurationStatisticsEntries) {
         incrementNrOfInvocations(entry);
 
-        handleMaxDurationStatisticsEntry(entry);
-
-        handleMinDurationStatisticsEntry(entry);
-
-        handleTopDurationStatisticsEntries(entry, maxNumberOfTopDurationStatisticsEntries);
-
         handleRecentStatisticsEntries(entry, maxNumberOfRecentStatisticsEntries);
+
+        if (entry instanceof DurationAwareStatisticsEntry) {
+            DurationAwareStatisticsEntry daEntry = (DurationAwareStatisticsEntry)entry;
+
+            handleMaxDurationStatisticsEntry(daEntry);
+
+            handleMinDurationStatisticsEntry(daEntry);
+
+            handleTopDurationStatisticsEntries(daEntry, maxNumberOfTopDurationStatisticsEntries);
+        }
+
     }
 
     /**
@@ -79,13 +86,13 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /**
      * @param entry The entry.
      */
-    protected void handleMaxDurationStatisticsEntry(StatisticsEntry entry) {
-        if (entry != null && entry.getDurationMillis() != null) {
+    protected void handleMaxDurationStatisticsEntry(DurationAwareStatisticsEntry entry) {
+        if (entry != null && entry.hasDurationMillis()) {
             // set top max duration statistics entry...
             if (maxDurationStatisticsEntry == null) {
                 maxDurationStatisticsEntry = entry;
             } else if (maxDurationStatisticsEntry.getDurationMillis() < entry.getDurationMillis()) {
-                    maxDurationStatisticsEntry = entry;
+                maxDurationStatisticsEntry = entry;
             }
         }
     }
@@ -93,8 +100,8 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /**
      * @param entry The entry.
      */
-    protected void handleMinDurationStatisticsEntry(StatisticsEntry entry) {
-        if (entry != null && entry.getDurationMillis() != null) {
+    protected void handleMinDurationStatisticsEntry(DurationAwareStatisticsEntry entry) {
+        if (entry != null && entry.hasDurationMillis()) {
             if (minDurationStatisticsEntry == null) {
                 minDurationStatisticsEntry = entry;
             } else {
@@ -109,17 +116,17 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
      * @param entry The entry.
      * @param maxNumberOfTopDurationStatisticsEntries The number.
      */
-    protected void handleTopDurationStatisticsEntries(StatisticsEntry entry,
+    protected void handleTopDurationStatisticsEntries(DurationAwareStatisticsEntry entry,
             Integer maxNumberOfTopDurationStatisticsEntries) {
-        if (entry != null && entry.getDurationMillis() != null) {
+        if (entry != null && entry.hasDurationMillis()) {
             if (maxNumberOfTopDurationStatisticsEntries == null) {
                 topDurationStatisticsEntries.add(entry);
             } else {
                 if (maxNumberOfTopDurationStatisticsEntries > topDurationStatisticsEntries.size()) {
                     topDurationStatisticsEntries.add(entry);
                 } else {
-                    StatisticsEntry min = StatisticsCollectionUtils
-                        .getMinDurationEntry(topDurationStatisticsEntries);
+                    DurationAwareStatisticsEntry min = StatisticsCollectionUtils.getMinDurationEntry(
+                        topDurationStatisticsEntries);
                     if (min != null && min.getDurationMillis() < entry.getDurationMillis()) {
                         topDurationStatisticsEntries.add(entry);
 
@@ -157,8 +164,8 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
      * maxNumberOfTopDurationStatisticsEntries} by removing the appropriate items from {@code
      * topDurationStatisticsEntries}.<br/>
      * <br/>
-     * <b>Note:</b> This method does not perform any synchronization - subclasses may to override this method
-     * and provide desired synchronization mechanisms.
+     * <b>Note:</b> This method does not perform any synchronization - subclasses may to override this method and
+     * provide desired synchronization mechanisms.
      *
      * @param maxNumberOfTopDurationStatisticsEntries The max number of top duration statistics entries.
      */
@@ -167,8 +174,8 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
             if (topDurationStatisticsEntries.size() > maxNumberOfTopDurationStatisticsEntries) {
                 // list contains too many entries...
                 int nrOfEntriesToRemove = Math.max(0,
-                        (topDurationStatisticsEntries.size() - maxNumberOfTopDurationStatisticsEntries));
-                StatisticsEntry min = null;
+                    (topDurationStatisticsEntries.size() - maxNumberOfTopDurationStatisticsEntries));
+                DurationAwareStatisticsEntry min = null;
                 for (int i = 0; i < nrOfEntriesToRemove; i++) {
                     min = StatisticsCollectionUtils.getMinDurationEntry(topDurationStatisticsEntries);
                     if (min != null) {
@@ -189,11 +196,10 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
 
     /**
      * This method ensures that {@code recentStatisticsEntries} does not exceed the given {@code
-     * maxNumberOfRecentStatisticsEntries} by removing the appropriate items from {@code
-     * recentStatisticsEntries}.<br/>
+     * maxNumberOfRecentStatisticsEntries} by removing the appropriate items from {@code recentStatisticsEntries}.<br/>
      * <br/>
-     * <b>Note:</b> This method does not perform any synchronization - subclasses may to override this method
-     * and provide desired synchronization mechanisms.
+     * <b>Note:</b> This method does not perform any synchronization - subclasses may to override this method and
+     * provide desired synchronization mechanisms.
      *
      * @param maxNumberOfRecentStatisticsEntries The max number of top recent entries.
      */
@@ -202,7 +208,7 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
             if (recentStatisticsEntries.size() > maxNumberOfRecentStatisticsEntries) {
                 // list contains too many entries...
                 int nrOfEntriesToRemove = Math.max(0,
-                        (recentStatisticsEntries.size() - maxNumberOfRecentStatisticsEntries));
+                    (recentStatisticsEntries.size() - maxNumberOfRecentStatisticsEntries));
                 StatisticsEntry oldest = null;
                 for (int i = 0; i < nrOfEntriesToRemove; i++) {
                     if (!recentStatisticsEntries.isEmpty()) {
@@ -259,22 +265,22 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /**
      * {@inheritDoc}
      */
-    public List<StatisticsEntry> getTopDurationStatisticsEntriesReadOnly() {
+    public List<DurationAwareStatisticsEntry> getTopDurationStatisticsEntriesReadOnly() {
         return Collections.unmodifiableList(topDurationStatisticsEntries);
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<StatisticsEntry> getTopDurationStatisticsEntriesList() {
-        return new ArrayList<StatisticsEntry>(topDurationStatisticsEntries);
+    public List<DurationAwareStatisticsEntry> getTopDurationStatisticsEntriesList() {
+        return new ArrayList<DurationAwareStatisticsEntry>(topDurationStatisticsEntries);
     }
 
-    protected List<StatisticsEntry> getTopDurationStatisticsEntries() {
+    protected List<DurationAwareStatisticsEntry> getTopDurationStatisticsEntries() {
         return topDurationStatisticsEntries;
     }
 
-    protected void setTopDurationStatisticsEntries(List<StatisticsEntry> topDurationStatisticsEntries) {
+    protected void setTopDurationStatisticsEntries(List<DurationAwareStatisticsEntry> topDurationStatisticsEntries) {
         this.topDurationStatisticsEntries = topDurationStatisticsEntries;
     }
 
@@ -288,14 +294,14 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     /**
      * {@inheritDoc}
      */
-    public StatisticsEntry getMaxDurationStatisticsEntry() {
+    public DurationAwareStatisticsEntry getMaxDurationStatisticsEntry() {
         return maxDurationStatisticsEntry;
     }
 
     /**
      * {@inheritDoc}
      */
-    public StatisticsEntry getMinDurationStatisticsEntry() {
+    public DurationAwareStatisticsEntry getMinDurationStatisticsEntry() {
         return minDurationStatisticsEntry;
     }
 
