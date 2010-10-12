@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.statistics.collection.StatisticsCollectionStrategy;
+import org.codehaus.grepo.statistics.domain.DurationAwareStatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntryFactory;
 import org.slf4j.Logger;
@@ -78,9 +79,11 @@ public class StatisticsManagerImpl implements StatisticsManager {
     public void completeStatisticsEntry(StatisticsEntry entry) {
         try {
             if (isEnabled()) {
-                entry.setCompletion(Calendar.getInstance());
-                long duration = entry.getCompletionMillis() - entry.getCreationMillis();
-                entry.setDurationMillis(duration);
+                if (entry instanceof DurationAwareStatisticsEntry) {
+                    DurationAwareStatisticsEntry daEntry = (DurationAwareStatisticsEntry)entry;
+                    daEntry.setCompletion(Calendar.getInstance());
+                    calculateDurationMillis(daEntry);
+                }
 
                 if (statisticsCollectionStrategy != null) {
                     statisticsCollectionStrategy.completeStatistics(entry);
@@ -91,6 +94,15 @@ public class StatisticsManagerImpl implements StatisticsManager {
             if (logger.isDebugEnabled()) {
                 logger.debug("Got unexpected exception: " + e.getMessage(), e);
             }
+        }
+    }
+
+    /**
+     * @param daEntry The entry.
+     */
+    protected void calculateDurationMillis(DurationAwareStatisticsEntry daEntry) {
+        if (daEntry.hasCreation() && daEntry.hasCompletion()) {
+            daEntry.setDurationMillis(daEntry.getCompletionMillis() - daEntry.getCreationMillis());
         }
     }
 

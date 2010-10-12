@@ -19,7 +19,7 @@ package org.codehaus.grepo.statistics.collection;
 import java.util.Comparator;
 
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.grepo.statistics.domain.StatisticsEntry;
+import org.codehaus.grepo.statistics.domain.DurationAwareStatisticsEntry;
 
 /**
  * @author dguggi
@@ -83,16 +83,16 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            StatisticsEntry o1e = o1.getMaxDurationStatisticsEntry();
-            StatisticsEntry o2e = o2.getMaxDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o1e = o1.getMaxDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o2e = o2.getMaxDurationStatisticsEntry();
 
             long o1Duration = 0L;
-            if (o1e != null && o1e.getDurationMillis() != null) {
+            if (o1e != null && o1e.hasDurationMillis()) {
                 o1Duration = o1e.getDurationMillis();
             }
 
             long o2Duration = 0L;
-            if (o2e != null && o2e.getDurationMillis() != null) {
+            if (o2e != null && o2e.hasDurationMillis()) {
                 o2Duration = o2e.getDurationMillis();
             }
 
@@ -110,16 +110,16 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            StatisticsEntry o1e = o1.getMaxDurationStatisticsEntry();
-            StatisticsEntry o2e = o2.getMaxDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o1e = o1.getMaxDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o2e = o2.getMaxDurationStatisticsEntry();
 
             long o1Duration = 0L;
-            if (o1e != null && o1e.getDurationMillis() != null) {
+            if (o1e != null && o1e.hasDurationMillis()) {
                 o1Duration = o1e.getDurationMillis();
             }
 
             long o2Duration = 0L;
-            if (o2e != null && o2e.getDurationMillis() != null) {
+            if (o2e != null && o2e.hasDurationMillis()) {
                 o2Duration = o2e.getDurationMillis();
             }
 
@@ -137,16 +137,16 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            StatisticsEntry o1e = o1.getMinDurationStatisticsEntry();
-            StatisticsEntry o2e = o2.getMinDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o1e = o1.getMinDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o2e = o2.getMinDurationStatisticsEntry();
 
             long o1Duration = 0L;
-            if (o1e != null && o1e.getDurationMillis() != null) {
+            if (o1e != null && o1e.hasDurationMillis()) {
                 o1Duration = o1e.getDurationMillis();
             }
 
             long o2Duration = 0L;
-            if (o2e != null && o2e.getDurationMillis() != null) {
+            if (o2e != null && o2e.hasDurationMillis()) {
                 o2Duration = o2e.getDurationMillis();
             }
 
@@ -164,16 +164,16 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
 
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
-            StatisticsEntry o1e = o1.getMinDurationStatisticsEntry();
-            StatisticsEntry o2e = o2.getMinDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o1e = o1.getMinDurationStatisticsEntry();
+            DurationAwareStatisticsEntry o2e = o2.getMinDurationStatisticsEntry();
 
             long o1Duration = 0L;
-            if (o1e != null && o1e.getDurationMillis() != null) {
+            if (o1e != null && o1e.hasDurationMillis()) {
                 o1Duration = o1e.getDurationMillis();
             }
 
             long o2Duration = 0L;
-            if (o2e != null && o2e.getDurationMillis() != null) {
+            if (o2e != null && o2e.hasDurationMillis()) {
                 o2Duration = o2e.getDurationMillis();
             }
 

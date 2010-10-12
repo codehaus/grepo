@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.grepo.statistics.domain.DurationAwareStatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedOperationParameter;
@@ -43,6 +44,9 @@ public class SimpleStatisticsCollectionPrinter {
         /** The txt. */
         TXT,
     };
+
+    /** NBSP. */
+    private static final String NBSP = "&nbsp;";
 
     /** The collection. */
     private StatisticsCollection collection; // NOPMD
@@ -173,7 +177,7 @@ public class SimpleStatisticsCollectionPrinter {
      * @return Returns the detail.
      */
     @SuppressWarnings("PMD")
-    public String printDetail(String identifier,StatisticsEntryComparator comparator) {
+    public String printDetail(String identifier, StatisticsEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
         StatisticsCollectionEntry entry = collection.get(identifier);
         if (entry == null) {
@@ -183,9 +187,9 @@ public class SimpleStatisticsCollectionPrinter {
 
             String minDurationMillis = "";
             String minDurationDate = "";
-            StatisticsEntry minEntry = entry.getMinDurationStatisticsEntry();
+            DurationAwareStatisticsEntry minEntry = entry.getMinDurationStatisticsEntry();
             if (minEntry != null) {
-                if (minEntry.getDurationMillis() != null) {
+                if (minEntry.hasDurationMillis()) {
                     minDurationMillis = String.valueOf(minEntry.getDurationMillis());
                 }
                 minDurationDate = formatDate(minEntry.getCreationDate());
@@ -193,9 +197,9 @@ public class SimpleStatisticsCollectionPrinter {
 
             String maxDurationMillis = "";
             String maxDurationDate = "";
-            StatisticsEntry maxEntry = entry.getMaxDurationStatisticsEntry();
+            DurationAwareStatisticsEntry maxEntry = entry.getMaxDurationStatisticsEntry();
             if (maxEntry != null) {
-                if (maxEntry.getDurationMillis() != null) {
+                if (maxEntry.hasDurationMillis()) {
                     maxDurationMillis = String.valueOf(maxEntry.getDurationMillis());
                 }
                 maxDurationDate = formatDate(maxEntry.getCreationDate());
@@ -216,8 +220,8 @@ public class SimpleStatisticsCollectionPrinter {
             sb.append("avgDuration: " + avgDuration + nl());
             sb.append(nl());
 
-            List<StatisticsEntry> topDurationList = StatisticsCollectionUtils.getTopDurationStatisticsEntries(entry,
-                    StatisticsEntryComparator.DURATION_MILLIS_DESC);
+            List<DurationAwareStatisticsEntry> topDurationList = StatisticsCollectionUtils.
+                    getTopDurationStatisticsEntries(entry, StatisticsEntryComparator.DURATION_MILLIS_DESC);
             if (topDurationList.size() > 0) {
                 sb.append("" + topDurationList.size() + " top durations (sorted by "
                     + StatisticsEntryComparator.DURATION_MILLIS_DESC + "):");
@@ -310,10 +314,10 @@ public class SimpleStatisticsCollectionPrinter {
             String minDurationMillis = "";
             String minDurationDate = "";
             String identifier = "";
-            StatisticsEntry minEntry = entry.getMinDurationStatisticsEntry();
+            DurationAwareStatisticsEntry minEntry = entry.getMinDurationStatisticsEntry();
             if (minEntry != null) {
                 identifier = StringUtils.defaultString(minEntry.getIdentifier());
-                if (minEntry.getDurationMillis() != null) {
+                if (minEntry.hasDurationMillis()) {
                     minDurationMillis = String.valueOf(minEntry.getDurationMillis());
                 }
                 minDurationDate = formatDate(minEntry.getCreationDate());
@@ -321,9 +325,9 @@ public class SimpleStatisticsCollectionPrinter {
 
             String maxDurationMillis = "";
             String maxDurationDate = "";
-            StatisticsEntry maxEntry = entry.getMaxDurationStatisticsEntry();
+            DurationAwareStatisticsEntry maxEntry = entry.getMaxDurationStatisticsEntry();
             if (maxEntry != null) {
-                if (maxEntry.getDurationMillis() != null) {
+                if (maxEntry.hasDurationMillis()) {
                     maxDurationMillis = String.valueOf(maxEntry.getDurationMillis());
                 }
                 maxDurationDate = formatDate(maxEntry.getCreationDate());
@@ -353,7 +357,7 @@ public class SimpleStatisticsCollectionPrinter {
                 sb.append(identifier).append(":");
                 sb.append(" invocations=" + entry.getNumberOfInvocations());
                 sb.append(" minDuration=" + minDurationMillis + " (" + minDurationDate + ")");
-                sb.append(" minDuration=" + maxDurationMillis + " (" + maxDurationDate + ")");
+                sb.append(" maxDuration=" + maxDurationMillis + " (" + maxDurationDate + ")");
                 if (includeAverageDuration) {
                     sb.append(" avgDuration=" + avgDuration);
                 }
@@ -366,24 +370,26 @@ public class SimpleStatisticsCollectionPrinter {
      * @param entry The entry.
      * @param sb The string builder.
      */
+    @SuppressWarnings("PMD")
     private void printStatisticsEntryRow(StatisticsEntry entry, StringBuilder sb) {
         if (entry != null) {
             String duration = "";
-            if (entry.getDurationMillis() != null) {
-                duration = entry.getDurationMillis().toString();
+            Long durationValue = StatisticsCollectionUtils.getDurationMillis(entry);
+            if (durationValue != null) {
+                duration = durationValue.toString();
             }
 
             String creationDate = formatDate(entry.getCreationDate());
-            String completionDate = formatDate(entry.getCompletionDate());
+            String completionDate = formatDate(StatisticsCollectionUtils.getCompletionDate(entry));
 
             String origin = StringUtils.defaultString(entry.getOrigin());
 
             if (isHtml()) {
                 sb.append("<tr>");
-                sb.append("<td>" + duration + "</td>");
-                sb.append("<td>" + creationDate + "</td>");
-                sb.append("<td>" + completionDate + "</td>");
-                sb.append("<td>" + (StringUtils.isEmpty(origin) ? "&nbsp;" : origin) + "</td>");
+                sb.append("<td>" + (StringUtils.isEmpty(duration) ? NBSP : duration) + "</td>");
+                sb.append("<td>" + (StringUtils.isEmpty(creationDate) ? NBSP : creationDate) + "</td>");
+                sb.append("<td>" + (StringUtils.isEmpty(completionDate) ? NBSP : completionDate) + "</td>");
+                sb.append("<td>" + (StringUtils.isEmpty(origin) ? NBSP : origin) + "</td>");
                 sb.append("</tr>");
             } else {
                 sb.append(" duration: " + duration);

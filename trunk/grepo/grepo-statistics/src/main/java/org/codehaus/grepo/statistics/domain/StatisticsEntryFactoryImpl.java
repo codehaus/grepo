@@ -20,6 +20,7 @@ import java.util.Calendar;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.core.origin.OriginGenerationStrategy;
+import org.codehaus.grepo.core.util.ClassUtils;
 
 /**
  * @author dguggi
@@ -28,6 +29,9 @@ public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
 
     /** The origin generation strategy. */
     private OriginGenerationStrategy originGenerationStrategy; // NOPMD
+
+    /** The type of statics entry to be created by this factory instance. */
+    private Class<? extends StatisticsEntry> entryClass = DurationAwareStatisticsEntryImpl.class; // NOPMD
 
     /**
      * {@inheritDoc}
@@ -40,7 +44,7 @@ public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
      * {@inheritDoc}
      */
     public StatisticsEntry createStatisticsEntry(String identifier, Calendar creation, String origin) {
-        StatisticsEntry entry = new StatisticsEntryImpl();
+        StatisticsEntry entry = ClassUtils.instantiateClass(entryClass);
         entry.setIdentifier(identifier);
         entry.setCreation(creation);
 
@@ -57,6 +61,10 @@ public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
 
     public void setOriginGenerationStrategy(OriginGenerationStrategy originGenerationStrategy) {
         this.originGenerationStrategy = originGenerationStrategy;
+    }
+
+    public void setEntryClass(Class<? extends StatisticsEntry> entryClass) {
+        this.entryClass = entryClass;
     }
 
 }

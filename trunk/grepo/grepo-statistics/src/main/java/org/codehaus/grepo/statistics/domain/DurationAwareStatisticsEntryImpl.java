@@ -24,54 +24,38 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 /**
  * @author dguggi
  */
-public class StatisticsEntryImpl implements StatisticsEntry {
+public class DurationAwareStatisticsEntryImpl extends StatisticsEntryImpl //
+                    implements DurationAwareStatisticsEntry {
 
     /** SerialVersionUid. */
-    private static final long serialVersionUID = 588742446017759882L;
+    private static final long serialVersionUID = -6470501070088106492L;
 
-    /** The identifier. */
-    private String identifier;
+    /** The completion. */
+    private Calendar completion;
 
-    /** The creation. */
-    private Calendar creation;
-
-    /** The origin. */
-    private String origin;
+    /** The duration millis. */
+    private Long durationMillis;
 
     /**
      * {@inheritDoc}
      */
-    public String getOrigin() {
-        return origin;
+    public void setCompletion(Calendar completion) {
+        this.completion = completion;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setOrigin(String origin) {
-        this.origin = origin;
+    public Calendar getCompletion() {
+        return completion;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setCreation(Calendar creation) {
-        this.creation = creation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Calendar getCreation() {
-        return creation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public Date getCreationDate() {
-        if (hasCreation()) {
-            return creation.getTime();
+    public Date getCompletionDate() {
+        if (hasCompletion()) {
+            return completion.getTime();
         }
         return null;
     }
@@ -79,9 +63,9 @@ public class StatisticsEntryImpl implements StatisticsEntry {
     /**
      * {@inheritDoc}
      */
-    public Long getCreationMillis() {
-        if (hasCreation()) {
-            return creation.getTimeInMillis();
+    public Long getCompletionMillis() {
+        if (hasCompletion()) {
+            return completion.getTimeInMillis();
         }
         return null;
     }
@@ -89,22 +73,29 @@ public class StatisticsEntryImpl implements StatisticsEntry {
     /**
      * {@inheritDoc}
      */
-    public boolean hasCreation() {
-        return creation != null;
+    public boolean hasCompletion() {
+        return completion != null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setDurationMillis(Long durationMillis) {
+        this.durationMillis = durationMillis;
     }
 
     /**
      * {@inheritDoc}
      */
-    public String getIdentifier() {
-        return identifier;
+    public Long getDurationMillis() {
+        return durationMillis;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean hasDurationMillis() {
+        return durationMillis != null;
     }
 
     /**
@@ -113,6 +104,7 @@ public class StatisticsEntryImpl implements StatisticsEntry {
     @Override
     public String toString() {
         return new ToStringBuilder(this).append("identifier", getIdentifier())
-            .append("creationDate", getCreationDate()).append("origin", getOrigin()).toString();
+            .append("creationDate", getCreationDate()).append("completionDate", getCompletionDate()).append(
+                "durationMillis", getDurationMillis()).append("origin", getOrigin()).toString();
     }
 }

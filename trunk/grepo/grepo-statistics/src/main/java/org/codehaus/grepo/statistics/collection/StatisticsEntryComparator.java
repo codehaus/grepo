@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 
 import org.apache.commons.lang.StringUtils;
+import org.codehaus.grepo.statistics.domain.DurationAwareStatisticsEntry;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 
 /**
@@ -30,8 +31,9 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
     DURATION_MILLIS_ASC {
         /** {@inheritDoc} */
         public int compare(StatisticsEntry o1, StatisticsEntry o2) {
-            long o1m = o1.getDurationMillis() == null ? 0L : o1.getDurationMillis();
-            long o2m = o2.getDurationMillis() == null ? 0L : o2.getDurationMillis();
+            long o1m = getDurationMillis(o1);
+            long o2m = getDurationMillis(o2);
+
             if (o1m < o2m) {
                 return -1;
             } else if (o1m > o2m) {
@@ -45,8 +47,9 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
     DURATION_MILLIS_DESC {
         /** {@inheritDoc} */
         public int compare(StatisticsEntry o1, StatisticsEntry o2) {
-            long o1m = o1.getDurationMillis() == null ? 0L : o1.getDurationMillis();
-            long o2m = o2.getDurationMillis() == null ? 0L : o2.getDurationMillis();
+            long o1m = getDurationMillis(o1);
+            long o2m = getDurationMillis(o2);
+
             if (o1m < o2m) {
                 return 1;
             } else if (o1m > o2m) {
@@ -91,6 +94,21 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
             return -o1c.compareTo(o2c);
         }
     };
+
+    /**
+     * @param entry The entry.
+     * @return Returns the millis.
+     */
+    private static long getDurationMillis(StatisticsEntry entry) {
+        long millis = 0L;
+        if (entry instanceof DurationAwareStatisticsEntry) {
+            DurationAwareStatisticsEntry daEntry = (DurationAwareStatisticsEntry)entry;
+            if (daEntry.hasDurationMillis()) {
+                millis = daEntry.getDurationMillis();
+            }
+        }
+        return millis;
+    }
 
     /**
      * @param value The value.
