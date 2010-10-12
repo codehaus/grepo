@@ -54,7 +54,7 @@ public class StatisticsControllerImpl implements StatisticsController {
      * {@inheritDoc}
      */
     @ManagedAttribute(description = "Sets the max number of recent statistics entries")
-    public void setMaxNumberOfRecentStatisticsEntries(Long maxNumberOfRecentStatsticsEntries) {
+    public void setMaxNumberOfRecentStatisticsEntries(Integer maxNumberOfRecentStatsticsEntries) {
         statisticsCollection.setMaxNumberOfRecentStatisticsEntries(maxNumberOfRecentStatsticsEntries);
     }
 
@@ -62,7 +62,7 @@ public class StatisticsControllerImpl implements StatisticsController {
      * {@inheritDoc}
      */
     @ManagedAttribute
-    public Long getMaxNumberOfRecentStatisticsEntries() {
+    public Integer getMaxNumberOfRecentStatisticsEntries() {
         return statisticsCollection.getMaxNumberOfRecentStatisticsEntries();
     }
 
@@ -70,7 +70,7 @@ public class StatisticsControllerImpl implements StatisticsController {
      * {@inheritDoc}
      */
     @ManagedAttribute
-    public Long getMaxNumberOfTopDurationStatisticsEntries() {
+    public Integer getMaxNumberOfTopDurationStatisticsEntries() {
         return statisticsCollection.getMaxNumberOfTopDurationStatisticsEntries();
     }
 
@@ -78,7 +78,7 @@ public class StatisticsControllerImpl implements StatisticsController {
      * {@inheritDoc}
      */
     @ManagedAttribute(description = "Sets the max number of top duration statistics entries")
-    public void setMaxNumberOfTopDurationStatisticsEntries(Long maxNumberOfTopDurationStatisticsEntries) {
+    public void setMaxNumberOfTopDurationStatisticsEntries(Integer maxNumberOfTopDurationStatisticsEntries) {
         statisticsCollection.setMaxNumberOfTopDurationStatisticsEntries(maxNumberOfTopDurationStatisticsEntries);
     }
 

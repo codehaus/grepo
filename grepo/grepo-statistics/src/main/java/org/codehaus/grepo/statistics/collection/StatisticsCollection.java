@@ -23,6 +23,9 @@ import java.util.Map;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 
 /**
+ * A simple collection responsible for holding {@link StatisticsEntry} objects.
+ * An instance of this class is used by the {@code InMemoryStatisticsCollectionStrategy}.
+ *
  * @author dguggi
  */
 public interface StatisticsCollection extends Serializable {
@@ -66,20 +69,20 @@ public interface StatisticsCollection extends Serializable {
     /**
      * @return The max number of top duration {@link StatisticsEntry} objects.
      */
-    Long getMaxNumberOfTopDurationStatisticsEntries();
+    Integer getMaxNumberOfTopDurationStatisticsEntries();
 
     /**
      * @param maxNumberOfTopDurationStatisticsEntries The max number of top duration {@link StatisticsEntry} objects.
      */
-    void setMaxNumberOfTopDurationStatisticsEntries(Long maxNumberOfTopDurationStatisticsEntries);
+    void setMaxNumberOfTopDurationStatisticsEntries(Integer maxNumberOfTopDurationStatisticsEntries);
 
     /**
      * @return The max number of recent statistic entries.
      */
-    Long getMaxNumberOfRecentStatisticsEntries();
+    Integer getMaxNumberOfRecentStatisticsEntries();
 
     /**
      * @param maxNumberOfRecentStatsticsEntries The max number of recent statistic entries.
      */
-    void setMaxNumberOfRecentStatisticsEntries(Long maxNumberOfRecentStatsticsEntries);
+    void setMaxNumberOfRecentStatisticsEntries(Integer maxNumberOfRecentStatsticsEntries);
 }

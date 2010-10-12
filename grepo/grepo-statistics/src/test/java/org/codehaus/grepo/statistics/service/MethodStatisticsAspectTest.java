@@ -58,7 +58,5 @@ public class MethodStatisticsAspectTest extends AbstractSpringTest {
         for (StatisticsEntry e : entry.getRecentStatisticsEntriesReadOnly()) {
             logger.info(e.toString());
         }
-
-
     }
 }

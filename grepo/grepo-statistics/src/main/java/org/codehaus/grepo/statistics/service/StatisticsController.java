@@ -34,22 +34,22 @@ public interface StatisticsController {
     /**
      * @param maxNumberOfRecentStatsticsEntries The max number of recent statistics entries to set.
      */
-    void setMaxNumberOfRecentStatisticsEntries(Long maxNumberOfRecentStatsticsEntries);
+    void setMaxNumberOfRecentStatisticsEntries(Integer maxNumberOfRecentStatsticsEntries);
 
     /**
      * @return Returns the max number of recent statistics entries to set.
      */
-    Long getMaxNumberOfRecentStatisticsEntries();
+    Integer getMaxNumberOfRecentStatisticsEntries();
 
     /**
      * @param maxNumberOfTopDurationStatisticsEntries The max number of top duration statistics entries.
      */
-    void setMaxNumberOfTopDurationStatisticsEntries(Long maxNumberOfTopDurationStatisticsEntries);
+    void setMaxNumberOfTopDurationStatisticsEntries(Integer maxNumberOfTopDurationStatisticsEntries);
 
     /**
      * @return Returns The max number of top duration statistics entries.
      */
-    Long getMaxNumberOfTopDurationStatisticsEntries();
+    Integer getMaxNumberOfTopDurationStatisticsEntries();
 
     /**
      * Clears statistics.
