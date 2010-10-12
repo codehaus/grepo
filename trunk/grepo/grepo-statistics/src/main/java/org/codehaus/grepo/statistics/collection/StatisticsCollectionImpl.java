@@ -37,10 +37,10 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
     private Map<String, StatisticsCollectionEntry> collectionEntries = new HashMap<String, StatisticsCollectionEntry>();
 
     /** Specifies the max number of top duration statistics entries to hold. */
-    private Long maxNumberOfTopDurationStatisticsEntries;
+    private Integer maxNumberOfTopDurationStatisticsEntries;
 
     /** Specifies the max number of recent statistics entries to hold. */
-    private Long maxNumberOfRecentStatisticsEntries;
+    private Integer maxNumberOfRecentStatisticsEntries;
 
     /**
      * {@inheritDoc}
@@ -100,19 +100,25 @@ public class StatisticsCollectionImpl implements StatisticsCollection {
         collectionEntries.clear();
     }
 
-    public Long getMaxNumberOfTopDurationStatisticsEntries() {
+    /**
+     * {@inheritDoc}
+     */
+    public Integer getMaxNumberOfTopDurationStatisticsEntries() {
         return maxNumberOfTopDurationStatisticsEntries;
     }
 
-    public void setMaxNumberOfTopDurationStatisticsEntries(Long maxNumberOfTopDurationStatisticsEntries) {
+    public void setMaxNumberOfTopDurationStatisticsEntries(Integer maxNumberOfTopDurationStatisticsEntries) {
         this.maxNumberOfTopDurationStatisticsEntries = maxNumberOfTopDurationStatisticsEntries;
     }
 
-    public Long getMaxNumberOfRecentStatisticsEntries() {
+    /**
+     * {@inheritDoc}
+     */
+    public Integer getMaxNumberOfRecentStatisticsEntries() {
         return maxNumberOfRecentStatisticsEntries;
     }
 
-    public void setMaxNumberOfRecentStatisticsEntries(Long maxNumberOfRecentStatisticsEntries) {
+    public void setMaxNumberOfRecentStatisticsEntries(Integer maxNumberOfRecentStatisticsEntries) {
         this.maxNumberOfRecentStatisticsEntries = maxNumberOfRecentStatisticsEntries;
     }
 

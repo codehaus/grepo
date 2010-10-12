@@ -28,19 +28,19 @@ import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 public interface StatisticsCollectionEntry extends Serializable {
     /**
      * @param entry The entry to add.
-     * @param maxNumberOfRecentStatsticsEntries The number.
+     * @param maxNumberOfRecentStatisticsEntries The number.
      * @param maxNumberOfTopDurationStatisticsEntries The number.
      */
-    void addStatisticsEntry(StatisticsEntry entry, Long maxNumberOfRecentStatsticsEntries,
-            Long maxNumberOfTopDurationStatisticsEntries);
+    void addStatisticsEntry(StatisticsEntry entry, Integer maxNumberOfRecentStatisticsEntries,
+            Integer maxNumberOfTopDurationStatisticsEntries);
 
     /**
      * @param entries The entries to add.
-     * @param maxNumberOfRecentStatsticsEntries The number.
+     * @param maxNumberOfRecentStatisticsEntries The number.
      * @param maxNumberOfTopDurationStatisticsEntries The number.
      */
-    void addStatisticsEntries(Collection<StatisticsEntry> entries, Long maxNumberOfRecentStatsticsEntries,
-            Long maxNumberOfTopDurationStatisticsEntries);
+    void addStatisticsEntries(Collection<StatisticsEntry> entries, Integer maxNumberOfRecentStatisticsEntries,
+            Integer maxNumberOfTopDurationStatisticsEntries);
 
     /**
      * @return Returns a read-only list of recent {@link StatisticsEntry} objects.
