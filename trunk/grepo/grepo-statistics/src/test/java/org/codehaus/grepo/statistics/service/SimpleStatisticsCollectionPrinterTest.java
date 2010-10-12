@@ -18,6 +18,7 @@ package org.codehaus.grepo.statistics.service;
 
 import org.codehaus.grepo.core.AbstractSpringTest;
 import org.codehaus.grepo.core.context.GrepoTestContextLoaderWithDefLoc;
+import org.codehaus.grepo.statistics.collection.SimpleStatisticsCollectionPrinter;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
