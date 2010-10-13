@@ -1,0 +1,18 @@
+<FindBugsFilter>
+     <Match>
+       <Class name="org.codehaus.grepo.query.hibernate.repository.DefaultHibernateRepository" />
+       <Or>
+           <Method name="convertHibernateAccessException" />
+           <Method name="setFilters" />
+           <Method name="getFilters" />
+       </Or>
+     </Match>
+
+     <Match>
+       <Class name="org.codehaus.grepo.query.hibernate.repository.HibernateRepositoryFactoryBean" />
+       <Or>
+           <Method name="setFilters" />
+           <Method name="getFilters" />
+       </Or>
+     </Match>
+</FindBugsFilter>
