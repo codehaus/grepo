@@ -21,7 +21,7 @@
         <!-- build properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.jdk.version>1.5</build.jdk.version>
-        <grepo-buildtools.version>1.4.0</grepo-buildtools.version>
+        <grepo-buildtools.version>1.5.0-SNAPSHOT</grepo-buildtools.version>
         <grepo-osgi.version>1.5.0</grepo-osgi.version>
         <eclipseplugin.addVersionToProjectName>true</eclipseplugin.addVersionToProjectName>
 
@@ -211,6 +211,14 @@
     </dependencyManagement>
 
     <build>
+        <extensions>
+            <extension>
+                <groupId>org.codehaus.grepo</groupId>
+                <artifactId>grepo-buildtools</artifactId>
+                <version>${grepo-buildtools.version}</version>
+            </extension>
+        </extensions>
+
         <pluginManagement>
             <plugins>
                 <!-- configure compiler plugin -->
@@ -269,32 +277,6 @@
                         </execution>
                     </executions>
                 </plugin>
-                <!-- use checkstyle report plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-checkstyle-plugin</artifactId>
-                    <version>2.5</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.codehaus.grepo</groupId>
-                            <artifactId>grepo-buildtools</artifactId>
-                            <version>${grepo-buildtools.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
-                <!--  use pmd report plugin -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-pmd-plugin</artifactId>
-                    <version>2.5</version>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.codehaus.grepo</groupId>
-                            <artifactId>grepo-buildtools</artifactId>
-                            <version>${grepo-buildtools.version}</version>
-                        </dependency>
-                    </dependencies>
-                </plugin>
                 <!-- use surfire unittest plugin -->
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -343,13 +325,6 @@
                             </file>
                         </additionalConfig>
                     </configuration>
-                    <dependencies>
-                        <dependency>
-                            <groupId>org.codehaus.grepo</groupId>
-                            <artifactId>grepo-buildtools</artifactId>
-                            <version>${grepo-buildtools.version}</version>
-                        </dependency>
-                    </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>com.springsource.bundlor</groupId>
@@ -406,18 +381,6 @@
                 <artifactId>maven-source-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-            </plugin>
-            <plugin>
                 <groupId>com.springsource.bundlor</groupId>
                 <artifactId>com.springsource.bundlor.maven</artifactId>
             </plugin>
@@ -429,8 +392,9 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.6</version>
                 <configuration>
-                    <configLocation>/dev/config/checkstyle/grepo-style-cs4.xml</configLocation>
+                    <configLocation>/dev/config/checkstyle/grepo-style-cs5.xml</configLocation>
                 </configuration>
             </plugin>
             <plugin>
@@ -479,6 +443,11 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>2.3.1</version>
+                <configuration>
+                    <effort>Min</effort>
+                    <threshold>Medium</threshold>
+                    <excludeFilterFile>/dev/config/findbugs/grepo-findbugs-exclude.xml</excludeFilterFile>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -488,6 +457,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.5</version>
                 <configuration>
                     <format>xml</format>
                     <linkXref>true</linkXref>
