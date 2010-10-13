@@ -66,14 +66,14 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
             Calendar o1c = o1.getCreation();
             Calendar o2c = o2.getCreation();
 
-            if (o1c == null && o2c == null) {
-                return 0;
+            if (o1c != null && o2c != null) {  // NOPMD
+                return o1c.compareTo(o2c);
             } else if (o1c == null && o2c != null) {
                 return 1;
             } else if (o1c != null && o2c == null) {
                 return -1;
             }
-            return o1c.compareTo(o2c);
+            return 0;
         }
     },
 
@@ -84,14 +84,14 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
             Calendar o1c = o1.getCreation();
             Calendar o2c = o2.getCreation();
 
-            if (o1c == null && o2c == null) {
-                return 0;
+            if (o1c != null && o2c != null) { // NOPMD
+                return -o1c.compareTo(o2c);
             } else if (o1c == null && o2c != null) {
                 return -1;
             } else if (o1c != null && o2c == null) {
                 return 1;
             }
-            return -o1c.compareTo(o2c);
+            return 0;
         }
     };
 
