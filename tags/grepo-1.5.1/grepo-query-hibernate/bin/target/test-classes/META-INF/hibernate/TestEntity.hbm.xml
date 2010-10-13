@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.codehaus.grepo.query.hibernate">
+    <class name="TestEntity" table="TEST_ENTITY">
+        <id name="id" column="ID" unsaved-value="null">
+            <generator class="sequence" />
+        </id>
+
+        <property name="username" column="USERNAME" unique="true" not-null="true" />
+        <property name="firstname" column="FIRSTNAME" />
+        <property name="type" column="TYPE" />
+
+    </class>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.ByUsername">
+        FROM TestEntity WHERE username = ?
+    </query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.ByUsernameUsingNamedParams">
+        FROM TestEntity WHERE username = :username
+    </query>
+
+    <query name="SpecialQueryName">
+        FROM TestEntity WHERE username = ?
+    </query>
+
+    <sql-query name="org.codehaus.grepo.query.hibernate.TestEntity.ByUsernameWithNamedNativeQuery">
+        <return class="TestEntity" />
+        SELECT * FROM TEST_ENTITY WHERE USERNAME = ?
+    </sql-query>
+
+    <sql-query name="org.codehaus.grepo.query.hibernate.TestEntity.ByUsernameWithNamedNativeQueryUsingNamedParams">
+        <return class="TestEntity" />
+        SELECT * FROM TEST_ENTITY WHERE USERNAME = :username
+    </sql-query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.ByType">
+        FROM TestEntity WHERE type = ?
+    </query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.ByUsernames">
+        FROM TestEntity WHERE username IN (:list)
+    </query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.ExistingUsername">
+        SELECT COUNT(id) FROM TestEntity where username = ?
+    </query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.TypeByUsername">
+        SELECT type FROM TestEntity where username = ?
+    </query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.TransformerQuery">
+        SELECT username AS un, firstname AS fn FROM TestEntity
+    </query>
+
+    <sql-query name="org.codehaus.grepo.query.hibernate.TestEntity.NativeTransformerQuery">
+        <return-scalar column="un"/>
+        <return-scalar column="fn"/>
+        SELECT username AS un, firstname AS fn FROM TEST_ENTITY
+    </sql-query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.updateByUsername">
+        UPDATE TestEntity SET type = ? WHERE username = ?
+    </query>
+
+    <query name="org.codehaus.grepo.query.hibernate.TestEntity.deleteByUsername">
+        DELETE FROM TestEntity WHERE username = ?
+    </query>
+
+</hibernate-mapping>

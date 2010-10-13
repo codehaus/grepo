@@ -1,0 +1,2 @@
+http\://grepo.codehaus.org/schema/grepo-query-hibernate-1.5.xsd=org/codehaus/grepo/query/hibernate/config/grepo-query-hibernate-1.5.xsd
+http\://grepo.codehaus.org/schema/grepo-query-hibernate.xsd=org/codehaus/grepo/query/hibernate/config/grepo-query-hibernate-1.5.xsd

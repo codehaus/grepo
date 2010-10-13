@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<xsd:schema xmlns="http://grepo.codehaus.org/schema/core"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:tool="http://www.springframework.org/schema/tool"
+    xmlns:context="http://www.springframework.org/schema/context"
+    targetNamespace="http://grepo.codehaus.org/schema/core"
+    elementFormDefault="qualified" attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/tool"
+        schemaLocation="http://www.springframework.org/schema/tool/spring-tool.xsd" />
+    <xsd:import namespace="http://www.springframework.org/schema/beans"
+        schemaLocation="http://www.springframework.org/schema/beans/spring-beans.xsd" />
+    <xsd:import namespace="http://www.springframework.org/schema/context"
+        schemaLocation="http://www.springframework.org/schema/context/spring-context.xsd" />
+
+    <xsd:annotation>
+        <xsd:documentation><![CDATA[
+    Defines types for grepo namespace support.
+        ]]></xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexType name="repositoryFactoryType">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+    Declares a single generic repository factory (abstract) bean.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports identifier="@id" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="beans:identifiedType">
+                <xsd:sequence>
+                    <xsd:element ref="beans:property" minOccurs="0" maxOccurs="unbounded" />
+                </xsd:sequence>
+                <xsd:attribute name="class" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation source="java:java.lang.Class"><![CDATA[
+    The fully qualified name of the factory class.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="direct">
+                                <tool:expected-type type="java.lang.Class" />
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="repositoryType">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+    Declares a single generic repository bean.
+            ]]></xsd:documentation>
+            <xsd:appinfo>
+                <tool:annotation>
+                    <tool:exports identifier="@id" />
+                </tool:annotation>
+            </xsd:appinfo>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="beans:identifiedType">
+                <xsd:sequence>
+                    <xsd:element ref="beans:property" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+                <xsd:attribute name="proxy-class" type="xsd:string" use="required">
+                    <xsd:annotation>
+                        <xsd:documentation source="java:java.lang.Class"><![CDATA[
+    The fully qualified name of the proxy class. In most cases this is the interface
+    which should be proxied, that is the interface extending from an appropriate generic
+    repository interface and defining custom repository methods.
+
+    However it is also possible to specify a concrete class which extends from an appropriate
+    generic repository support class. This is especially useful when mixing generic repository
+    functionality with custom implementation for specific methods. The framework will automatically
+    extract the appropriate proxyInterface and targetClass for the aop proxy.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="direct">
+                                <tool:expected-type type="java.lang.Class" />
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attributeGroup ref="repositoryAttributes" />
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="repositoryScanType">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+    Scans the classpath for annotated repositories that will be auto-registered as
+    Spring beans. The Spring-provided @Repository stereotype will be detected.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="include-filter" type="context:filterType" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+    Controls which eligible types to include for repository scanning.
+                        ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element name="exclude-filter" type="context:filterType" minOccurs="0" maxOccurs="unbounded">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+    Controls which eligible types to exclude for repository scanning.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:element>
+            <xsd:element ref="beans:property" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="base-package" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+    The comma-separated list of packages to scan for annotated repositories.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="name-generator" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+    The fully-qualified classname of the BeanNameGenerator to be used for naming detected repositories.
+                ]]></xsd:documentation>
+                <xsd:appinfo>
+                    <tool:annotation>
+                        <tool:expected-type type="java.lang.Class"/>
+                        <tool:assignable-to type="org.springframework.beans.factory.support.BeanNameGenerator"/>
+                    </tool:annotation>
+                </xsd:appinfo>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="resource-pattern" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+    Controls the class files eligible for repository detection. Defaults to "**/*.class", the recommended value.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attributeGroup ref="repositoryAttributes" />
+    </xsd:complexType>
+
+
+    <xsd:attributeGroup name="repositoryAttributes">
+        <xsd:attribute name="factory" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+    The name of the factory (parent) bean definition.
+
+    Will use the bean class of the factory (parent) if none is specified, but can
+    also override it. In the later case, the child bean class must be
+    compatible with the parent, i.e. accept the parent's property values, if any.
+
+    A child bean definition will inherit property values from the parent, with
+    the option to add new values.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="factory-class" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation source="java:java.lang.Class"><![CDATA[
+    The fully qualified name of the factory class. May overwrite the factory
+    (parent) bean's class.
+                ]]></xsd:documentation>
+                <xsd:appinfo>
+                    <tool:annotation kind="direct">
+                        <tool:expected-type type="java.lang.Class" />
+                    </tool:annotation>
+                </xsd:appinfo>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+</xsd:schema>

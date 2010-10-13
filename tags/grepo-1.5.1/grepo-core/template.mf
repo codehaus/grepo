@@ -1,0 +1,14 @@
+Bundle-ManifestVersion: 2
+Bundle-Vendor: Generic Repository Framework
+Bundle-Version: ${grepo-osgi.version}
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Name: ${project.artifactId}
+Bundle-SymbolicName: org.codehaus.grepo.core
+Export-Template:
+ org.codehaus.grepo.core.*;version="${grepo-osgi.version}"
+Import-Template:
+ org.aopalliance.*;version="[1.0.0,2.0.0)",
+ org.apache.commons.lang.*;version="[2.0.0,3.0.0)",
+ org.springframework.*;version="[2.5.0,4.0.0)",
+ org.slf4j.*;version="[1.5.0,2.0.0)",
+ org.w3c.dom.*;version="0.0.0"

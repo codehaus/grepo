@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ByUsername">
+        <query>FROM TestEntity WHERE username = ?</query>
+    </named-query>
+
+    <named-query name="SpecialQueryName">
+        <query>FROM TestEntity WHERE username = ?</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ByUsernameUsingNamedParams">
+        <query>FROM TestEntity WHERE username = :username</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ByType">
+        <query>FROM TestEntity WHERE type = ?</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ByUsernames">
+        <query>FROM TestEntity WHERE username IN (:list)</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ExistingUsername">
+        <query>SELECT COUNT(id) FROM TestEntity where username = ?</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.TypeByUsername">
+        <query>SELECT type FROM TestEntity where username = ?</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.deleteByUsername">
+        <query>DELETE FROM TestEntity WHERE username = ?</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.updateByUsername">
+        <query>UPDATE TestEntity SET type = ? WHERE username = ?</query>
+    </named-query>
+
+    <named-native-query result-class="org.codehaus.grepo.query.jpa.TestEntity"
+                name="org.codehaus.grepo.query.jpa.TestEntity.ByUsernameWithNamedNativeQuery">
+        <query>SELECT * FROM TEST_ENTITY WHERE USERNAME = ?</query>
+    </named-native-query>
+
+    <named-native-query result-class="org.codehaus.grepo.query.jpa.TestEntity"
+                name="org.codehaus.grepo.query.jpa.TestEntity.ByUsernameWithNamedNativeQueryUsingNamedParams">
+        <query>SELECT * FROM TEST_ENTITY WHERE USERNAME = :username</query>
+    </named-native-query>
+
+    <entity class="org.codehaus.grepo.query.jpa.TestEntity" name="TestEntity">
+        <table name="TEST_ENTITY" />
+        <attributes>
+            <id name="id">
+                <generated-value strategy="TABLE" />
+            </id>
+            <basic name="username">
+                <column name="USERNAME" nullable="false" unique="true" />
+            </basic>
+            <basic name="firstname">
+                <column name="FIRSTNAME" />
+            </basic>
+            <basic name="type">
+                <column name="TYPE" />
+            </basic>
+        </attributes>
+    </entity>
+
+
+</entity-mappings>
