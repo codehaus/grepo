@@ -426,11 +426,11 @@ public class SimpleStatisticsCollectionPrinter {
      */
     @SuppressWarnings("PMD")
     private String nl(int count) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < count; i++) {
-            result += nl();
+            result.append(nl());
         }
-        return result;
+        return result.toString();
     }
 
     public void setCollection(StatisticsCollection collection) {

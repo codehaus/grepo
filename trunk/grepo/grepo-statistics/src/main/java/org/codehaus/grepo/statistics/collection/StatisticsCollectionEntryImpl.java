@@ -35,7 +35,7 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
     private static final long serialVersionUID = 9122661088316356000L;
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(StatisticsCollectionEntryImpl.class); // NOPMD
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsCollectionEntryImpl.class);
 
     /** Holds recent statistics entires. */
     private List<StatisticsEntry> recentStatisticsEntries = new ArrayList<StatisticsEntry>(10);
@@ -190,7 +190,7 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to ensureTopDurationStatisticsEntriesSize: " + e.getMessage(), e);
+            LOGGER.warn("Unable to ensureTopDurationStatisticsEntriesSize: " + e.getMessage(), e);
         }
     }
 
@@ -226,7 +226,7 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
                 }
             }
         } catch (Exception e) {
-            logger.warn("Unable to ensureRecentStatisticsEntriesSize: " + e.getMessage(), e);
+            LOGGER.warn("Unable to ensureRecentStatisticsEntriesSize: " + e.getMessage(), e);
         }
     }
 
