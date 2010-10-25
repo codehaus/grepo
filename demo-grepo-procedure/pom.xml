@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo.demo</groupId>
     <artifactId>demo-grepo-procedure</artifactId>
-    <version>1.5.0-SNAPSHOT</version>
+    <version>1.5.0</version>
     <packaging>jar</packaging>
     <name>Generic Repository: Procedure Demo</name>
     <description>Generic Repository: Procedure Demo</description>
