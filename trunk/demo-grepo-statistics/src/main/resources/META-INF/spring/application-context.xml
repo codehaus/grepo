@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config />
+
+    <!-- Import default grepo (gstatistics) configuration. -->
+    <import resource="classpath:META-INF/grepo/grepo-statistics-default.cfg.xml"/>
+
+    <!-- We use grepo's statistics collection printer to print out information -->
+    <bean id="statisticsCollectionPrinter" class="org.codehaus.grepo.statistics.collection.SimpleStatisticsCollectionPrinter">
+        <property name="collection" ref="grepo.statisticsCollection" />
+        <property name="type" value="TXT" />
+    </bean>
+
+    <!--  scan for beans in demo.service package -->
+    <context:component-scan base-package="demo.service" />
+
+</beans>
