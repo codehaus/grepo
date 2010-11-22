@@ -22,7 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.jdk.version>1.5</build.jdk.version>
         <grepo-buildtools.version>1.5.0</grepo-buildtools.version>
-        <grepo-osgi.version>1.5.1</grepo-osgi.version>
+        <grepo-osgi.version>1.5.2</grepo-osgi.version>
         <eclipseplugin.addVersionToProjectName>true</eclipseplugin.addVersionToProjectName>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
