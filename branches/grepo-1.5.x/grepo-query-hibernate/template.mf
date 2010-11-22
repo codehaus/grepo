@@ -1,0 +1,17 @@
+Bundle-ManifestVersion: 2
+Bundle-Vendor: Generic Repository Framework
+Bundle-Version: ${grepo-osgi.version}
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-Name: ${project.artifactId}
+Bundle-SymbolicName: org.codehaus.grepo.query.hibernate
+Export-Template:
+ org.codehaus.grepo.query.hibernate.*;version="${grepo-osgi.version}"
+Import-Template:
+ org.apache.commons.lang.*;version="[2.0.0,3.0.0)",
+ org.springframework.*;version="[2.5.0,4.0.0)",
+ org.slf4j.*;version="[1.5.0,2.0.0)",
+ org.hibernate.*;version="[3.0.0,4.0.0)",
+ org.dom4j.*;version="0.0.0",
+ org.codehaus.grepo.core.*;version="${grepo-osgi.version}",
+ org.codehaus.grepo.query.commons.*;version="${grepo-osgi.version}",
+ org.codehaus.grepo.statistics.*;version="${grepo-osgi.version}"
