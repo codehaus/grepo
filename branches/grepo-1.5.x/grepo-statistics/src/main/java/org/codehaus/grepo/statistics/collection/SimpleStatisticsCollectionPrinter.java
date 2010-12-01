@@ -114,12 +114,12 @@ public class SimpleStatisticsCollectionPrinter {
     }
 
     /**
-     * @param includeAverageDuration The flag.
+     * @param calcAverageDuration The flag.
      * @param comparator The comparator.
      * @return Returns the summary.
      */
     @SuppressWarnings("PMD")
-    public String printSummary(boolean includeAverageDuration, StatisticsCollectionEntryComparator comparator) {
+    public String printSummary(boolean calcAverageDuration, StatisticsCollectionEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
         sb.append("STATISTICS SUMMARY").append(nl(2));
 
@@ -129,9 +129,9 @@ public class SimpleStatisticsCollectionPrinter {
         if (list.size() > 0) {
             sb.append("" + list.size() + " collection entries (sorted by " + comparator + "):");
             sb.append(nl(2));
-            printStartCollectionEntryHeader(sb, includeAverageDuration);
+            printStartCollectionEntryHeader(sb, calcAverageDuration);
             for (StatisticsCollectionEntry entry : list) {
-                printCollectionEntryRow(entry, sb, includeAverageDuration);
+                printCollectionEntryRow(entry, sb, calcAverageDuration);
             }
             printEndCollectionEntryHeader(sb);
         }
@@ -254,16 +254,16 @@ public class SimpleStatisticsCollectionPrinter {
 
     /**
      * @param sb The string builder.
-     * @param includeAverageDuration The flag.
+     * @param calcAverageDuration The flag.
      */
-    private void printStartCollectionEntryHeader(StringBuilder sb, boolean includeAverageDuration) {
+    private void printStartCollectionEntryHeader(StringBuilder sb, boolean calcAverageDuration) {
         if (isHtml()) {
             sb.append("<table border=\"1\" cellpadding=\"2px\"><tr>");
             sb.append("<td><b>identifier</b></td>");
             sb.append("<td><b>invocations</b></td>");
             sb.append("<td><b>minDuration</b></td>");
             sb.append("<td><b>maxDuration</b></td>");
-            if (includeAverageDuration) {
+            if (calcAverageDuration) {
                 sb.append("<td><b>avgDuration</b></td>");
             }
             sb.append("</tr>");
@@ -305,11 +305,11 @@ public class SimpleStatisticsCollectionPrinter {
     /**
      * @param entry The entry.
      * @param sb The string builder.
-     * @param includeAverageDuration The flag.
+     * @param calcAverageDuration The flag.
      */
     @SuppressWarnings("PMD")
     private void printCollectionEntryRow(StatisticsCollectionEntry entry, StringBuilder sb,
-            boolean includeAverageDuration) {
+            boolean calcAverageDuration) {
         if (entry != null) {
             String minDurationMillis = "";
             String minDurationDate = "";
@@ -335,7 +335,7 @@ public class SimpleStatisticsCollectionPrinter {
 
             // calculate average duration millis
             String avgDuration = "";
-            if (includeAverageDuration) {
+            if (calcAverageDuration) {
                 Long avgDurationValue = StatisticsCollectionUtils.getAverageDuration(
                         entry.getRecentStatisticsEntriesReadOnly());
                 if (avgDuration != null) {
@@ -349,7 +349,7 @@ public class SimpleStatisticsCollectionPrinter {
                 sb.append("<td>" + entry.getNumberOfInvocations() + "</td>");
                 sb.append("<td>" + minDurationMillis + " (" + minDurationDate + ")" + "</td>");
                 sb.append("<td>" + maxDurationMillis + " (" + maxDurationDate + ")" + "</td>");
-                if (includeAverageDuration) {
+                if (calcAverageDuration) {
                     sb.append("<td>" + avgDuration + "</td>");
                 }
                 sb.append("</tr>");
@@ -358,7 +358,7 @@ public class SimpleStatisticsCollectionPrinter {
                 sb.append(" invocations=" + entry.getNumberOfInvocations());
                 sb.append(" minDuration=" + minDurationMillis + " (" + minDurationDate + ")");
                 sb.append(" maxDuration=" + maxDurationMillis + " (" + maxDurationDate + ")");
-                if (includeAverageDuration) {
+                if (calcAverageDuration) {
                     sb.append(" avgDuration=" + avgDuration);
                 }
                 sb.append(nl());
