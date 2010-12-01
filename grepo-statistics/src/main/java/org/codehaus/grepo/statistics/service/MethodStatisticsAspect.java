@@ -64,7 +64,7 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
         try {
             return pjp.proceed();
         } finally {
-            completeEntry(entry);
+            completeEntry(entry, annotation.manager());
         }
     }
 
@@ -84,15 +84,8 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
 
             String identifier = statisticsIdentifierNamingStrategy.getIdentifier(mpi);
 
-            if (StringUtils.isNotEmpty(managerName)) {
-                // use statistics manager configured via annotation...
-                StatisticsManager manager = (StatisticsManager) applicationContext.getBean(managerName,
-                    StatisticsManager.class);
-                entry = manager.createStatisticsEntry(identifier, origin);
-            } else {
-                // use default statistics manager...
-                entry = statisticsManager.createStatisticsEntry(identifier, origin);
-            }
+            entry = getStatisticsManager(managerName).createStatisticsEntry(identifier, origin);
+
         } catch (Exception e) {
             logger.error("Unable to create StatisticsEntry: " + e.getMessage(), e);
         }
@@ -101,14 +94,29 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
 
     /**
      * @param entry The entry to complete.
+     * @param managerName The statistics manager name to use.
      */
-    private void completeEntry(StatisticsEntry entry) {
+    private void completeEntry(StatisticsEntry entry, String managerName) {
         if (entry != null) {
             try {
-                statisticsManager.completeStatisticsEntry(entry);
+                getStatisticsManager(managerName).completeStatisticsEntry(entry);
             } catch (Exception e) {
                 logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
             }
+        }
+    }
+
+    /**
+     * @param managerName The name of the manager to use.
+     * @return Returns the {@link StatisticsManager} instance to use.
+     */
+    protected StatisticsManager getStatisticsManager(String managerName) {
+        if (StringUtils.isNotEmpty(managerName)) {
+            // use statistics manager configured via annotation...
+            return (StatisticsManager) applicationContext.getBean(managerName, StatisticsManager.class);
+        } else {
+            // use default statistics manager...
+            return statisticsManager;
         }
     }
 
