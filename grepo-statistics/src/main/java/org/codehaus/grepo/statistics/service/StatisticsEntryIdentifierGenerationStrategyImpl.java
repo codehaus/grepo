@@ -28,12 +28,19 @@ public class StatisticsEntryIdentifierGenerationStrategyImpl implements Statisti
     /**
      * {@inheritDoc}
      */
-    public String getIdentifier(MethodParameterInfo mpi) {
+    public String getIdentifier(MethodParameterInfo mpi, MethodStatistics annotation) {
         String result = null;
 
-        MethodStatistics annotation = mpi.getMethodAnnotation(MethodStatistics.class);
-        if (annotation != null && StringUtils.isNotEmpty(annotation.identifier())) {
-            result = annotation.identifier();
+        MethodStatistics annotationToUse = null;
+        if (annotation == null) {
+            // try to resolve annotation via mpi...
+            annotationToUse = mpi.getMethodAnnotation(MethodStatistics.class);
+        } else {
+            annotationToUse = annotation;
+        }
+
+        if (annotationToUse != null && StringUtils.isNotEmpty(annotationToUse.identifier())) {
+            result = annotationToUse.identifier();
         } else {
             result = generateIdentifier(mpi);
         }
