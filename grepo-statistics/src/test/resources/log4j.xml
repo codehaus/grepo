@@ -36,7 +36,7 @@
      -->
 
     <root>
-        <priority value="INFO" />
+        <priority value="ERROR" />
         <appender-ref ref="CONSOLE" />
     </root>
 
