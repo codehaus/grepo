@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project xmlns="http://maven.apache.org/DECORATION/1.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd"
+  name="grepo">
+
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-default-skin</artifactId>
+        <version>1.0</version>
+    </skin>
+    <bannerLeft>
+        <name>Generic Repository</name>
+        <src>images/logo/grepo-logo-big-400x80.png</src>
+    </bannerLeft>
+    <publishDate position="left" />
+
+    <body>
+        <links>
+            <item name="Spring" href="http://www.springsource.org/" />
+            <item name="Hibernate" href="https://www.hibernate.org/" />
+            <item name="Jpa" href="http://java.sun.com/developer/technicalArticles/J2EE/jpa/" />
+            <item name="Maven" href="http://maven.apache.org/" />
+        </links>
+
+        <menu name="Main">
+            <item name="Overview" href="index.html" />
+            <item name="News and Status" href="http://docs.codehaus.org/x/JwE1CQ" />
+            <item name="Downloads" href="http://docs.codehaus.org/x/OQE1CQ" />
+            <item name="Wiki" href="http://docs.codehaus.org/display/GREPO/Home" />
+            <item name="Xircles" href="http://xircles.codehaus.org/projects/grepo"/>
+            <item name="Mailing Lists" href="mail-lists.html" />
+            <item name="Issue Tracking" href="issue-tracking.html" />
+        </menu>
+
+        <menu name="Documentation">
+            <item name="Getting Started" href="http://docs.codehaus.org/x/tYAoCQ">
+                <item name="Generic Query (Hibernate)" href="http://docs.codehaus.org/x/t4AoCQ" />
+                <item name="Generic Query (Jpa)" href="http://docs.codehaus.org/x/FgE1CQ" />
+                <item name="Generic Procedure" href="http://docs.codehaus.org/x/HwE1CQ" />
+                <item name="Generic Statistics" href="http://docs.codehaus.org/x/cID9Cg" />
+            </item>
+            <item name="Articles" href="http://docs.codehaus.org/x/MQA7CQ" />
+        </menu>
+
+        <menu name="Modules">
+            <item name="grepo-core" href="grepo-core/index.html" />
+            <item name="grepo-query-commons" href="grepo-query-commons/index.html" />
+            <item name="grepo-query-hibernate" href="grepo-query-hibernate/index.html" />
+            <item name="grepo-query-jpa" href="grepo-query-jpa/index.html" />
+            <item name="grepo-procedure" href="grepo-procedure/index.html" />
+            <item name="grepo-statistics" href="grepo-statistics/index.html" />
+        </menu>
+
+        <menu ref="reports" />
+
+    </body>
+</project>
