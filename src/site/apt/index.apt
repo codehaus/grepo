@@ -108,3 +108,10 @@ Components
   and/or functions) without requiring custom implementations - gprocedure is build on top of the Spring (JDBC)
   framework.
 
+* Generic Statistics (gstatistics)
+
+  The <"Generic Statistics"> component allows to collect runtime statistics of software layers.
+  The component is easily extensible in order to fit custom needs. The gquery and gprocedure components provide out of the
+  box support to collect statistics of dao layer(s) using this component. Because of its extensibility collecting
+  statistics is not only limited to class methods but can also be used to track entire business processes and the like.
+
