@@ -17,6 +17,7 @@
 package org.codehaus.grepo.statistics.service;
 
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
+import org.codehaus.grepo.statistics.annotation.MethodStatistics;
 
 /**
  * @author dguggi
@@ -25,7 +26,8 @@ public interface StatisticsEntryIdentifierGenerationStrategy {
 
     /**
      * @param mpi The method parameter info.
+     * @param annotation The {@link MethodStatistics} annotation.
      * @return Returns the identifier.
      */
-    String getIdentifier(MethodParameterInfo mpi);
+    String getIdentifier(MethodParameterInfo mpi, MethodStatistics annotation);
 }
