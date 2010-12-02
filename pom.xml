@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo</artifactId>
-    <version>1.5.2-SNAPSHOT</version>
+    <version>1.5.2</version>
     <packaging>pom</packaging>
     <name>Generic Repository</name>
     <description>Generic Repository</description>
@@ -56,9 +56,9 @@
     </licenses>
 
     <scm>
-        <connection>scm:svn:http://svn.codehaus.org/grepo/branches/grepo-1.5.x</connection>
-        <developerConnection>scm:svn:https://svn.codehaus.org/grepo/branches/grepo-1.5.x</developerConnection>
-        <url>http://fisheye.codehaus.org/browse/grepo/branches/grepo-1.5.x</url>
+        <connection>scm:svn:http://svn.codehaus.org/grepo/tags/grepo-1.5.2</connection>
+        <developerConnection>scm:svn:https://svn.codehaus.org/grepo/tags/grepo-1.5.2</developerConnection>
+        <url>http://fisheye.codehaus.org/browse/grepo/tags/grepo-1.5.2</url>
     </scm>
 
     <issueManagement>

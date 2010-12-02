@@ -9,7 +9,7 @@
     <parent>
         <groupId>org.codehaus.grepo</groupId>
         <artifactId>grepo</artifactId>
-        <version>1.5.2-SNAPSHOT</version>
+        <version>1.5.2</version>
     </parent>
 
     <dependencies>
