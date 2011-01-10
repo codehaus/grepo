@@ -16,13 +16,17 @@
 
 package org.codehaus.grepo.query.jpa.repository;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.TemporalType;
 
 import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.query.commons.annotation.FirstResult;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.annotation.MaxResults;
 import org.codehaus.grepo.query.jpa.TestEntity;
+import org.codehaus.grepo.query.jpa.annotation.GTemporal;
 import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 
 /**
@@ -105,4 +109,17 @@ public interface JpaTestRepository extends ReadWriteJpaRepository<TestEntity, Lo
     @GenericQuery
     List<TestEntity> findByUsernames(@Param("list") List<String> list);
 
+    /**
+     * @param minDate The min date.
+     * @return Returns a list of entities.
+     */
+    @GenericQuery
+    List<TestEntity> findByCreationDate1(@GTemporal(TemporalType.DATE) Date minDate);
+
+    /**
+     * @param minDate The min date.
+     * @return Returns a list of entities.
+     */
+    @GenericQuery
+    List<TestEntity> findByCreationDate2(@GTemporal(TemporalType.DATE) @Param("minDate") Date minDate);
 }

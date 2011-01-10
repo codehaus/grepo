@@ -131,4 +131,27 @@ public class JpaRepositoryTest extends AbstractJpaRepositoryTest {
         Assert.assertEquals(1, result.size());
     }
 
+    /** Test query with temporal type. */
+    @Test
+    public void testFindByCreationDate1() {
+        TestEntity entity = new TestEntity("username", 1, "firstname");
+        List<TestEntity> list = repo.findByCreationDate1(entity.getCreationDate());
+        Assert.assertEquals(1, list.size());
+
+        list = repo.findByCreationDate1(null);
+        Assert.assertTrue(list.isEmpty());
+    }
+
+    /** Test query with temporal type. */
+    @Test
+    public void testFindByCreationDate2() {
+        TestEntity entity = new TestEntity("username", 1, "firstname");
+        List<TestEntity> list = repo.findByCreationDate2(entity.getCreationDate());
+        Assert.assertEquals(1, list.size());
+
+        list = repo.findByCreationDate2(null);
+        Assert.assertTrue(list.isEmpty());
+    }
+
+
 }
