@@ -298,11 +298,11 @@ public final class ProcedureCompilationUtils {
                 // we have a result handler specified...
                 Object resultHandler = retrieveResultHandler(context, inout.resultHandlerId(), inout.resultHandler());
                 if (ClassUtils.isAssignableFrom(RowMapper.class, resultHandler.getClass())) {
-                    sp = new SqlInOutParameter(inout.name(), inout.sqlType(), (RowMapper) resultHandler);
+                    sp = new SqlInOutParameter(inout.name(), inout.sqlType(), (RowMapper<?>) resultHandler);
                 } else if (ClassUtils.isAssignableFrom(RowCallbackHandler.class, resultHandler.getClass())) {
                     sp = new SqlInOutParameter(inout.name(), inout.sqlType(), (RowCallbackHandler) resultHandler);
                 } else if (ClassUtils.isAssignableFrom(ResultSetExtractor.class, resultHandler.getClass())) {
-                    sp = new SqlInOutParameter(inout.name(), inout.sqlType(), (ResultSetExtractor) resultHandler);
+                    sp = new SqlInOutParameter(inout.name(), inout.sqlType(), (ResultSetExtractor<?>) resultHandler);
                 } else {
                     // unsupported/invalid result handler...
                     throw new ConfigurationException(String.format(INVALID_RESULTHANDLER_ERROR3,
@@ -346,11 +346,11 @@ public final class ProcedureCompilationUtils {
                 // we have a result handler specified...
                 Object resultHandler = retrieveResultHandler(context, out.resultHandlerId(), out.resultHandler());
                 if (ClassUtils.isAssignableFrom(RowMapper.class, resultHandler.getClass())) {
-                    sp = new SqlOutParameter(out.name(), out.sqlType(), (RowMapper) resultHandler);
+                    sp = new SqlOutParameter(out.name(), out.sqlType(), (RowMapper<?>) resultHandler);
                 } else if (ClassUtils.isAssignableFrom(RowCallbackHandler.class, resultHandler.getClass())) {
                     sp = new SqlOutParameter(out.name(), out.sqlType(), (RowCallbackHandler) resultHandler);
                 } else if (ClassUtils.isAssignableFrom(ResultSetExtractor.class, resultHandler.getClass())) {
-                    sp = new SqlOutParameter(out.name(), out.sqlType(), (ResultSetExtractor) resultHandler);
+                    sp = new SqlOutParameter(out.name(), out.sqlType(), (ResultSetExtractor<?>) resultHandler);
                 } else {
                     // unsupported/invalid result handler...
                     throw new ConfigurationException(String.format(INVALID_RESULTHANDLER_ERROR3,

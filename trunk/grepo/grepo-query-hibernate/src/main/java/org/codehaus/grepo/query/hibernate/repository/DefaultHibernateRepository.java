@@ -688,8 +688,9 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
          * @param doExposeNativeSession Controls whether to expose the native Hibernate session to callback code.
          * @return Returns the call back.
          */
-        public TransactionCallback create(final QueryMethodParameterInfo qmpi, final boolean doExposeNativeSession) {
-            return new TransactionCallback() {
+        public TransactionCallback<Object> create(final QueryMethodParameterInfo qmpi,
+            final boolean doExposeNativeSession) {
+            return new TransactionCallback<Object>() {
 
                 public Object doInTransaction(TransactionStatus status) {
                     CurrentSessionHolder sessionHolder = getCurrentSession();

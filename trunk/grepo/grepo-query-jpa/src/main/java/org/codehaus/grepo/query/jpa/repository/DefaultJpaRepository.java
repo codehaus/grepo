@@ -466,9 +466,9 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
          *        to callback code.
          * @return Returns the call back.
          */
-        public TransactionCallback create(final QueryMethodParameterInfo qmpi,
+        public TransactionCallback<Object> create(final QueryMethodParameterInfo qmpi,
                 final boolean doExposeNativeEntityManager) {
-            return new TransactionCallback() {
+            return new TransactionCallback<Object>() {
                 public Object doInTransaction(TransactionStatus status) {
                     CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
 
