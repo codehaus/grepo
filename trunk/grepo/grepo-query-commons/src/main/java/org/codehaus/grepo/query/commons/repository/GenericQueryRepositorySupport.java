@@ -32,6 +32,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 public abstract class GenericQueryRepositorySupport<T> extends GenericStatisticsRepositorySupport
     implements GenericQueryRepository<T> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -5997513504731997766L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositorySupport.class); // NOPMD
 

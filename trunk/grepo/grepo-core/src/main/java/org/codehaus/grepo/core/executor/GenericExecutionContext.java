@@ -16,12 +16,14 @@
 
 package org.codehaus.grepo.core.executor;
 
+import java.io.Serializable;
+
 import org.springframework.context.ApplicationContext;
 
 /**
  * @author dguggi
  */
-public interface GenericExecutionContext {
+public interface GenericExecutionContext extends Serializable {
     /**
      * @return Returns the application context.
      */

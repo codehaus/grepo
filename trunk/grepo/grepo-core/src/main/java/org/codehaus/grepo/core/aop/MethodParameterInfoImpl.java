@@ -32,6 +32,9 @@ import org.codehaus.grepo.core.annotation.Param;
  */
 public class MethodParameterInfoImpl implements MethodParameterInfo {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -767156552686795088L;
+
     /** The method. */
     private Method method;
 

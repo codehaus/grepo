@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.query.hibernate.filter;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.hibernate.Session;
 
@@ -24,7 +26,7 @@ import org.hibernate.Session;
  *
  * @author dguggi
  */
-public interface FilterEnabler {
+public interface FilterEnabler extends Serializable {
     /**
      * @param name The name.
      * @param qmpi The query method parameter info.

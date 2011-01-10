@@ -25,6 +25,9 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  * @author dguggi
  */
 public final class PlaceHolderQueryExecutor implements QueryExecutor<PlaceHolderQueryExecutionContext> {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 103053510467545290L;
+
     /**
      * {@inheritDoc}
      */

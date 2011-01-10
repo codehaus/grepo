@@ -25,4 +25,7 @@ import org.codehaus.grepo.core.registry.GenericRegistryMap;
  */
 public class ResultConverterRegistry extends GenericRegistryMap<Class<?>, Class<? extends ResultConverter<?>>> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 6097319277711039496L;
+
 }

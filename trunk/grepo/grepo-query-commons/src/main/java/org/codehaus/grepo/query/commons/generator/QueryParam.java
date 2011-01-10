@@ -16,12 +16,17 @@
 
 package org.codehaus.grepo.query.commons.generator;
 
+import java.io.Serializable;
+
 /**
  * Represents one query parameter.
  *
  * @author dguggi
  */
-public class QueryParam {
+public class QueryParam implements Serializable {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -8557320769011371539L;
+
     /** The name of the query parameter. */
     private String name;
 

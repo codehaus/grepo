@@ -23,6 +23,9 @@ import org.hibernate.type.Type;
  * @author dguggi
  */
 public class HibernateQueryParam extends QueryParam {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 6261649644283946867L;
+
     /** The type. */
     private Type type;
 

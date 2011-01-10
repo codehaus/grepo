@@ -29,6 +29,9 @@ import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContex
 public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     extends DefaultHibernateRepository<T> implements ReadOnlyHibernateRepository<T,PK> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 1704248807697149405L;
+
     /**
      * Default constructor.
      */

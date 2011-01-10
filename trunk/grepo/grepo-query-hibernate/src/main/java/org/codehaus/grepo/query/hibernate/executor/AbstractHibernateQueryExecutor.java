@@ -58,6 +58,10 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
  */
 public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecutor<HibernateQueryExecutionContext>
     implements HibernateQueryExecutor {
+
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 1138696235036750544L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(AbstractHibernateQueryExecutor.class); // NOPMD
 

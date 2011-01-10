@@ -21,6 +21,9 @@ package org.codehaus.grepo.query.jpa.generator;
  */
 public abstract class AbstractJpaNativeQueryGenerator
     extends AbstractJpaQueryGenerator implements JpaNativeQueryGenerator {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -574642037864079094L;
+
     /** The result class. */
     private Class<?> resultClass;
 

@@ -16,12 +16,17 @@
 
 package org.codehaus.grepo.query.hibernate.filter;
 
+import java.io.Serializable;
+
 /**
  * Describes a hibernate filter.
  *
  * @author dguggi
  */
-public class FilterDescriptor {
+public class FilterDescriptor implements Serializable {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 1003569220442519036L;
+
     /** The name for the filter. */
     private String name;
 

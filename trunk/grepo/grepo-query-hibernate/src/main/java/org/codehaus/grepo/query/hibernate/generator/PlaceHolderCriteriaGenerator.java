@@ -19,13 +19,15 @@ package org.codehaus.grepo.query.hibernate.generator;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.hibernate.criterion.DetachedCriteria;
 
-
 /**
  * CriteriaGenerator which is used as a placeholder. May not be extended or used.
  *
  * @author dguggi
  */
 public final class PlaceHolderCriteriaGenerator implements CriteriaGenerator {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -1152937378937308564L;
+
     /**
      * {@inheritDoc}
      */

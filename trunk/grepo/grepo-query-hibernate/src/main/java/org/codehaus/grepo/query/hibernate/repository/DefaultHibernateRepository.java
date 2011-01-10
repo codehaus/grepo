@@ -59,6 +59,9 @@ import org.springframework.transaction.support.TransactionCallback;
  */
 public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport<T> implements HibernateRepository<T> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8484268435843778271L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class); // NOPMD
 

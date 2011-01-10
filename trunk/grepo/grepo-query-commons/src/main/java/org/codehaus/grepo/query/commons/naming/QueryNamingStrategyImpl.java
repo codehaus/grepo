@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class QueryNamingStrategyImpl implements QueryNamingStrategy {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8720409194513725656L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(QueryNamingStrategyImpl.class); // NOPMD
 

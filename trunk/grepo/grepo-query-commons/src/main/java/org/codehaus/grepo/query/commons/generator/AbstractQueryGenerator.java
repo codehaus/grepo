@@ -29,6 +29,9 @@ import java.util.Map;
 public abstract class AbstractQueryGenerator<P extends QueryParam>
     implements QueryGenerator<P> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8753578569121538517L;
+
     /** Dynamic query parameters map. */
     private Map<String,P> dynamicQueryParams = new HashMap<String,P>();
 

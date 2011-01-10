@@ -24,6 +24,9 @@ import org.codehaus.grepo.query.hibernate.TestEntity;
  */
 public class TestNativeGenerator extends AbstractHibernateNativeQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 4283114937798986133L;
+
     /**
      * {@inheritDoc}
      */

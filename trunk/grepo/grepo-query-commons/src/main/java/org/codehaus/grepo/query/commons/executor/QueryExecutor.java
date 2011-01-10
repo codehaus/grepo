@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
 
@@ -27,7 +29,7 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  *
  * @param <T> The type.
  */
-public interface QueryExecutor<T extends QueryExecutionContext> {
+public interface QueryExecutor<T extends QueryExecutionContext> extends Serializable {
     /**
      * Execute a generic query.
      * @param qmpi The query method parameter info.

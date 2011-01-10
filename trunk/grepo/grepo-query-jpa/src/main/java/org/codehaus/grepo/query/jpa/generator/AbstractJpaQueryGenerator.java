@@ -27,6 +27,9 @@ import org.codehaus.grepo.query.commons.generator.AbstractQueryGenerator;
 public abstract class AbstractJpaQueryGenerator
     extends AbstractQueryGenerator<JpaQueryParam> implements JpaQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2978960650840073418L;
+
     /** The hints. */
     private Map<String, Object> hints;
 

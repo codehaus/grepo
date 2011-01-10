@@ -28,6 +28,9 @@ import java.util.Map;
  */
 public class GenericRegistryMap<K, V> implements GenericRegistry<K, V> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -6280514682934281021L;
+
     /** The registry map. */
     private Map<K, V> registryMap = new HashMap<K, V>();
 

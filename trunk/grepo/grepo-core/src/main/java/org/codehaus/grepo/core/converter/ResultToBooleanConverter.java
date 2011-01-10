@@ -31,6 +31,9 @@ import java.util.regex.Pattern;
  */
 public class ResultToBooleanConverter implements ResultConverter<Boolean> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2849740813936994910L;
+
     /** The string pattern. */
     private static final Pattern TRUE_STRING_PATTERN = Pattern.compile("(t|true|1|yes)", Pattern.CASE_INSENSITIVE);
 

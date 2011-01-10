@@ -28,6 +28,9 @@ import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 public class StatisticsMethodParameterInfoImpl extends MethodParameterInfoImpl //
                 implements StatisticsMethodParameterInfo {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -3062228768221202537L;
+
     /**
      * @param method The method.
      * @param parameters The parameters.
