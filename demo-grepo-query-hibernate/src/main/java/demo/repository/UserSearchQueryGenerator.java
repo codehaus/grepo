@@ -25,6 +25,9 @@ import org.codehaus.grepo.query.hibernate.generator.AbstractHibernateQueryGenera
  */
 public class UserSearchQueryGenerator extends AbstractHibernateQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -4836138440579849746L;
+
     /**
      * {@inheritDoc}
      */
