@@ -17,6 +17,7 @@
 package org.codehaus.grepo.query.jpa;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author dguggi
@@ -38,11 +39,14 @@ public class TestEntity implements Serializable {
     /** The firstname. */
     private String firstname;
 
+    /** The creation date. */
+    private Date creationDate = new Date();
+
     /**
      * @param username The username to set.
      * @param type The type to set.
      */
-    public TestEntity(final String username, final Integer type) {
+    public TestEntity(String username, Integer type) {
         this.username = username;
         this.type = type;
     }
@@ -52,7 +56,7 @@ public class TestEntity implements Serializable {
      * @param type The type to set.
      * @param firstname The firstname to set.
      */
-    public TestEntity(final String username, final Integer type, final String firstname) {
+    public TestEntity(String username, Integer type, String firstname) {
         this(username, type);
         this.firstname = firstname;
     }
@@ -61,7 +65,7 @@ public class TestEntity implements Serializable {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -69,7 +73,7 @@ public class TestEntity implements Serializable {
         return username;
     }
 
-    public void setUsername(final String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -77,7 +81,7 @@ public class TestEntity implements Serializable {
         return type;
     }
 
-    public void setType(final Integer type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -85,8 +89,16 @@ public class TestEntity implements Serializable {
         return firstname;
     }
 
-    public void setFirstname(final String firstname) {
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
 
 }

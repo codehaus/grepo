@@ -6,6 +6,9 @@ Bundle-Name: ${project.artifactId}
 Bundle-SymbolicName: org.codehaus.grepo.query.commons
 Export-Template:
  org.codehaus.grepo.query.commons.*;version="${grepo-osgi.version}"
+Import-Package:
+ org.codehaus.grepo.core.converter;version="${grepo-osgi.version}",
+ org.codehaus.grepo.core.validator;version="${grepo-osgi.version}"
 Import-Template:
  org.aopalliance.*;version="[1.0.0,2.0.0)",
  org.apache.commons.lang.*;version="[2.0.0,3.0.0)",
