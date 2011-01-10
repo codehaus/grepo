@@ -50,6 +50,9 @@ import org.springframework.util.CollectionUtils;
  */
 public abstract class AbstractJpaQueryExecutor
     extends AbstractQueryExecutor<JpaQueryExecutionContext> implements JpaQueryExecutor {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2612860675852635289L;
+
     /** Invalid temporal type message. */
     private static final String INVALID_TEMPORALTYPE_MSG = "TemporalType '{}' specified, but parameter-value '{}'"
         + " has unsupported type (either '{}' or '{}' is required) - ignoring specified temporal-type...";
@@ -293,10 +296,14 @@ public abstract class AbstractJpaQueryExecutor
      * @param param The named param.
      */
     protected void setNamedParam(Query query, JpaQueryParam param) {
-        if (param.getTemporalType() != null && (param.getValue() == null || param.getValue() instanceof Calendar)) {
+        if (param.getTemporalType() != null && param.getValue() == null) {
+            // GREPO-58 handle null values AND temporalTypes correctly!
+            logSetParameter(param.getName(), null, param.getTemporalType());
+            query.setParameter(param.getName(), (Calendar)null, param.getTemporalType());
+        } else if (param.getTemporalType() != null && param.getValue() instanceof Calendar) {
             logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Calendar)param.getValue(), param.getTemporalType());
-        } else if (param.getTemporalType() != null && (param.getValue() == null || param.getValue() instanceof Date)) {
+        } else if (param.getTemporalType() != null && param.getValue() instanceof Date) {
             logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Date)param.getValue(), param.getTemporalType());
         } else {
@@ -338,10 +345,14 @@ public abstract class AbstractJpaQueryExecutor
      */
     protected void setPositionalParam(JpaQueryDescriptor queryDesc, int index, Object value,
             TemporalType temporalType) {
-        if (temporalType != null && (value == null || value instanceof Calendar)) {
+        if (temporalType != null && value == null) {
+            // GREPO-58 handle null values AND temporalTypes correctly!
+            logSetParameter(index, null, temporalType);
+            queryDesc.getQuery().setParameter(index, (Calendar)null, temporalType);
+        } else if (temporalType != null && value instanceof Calendar) {
             logSetParameter(index, value, temporalType);
             queryDesc.getQuery().setParameter(index, (Calendar)value, temporalType);
-        } else if (temporalType != null && (value == null || value instanceof Date)) {
+        } else if (temporalType != null && value instanceof Date) {
             logSetParameter(index, (Date)value, temporalType);
             queryDesc.getQuery().setParameter(index, (Date)value, temporalType);
         } else {

@@ -27,6 +27,9 @@ import org.hibernate.Query;
  */
 public class HibernateQueryDescriptor extends QueryDescriptor<Query, HibernateQueryParam> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -4421339008196656237L;
+
     /**
      * @param query The query.
      * @param generatedQuery The flag.

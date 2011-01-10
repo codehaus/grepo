@@ -23,6 +23,9 @@ import org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl;
  * @author dguggi
  */
 public class HibernateQueryExecutorFactoryImpl extends QueryExecutorFactoryImpl {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2199032589179257258L;
+
     /** The argument type factory. */
     private ArgumentTypeFactory argumentTypeFactory;
 

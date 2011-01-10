@@ -28,6 +28,9 @@ import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
 public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends DefaultJpaRepository<T>
     implements ReadOnlyJpaRepository<T, PK> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -6817048863404465142L;
+
     /**
      * Default constructor.
      */

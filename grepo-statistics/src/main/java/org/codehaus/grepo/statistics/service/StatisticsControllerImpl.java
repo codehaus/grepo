@@ -28,6 +28,9 @@ import org.springframework.jmx.export.annotation.ManagedResource;
 @ManagedResource("Statistics controller")
 public class StatisticsControllerImpl implements StatisticsController {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2624852537573001764L;
+
     /** The statistics manager. */
     private StatisticsManager statisticsManager;
 

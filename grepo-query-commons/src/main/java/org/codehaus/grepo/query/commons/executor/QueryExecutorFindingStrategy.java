@@ -16,12 +16,14 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 
 /**
  * @author dguggi
  */
-public interface QueryExecutorFindingStrategy {
+public interface QueryExecutorFindingStrategy extends Serializable {
 
     /**
      * Find a appropriate query executor class.

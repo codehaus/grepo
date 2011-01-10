@@ -16,11 +16,13 @@
 
 package org.codehaus.grepo.core.repository;
 
+import java.io.Serializable;
+
 /**
  * Marker interface for grepo (generic) repositories.
  *
  * @author dguggi
  */
-public interface GenericRepository {
+public interface GenericRepository extends Serializable {
 
 }

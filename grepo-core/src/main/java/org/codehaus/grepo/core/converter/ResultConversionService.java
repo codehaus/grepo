@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.core.converter;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 
 /**
@@ -23,7 +25,7 @@ import org.codehaus.grepo.core.aop.MethodParameterInfo;
  *
  * @author dguggi
  */
-public interface ResultConversionService {
+public interface ResultConversionService extends Serializable {
     /**
      * Converts the given {@code result} using the given {@link ResultConverter} {@code clazz}.
 

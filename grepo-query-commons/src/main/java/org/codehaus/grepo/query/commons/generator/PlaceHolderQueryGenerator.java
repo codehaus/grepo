@@ -26,6 +26,9 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  * @author dguggi
  */
 public final class PlaceHolderQueryGenerator implements QueryGenerator<QueryParam> {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 4403126044675851070L;
+
     /**
      * {@inheritDoc}
      */

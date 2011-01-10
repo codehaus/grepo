@@ -16,12 +16,13 @@
 
 package org.codehaus.grepo.statistics.domain;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * @author dguggi
  */
-public interface StatisticsEntryFactory {
+public interface StatisticsEntryFactory extends Serializable {
 
     /**
      * @param identifier The identifier.

@@ -35,6 +35,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 public abstract class GenericProcedureRepositorySupport extends GenericStatisticsRepositorySupport
         implements GenericProcedureRepository {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 9023989134280528365L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositorySupport.class); // NOPMD
 

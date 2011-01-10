@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.statistics.service;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import org.apache.commons.lang.StringUtils;
@@ -38,7 +39,10 @@ import org.springframework.context.ApplicationContextAware;
  * @author dguggi
  */
 @Aspect
-public class MethodStatisticsAspect implements ApplicationContextAware {
+public class MethodStatisticsAspect implements ApplicationContextAware, Serializable {
+
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3006646362580534752L;
 
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(MethodStatisticsAspect.class); // NOPMD
@@ -50,7 +54,7 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
     private StatisticsEntryIdentifierGenerationStrategy statisticsIdentifierNamingStrategy; // NOPMD
 
     /** The application context. */
-    private ApplicationContext applicationContext; // NOPMD
+    private transient ApplicationContext applicationContext; // NOPMD
 
     /**
      * @param pjp The join point.

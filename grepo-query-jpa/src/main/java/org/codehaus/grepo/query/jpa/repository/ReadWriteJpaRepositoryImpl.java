@@ -31,6 +31,9 @@ import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
 public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
     extends ReadOnlyJpaRepositoryImpl<T,PK> implements ReadWriteJpaRepository<T,PK> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3694751462675284209L;
+
     /**
      * Default constructor.
      */

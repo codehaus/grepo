@@ -37,6 +37,9 @@ import org.springframework.transaction.support.TransactionCallback;
  * @author dguggi
  */
 public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySupport {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 1654786866848706816L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryImpl.class); // NOPMD
 

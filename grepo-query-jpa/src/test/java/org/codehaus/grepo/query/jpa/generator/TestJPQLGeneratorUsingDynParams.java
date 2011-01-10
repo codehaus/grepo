@@ -23,6 +23,9 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  */
 public class TestJPQLGeneratorUsingDynParams extends AbstractJpaQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3722019098842698838L;
+
     /**
      * {@inheritDoc}
      */

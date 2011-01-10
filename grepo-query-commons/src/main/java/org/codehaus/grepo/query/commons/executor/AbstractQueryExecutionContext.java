@@ -24,6 +24,9 @@ import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
 public abstract class AbstractQueryExecutionContext extends AbstractGenericExecutionContext
     implements QueryExecutionContext {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -4814793571411275371L;
+
     /** The max results. */
     private Integer maxResults;
 

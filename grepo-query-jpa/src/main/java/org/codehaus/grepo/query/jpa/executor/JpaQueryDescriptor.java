@@ -27,6 +27,9 @@ import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
  * @author dguggi
  */
 public class JpaQueryDescriptor extends QueryDescriptor<Query, JpaQueryParam> {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 1306199400365977438L;
+
     /**
      * @param query The query.
      * @param generatedQuery The flag.

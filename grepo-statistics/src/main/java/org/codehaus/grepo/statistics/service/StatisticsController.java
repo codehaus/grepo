@@ -16,10 +16,12 @@
 
 package org.codehaus.grepo.statistics.service;
 
+import java.io.Serializable;
+
 /**
  * @author dguggi
  */
-public interface StatisticsController {
+public interface StatisticsController extends Serializable {
 
     /**
      * @param statisticsEnabled The flag to set.

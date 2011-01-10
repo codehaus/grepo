@@ -30,6 +30,9 @@ import org.slf4j.LoggerFactory;
  */
 public class GenericStatisticsRepositorySupport extends GenericRepositorySupport {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3654018844187863673L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositorySupport.class); // NOPMD
 
