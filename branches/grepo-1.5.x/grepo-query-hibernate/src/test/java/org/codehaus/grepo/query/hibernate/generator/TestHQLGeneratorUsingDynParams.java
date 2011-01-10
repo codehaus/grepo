@@ -23,6 +23,9 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  */
 public class TestHQLGeneratorUsingDynParams extends AbstractHibernateQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -2019433781964659827L;
+
     /**
      * {@inheritDoc}
      */

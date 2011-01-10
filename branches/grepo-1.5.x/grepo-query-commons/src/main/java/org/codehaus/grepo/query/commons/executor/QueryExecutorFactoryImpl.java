@@ -24,6 +24,9 @@ import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
  */
 public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8754550555671992432L;
+
     /** The query naming strategy. */
     private QueryNamingStrategy queryNamingStrategy;
 

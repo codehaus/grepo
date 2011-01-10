@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.core.converter;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 
 /**
@@ -24,7 +26,7 @@ import org.codehaus.grepo.core.aop.MethodParameterInfo;
  *
  * @author dguggi
  */
-public interface ResultConverterFindingStrategy {
+public interface ResultConverterFindingStrategy extends Serializable {
 
     /**
      * @param specifiedConverter The converter specified by the user.

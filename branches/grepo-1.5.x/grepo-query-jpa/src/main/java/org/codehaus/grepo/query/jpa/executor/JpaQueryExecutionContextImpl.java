@@ -25,6 +25,9 @@ import org.codehaus.grepo.query.commons.executor.AbstractQueryExecutionContext;
  */
 public class JpaQueryExecutionContextImpl extends AbstractQueryExecutionContext implements JpaQueryExecutionContext {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -3071393721826202831L;
+
     /** The entity manager. */
     private EntityManager entityManager;
 

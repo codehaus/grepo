@@ -29,6 +29,9 @@ import org.codehaus.grepo.statistics.aop.StatisticsMethodParameterInfoImpl;
 public class QueryMethodParameterInfoImpl extends StatisticsMethodParameterInfoImpl //
                 implements QueryMethodParameterInfo {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 5678776409855795381L;
+
     /** The entityClass of the target repository. */
     private Class<?> entityClass;
 

@@ -16,13 +16,15 @@
 
 package org.codehaus.grepo.statistics.service;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.core.aop.MethodParameterInfo;
 import org.codehaus.grepo.statistics.annotation.MethodStatistics;
 
 /**
  * @author dguggi
  */
-public interface StatisticsEntryIdentifierGenerationStrategy {
+public interface StatisticsEntryIdentifierGenerationStrategy extends Serializable {
 
     /**
      * @param mpi The method parameter info.

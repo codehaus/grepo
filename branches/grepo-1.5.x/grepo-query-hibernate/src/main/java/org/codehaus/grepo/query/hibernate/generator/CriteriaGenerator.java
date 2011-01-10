@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.query.hibernate.generator;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.hibernate.criterion.DetachedCriteria;
 
@@ -24,7 +26,7 @@ import org.hibernate.criterion.DetachedCriteria;
  *
  * @author duggi
  */
-public interface CriteriaGenerator {
+public interface CriteriaGenerator extends Serializable {
 
     /**
      * @param qmpi The query method parameter info.

@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.procedure.compile;
 
+import java.io.Serializable;
+
 import org.springframework.jdbc.core.SqlParameter;
 
 /**
@@ -23,7 +25,10 @@ import org.springframework.jdbc.core.SqlParameter;
  *
  * @author dguggi
  */
-public class ProcedureParamDescriptor {
+public class ProcedureParamDescriptor implements Serializable {
+
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8577017380154954526L;
 
     /** The name for the parameter. */
     private String name;

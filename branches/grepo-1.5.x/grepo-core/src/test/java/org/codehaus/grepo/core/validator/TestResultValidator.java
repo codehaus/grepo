@@ -21,6 +21,9 @@ package org.codehaus.grepo.core.validator;
  */
 public class TestResultValidator implements ResultValidator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3802376143855657371L;
+
     /** Exception which should be thrown. */
     private static Exception exceptionToBeThrown;
 

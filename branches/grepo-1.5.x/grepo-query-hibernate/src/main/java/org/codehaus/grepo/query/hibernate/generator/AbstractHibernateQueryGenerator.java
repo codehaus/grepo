@@ -24,4 +24,7 @@ import org.codehaus.grepo.query.commons.generator.AbstractQueryGenerator;
 @SuppressWarnings("PMD")
 public abstract class AbstractHibernateQueryGenerator
     extends AbstractQueryGenerator<HibernateQueryParam> implements HibernateQueryGenerator {
+
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 6897253776986979163L;
 }

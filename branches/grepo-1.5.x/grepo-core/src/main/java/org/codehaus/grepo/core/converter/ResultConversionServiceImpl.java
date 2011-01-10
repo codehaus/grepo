@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class ResultConversionServiceImpl implements ResultConversionService {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 6815624987065108009L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(ResultConversionServiceImpl.class); // NOPMD
 

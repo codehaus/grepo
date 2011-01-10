@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.procedure.compile;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
 import org.springframework.jdbc.object.StoredProcedure;
@@ -25,7 +27,7 @@ import org.springframework.jdbc.object.StoredProcedure;
  *
  * @author dguggi
  */
-public interface ProcedureCompilationStrategy {
+public interface ProcedureCompilationStrategy extends Serializable {
     /**
      * @param pmpi The method parameter info.
      * @param context The procedure execution context.

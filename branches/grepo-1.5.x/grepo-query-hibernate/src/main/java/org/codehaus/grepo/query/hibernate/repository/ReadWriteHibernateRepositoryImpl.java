@@ -31,6 +31,9 @@ import org.hibernate.ReplicationMode;
 public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     extends ReadOnlyHibernateRepositoryImpl<T,PK> implements ReadWriteHibernateRepository<T,PK> { // NOPMD
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3472620524994344012L;
+
     /**
      * Default constructor.
      */

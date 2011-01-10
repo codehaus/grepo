@@ -28,6 +28,9 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class ResultConverterFindingStrategyImpl implements ResultConverterFindingStrategy {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2980405176589523026L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(ResultConverterFindingStrategyImpl.class); // NOPMD
 

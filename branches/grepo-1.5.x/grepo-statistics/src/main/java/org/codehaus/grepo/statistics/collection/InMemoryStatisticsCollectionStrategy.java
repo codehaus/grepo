@@ -23,6 +23,9 @@ import org.springframework.beans.factory.annotation.Required;
  * @author dguggi
  */
 public class InMemoryStatisticsCollectionStrategy implements StatisticsCollectionStrategy {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -2844389230473183433L;
+
     /** The statistics collection. */
     private StatisticsCollection statisticsCollection; // NOPMD
 

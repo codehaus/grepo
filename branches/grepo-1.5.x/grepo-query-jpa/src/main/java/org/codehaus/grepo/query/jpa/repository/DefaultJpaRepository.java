@@ -57,6 +57,9 @@ import org.springframework.util.CollectionUtils;
  */
 public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
                 implements JpaRepository<T>, InitializingBean {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -5949364806425967947L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class); // NOPMD
 

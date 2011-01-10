@@ -24,6 +24,9 @@ package org.codehaus.grepo.core.converter;
  */
 public class ResultToIntegerConverter implements ResultConverter<Integer> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -5472600337172209288L;
+
     /**
      * {@inheritDoc}
      */

@@ -21,6 +21,9 @@ package org.codehaus.grepo.core.converter;
  */
 public class TestResultConverter implements ResultConverter<Object> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 5816293101650577217L;
+
     /** The return value. */
     private static Object returnValue;
 

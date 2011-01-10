@@ -25,6 +25,9 @@ import org.codehaus.grepo.statistics.annotation.MethodStatistics;
  */
 public class StatisticsEntryIdentifierGenerationStrategyImpl implements StatisticsEntryIdentifierGenerationStrategy {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 7507604371376948708L;
+
     /**
      * {@inheritDoc}
      */

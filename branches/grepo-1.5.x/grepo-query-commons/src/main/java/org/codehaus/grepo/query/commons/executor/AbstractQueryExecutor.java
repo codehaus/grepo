@@ -34,6 +34,9 @@ import org.slf4j.LoggerFactory;
  * @param <T> The type.
  */
 public abstract class AbstractQueryExecutor<T extends QueryExecutionContext> implements QueryExecutor<T> {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -6502993359787718712L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(AbstractQueryExecutor.class); // NOPMD
 

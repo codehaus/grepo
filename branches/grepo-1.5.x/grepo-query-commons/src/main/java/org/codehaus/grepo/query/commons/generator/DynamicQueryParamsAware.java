@@ -16,13 +16,14 @@
 
 package org.codehaus.grepo.query.commons.generator;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
  * @author dguggi
  * @param <P> The parameter type.
  */
-public interface DynamicQueryParamsAware<P extends QueryParam> {
+public interface DynamicQueryParamsAware<P extends QueryParam> extends Serializable {
 
     /**
      * @return Returns a collection of dynamic query param instances.

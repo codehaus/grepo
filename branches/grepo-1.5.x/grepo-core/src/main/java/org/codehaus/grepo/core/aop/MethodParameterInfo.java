@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.core.aop;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
  *
  * @author dguggi
  */
-public interface MethodParameterInfo {
+public interface MethodParameterInfo extends Serializable {
 
     /**
      * @return Returns the method.
