@@ -29,6 +29,9 @@ import demo.domain.User;
  */
 public class UserSearchCriteriaGenerator implements CriteriaGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 6376344505209487740L;
+
     /**
      * {@inheritDoc}
      */
