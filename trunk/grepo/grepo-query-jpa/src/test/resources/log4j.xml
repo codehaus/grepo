@@ -30,7 +30,7 @@
     <category name="org.hibernate.type">
         <priority value="TRACE" />
     </category>
-     -->
+    -->
     <category name="org.codehaus.grepo">
         <priority value="DEBUG" />
     </category>

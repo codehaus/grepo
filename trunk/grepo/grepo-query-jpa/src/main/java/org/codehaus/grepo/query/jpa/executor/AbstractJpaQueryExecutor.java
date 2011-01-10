@@ -293,10 +293,10 @@ public abstract class AbstractJpaQueryExecutor
      * @param param The named param.
      */
     protected void setNamedParam(Query query, JpaQueryParam param) {
-        if (param.getTemporalType() != null && (param.getValue() instanceof Calendar)) {
+        if (param.getTemporalType() != null && (param.getValue() == null || param.getValue() instanceof Calendar)) {
             logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Calendar)param.getValue(), param.getTemporalType());
-        } else if (param.getTemporalType() != null && (param.getValue() instanceof Date)) {
+        } else if (param.getTemporalType() != null && (param.getValue() == null || param.getValue() instanceof Date)) {
             logSetParameter(param.getName(), param.getValue(), param.getTemporalType());
             query.setParameter(param.getName(), (Date)param.getValue(), param.getTemporalType());
         } else {
@@ -338,10 +338,10 @@ public abstract class AbstractJpaQueryExecutor
      */
     protected void setPositionalParam(JpaQueryDescriptor queryDesc, int index, Object value,
             TemporalType temporalType) {
-        if (temporalType != null && value instanceof Calendar) {
+        if (temporalType != null && (value == null || value instanceof Calendar)) {
             logSetParameter(index, value, temporalType);
             queryDesc.getQuery().setParameter(index, (Calendar)value, temporalType);
-        } else if (temporalType != null && value instanceof Date) {
+        } else if (temporalType != null && (value == null || value instanceof Date)) {
             logSetParameter(index, (Date)value, temporalType);
             queryDesc.getQuery().setParameter(index, (Date)value, temporalType);
         } else {

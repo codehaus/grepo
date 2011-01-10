@@ -57,7 +57,7 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
                         logger.warn("Unable to collect statistics, because "
                             + "statisticsEntryIdentifierGenerationStrategy is null");
                     } else {
-                        String identifier = statisticsEntryIdentifierGenerationStrategy.getIdentifier(mpi);
+                        String identifier = statisticsEntryIdentifierGenerationStrategy.getIdentifier(mpi, null);
                         MethodStatistics annotation = mpi.getMethodAnnotation(MethodStatistics.class);
                         String origin = (annotation == null ? null : annotation.origin());
                         entry = statisticsManager.createStatisticsEntry(identifier, origin);

@@ -40,6 +40,14 @@
         <query>UPDATE TestEntity SET type = ? WHERE username = ?</query>
     </named-query>
 
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ByCreationDate1">
+        <query>FROM TestEntity WHERE creationDate >= ?</query>
+    </named-query>
+
+    <named-query name="org.codehaus.grepo.query.jpa.TestEntity.ByCreationDate2">
+        <query>FROM TestEntity WHERE creationDate >= :minDate</query>
+    </named-query>
+
     <named-native-query result-class="org.codehaus.grepo.query.jpa.TestEntity"
                 name="org.codehaus.grepo.query.jpa.TestEntity.ByUsernameWithNamedNativeQuery">
         <query>SELECT * FROM TEST_ENTITY WHERE USERNAME = ?</query>
@@ -64,6 +72,9 @@
             </basic>
             <basic name="type">
                 <column name="TYPE" />
+            </basic>
+            <basic name="creationDate">
+                <column name="CREATION_DATE" />
             </basic>
         </attributes>
     </entity>

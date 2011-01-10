@@ -60,21 +60,20 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
      */
     @Around("@annotation(org.codehaus.grepo.statistics.annotation.MethodStatistics) && @annotation(annotation)")
     public Object methodStatistics(ProceedingJoinPoint pjp, MethodStatistics annotation) throws Throwable {
-        StatisticsEntry entry = createEntry(pjp, annotation.manager(), annotation.origin());
+        StatisticsEntry entry = createEntry(pjp, annotation);
         try {
             return pjp.proceed();
         } finally {
-            completeEntry(entry);
+            completeEntry(entry, annotation);
         }
     }
 
     /**
      * @param pjp The proceeding join point.
-     * @param managerName The statistics manager name to use.
-     * @param origin The origin.
+     * @param annotation The {@link MethodStatistics} annotation.
      * @return Returns the entry.
      */
-    private StatisticsEntry createEntry(ProceedingJoinPoint pjp, String managerName, String origin) {
+    private StatisticsEntry createEntry(ProceedingJoinPoint pjp, MethodStatistics annotation) {
         StatisticsEntry entry = null;
         try {
             MethodSignature methodSig = (MethodSignature)pjp.getSignature();
@@ -82,17 +81,10 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
             MethodParameterInfo mpi = new MethodParameterInfoImpl(
                 method, pjp.getArgs());
 
-            String identifier = statisticsIdentifierNamingStrategy.getIdentifier(mpi);
+            String identifier = statisticsIdentifierNamingStrategy.getIdentifier(mpi, annotation);
 
-            if (StringUtils.isNotEmpty(managerName)) {
-                // use statistics manager configured via annotation...
-                StatisticsManager manager = (StatisticsManager) applicationContext.getBean(managerName,
-                    StatisticsManager.class);
-                entry = manager.createStatisticsEntry(identifier, origin);
-            } else {
-                // use default statistics manager...
-                entry = statisticsManager.createStatisticsEntry(identifier, origin);
-            }
+            entry = getStatisticsManager(annotation.manager()).createStatisticsEntry(identifier, annotation.origin());
+
         } catch (Exception e) {
             logger.error("Unable to create StatisticsEntry: " + e.getMessage(), e);
         }
@@ -101,14 +93,29 @@ public class MethodStatisticsAspect implements ApplicationContextAware {
 
     /**
      * @param entry The entry to complete.
+     * @param annotation The {@link MethodStatistics} annotation.
      */
-    private void completeEntry(StatisticsEntry entry) {
+    private void completeEntry(StatisticsEntry entry, MethodStatistics annotation) {
         if (entry != null) {
             try {
-                statisticsManager.completeStatisticsEntry(entry);
+                getStatisticsManager(annotation.manager()).completeStatisticsEntry(entry);
             } catch (Exception e) {
                 logger.warn("Unable to complete StatisticsEntry: " + e.getMessage());
             }
+        }
+    }
+
+    /**
+     * @param managerName The name of the manager to use.
+     * @return Returns the {@link StatisticsManager} instance to use.
+     */
+    protected StatisticsManager getStatisticsManager(String managerName) {
+        if (StringUtils.isNotEmpty(managerName)) {
+            // use statistics manager configured via annotation...
+            return (StatisticsManager) applicationContext.getBean(managerName, StatisticsManager.class);
+        } else {
+            // use default statistics manager...
+            return statisticsManager;
         }
     }
 
