@@ -24,4 +24,7 @@ import org.codehaus.grepo.core.registry.GenericRegistryMap;
 public class QueryExecutorRegistry
     extends GenericRegistryMap<String, Class<? extends QueryExecutor<?>>> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -886341726896570068L;
+
 }

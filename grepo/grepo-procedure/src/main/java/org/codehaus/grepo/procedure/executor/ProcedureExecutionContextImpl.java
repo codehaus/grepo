@@ -26,6 +26,9 @@ import org.codehaus.grepo.core.executor.AbstractGenericExecutionContext;
 public class ProcedureExecutionContextImpl extends AbstractGenericExecutionContext
     implements ProcedureExecutionContext {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -767723344036829631L;
+
     /** The data source. */
     private DataSource dataSource;
 

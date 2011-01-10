@@ -30,6 +30,9 @@ import org.hibernate.Query;
  * @author dguggi
  */
 public class ListQueryExecutor extends AbstractHibernateQueryExecutor {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -3267253469854350297L;
+
     /**
      * {@inheritDoc}
      */

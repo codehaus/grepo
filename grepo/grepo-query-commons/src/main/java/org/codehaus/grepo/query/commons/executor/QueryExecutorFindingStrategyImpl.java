@@ -25,6 +25,9 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStrategy {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -3331275825895449660L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(QueryExecutorFindingStrategyImpl.class); // NOPMD
 

@@ -24,6 +24,9 @@ import org.codehaus.grepo.query.jpa.TestEntity;
  */
 public class TestNativeGenerator extends AbstractJpaNativeQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -6314486103980679275L;
+
     /**
      * {@inheritDoc}
      */

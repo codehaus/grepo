@@ -27,6 +27,9 @@ import org.hibernate.SessionFactory;
 public class HibernateQueryExecutionContextImpl
     extends AbstractQueryExecutionContext implements HibernateQueryExecutionContext {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 147186344243307508L;
+
     /** The session factory. */
     private SessionFactory sessionFactory;
 

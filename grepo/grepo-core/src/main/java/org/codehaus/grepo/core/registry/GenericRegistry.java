@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.core.registry;
 
+import java.io.Serializable;
+
 /**
  * A registry used to store entries via key-value pairs.
  *
@@ -23,7 +25,7 @@ package org.codehaus.grepo.core.registry;
  * @param <K> The key.
  * @param <V> The value.
  */
-public interface GenericRegistry<K, V> {
+public interface GenericRegistry<K, V> extends Serializable {
 
     /**
      * @param key The key to add.

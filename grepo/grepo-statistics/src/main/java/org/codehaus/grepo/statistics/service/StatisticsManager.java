@@ -16,12 +16,14 @@
 
 package org.codehaus.grepo.statistics.service;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 
 /**
  * @author dguggi
  */
-public interface StatisticsManager {
+public interface StatisticsManager extends Serializable {
 
     /**
      * @param identifier The identifier.

@@ -30,6 +30,9 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class ProcedureInputGenerationStrategyImpl implements ProcedureInputGenerationStrategy {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8148772414010276524L;
+
     /** The logger for this class. */
     private final Logger logger = LoggerFactory.getLogger(ProcedureInputGenerationStrategyImpl.class); // NOPMD
 

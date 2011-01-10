@@ -24,6 +24,9 @@ import org.springframework.context.ApplicationContext;
  * @author dguggi
  */
 public final class PlaceHolderQueryExecutionContext implements QueryExecutionContext {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 1349865089574624948L;
+
     /**
      * {@inheritDoc}
      */

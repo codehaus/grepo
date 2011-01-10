@@ -23,6 +23,9 @@ package org.codehaus.grepo.core.validator;
  */
 public final class PlaceHolderResultValidator implements ResultValidator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 2685236099059875796L;
+
     /**
      * {@inheritDoc}
      */

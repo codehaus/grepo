@@ -16,12 +16,14 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
+import java.io.Serializable;
+
 /**
  * Responsible for creating {@link QueryExecutor} instances.
  *
  * @author dguggi
  */
-public interface QueryExecutorFactory {
+public interface QueryExecutorFactory extends Serializable {
     /**
      * @param clazz The executor class.
      * @return Returns the created instance.

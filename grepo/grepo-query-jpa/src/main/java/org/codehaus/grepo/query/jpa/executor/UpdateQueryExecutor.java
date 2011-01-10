@@ -26,6 +26,9 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  */
 public class UpdateQueryExecutor extends AbstractJpaQueryExecutor {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -5308205949753421105L;
+
     /**
      * {@inheritDoc}
      */

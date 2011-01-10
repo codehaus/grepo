@@ -16,6 +16,7 @@
 
 package org.codehaus.grepo.statistics.collection;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,10 @@ import org.springframework.jmx.export.annotation.ManagedResource;
  * @author dguggi
  */
 @ManagedResource("Simple statistics printer")
-public class SimpleStatisticsCollectionPrinter {
+public class SimpleStatisticsCollectionPrinter implements Serializable {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = -3476143233518456960L;
+
     /**
      * @author dguggi
      */

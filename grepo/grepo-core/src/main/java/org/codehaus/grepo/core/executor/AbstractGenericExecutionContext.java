@@ -21,7 +21,10 @@ import org.springframework.context.ApplicationContext;
 /**
  * @author dguggi
  */
-public abstract class AbstractGenericExecutionContext implements GenericExecutionContext {
+public abstract class AbstractGenericExecutionContext implements GenericExecutionContext { // NOPMD
+
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 8236616436938873642L;
 
     /** The application context. */
     private ApplicationContext applicationContext;

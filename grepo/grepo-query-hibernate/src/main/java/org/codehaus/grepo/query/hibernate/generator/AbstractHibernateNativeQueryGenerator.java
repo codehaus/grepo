@@ -28,6 +28,9 @@ import org.hibernate.type.Type;
 public abstract class AbstractHibernateNativeQueryGenerator
     extends AbstractHibernateQueryGenerator implements HibernateNativeQueryGenerator {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 3986680668120013955L;
+
     /** The entities map. */
     private Map<Class<?>, String> entities;
 

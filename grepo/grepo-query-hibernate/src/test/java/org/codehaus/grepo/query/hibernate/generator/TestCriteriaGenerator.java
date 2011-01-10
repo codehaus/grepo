@@ -25,6 +25,9 @@ import org.hibernate.criterion.Restrictions;
  * @author dguggi
  */
 public class TestCriteriaGenerator implements CriteriaGenerator {
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 7433111191916322566L;
+
     /**
      * {@inheritDoc}
      */

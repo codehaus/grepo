@@ -32,6 +32,9 @@ import org.codehaus.grepo.query.commons.generator.DynamicQueryParamsAware;
  */
 public class QueryDescriptor<Q, P extends QueryParam> implements DynamicQueryParamsAware<P> {
 
+    /** SerialVersionUid. */
+    private static final long serialVersionUID = 60298062194266128L;
+
     /** The query. */
     private Q query;
 
