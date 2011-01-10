@@ -22,8 +22,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.jdk.version>1.5</build.jdk.version>
         <grepo-buildtools.version>1.5.0</grepo-buildtools.version>
-        <grepo-osgi.version>1.5.1</grepo-osgi.version>
+        <grepo-osgi.version>2.0.0</grepo-osgi.version>
         <eclipseplugin.addVersionToProjectName>true</eclipseplugin.addVersionToProjectName>
+
+        <spring.version>3.0.5.RELEASE</spring.version>
+        <slf4j.version>1.6.1</slf4j.version>
+        <aspectj.version>1.6.9</aspectj.version>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
@@ -111,13 +115,13 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
-            <version>3.0.4.RELEASE</version>
+            <version>${spring.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.8.1</version>
+            <version>4.8.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -129,7 +133,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.5.11</version>
+            <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -145,36 +149,36 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-jdbc</artifactId>
-                <version>3.0.4.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
-                <version>3.0.4.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aop</artifactId>
-                <version>3.0.4.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-aspects</artifactId>
-                <version>3.0.4.RELEASE</version>
+                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjrt</artifactId>
-                <version>1.6.9</version>
+                <version>${aspectj.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
-                <version>1.6.9</version>
+                <version>${aspectj.version}</version>
             </dependency>
 
             <dependency>
@@ -192,7 +196,7 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.5.11</version>
+                <version>${slf4j.version}</version>
             </dependency>
 
             <dependency>
@@ -497,50 +501,6 @@
             </build>
         </profile>
 
-        <!-- profile using spring 2.5.6 -->
-        <profile>
-            <id>spring-2.5.6</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-jdbc</artifactId>
-                    <version>2.5.6</version>
-                    <optional>true</optional>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-aop</artifactId>
-                    <version>2.5.6</version>
-                    <optional>true</optional>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-test</artifactId>
-                    <version>2.5.6</version>
-                    <scope>test</scope>
-                </dependency>
-                <dependency>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                    <version>4.4</version>
-                    <scope>test</scope>
-                </dependency>
-            </dependencies>
-            <dependencyManagement>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-jdbc</artifactId>
-                        <version>2.5.6</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.springframework</groupId>
-                        <artifactId>spring-orm</artifactId>
-                        <version>2.5.6</version>
-                    </dependency>
-                </dependencies>
-            </dependencyManagement>
-        </profile>
     </profiles>
 
 </project>

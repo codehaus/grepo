@@ -25,7 +25,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 /**
  * @author dguggi
  */
-public class TestResultSetExtractor implements ResultSetExtractor {
+public class TestResultSetExtractor implements ResultSetExtractor<Object> {
     /**
      * {@inheritDoc}
      */

@@ -24,7 +24,7 @@ import org.springframework.jdbc.core.RowMapper;
 /**
  * @author dguggi
  */
-public class TestRowMapper implements RowMapper {
+public class TestRowMapper implements RowMapper<Object> {
     /**
      * {@inheritDoc}
      */

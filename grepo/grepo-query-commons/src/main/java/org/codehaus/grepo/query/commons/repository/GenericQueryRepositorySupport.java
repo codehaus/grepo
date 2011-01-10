@@ -107,7 +107,7 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
      * @return Returns the result.
      */
     @SuppressWarnings("PMD")
-    protected Object executeCallback(TransactionCallback callback, boolean preferReadOnlyTransactionTemplate) {
+    protected Object executeCallback(TransactionCallback<Object> callback, boolean preferReadOnlyTransactionTemplate) {
         boolean isReadOnlyTemplateUsed = false;
         TransactionTemplate templateToUse = null;
         if (preferReadOnlyTransactionTemplate && getReadOnlyTransactionTemplate() != null) {
@@ -138,7 +138,7 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
      * @param preferReadOnlyTransactionTemplate Flag to indicate if the read-only template should be prefered.
      * @return Returns the result.
      */
-    protected Object executeCallbackWithStatistics(String methodName, TransactionCallback callback,
+    protected Object executeCallbackWithStatistics(String methodName, TransactionCallback<Object> callback,
             boolean preferReadOnlyTransactionTemplate) {
         StatisticsEntry entry = null;
         if (isStatisticsEnabled()) {

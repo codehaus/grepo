@@ -61,7 +61,7 @@ public abstract class GenericProcedureRepositorySupport extends GenericStatistic
      * @return Returns the result.
      */
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> executeCallback(TransactionCallback callback,
+    protected Map<String, Object> executeCallback(TransactionCallback<Object> callback,
             boolean preferReadOnlyTransactionTemplate) {
         boolean isReadOnlyTemplateUsed = false;
         TransactionTemplate templateToUse = null;

@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The target class (base) type.
  */
-public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySupport> implements FactoryBean,
+public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySupport> implements FactoryBean<Object>,
             InitializingBean, ApplicationContextAware {
     /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =

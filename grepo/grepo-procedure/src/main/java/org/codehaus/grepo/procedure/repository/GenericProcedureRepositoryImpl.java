@@ -72,7 +72,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      */
     protected Map<String, Object> executeProcedure(final ProcedureMethodParameterInfo pmpi,
             GenericProcedure genericProcedure) {
-        TransactionCallback callback = new TransactionCallback() {
+        TransactionCallback<Object> callback = new TransactionCallback<Object>() {
             public Object doInTransaction(final TransactionStatus status) {
                 ProcedureExecutionContext context = createProcedureExecutionContext();
 
