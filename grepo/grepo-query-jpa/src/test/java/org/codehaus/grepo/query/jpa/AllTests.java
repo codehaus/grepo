@@ -25,6 +25,9 @@ import org.codehaus.grepo.query.jpa.executor.ExecutorRepositoryTest;
 import org.codehaus.grepo.query.jpa.generator.GeneratorRepositoryTest;
 import org.codehaus.grepo.query.jpa.repository.JpaRepositoryStatisticsTest;
 import org.codehaus.grepo.query.jpa.repository.JpaRepositoryTest;
+import org.codehaus.grepo.query.jpa.repository.custom.CustomRepository1Test;
+import org.codehaus.grepo.query.jpa.repository.custom.CustomRepository2Test;
+import org.codehaus.grepo.query.jpa.repository.custom.CustomRepository3Test;
 import org.codehaus.grepo.query.jpa.validator.ValidatorRepositoryTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -38,7 +41,8 @@ import org.junit.runners.Suite.SuiteClasses;
     ConverterRepositoryTest.class, ExecutorRepositoryTest.class, GeneratorRepositoryTest.class,
     JpaRepositoryTest.class, ValidatorRepositoryTest.class, RepositoryBeanTest.class,
     RepositoryScan1Test.class, RepositoryScan2Test.class, RepositoryScan3Test.class,
-    JpaRepositoryStatisticsTest.class })
+    JpaRepositoryStatisticsTest.class, CustomRepository1Test.class, CustomRepository2Test.class,
+    CustomRepository3Test.class })
 public class AllTests {
 
 }
