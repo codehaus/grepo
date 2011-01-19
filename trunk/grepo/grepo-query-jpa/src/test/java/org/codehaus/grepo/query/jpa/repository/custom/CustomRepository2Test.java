@@ -39,7 +39,7 @@ public class CustomRepository2Test extends AbstractJpaRepositoryTest {
      * {@link CustomRepository2} and {@link CustomRepository2Impl}.
      */
     @Test
-    public void testSomethingSpecial() {
+    public void testDoSomethingSpecial() {
         Assert.assertEquals(CustomRepository2Impl.RESULT, customRepository2.doSomethingSpecial());
     }
 }

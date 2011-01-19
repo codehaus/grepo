@@ -123,7 +123,7 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
             // execute without transaction...
             retVal = callback.doInTransaction(null);
         } else {
-            logger.debug("Executing query using {} transaction template",
+            logger.debug("Executing query using{}transaction template",
                 (isReadOnlyTemplateUsed ? " read-only " : " "));
             retVal = templateToUse.execute(callback);
         }

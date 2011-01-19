@@ -18,6 +18,7 @@ package org.codehaus.grepo.query.jpa.repository.custom;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
 import org.codehaus.grepo.query.jpa.AbstractJpaRepositoryTest;
+import org.codehaus.grepo.query.jpa.TestEntity;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +28,23 @@ import org.springframework.test.context.ContextConfiguration;
  * @author dguggi
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
-public class CustomRepository1Test extends AbstractJpaRepositoryTest {
+public class CustomRepository3Test extends AbstractJpaRepositoryTest {
 
-    /** The custom test repository1. */
+    /** The custom test repository3. */
     @Autowired
-    private CustomRepository1 customRepository1; // NOPMD
+    private CustomRepository3 customRepository3; // NOPMD
 
     /**
-     * Demonstrates the use of a custom repository implementation for multiple (grepo) repository instances. In this
-     * example the {@code customRepository1} will have a method {@code doSomethingUseful} as defined by
-     * {@link CustomReadWriteJpaRepository} and {@link CustomReadWriteJpaRespositoryImpl}.
+     * Demonstrates the use of a custom repository implementation for (grepo) one repository instance. In this example
+     * the {@code customRepository2} will have a method {@code doSomethingSpecial} as defined by
+     * {@link CustomRepository2} and {@link CustomRepository2Impl}.
      */
     @Test
-    public void testDoSomethingUseful() {
-        Assert.assertEquals(CustomReadWriteJpaRespositoryImpl.RESULT, customRepository1.doSomethingUseful());
+    public void testDoSomethingSpecial() {
+        Assert.assertNull(customRepository3.doSomethingSpecial(-1L));
+
+        TestEntity entity = new TestEntity("username", 1, "firstname");
+        saveFlush(entity);
+        Assert.assertNotNull(customRepository3.doSomethingSpecial(entity.getId()));
     }
 }
