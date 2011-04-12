@@ -160,4 +160,10 @@ public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericSt
     public void setStatisticsManager(StatisticsManager statisticsManager) {
         this.statisticsManager = statisticsManager;
     }
+
+    public void setStatisticsEntryIdentifierGenerationStrategy(
+            StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy) {
+        this.statisticsEntryIdentifierGenerationStrategy = statisticsEntryIdentifierGenerationStrategy;
+    }
+
 }
