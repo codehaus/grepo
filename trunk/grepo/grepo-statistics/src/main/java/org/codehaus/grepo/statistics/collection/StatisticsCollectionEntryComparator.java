@@ -49,7 +49,7 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
     },
 
     /** Sorts by number of invocations asc. */
-    NUMER_OF_INVOCATIONS_ASC {
+    NUMBER_OF_INVOCATIONS_ASC {
 
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {
@@ -64,7 +64,7 @@ public enum StatisticsCollectionEntryComparator implements Comparator<Statistics
     },
 
     /** Sorts by number of invocations desc. */
-    NUMER_OF_INVOCATIONS_DESC {
+    NUMBER_OF_INVOCATIONS_DESC {
 
         /** {@inheritDoc} */
         public int compare(StatisticsCollectionEntry o1, StatisticsCollectionEntry o2) {

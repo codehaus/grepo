@@ -68,13 +68,13 @@ public class StatisticsCollectionUtilsTest extends AbstractSpringTest {
     public void testGetCollectionEntriesSortedByNumberOfInvocations() {
         fillCollection();
         List<StatisticsCollectionEntry> list = StatisticsCollectionUtils.getCollectionEntries(collection,
-            StatisticsCollectionEntryComparator.NUMER_OF_INVOCATIONS_ASC);
+            StatisticsCollectionEntryComparator.NUMBER_OF_INVOCATIONS_ASC);
         Assert.assertEquals(2, list.size());
         Assert.assertEquals(1, list.get(0).getNumberOfInvocations());
         Assert.assertEquals(2, list.get(1).getNumberOfInvocations());
 
         list = StatisticsCollectionUtils.getCollectionEntries(collection,
-            StatisticsCollectionEntryComparator.NUMER_OF_INVOCATIONS_DESC);
+            StatisticsCollectionEntryComparator.NUMBER_OF_INVOCATIONS_DESC);
         Assert.assertEquals(2, list.size());
         Assert.assertEquals(2, list.get(0).getNumberOfInvocations());
         Assert.assertEquals(1, list.get(1).getNumberOfInvocations());
