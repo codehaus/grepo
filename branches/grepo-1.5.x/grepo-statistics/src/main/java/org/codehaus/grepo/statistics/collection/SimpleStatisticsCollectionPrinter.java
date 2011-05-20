@@ -88,7 +88,7 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
     @ManagedOperation(description = "Prints summary")
     @ManagedOperationParameters({
         @ManagedOperationParameter(name = "calcAverageDuration",
-            description = "Flag to determine whether or not to calcualate average duration")
+            description = "Flag to determine whether or not to calculate average duration")
     })
     public String printSummary(boolean calcAverageDuration) {
         return printSummary(calcAverageDuration, StatisticsCollectionEntryComparator.IDENTIFIER_ASC);
@@ -102,10 +102,10 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
     @ManagedOperation(description = "Prints summary")
     @ManagedOperationParameters({
         @ManagedOperationParameter(name = "calcAverageDuration",
-            description = "Flag to determine whether or not to calcualate average duration"),
+            description = "Flag to determine whether or not to calculate average duration"),
         @ManagedOperationParameter(name = "sorter",
-            description = "optional (IDENTIFIER_ASC, IDENTIFIER_DESC, NUMER_OF_INVOCATIONS_ASC, "
-                        + "NUMER_OF_INVOCATIONS_DESC, MAX_DURATION_ASC, MAX_DURATION_DESC, MIN_DURATION_ASC, "
+            description = "optional (IDENTIFIER_ASC, IDENTIFIER_DESC, NUMBER_OF_INVOCATIONS_ASC, "
+                        + "NUMBER_OF_INVOCATIONS_DESC, MAX_DURATION_ASC, MAX_DURATION_DESC, MIN_DURATION_ASC, "
                         + "MIN_DURATION_DESC)")
     })
     public String printSummary(boolean calcAverageDuration, String sorter) {
