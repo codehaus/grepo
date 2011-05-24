@@ -33,18 +33,17 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ValidatorRepositoryTest extends AbstractJpaRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private ValidatorTestRepository repo; //NOPMD
 
-    /** before. */
+    @Autowired
+    private ValidatorTestRepository repo;
+
     @Before
     public void before() {
-        TestEntity testEntity = new TestEntity("username", 1, "firstname"); //NOPMD
+        TestEntity testEntity = new TestEntity("username", 1, "firstname");
         saveFlush(testEntity);
-
         TestResultValidator.reset();
     }
+
 
     /** Tests with result validator. */
     @Test
@@ -55,7 +54,7 @@ public class ValidatorRepositoryTest extends AbstractJpaRepositoryTest {
     /** Tests with result validator and compatible exception. */
     @Test(expected = RuntimeException.class)
     public void testWithResultValidatorAndCompatibleException1() {
-        TestResultValidator.setExceptionToBeThrown(new RuntimeException());  //NOPMD
+        TestResultValidator.setExceptionToBeThrown(new RuntimeException());
         repo.getByUsername("username");
     }
 

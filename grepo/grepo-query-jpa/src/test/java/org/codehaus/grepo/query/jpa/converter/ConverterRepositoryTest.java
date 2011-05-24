@@ -33,18 +33,17 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ConverterRepositoryTest extends AbstractJpaRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private ConverterTestRepository repo;  //NOPMD
 
-    /** before. */
+    @Autowired
+    private ConverterTestRepository repo;
+
     @Before
     public void before() {
-        TestEntity te = new TestEntity("username", 1, "firstname"); //NOPMD
+        TestEntity te = new TestEntity("username", 1, "firstname");
         saveFlush(te);
-
         TestResultConverter.reset();
     }
+
 
     /** Test with implicit conversion. */
     @Test
@@ -66,7 +65,6 @@ public class ConverterRepositoryTest extends AbstractJpaRepositoryTest {
     @Test(expected = ConversionException.class)
     public void testWithPrimitveReturnType() {
         Assert.assertEquals(1, repo.getTypeByUsername("username"));
-
         // throws a conversion exception, because query result is null
         // and method's return type is a primitive (int)
         repo.getTypeByUsername("xyz");

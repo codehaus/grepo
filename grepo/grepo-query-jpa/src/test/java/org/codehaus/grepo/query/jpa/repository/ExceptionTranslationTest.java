@@ -34,25 +34,22 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ExceptionTranslationTest extends AbstractJpaRepositoryTest {
 
-    /** Not translating repo. */
     @Resource(name = "notTranslatingTestRepository")
-    private ExceptionTranslationTestRepository1 notTranslatingRepository; // NOPMD
+    private ExceptionTranslationTestRepository1 notTranslatingRepository;
 
-    /** Translating repo. */
     @Resource(name = "translatingTestRepository")
-    private ExceptionTranslationTestRepository1 translatingRepository; // NOPMD
+    private ExceptionTranslationTestRepository1 translatingRepository;
 
-    /** Scanned test repo. */
     @Autowired
-    private ExceptionTranslationTestRepository2 scannedRepository; // NOPMD
+    private ExceptionTranslationTestRepository2 scannedRepository;
 
-    /** before. */
     @Before
     public void before() {
-        TestEntity entity1 = new TestEntity("username", 1, "firstname"); // NOPMD
+        TestEntity entity1 = new TestEntity("username", 1, "firstname");
         TestEntity entity2 = new TestEntity("username1", 1, "firstname");
         saveFlush(entity1, entity2);
     }
+
 
     /** Tests with not translating repository. */
     @Test(expected = NonUniqueResultException.class)
