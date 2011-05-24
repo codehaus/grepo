@@ -25,16 +25,10 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStrategy {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -3331275825895449660L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(QueryExecutorFindingStrategyImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(QueryExecutorFindingStrategyImpl.class);
 
-    /** Class registry. */
     private GenericRegistryMap<String, Class<? extends QueryExecutor<?>>> executorRegistry;
-
-    /** The naming strategy. */
     private QueryExecutorNamingStrategy executorNamingStrategy;
 
     /**
@@ -45,7 +39,7 @@ public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStr
         Class<? extends QueryExecutor<?>> executorToUse = null;
 
         // true if user has defined a valid converter via annotation...
-        boolean isValidUserExecutor = validateQueryExecutor(specifiedExecutor);
+        boolean isValidUserExecutor = QueryExecutorUtils.isValidQueryExecutor(specifiedExecutor);
 
         if (isValidUserExecutor) {
             executorToUse = specifiedExecutor;
@@ -60,14 +54,6 @@ public class QueryExecutorFindingStrategyImpl implements QueryExecutorFindingStr
         }
 
         return executorToUse;
-    }
-
-    /**
-     * @param clazz The class.
-     * @return Returns {@code true} if valid and {@code false} otherwise.
-     */
-    protected boolean validateQueryExecutor(Class<? extends QueryExecutor<?>> clazz) {
-        return (clazz != null && clazz != PlaceHolderQueryExecutor.class);
     }
 
     public void setExecutorNamingStrategy(QueryExecutorNamingStrategy executorNamingStrategy) {

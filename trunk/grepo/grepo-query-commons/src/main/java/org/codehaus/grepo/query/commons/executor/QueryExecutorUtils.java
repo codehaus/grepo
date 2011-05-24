@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Grepo Committers.
+ * Copyright 2011 Grepo Committers.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,17 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.core.converter;
-
-import org.codehaus.grepo.core.registry.GenericRegistryMap;
+package org.codehaus.grepo.query.commons.executor;
 
 /**
- * The registry used by {@link ResultConverterFindingStrategyImpl}.
- *
  * @author dguggi
  */
-public class ResultConverterRegistry extends GenericRegistryMap<Class<?>, Class<? extends ResultConverter<?>>> {
+public final class QueryExecutorUtils {
 
+    private QueryExecutorUtils() {
+    }
+
+    public static boolean isValidQueryExecutor(Class<? extends QueryExecutor<?>> clazz) {
+        return (clazz != null && clazz != PlaceHolderQueryExecutor.class);
+    }
 }

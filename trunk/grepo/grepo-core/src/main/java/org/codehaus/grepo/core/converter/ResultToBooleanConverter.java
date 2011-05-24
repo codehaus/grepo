@@ -19,20 +19,17 @@ package org.codehaus.grepo.core.converter;
 import java.util.regex.Pattern;
 
 /**
- * This converter can convert instances of {@code java.lang.Number} objects to {@code java.lang.Boolean} - for
- * any other type {@code Boolean.FALSE} will be returned.<br>
+ * This converter can convert instances of {@code java.lang.Number} objects to {@code java.lang.Boolean} - for any other
+ * type {@code Boolean.FALSE} will be returned.<br>
  * <br>
- * <b>Note:</b> This converter will never return {@code null}. If the input to be converted is {@code null}
- * then {@code Boolean.FALSE} will be returned. If input is of type {@code java.lang.String} then the input's
- * value has to match pattern {@code (t|true|1|yes)} in order to return {@code Boolean.TRUE} - for any other
- * value {@code Boolean.FALSE} will be returned.
+ * <b>Note:</b> This converter will never return {@code null}. If the input to be converted is {@code null} then {@code
+ * Boolean.FALSE} will be returned. If input is of type {@code java.lang.String} then the input's value has to match
+ * pattern {@code (t|true|1|yes)} in order to return {@code Boolean.TRUE} - for any other value {@code Boolean.FALSE}
+ * will be returned.
  *
  * @author dguggi
  */
 public class ResultToBooleanConverter implements ResultConverter<Boolean> {
-
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 2849740813936994910L;
 
     /** The string pattern. */
     private static final Pattern TRUE_STRING_PATTERN = Pattern.compile("(t|true|1|yes)", Pattern.CASE_INSENSITIVE);

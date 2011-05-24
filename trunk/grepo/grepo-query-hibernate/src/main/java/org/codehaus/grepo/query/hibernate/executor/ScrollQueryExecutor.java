@@ -32,9 +32,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author dguggi
  */
-public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
-
-    private static final long serialVersionUID = -5208204972408289569L;
+public class ScrollQueryExecutor extends AbstractQueryExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger(ScrollQueryExecutor.class);
 

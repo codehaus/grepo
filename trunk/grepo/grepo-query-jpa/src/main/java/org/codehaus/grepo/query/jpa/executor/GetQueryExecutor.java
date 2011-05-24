@@ -28,8 +28,6 @@ import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
  */
 public class GetQueryExecutor extends ListQueryExecutor {
 
-    private static final long serialVersionUID = 1363362435873145991L;
-
     /**
      * {@inheritDoc}
      */

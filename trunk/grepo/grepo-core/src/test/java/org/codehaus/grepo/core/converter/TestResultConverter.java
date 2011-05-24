@@ -21,10 +21,6 @@ package org.codehaus.grepo.core.converter;
  */
 public class TestResultConverter implements ResultConverter<Object> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 5816293101650577217L;
-
-    /** The return value. */
     private static Object returnValue;
 
     public static void setReturnValue(Object returnValue) {
@@ -35,9 +31,6 @@ public class TestResultConverter implements ResultConverter<Object> {
         return returnValue;
     }
 
-    /**
-     * Reset converter.
-     */
     public static void reset() {
         setReturnValue(null);
     }

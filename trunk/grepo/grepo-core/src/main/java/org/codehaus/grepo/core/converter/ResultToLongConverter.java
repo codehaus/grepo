@@ -17,15 +17,12 @@
 package org.codehaus.grepo.core.converter;
 
 /**
- * This converter can convert {@code java.lang.String} and {@code java.lang.Number}
- * objects to {@code java.lang.Long} - for any other type {@code null} will be returned.
+ * This converter can convert {@code java.lang.String} and {@code java.lang.Number} objects to {@code java.lang.Long} -
+ * for any other type {@code null} will be returned.
  *
  * @author dguggi
  */
 public class ResultToLongConverter implements ResultConverter<Long> {
-
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 7018539101417093783L;
 
     /**
      * {@inheritDoc}

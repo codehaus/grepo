@@ -33,11 +33,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author dguggi
  */
-public abstract class AbstractJpaQueryExecutor implements JpaQueryExecutor {
+public abstract class AbstractQueryExecutor implements JpaQueryExecutor {
 
-    private static final long serialVersionUID = 2612860675852635289L;
-
-    private static final Logger logger = LoggerFactory.getLogger(AbstractJpaQueryExecutor.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractQueryExecutor.class);
 
     /**
      * Creates a query using a {@link JpaQueryGenerator}. If none is specified the {@link DefaultQueryGenerator}

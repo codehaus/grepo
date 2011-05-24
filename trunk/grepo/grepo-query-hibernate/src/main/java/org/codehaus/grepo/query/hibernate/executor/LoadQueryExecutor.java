@@ -26,9 +26,6 @@ import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext
  */
 public class LoadQueryExecutor extends GetQueryExecutor {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 2346247169430374822L;
-
     /**
      * {@inheritDoc}
      */

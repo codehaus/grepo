@@ -17,15 +17,12 @@
 package org.codehaus.grepo.core.converter;
 
 /**
- * This converter can convert instances of type {@code java.lang.String} and {@code java.lang.Number} objects to
- * {@code java.lang.Integer} - for any other type {@code null} will be returned.
+ * This converter can convert instances of type {@code java.lang.String} and {@code java.lang.Number} objects to {@code
+ * java.lang.Integer} - for any other type {@code null} will be returned.
  *
  * @author dguggi
  */
 public class ResultToIntegerConverter implements ResultConverter<Integer> {
-
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -5472600337172209288L;
 
     /**
      * {@inheritDoc}

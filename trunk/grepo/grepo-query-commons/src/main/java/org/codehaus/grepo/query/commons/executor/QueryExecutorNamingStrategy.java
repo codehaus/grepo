@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 
 /**
@@ -26,7 +24,8 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @author dguggi
  */
-public interface QueryExecutorNamingStrategy extends Serializable {
+public interface QueryExecutorNamingStrategy {
+
     /**
      * @param qmpi The query method parameter info.
      * @return Returns the executor name.

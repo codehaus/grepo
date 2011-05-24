@@ -19,14 +19,12 @@ package org.codehaus.grepo.query.jpa.repository.custom;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.jpa.TestEntity;
 import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
-import org.codehaus.grepo.query.jpa.executor.AbstractJpaQueryExecutor;
+import org.codehaus.grepo.query.jpa.executor.AbstractQueryExecutor;
 
 /**
  * @author dguggi
  */
-public class CustomQueryExecutor extends AbstractJpaQueryExecutor {
-
-    private static final long serialVersionUID = 4115267235854411243L;
+public class CustomQueryExecutor extends AbstractQueryExecutor {
 
     /**
      * {@inheritDoc}
