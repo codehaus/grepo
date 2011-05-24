@@ -35,10 +35,10 @@ public interface CompilationErrorTestRepository extends GenericProcedureReposito
      * @param p1 Procedure param 1.
      * @param p2 Procedure param 2.
      */
-    @GenericProcedure(sql = "grepo_test.simple_proc1")      //NOPMD
+    @GenericProcedure(sql = "grepo_test.simple_proc1")
     @InParams({
-        @In(name = "p_integer", sqlType = Types.INTEGER),   //NOPMD
-        @In(name = "p_string", sqlType = Types.VARCHAR) })  //NOPMD
+        @In(name = "p_integer", sqlType = Types.INTEGER),
+        @In(name = "p_string", sqlType = Types.VARCHAR) })
     @Out(name = "p_result", sqlType = Types.VARCHAR)
     void simpleProcInvalidConfig1(
             @Param("p_string") String p1,

@@ -34,32 +34,23 @@ import org.springframework.test.context.ContextConfiguration;
 /**
  * @author dguggi
  */
-@SuppressWarnings("PMD")
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
-    /** The procedure to test. */
+
     @Autowired
     private OracleCursorProcedure repo;
 
-    /**
-     * @throws IOException  in case of errors.
-     * @throws FileNotFoundException in case of errors.
-     */
     @Before
     public void before() throws FileNotFoundException, IOException {
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
-    /** after. */
     @After
     public void after() {
         getJdbcTemplate().execute("DROP PACKAGE grepo_test");
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithInvalidResult(String)}.
-     */
     @Test
     public void testWithInvalidResult() {
         Map<String, List<String>> result = repo.executeWithInvalidResult("x");
@@ -67,25 +58,16 @@ public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
         Assert.assertTrue(result.isEmpty());
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithInvalidResultHandler(String)}.
-     */
     @Test(expected = ConfigurationException.class)
     public void testWithInvalidResultHandler() {
         repo.executeWithInvalidResultHandler("x");
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithInvalidResultHandlerId(String)}.
-     */
     @Test(expected = ConfigurationException.class)
     public void testWithInvalidResultHandlerId() {
         repo.executeWithInvalidResultHandlerId("x");
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithRowMapper(String)}.
-     */
     @Test
     public void testWithRowMapper() {
         List<String> result = repo.executeWithRowMapper("abc");
@@ -93,9 +75,6 @@ public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
         Assert.assertEquals("abc", result.get(0));
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithRowMapperId(String)}.
-     */
     @Test
     public void testWithRowMapperId() {
         List<String> result = repo.executeWithRowMapperId("abc");
@@ -103,9 +82,6 @@ public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
         Assert.assertEquals("abc", result.get(0));
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithResultSetExtractor(String)}.
-     */
     @Test
     public void testWithResultsetExtractor() {
         String result = repo.executeWithResultSetExtractor("xyz");
@@ -113,9 +89,6 @@ public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
         Assert.assertEquals("xyz", result);
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithResultSetExtractorId(String)}.
-     */
     @Test
     public void testWithResultsetExtractorId() {
         String result = repo.executeWithResultSetExtractorId("xyz");
@@ -123,9 +96,6 @@ public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
         Assert.assertEquals("xyz", result);
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithRowCallbackHandler(String)}.
-     */
     @Test
     public void testWithRowCallbackHandler() {
         TestRowCallbackHandler.setInvoked(false);
@@ -134,9 +104,6 @@ public class CursorProcedureOracleTest extends AbstractProcedureRepositoryTest {
         TestRowCallbackHandler.setInvoked(false);
     }
 
-    /**
-     * Tests {@link OracleCursorProcedure#executeWithRowCallbackHandlerId(String)}.
-     */
     @Test
     public void testWithRowCallbackHandlerId() {
         TestRowCallbackHandler.setInvoked(false);

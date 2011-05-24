@@ -35,45 +35,35 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class CompilationErrorRepositoryOracleTest extends AbstractProcedureRepositoryTest {
 
-    /** The repo to test. */
     @Autowired
-    private CompilationErrorTestRepository repo; //NOPMD
+    private CompilationErrorTestRepository repo;
 
-    /**
-     * @throws IOException  in case of errors.
-     * @throws FileNotFoundException in case of errors.
-     */
     @Before
     public void before() throws FileNotFoundException, IOException {
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
-    /** after. */
     @After
     public void after() {
         getJdbcTemplate().execute("DROP PACKAGE grepo_test");
     }
 
-    /** Tests with invalid config. */
     @Test(expected = BadSqlGrammarException.class)
     public void testInvalidConfig1() {
-        repo.simpleProcInvalidConfig1("value", 42);    //NOPMD
+        repo.simpleProcInvalidConfig1("value", 42);
     }
 
-    /** Tests with invalid config. */
     @Test(expected = ConfigurationException.class)
     public void testInvalidConfig2() {
         repo.simpleProcInvalidConfig2("value", 42);
     }
 
-    /** Tests with invalid config. */
     @Test(expected = ConfigurationException.class)
     public void testInvalidConfig3() {
         repo.simpleProcInvalidConfig3("value", 42);
     }
 
-    /** Tests with invalid config. */
     @Test(expected = BadSqlGrammarException.class)
     public void testInvalidConfig4() {
         repo.simpleProcInvalidConfig4("value", 42);

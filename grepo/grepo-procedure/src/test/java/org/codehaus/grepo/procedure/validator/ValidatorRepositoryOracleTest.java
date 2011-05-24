@@ -34,38 +34,30 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class ValidatorRepositoryOracleTest extends AbstractProcedureRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private ValidatorTestRepository repo;    //NOPMD
 
-    /**
-     * @throws IOException  in case of errors.
-     * @throws FileNotFoundException in case of errors.
-     */
+    @Autowired
+    private ValidatorTestRepository repo;
+
     @Before
     public void before() throws FileNotFoundException, IOException {
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
-    /** after. */
     @After
     public void after() {
         getJdbcTemplate().execute("DROP PACKAGE grepo_test");
-
         TestResultValidator.reset();
     }
 
-    /** Tests with result validator. */
     @Test
     public void testWithResultValidator() {
-        repo.executeSimpleFunction("value", 42);   //NOPMD
+        repo.executeSimpleFunction("value", 42);
     }
 
-    /** Tests with result validator and compatible exceptions. */
     @Test(expected = RuntimeException.class)
     public void testWithResultValidatorAndCompatibleException1() {
-        TestResultValidator.setExceptionToBeThrown(new RuntimeException()); //NOPMD
+        TestResultValidator.setExceptionToBeThrown(new RuntimeException());
         repo.executeSimpleFunction("value", 42);
     }
 

@@ -27,13 +27,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ScanTestRepository4Impl extends GenericProcedureRepositoryImpl implements ScanTestRepository4 {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -7289330941407054401L;
-
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public void doSomethingSpecial() {
     }
 

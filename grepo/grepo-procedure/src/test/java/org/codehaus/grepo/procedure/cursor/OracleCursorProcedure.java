@@ -30,7 +30,6 @@ import org.hsqldb.Types;
 /**
  * @author dguggi
  */
-@SuppressWarnings("PMD")
 public interface OracleCursorProcedure extends GenericProcedureRepository {
 
     /**
@@ -47,72 +46,52 @@ public interface OracleCursorProcedure extends GenericProcedureRepository {
     Map<String, List<String>> executeWithInvalidResult(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandler = String.class)
     void executeWithInvalidResultHandler(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandlerId = "unknownId")
     void executeWithInvalidResultHandlerId(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     * @return Returns the result list.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandler = TestRowMapper.class)
     List<String> executeWithRowMapper(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     * @return Returns the result list.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandlerId = "testRowMapper")
     List<String> executeWithRowMapperId(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     * @return Returns the result.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandler = TestResultSetExtractor.class)
     String executeWithResultSetExtractor(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     * @return Returns the result.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandlerId = "testResultSetExtractor")
     String executeWithResultSetExtractorId(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     */
+
     @GenericProcedure(sql = "grepo_test.cursor_proc")
     @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandler = TestRowCallbackHandler.class)
     void executeWithRowCallbackHandler(
             @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
-    /**
-     * @param param The parameter.
-     */
-   @GenericProcedure(sql = "grepo_test.cursor_proc")
-   @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandlerId = "testRowCallbackHandler")
-   void executeWithRowCallbackHandlerId(
+
+    @GenericProcedure(sql = "grepo_test.cursor_proc")
+    @Out(name = "p_result", sqlType = OracleTypes.CURSOR, resultHandlerId = "testRowCallbackHandler")
+    void executeWithRowCallbackHandlerId(
            @In(name = "p_string", sqlType = Types.VARCHAR) String param);
 
 }

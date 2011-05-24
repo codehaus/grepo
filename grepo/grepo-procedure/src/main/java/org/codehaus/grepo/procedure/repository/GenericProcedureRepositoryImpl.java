@@ -119,7 +119,6 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * @param genericProcedure The annotation.
      * @throws Exception in case of errors.
      */
-    @SuppressWarnings("PMD")
     protected void validateResult(Object result, ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
         throws Exception {
         GenericValidationUtils.validateResult(pmpi, genericProcedure.resultValidator(), result);

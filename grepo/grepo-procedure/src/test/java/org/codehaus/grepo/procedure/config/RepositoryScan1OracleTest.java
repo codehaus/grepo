@@ -29,13 +29,9 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class RepositoryScan1OracleTest extends AbstractProcedureRepositoryTest {
 
-    /** This is a special repository with custom implementation. */
     @Autowired
-    private ScanTestRepository4 repo4;  //NOPMD
+    private ScanTestRepository4 repo4;
 
-    /**
-     * Tests scan result.
-     */
     @Test
     public void testScanResult() {
         Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository1"));
