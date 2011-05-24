@@ -16,14 +16,12 @@
 
 package org.codehaus.grepo.statistics.collection;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 
 /**
  * @author dguggi
  */
-public interface StatisticsCollectionStrategy extends Serializable {
+public interface StatisticsCollectionStrategy {
 
     /**
      * @param entry The entry to start.

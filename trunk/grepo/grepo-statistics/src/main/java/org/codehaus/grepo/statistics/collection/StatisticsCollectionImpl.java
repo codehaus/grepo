@@ -29,17 +29,10 @@ import org.codehaus.grepo.statistics.domain.StatisticsEntry;
  */
 public class StatisticsCollectionImpl implements StatisticsCollection {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 8116130509981679653L;
 
-    /** The collection entries. */
-    @SuppressWarnings("PMD")
     private Map<String, StatisticsCollectionEntry> collectionEntries = new HashMap<String, StatisticsCollectionEntry>();
-
-    /** Specifies the max number of top duration statistics entries to hold. */
     private Integer maxNumberOfTopDurationStatisticsEntries;
-
-    /** Specifies the max number of recent statistics entries to hold. */
     private Integer maxNumberOfRecentStatisticsEntries;
 
     /**

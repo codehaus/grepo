@@ -31,27 +31,17 @@ import org.slf4j.LoggerFactory;
  */
 public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 9122661088316356000L;
 
-    /** The logger for this class. */
-    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsCollectionEntryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StatisticsCollectionEntryImpl.class);
 
-    /** Holds recent statistics entires. */
     private List<StatisticsEntry> recentStatisticsEntries = new ArrayList<StatisticsEntry>(10);
-
-    /** Holds statistic entries with maximum duration. */
     private List<DurationAwareStatisticsEntry> topDurationStatisticsEntries = //
             new ArrayList<DurationAwareStatisticsEntry>(10);
 
-    /** The number of invocations. */
-    private long numberOfInvocations = 0L; // NOPMD
-
-    /** The max duration statistics entry. */
-    private DurationAwareStatisticsEntry maxDurationStatisticsEntry; // NOPMD
-
-    /** The min duration statistics entry. */
-    private DurationAwareStatisticsEntry minDurationStatisticsEntry; // NOPMD
+    private long numberOfInvocations = 0L;
+    private DurationAwareStatisticsEntry maxDurationStatisticsEntry;
+    private DurationAwareStatisticsEntry minDurationStatisticsEntry;
 
     /**
      * {@inheritDoc}
@@ -190,7 +180,7 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
                 }
             }
         } catch (Exception e) {
-            LOGGER.warn("Unable to ensureTopDurationStatisticsEntriesSize: " + e.getMessage(), e);
+            logger.warn("Unable to ensureTopDurationStatisticsEntriesSize: " + e.getMessage(), e);
         }
     }
 
@@ -226,7 +216,7 @@ public class StatisticsCollectionEntryImpl implements StatisticsCollectionEntry 
                 }
             }
         } catch (Exception e) {
-            LOGGER.warn("Unable to ensureRecentStatisticsEntriesSize: " + e.getMessage(), e);
+            logger.warn("Unable to ensureRecentStatisticsEntriesSize: " + e.getMessage(), e);
         }
     }
 

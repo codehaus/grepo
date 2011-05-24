@@ -33,15 +33,12 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoTestContextLoaderWithDefLoc.class)
 public class MethodStatisticsAspectTest extends AbstractSpringTest {
 
-    /** The test interface. */
     @Autowired
-    private TestStatisticsInterface testInterface; // NOPMD
+    private TestStatisticsInterface testInterface;
 
-    /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection; // NOPMD
+    private StatisticsCollection collection;
 
-    /** Tests some invocations. */
     @Test
     public void testInvocations() {
         testInterface.statsMethod1(216L);

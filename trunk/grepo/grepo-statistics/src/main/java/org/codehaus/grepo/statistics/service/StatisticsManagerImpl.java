@@ -32,19 +32,10 @@ import org.springframework.beans.factory.annotation.Required;
  */
 public class StatisticsManagerImpl implements StatisticsManager {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 6637376776174692991L;
+    private static final Logger logger = LoggerFactory.getLogger(StatisticsManagerImpl.class);
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(StatisticsManagerImpl.class); // NOPMD
-
-    /** The statistics entry factory. */
-    private StatisticsEntryFactory statisticsEntryFactory; // NOPMD
-
-    /** The collection strategy (optional). */
-    private StatisticsCollectionStrategy statisticsCollectionStrategy; // NOPMD
-
-    /** The enabled flag. */
+    private StatisticsEntryFactory statisticsEntryFactory;
+    private StatisticsCollectionStrategy statisticsCollectionStrategy;
     private boolean enabled = true;
 
     /**

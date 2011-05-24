@@ -29,15 +29,12 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoTestContextLoaderWithDefLoc.class)
 public class SimpleStatisticsCollectionPrinterTest extends AbstractSpringTest {
 
-    /** The printer to test. */
     @Autowired
-    private SimpleStatisticsCollectionPrinter printer; // NOPMD
+    private SimpleStatisticsCollectionPrinter printer;
 
-    /** The test interface. */
     @Autowired
-    private TestStatisticsInterface testInterface; // NOPMD
+    private TestStatisticsInterface testInterface;
 
-    /** Test print summary. */
     @Test
     public void testPrintSummary() {
         for (int i = 0; i < 50; i++) {
@@ -46,7 +43,6 @@ public class SimpleStatisticsCollectionPrinterTest extends AbstractSpringTest {
         logger.info(printer.printSummary(true));
     }
 
-    /** Test print detail. */
     @Test
     public void testPrintDetail() {
         for (int i = 0; i < 50; i++) {
