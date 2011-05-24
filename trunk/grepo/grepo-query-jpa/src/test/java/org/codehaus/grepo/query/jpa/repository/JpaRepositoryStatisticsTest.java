@@ -32,20 +32,19 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class JpaRepositoryStatisticsTest extends AbstractJpaRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private JpaTestRepository repo;  //NOPMD
 
-    /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection; // NOPMD
+    private JpaTestRepository repo;
 
-    /** before. */
+    @Autowired
+    private StatisticsCollection collection;
+
     @Before
     public void before() {
         TestEntity entity = new TestEntity("username", 1, "firstname");
         saveFlush(entity);
     }
+
 
     /** Test with named query. */
     @Test

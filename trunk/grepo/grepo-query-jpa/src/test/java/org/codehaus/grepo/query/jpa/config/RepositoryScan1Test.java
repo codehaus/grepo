@@ -28,13 +28,10 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class RepositoryScan1Test extends AbstractJpaRepositoryTest {
-    /** This is a special repository with custom implementation. */
-    @Autowired
-    private ScanTestRepository4 repo4;  //NOPMD
 
-    /**
-     * Tests scan result.
-     */
+    @Autowired
+    private ScanTestRepository4 repo4;
+
     @Test
     public void testScanResult() {
         Assert.assertTrue(getBeanFactory().containsBean("scanTestRepository1"));

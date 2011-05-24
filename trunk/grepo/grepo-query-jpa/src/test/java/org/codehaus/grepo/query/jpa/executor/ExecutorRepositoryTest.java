@@ -35,16 +35,16 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ExecutorRepositoryTest extends AbstractJpaRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private ExecutorTestRepository repo;    //NOPMD
 
-    /** before. */
+    @Autowired
+    private ExecutorTestRepository repo;
+
     @Before
     public void before() {
-        TestEntity entity = new TestEntity("username", 1, "firstname");  //NOPMD
+        TestEntity entity = new TestEntity("username", 1, "firstname");
         saveFlush(entity);
     }
+
 
     /** Test the "find" executor. */
     @Test
@@ -52,7 +52,7 @@ public class ExecutorRepositoryTest extends AbstractJpaRepositoryTest {
         List<TestEntity> list = repo.findByUsername("username");
         Assert.assertEquals(1, list.size());
 
-        list = repo.findByUsername("notExisting");  // NOPMD
+        list = repo.findByUsername("notExisting");
         Assert.assertEquals(0, list.size());
     }
 
