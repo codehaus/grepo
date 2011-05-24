@@ -33,13 +33,9 @@ import org.springframework.jdbc.object.StoredProcedure;
  * @author dguggi
  */
 public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 5634776699258592033L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ProcedureCachingStrategyImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(ProcedureCachingStrategyImpl.class);
 
-    /** The cache. */
     private Map<String, StoredProcedure> cache = new HashMap<String, StoredProcedure>();
 
     /**

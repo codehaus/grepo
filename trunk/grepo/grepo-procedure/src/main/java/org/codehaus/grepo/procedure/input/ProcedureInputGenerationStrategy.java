@@ -16,7 +16,6 @@
 
 package org.codehaus.grepo.procedure.input;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
@@ -27,7 +26,8 @@ import org.codehaus.grepo.procedure.context.ProcedureExecutionContext;
  *
  * @author dguggi
  */
-public interface ProcedureInputGenerationStrategy extends Serializable {
+public interface ProcedureInputGenerationStrategy {
+
     /**
      * @param pmpi The method parameter info.
      * @param context The procedure execution context.

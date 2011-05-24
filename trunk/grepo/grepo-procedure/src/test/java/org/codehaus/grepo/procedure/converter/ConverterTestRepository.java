@@ -36,7 +36,7 @@ public interface ConverterTestRepository extends GenericProcedureRepository {
      * @return Returns a boolean.
      */
     @GenericProcedure(sql = "grepo_test.simple_function", function = true,
-        returnParamName = "p_result")                                       //NOPMD
+        returnParamName = "p_result")
     @Out(name = "p_result", sqlType = Types.VARCHAR)
     boolean executeSimpleFunctionWithImplicitConversion(
             @In(name = "p_string", sqlType = Types.VARCHAR) String p1,

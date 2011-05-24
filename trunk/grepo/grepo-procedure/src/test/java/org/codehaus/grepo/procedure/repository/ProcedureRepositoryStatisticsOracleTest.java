@@ -35,31 +35,23 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class ProcedureRepositoryStatisticsOracleTest extends AbstractProcedureRepositoryTest {
 
-    /** The repo to test. */
     @Autowired
-    private ProcedureTestRepository repo; // NOPMD
+    private ProcedureTestRepository repo;
 
-    /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection; // NOPMD
+    private StatisticsCollection collection;
 
-    /**
-     * @throws IOException in case of errors.
-     * @throws FileNotFoundException in case of errors.
-     */
     @Before
     public void before() throws FileNotFoundException, IOException {
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
-    /** after. */
     @After
     public void after() {
         getJdbcTemplate().execute("DROP PACKAGE grepo_test");
     }
 
-    /** Tests repo with simple configuration. */
     @Test
     public void testSimpleProcWithSimpleConfig() {
         repo.executeSimpleProcWithSimpleConfig("value", 42);

@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.procedure.cache;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
 import org.springframework.jdbc.object.StoredProcedure;
 
@@ -26,7 +24,8 @@ import org.springframework.jdbc.object.StoredProcedure;
  *
  * @author dguggi
  */
-public interface ProcedureCachingStrategy extends Serializable {
+public interface ProcedureCachingStrategy {
+
     /**
      * Get a procedure from the cache.
      *
@@ -36,8 +35,7 @@ public interface ProcedureCachingStrategy extends Serializable {
     StoredProcedure getFromCache(String cacheName);
 
     /**
-     * Add the given {@code storedProcedure} to the cache with the given
-     * {@code cacheName}.
+     * Add the given {@code storedProcedure} to the cache with the given {@code cacheName}.
      *
      * @param storedProcedure The procedure to add.
      * @param cacheName The cache name.

@@ -32,23 +32,16 @@ import org.codehaus.grepo.procedure.annotation.OutParams;
  */
 public interface ProcedureTestRepository extends GenericProcedureRepository {
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     */
-    @GenericProcedure(sql = "grepo_test.simple_proc1")      //NOPMD
+    @GenericProcedure(sql = "grepo_test.simple_proc1")
     @InParams({
-        @In(name = "p_string", sqlType = Types.VARCHAR),    //NOPMD
-        @In(name = "p_integer", sqlType = Types.INTEGER) }) //NOPMD
-    @Out(name = "p_result", sqlType = Types.VARCHAR)        //NOPMD
+        @In(name = "p_string", sqlType = Types.VARCHAR),
+        @In(name = "p_integer", sqlType = Types.INTEGER) })
+    @Out(name = "p_result", sqlType = Types.VARCHAR)
     void executeSimpleProcWithComplexConfig1(
             @Param("p_string") String p1,
             @Param("p_integer") Integer p2);
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     */
+
     @GenericProcedure(sql = "grepo_test.simple_proc1")
     @InParams({
         @In(name = "p_string", sqlType = Types.VARCHAR),
@@ -59,10 +52,7 @@ public interface ProcedureTestRepository extends GenericProcedureRepository {
             @Param("p_string") String p1,
             @Param("p_integer") Integer p2);
 
-    /**
-     * @param p2 Procedure param2.
-     * @param p1 Procedure param1.
-     */
+
     @GenericProcedure(sql = "grepo_test.simple_proc1")
     @Out(name = "p_result", sqlType = Types.VARCHAR, index = 3)
     @InParams({
@@ -72,10 +62,7 @@ public interface ProcedureTestRepository extends GenericProcedureRepository {
             @Param("p_integer") Integer p2,
             @Param("p_string") String p1);
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     */
+
     @GenericProcedure(sql = "grepo_test.simple_proc1")
     @Out(name = "p_result", sqlType = Types.VARCHAR)
     void executeSimpleProcWithSimpleConfig(
@@ -83,43 +70,26 @@ public interface ProcedureTestRepository extends GenericProcedureRepository {
             @In(name = "p_integer", sqlType = Types.INTEGER) Integer p2);
 
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     * @return Returns a map.
-     */
     @GenericProcedure(sql = "grepo_test.simple_proc1")
     @Out(name = "p_result", sqlType = Types.VARCHAR)
     Map<String, String> executeSimpleProcWithMapResult(
             @In(name = "p_string", sqlType = Types.VARCHAR) String p1,
             @In(name = "p_integer", sqlType = Types.INTEGER) Integer p2);
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     * @return Returns a string.
-     */
+
     @GenericProcedure(sql = "grepo_test.simple_proc1", returnParamName = "p_result")
     @Out(name = "p_result", sqlType = Types.VARCHAR)
     String executeSimpleProcWithReturnParamName(
             @In(name = "p_string", sqlType = Types.VARCHAR) String p1,
             @In(name = "p_integer", sqlType = Types.INTEGER) Integer p2);
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     * @return Returns an integer
-     */
+
     @GenericProcedure(sql = "grepo_test.simple_proc2", returnParamName = "p_integer")
     Integer executeSimpleProcWithInOutParam(
             @In(name = "p_string", sqlType = Types.VARCHAR) String p1,
             @InOut(name = "p_integer", sqlType = Types.INTEGER) Integer p2);
 
-    /**
-     * @param p1 Procedure param1.
-     * @param p2 Procedure param2.
-     * @return Returns a string.
-     */
+
     @GenericProcedure(sql = "grepo_test.simple_function", function = true,
         returnParamName = "p_result")
     @Out(name = "p_result", sqlType = Types.VARCHAR)

@@ -36,11 +36,8 @@ import org.springframework.jdbc.object.StoredProcedure;
  * @author dguggi
  */
 public class ProcedureCompilationStrategyImpl implements ProcedureCompilationStrategy {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 530579506570148624L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ProcedureCompilationStrategyImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(ProcedureCompilationStrategyImpl.class);
 
     /**
      * {@inheritDoc}

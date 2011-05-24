@@ -34,21 +34,16 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class ConverterRepositoryOracleTest extends AbstractProcedureRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private ConverterTestRepository repo;    //NOPMD
 
-    /**
-     * @throws IOException  in case of errors.
-     * @throws FileNotFoundException in case of errors.
-     */
+    @Autowired
+    private ConverterTestRepository repo;
+
     @Before
     public void before() throws FileNotFoundException, IOException {
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
-    /** after. */
     @After
     public void after() {
         getJdbcTemplate().execute("DROP PACKAGE grepo_test");
@@ -56,14 +51,12 @@ public class ConverterRepositoryOracleTest extends AbstractProcedureRepositoryTe
         TestResultConverter.reset();
     }
 
-    /** Test repo with implicit conversion. */
     @Test
     public void testWithImplicitConverter() {
         boolean retVal = repo.executeSimpleFunctionWithImplicitConversion("value", 42);
         Assert.assertFalse(retVal);
     }
 
-    /** Test repo with specified converter. */
     @Test
     public void testWithSpecifiedConverter() {
         TestResultConverter.setReturnValue(Boolean.TRUE);
