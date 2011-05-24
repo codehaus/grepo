@@ -27,30 +27,22 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Tests the {@link DemoProcedure}.
- *
  * @author dguggi
  */
-@SuppressWarnings("PMD")
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({
-    DependencyInjectionTestExecutionListener.class,
-    TransactionalTestExecutionListener.class })
+@TestExecutionListeners( {DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 @Transactional
 @ContextConfiguration(locations = "classpath:META-INF/spring/application-context.xml")
 public class DemoProcedureTest {
 
-    /** Repository to test. */
     @Autowired
     private DemoProcedure repo;
 
-    /** Tests {@link DemoProcedure#executeDemoProcedure(String, int)}. */
     @Test
     public void testExecuteDemoProcedure() {
         repo.executeDemoProcedure("test", 1);
     }
 
-    /** Tests {@link DemoProcedure#executeDemoFunction(String, int)}. */
     @Test
     public void testExecuteDemoFunction() {
         repo.executeDemoFunction("test", 1);

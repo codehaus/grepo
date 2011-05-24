@@ -90,8 +90,7 @@ public interface UserRepository extends ReadWriteHibernateRepository<User, Long>
      * @param lastname The lastname.
      * @return Returns a list of users or an empty list.
      */
-    @GenericQuery
-    @HibernateQueryOptions(criteriaGenerator = UserSearchCriteriaGenerator.class)
+    @GenericQuery(queryGenerator = UserSearchCriteriaGenerator.class)
     List<User> findUsersByNameUsingCriteria(@Param("fn") String firstname, @Param("ln") String lastname);
 
     /**
