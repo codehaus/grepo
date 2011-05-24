@@ -12,7 +12,7 @@ Import-Package:
 Import-Template:
  org.aopalliance.*;version="[1.0.0,2.0.0)",
  org.apache.commons.lang.*;version="[2.0.0,3.0.0)",
- org.springframework.*;version="[2.5.0,4.0.0)",
+ org.springframework.*;version="[3.0.0,4.0.0)",
  org.slf4j.*;version="[1.5.0,2.0.0)",
  org.codehaus.grepo.core.*;version="${grepo-osgi.version}",
  org.codehaus.grepo.statistics.*;version="${grepo-osgi.version}"
