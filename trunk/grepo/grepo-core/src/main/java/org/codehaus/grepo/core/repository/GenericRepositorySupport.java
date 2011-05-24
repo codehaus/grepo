@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.core.repository;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -25,13 +23,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * @author dguggi
  */
-public class GenericRepositorySupport implements Serializable {
-
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -7232606145031376090L;
+public class GenericRepositorySupport {
 
     /** The application context. */
-    private transient ApplicationContext applicationContext;
+    private ApplicationContext applicationContext;
 
     /** The transaction template to use. */
     private TransactionTemplate transactionTemplate;

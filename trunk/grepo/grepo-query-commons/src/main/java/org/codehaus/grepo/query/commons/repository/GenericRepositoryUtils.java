@@ -24,6 +24,10 @@ import java.lang.reflect.Type;
  */
 public final class GenericRepositoryUtils {
 
+
+    private GenericRepositoryUtils() {
+    }
+
     /**
      * Retrieves the entity class for the given {@code clazz} via introspection.
      *

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.jpa.repository; // NOPMD
+package org.codehaus.grepo.query.jpa.repository;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -30,12 +30,14 @@ import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.commons.generator.GeneratorUtils;
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport;
 import org.codehaus.grepo.query.jpa.annotation.JpaFlushMode;
 import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
-import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
-import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContextImpl;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContextImpl;
 import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutor;
+import org.codehaus.grepo.query.jpa.generator.JpaQueryGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -52,16 +54,12 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  */
-public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
-                implements JpaRepository<T>, InitializingBean {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -5949364806425967947L;
+public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> implements JpaRepository<T>,
+        InitializingBean {
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(DefaultJpaRepository.class);
 
     /** Flag to indicate whether or not the native entity manager should be exposed. */
     private boolean exposeNativeEntityManager = true;
@@ -81,24 +79,19 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
     /** The jpa flush mode to set. */
     private JpaFlushMode flushMode = JpaFlushMode.UNDEFINED;
 
-    /**
-     * Default constructor.
-     */
+
     public DefaultJpaRepository() {
         super();
     }
 
-    /**
-     * @param entityType The main entity type.
-     */
     public DefaultJpaRepository(Class<T> entityType) {
         super(entityType);
     }
 
+
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) throws Exception {
         createStatisticsEntry(qmpi);
         try {
@@ -116,11 +109,10 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public void afterPropertiesSet() throws Exception {
         EntityManagerFactory emf = getEntityManagerFactory();
         if (emf instanceof EntityManagerFactoryInfo) {
-            JpaDialect dialect = ((EntityManagerFactoryInfo) emf).getJpaDialect();
+            JpaDialect dialect = ((EntityManagerFactoryInfo)emf).getJpaDialect();
             if (dialect != null) {
                 setJpaDialect(dialect);
             }
@@ -132,13 +124,16 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      * @param genericQuery The annotation.
      * @return Returns the result of query execution.
      */
+    @SuppressWarnings("unchecked")
     protected Object executeQuery(final QueryMethodParameterInfo qmpi, final GenericQuery genericQuery) {
-        Class<? extends QueryExecutor<?>> clazz = (Class<? extends QueryExecutor<?>>)getQueryExecutorFindingStrategy()
-            .findExecutor(genericQuery.queryExecutor(), qmpi);
-
+        Class<? extends QueryExecutor<?>> clazz =
+            (Class<? extends QueryExecutor<?>>)getQueryExecutorFindingStrategy().findExecutor(
+                genericQuery.queryExecutor(), qmpi);
         final JpaQueryExecutor executor = (JpaQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
+        GeneratorUtils.validateQueryGenerator(genericQuery.queryGenerator(), JpaQueryGenerator.class);
 
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 Object result = executor.execute(qmpi, context);
@@ -153,7 +148,6 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
     /**
      * @return Returns {@code true} if the entity manager was newly created.
      */
-    @SuppressWarnings("PMD")
     protected CurrentEntityManagerHolder getCurrentEntityManager() {
         boolean isNewEm = false;
         EntityManager em = getTransactionalEntityManager();
@@ -187,15 +181,15 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      * Creates a hibernate query execution context.
      *
      * @param emHolder The mandatory entityManagerHolder.
-     * @param doExposeNativeEntityManager Controls whether to expose the native JPA entity manager
-     *        to callback code.
+     * @param doExposeNativeEntityManager Controls whether to expose the native JPA entity manager to callback code.
      * @return Returns the newly created {@link HibernateQueryExecutionContext}.
      */
     protected JpaQueryExecutionContext createQueryExecutionContext(CurrentEntityManagerHolder emHolder,
-            boolean doExposeNativeEntityManager) {
+                                                                   boolean doExposeNativeEntityManager) {
         JpaQueryExecutionContextImpl context = new JpaQueryExecutionContextImpl();
         context.setApplicationContext(getApplicationContext());
         context.setMaxResults(getMaxResults());
+        context.setQueryNamingStrategy(getQueryNamingStrategy());
 
         if (doExposeNativeEntityManager) {
             context.setEntityManager(emHolder.getEntityManager());
@@ -216,16 +210,16 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
         Class<?>[] ifcs = null;
         EntityManagerFactory emf = getEntityManagerFactory();
         if (emf instanceof EntityManagerFactoryInfo) {
-            Class<?> entityManagerInterface = ((EntityManagerFactoryInfo) emf).getEntityManagerInterface();
+            Class<?> entityManagerInterface = ((EntityManagerFactoryInfo)emf).getEntityManagerInterface();
             if (entityManagerInterface != null) {
-                ifcs = new Class[] {entityManagerInterface};
+                ifcs = new Class[] {entityManagerInterface };
             }
         }
         if (ifcs == null) {
             ifcs = ClassUtils.getAllInterfacesForClass(em.getClass());
         }
-        return (EntityManager) Proxy.newProxyInstance(
-                em.getClass().getClassLoader(), ifcs, new CloseSuppressingInvocationHandler(em));
+        return (EntityManager)Proxy.newProxyInstance(em.getClass().getClassLoader(), ifcs,
+            new CloseSuppressingInvocationHandler(em));
     }
 
     /**
@@ -249,9 +243,8 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      * @param genericQuery The annotation.
      * @throws Exception in case of errors.
      */
-    @SuppressWarnings("PMD")
     protected void validateResult(Object result, QueryMethodParameterInfo qmpi, GenericQuery genericQuery)
-            throws Exception {
+        throws Exception {
         GenericValidationUtils.validateResult(qmpi, genericQuery.resultValidator(), result);
     }
 
@@ -277,6 +270,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
     /**
      * Convert the given runtime exception to an appropriate exception from the {@code org.springframework.dao}
      * hierarchy if necessary, or return the exception itself if it is not persistence related.
+     *
      * @param ex runtime exception that occured, which may or may not be JPA-related
      * @return the corresponding DataAccessException instance if wrapping should occur, otherwise the raw exception
      */
@@ -324,6 +318,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
 
     /**
      * Flush the given the Hibernate session if necessary.
+     *
      * @param emHolder The session holder.
      * @param queryOptions the query options.
      */
@@ -408,6 +403,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      * @author dguggi
      */
     protected class CurrentEntityManagerHolder {
+
         /** The is new flag. */
         private boolean newEm;
 
@@ -460,15 +456,16 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
 
         /**
          * Creates a new transaction callback.
-         * @param qmpi The query method parameter info. Note that this parameter is null for methods
-         *        which are not annotated with {@code GenericQuery}.
-         * @param doExposeNativeEntityManager Controls whether to expose the native JPA entity manager
-         *        to callback code.
+         *
+         * @param qmpi The query method parameter info. Note that this parameter is null for methods which are not
+         *            annotated with {@code GenericQuery}.
+         * @param doExposeNativeEntityManager Controls whether to expose the native JPA entity manager to callback code.
          * @return Returns the call back.
          */
         public TransactionCallback<Object> create(final QueryMethodParameterInfo qmpi,
-                final boolean doExposeNativeEntityManager) {
+                                                  final boolean doExposeNativeEntityManager) {
             return new TransactionCallback<Object>() {
+
                 public Object doInTransaction(TransactionStatus status) {
                     CurrentEntityManagerHolder emHolder = getCurrentEntityManager();
 
@@ -508,8 +505,9 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      * @author dguggi
      */
     private class CloseSuppressingInvocationHandler implements InvocationHandler {
+
         /** The target entity manager. */
-        private final EntityManager target; // NOPMD
+        private final EntityManager target;
 
         /**
          * @param target The target to set.

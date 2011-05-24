@@ -37,17 +37,20 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- hibernate-core and required libs -->
+        <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>3.3.2.GA</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.9.0.GA</version>
             <optional>true</optional>
         </dependency>
 
@@ -65,5 +68,6 @@
             <scope>test</scope>
             <classifier>tests</classifier>
         </dependency>
+
     </dependencies>
 </project>

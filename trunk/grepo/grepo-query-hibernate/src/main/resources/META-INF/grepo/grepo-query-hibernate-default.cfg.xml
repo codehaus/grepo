@@ -27,9 +27,7 @@
         <property name="pattern" ref="grepo.methodNamePattern" />
     </bean>
 
-    <bean id="grepo.queryExecutorFactory" class="org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutorFactoryImpl">
-        <property name="queryNamingStrategy" ref="grepo.queryNamingStrategy" />
-    </bean>
+    <bean id="grepo.queryExecutorFactory" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFactoryImpl" />
 
     <bean id="grepo.queryExecutorFindingStrategy" class="org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategyImpl">
         <property name="executorNamingStrategy" ref="grepo.queryExecutorNamingStrategy" />

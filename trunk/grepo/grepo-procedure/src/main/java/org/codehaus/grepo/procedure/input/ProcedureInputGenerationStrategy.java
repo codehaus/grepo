@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.context.ProcedureExecutionContext;
 
 /**
  * Generates an input map for a procedure call.

@@ -17,11 +17,13 @@
 package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.query.commons.generator.QueryGenerator;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
+import org.hibernate.Query;
 
 /**
  * @author dguggi
  */
 public interface HibernateQueryGenerator
-    extends QueryGenerator<HibernateQueryParam> {
+    extends QueryGenerator<Query, HibernateQueryExecutionContext> {
 
 }

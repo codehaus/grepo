@@ -37,6 +37,5 @@ public interface GenericQueryRepository<T> extends GenericRepository {
      * @return Returns the result the generic query invocation.
      * @throws Exception In case of errors.
      */
-    @SuppressWarnings("PMD")
-    Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) throws Exception;  // NOPMD
+    Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery genericQuery) throws Exception;
 }

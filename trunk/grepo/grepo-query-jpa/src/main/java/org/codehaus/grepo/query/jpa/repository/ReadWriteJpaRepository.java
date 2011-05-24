@@ -22,12 +22,10 @@ import javax.persistence.LockModeType;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public interface ReadWriteJpaRepository<T, PK extends Serializable>
-    extends ReadOnlyJpaRepository<T, PK> {
+public interface ReadWriteJpaRepository<T, PK extends Serializable> extends ReadOnlyJpaRepository<T, PK> {
 
     /**
      * Locks the entity.

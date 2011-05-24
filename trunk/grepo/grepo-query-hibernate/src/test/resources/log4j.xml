@@ -36,6 +36,10 @@
     </category>
      -->
 
+<category name="org.codehaus.grepo">
+        <priority value="DEBUG" />
+    </category>
+
     <root>
         <priority value="ERROR" />
         <appender-ref ref="CONSOLE" />

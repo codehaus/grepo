@@ -26,7 +26,10 @@ import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 /**
  * @author dguggi
  */
-public class StatisticsCollectionUtils {
+public final class StatisticsCollectionUtils {
+
+    private StatisticsCollectionUtils() {
+    }
 
     /**
      * @param collection The collection.

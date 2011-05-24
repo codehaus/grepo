@@ -23,6 +23,9 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
  */
 public final class BeanDefinitionParserHelper {
 
+    private BeanDefinitionParserHelper() {
+    }
+
     /**
      * @param configContext The config context.
      * @param source The source.

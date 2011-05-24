@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.query.commons.repository;
 
-import java.io.Serializable;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
@@ -32,12 +30,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author dguggi
  */
-public class GenericQueryMethodInterceptor implements MethodInterceptor, Serializable {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 4474558816402823169L;
+public class GenericQueryMethodInterceptor implements MethodInterceptor {
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericQueryMethodInterceptor.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericQueryMethodInterceptor.class);
 
     /**
      * {@inheritDoc}
@@ -55,8 +50,8 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor, Seriali
         }
 
         GenericQueryRepository<?> repo = (GenericQueryRepository<?>)invocation.getThis();
-        QueryMethodParameterInfo qmpi = new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation
-            .getArguments(), repo.getEntityClass());
+        QueryMethodParameterInfo qmpi =
+            new QueryMethodParameterInfoImpl(invocation.getMethod(), invocation.getArguments(), repo.getEntityClass());
 
         logger.debug("Invoking method '{}'", qmpi.getMethodName());
 
@@ -64,9 +59,10 @@ public class GenericQueryMethodInterceptor implements MethodInterceptor, Seriali
             GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
             if (annotation == null) {
                 // no GenericQuery annotation present, so do not invoke via aop...
-                logger.debug("Method '{}' is not annotated with @GenericQuery - "
-                    + "invocation will proceed to implementation '{}'", qmpi.getMethodName(),
-                        repo.getClass().getName());
+                logger
+                    .debug("Method '{}' is not annotated with @GenericQuery - "
+                        + "invocation will proceed to implementation '{}'", qmpi.getMethodName(), repo.getClass()
+                        .getName());
                 result = invocation.proceed();
             } else {
                 result = repo.executeGenericQuery(qmpi, annotation);

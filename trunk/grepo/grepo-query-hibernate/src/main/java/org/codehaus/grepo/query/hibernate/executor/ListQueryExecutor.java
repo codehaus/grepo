@@ -18,9 +18,8 @@ package org.codehaus.grepo.query.hibernate.executor;
 
 import java.util.List;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 
@@ -37,18 +36,12 @@ public class ListQueryExecutor extends AbstractHibernateQueryExecutor {
      * {@inheritDoc}
      */
     public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
-        GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
-        HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
-
-        List<?> result = null;
-        if (hasValidCriteriaGenerator(queryOptions)) {
-            Criteria criteria = prepareCriteria(genericQuery, qmpi, context);
-            result = (List<?>)criteria.list();
-        } else {
-            Query query = prepareQuery(genericQuery, qmpi, context);
-            result = (List<?>)query.list();
+        Criteria criteria = createCriteria(qmpi, context);
+        if (criteria == null) {
+            Query query = createQuery(qmpi, context);
+            return (List<?>)query.list();
         }
-        return result;
+        return (List<?>)criteria.list();
     }
 
     /**

@@ -16,8 +16,8 @@
 
 package org.codehaus.grepo.query.hibernate.executor;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 import org.hibernate.Query;
 
 /**
@@ -27,16 +27,13 @@ import org.hibernate.Query;
  */
 public class IterateQueryExecutor extends AbstractHibernateQueryExecutor {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = -3420034118202022987L;
 
     /**
      * {@inheritDoc}
      */
     public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
-        GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
-
-        Query query = prepareQuery(genericQuery, qmpi, context);
+        Query query = createQuery(qmpi, context);
         return query.iterate();
     }
 

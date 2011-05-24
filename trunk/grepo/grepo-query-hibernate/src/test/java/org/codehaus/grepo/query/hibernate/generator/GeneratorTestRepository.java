@@ -20,47 +20,37 @@ import org.codehaus.grepo.core.annotation.Param;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepository;
 import org.codehaus.grepo.query.hibernate.TestEntity;
-import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 
 /**
  * @author dguggi
  */
 public interface GeneratorTestRepository extends GenericQueryRepository<TestEntity> {
-    /**
-     * @param username The username.
-     * @return Returns the entity.
-     */
-    @GenericQuery(queryGenerator = TestHQLGenerator.class)
-    TestEntity getWithHQLGenerator(
-            @Param("un") String username);
 
-    /**
-     * @return Returns the entity.
-     */
+    @GenericQuery(queryGenerator = TestHQLGenerator.class)
+    TestEntity getWithHQLGenerator(@Param("un") String username);
+
     @GenericQuery(queryGenerator = TestHQLGeneratorUsingDynParams.class)
     TestEntity getWithHQLGeneratorUsingDynParams();
 
-    /**
-     * @param username  The username.
-     * @return Returns the entity.
-     */
     @GenericQuery(queryGenerator = TestNativeGenerator.class)
-    TestEntity getWithNativeGenerator(
-        @Param("un") String username);
+    TestEntity getWithNativeGenerator(@Param("un") String username);
 
-    /**
-     * @return Returns the entity.
-     */
-    @GenericQuery(
-        queryGenerator = TestNativeGeneratorUsingDynParams.class)
+    @GenericQuery(queryGenerator = TestNativeGeneratorUsingDynParams.class)
     TestEntity getWithNativeGeneratorUsingDynParams();
 
-    /**
-     * @param usernames The usernames.
-     * @return Returns the entity.
-     */
-    @GenericQuery
-    @HibernateQueryOptions(criteriaGenerator = TestCriteriaGenerator.class)
+    @GenericQuery(queryGenerator = TestCriteriaGenerator.class)
     TestEntity getWithCriteriaGenerator(@Param("usernames") String... usernames);
+
+    @GenericQuery(queryGenerator = TestQueryDslQueryGenerator.class)
+    TestEntity getWithQueryDslQueryGenerator(@Param("firstname") String firstname);
+
+    /**
+     * Uses an invalid generator (does not extend from {@link HibernateQueryGenerator} or
+     * {@link HibernateCriteriaGenerator}).
+     *
+     * @return Returns nothing as grepo will throw a {@link ConfigurationException}.
+     */
+    @GenericQuery(queryGenerator = TestInvalidGenerator.class)
+    TestEntity getWithInvalidGenerator();
 
 }

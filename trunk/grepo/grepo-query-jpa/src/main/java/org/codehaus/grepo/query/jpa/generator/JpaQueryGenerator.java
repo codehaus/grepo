@@ -16,16 +16,14 @@
 
 package org.codehaus.grepo.query.jpa.generator;
 
-import java.util.Map;
+import javax.persistence.Query;
 
 import org.codehaus.grepo.query.commons.generator.QueryGenerator;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
  * @author dguggi
  */
-public interface JpaQueryGenerator extends QueryGenerator<JpaQueryParam> {
-    /**
-     * @return Returns a map of hints.
-     */
-    Map<String, Object> getHints();
+public interface JpaQueryGenerator extends QueryGenerator<Query, JpaQueryExecutionContext> {
+
 }

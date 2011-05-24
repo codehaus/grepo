@@ -18,23 +18,16 @@ package org.codehaus.grepo.query.hibernate.repository;
 
 import java.io.Serializable;
 
-import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContext;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
-    extends DefaultHibernateRepository<T> implements ReadOnlyHibernateRepository<T,PK> {
+public class ReadOnlyHibernateRepositoryImpl<T, PK extends Serializable> extends DefaultHibernateRepository<T>
+        implements ReadOnlyHibernateRepository<T, PK> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 1704248807697149405L;
-
-    /**
-     * Default constructor.
-     */
     public ReadOnlyHibernateRepositoryImpl() {
         super();
     }
@@ -49,9 +42,11 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked") // NOPMD
+    @SuppressWarnings("unchecked")
+    // NOPMD
     public T load(final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().load(getEntityClass(), id);
@@ -66,6 +61,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T load(final String entityName, final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().load(entityName, id);
@@ -80,6 +76,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T get(final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().get(getEntityClass(), id);
@@ -94,6 +91,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T get(final String entityName, final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().get(entityName, id);
@@ -107,6 +105,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void refresh(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().refresh(entity);
@@ -121,6 +120,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void evict(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().evict(entity);
@@ -135,6 +135,7 @@ public class ReadOnlyHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public boolean contains(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().contains(entity);

@@ -36,8 +36,8 @@ import org.springframework.util.Assert;
  * @param <T> The entity class type.
  */
 public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(JpaRepositoryFactoryBean.class); // NOPMD
+
+    private static final Logger logger = LoggerFactory.getLogger(JpaRepositoryFactoryBean.class);
 
     /** The entity manager factory. */
     private EntityManagerFactory entityManagerFactory;
@@ -72,8 +72,8 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
      */
     protected void initEntityManagerFactory() {
         if (entityManagerFactory == null && isAutoDetectBeans()) {
-            Map<String, EntityManagerFactory> beans = getApplicationContext()
-                .getBeansOfType(EntityManagerFactory.class);
+            Map<String, EntityManagerFactory> beans =
+                getApplicationContext().getBeansOfType(EntityManagerFactory.class);
 
             if (beans.isEmpty()) {
                 logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, EntityManagerFactory.class.getName());

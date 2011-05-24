@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.codehaus.grepo</groupId>
     <artifactId>grepo</artifactId>
@@ -20,14 +21,16 @@
     <properties>
         <!-- build properties -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <build.jdk.version>1.5</build.jdk.version>
-        <grepo-buildtools.version>1.5.0</grepo-buildtools.version>
+        <build.jdk.version>1.6</build.jdk.version>
+        <grepo-buildtools.version>1.6.0-SNAPSHOT</grepo-buildtools.version>
         <grepo-osgi.version>2.0.0</grepo-osgi.version>
+        <grepo-osgi.executionenv>JavaSE-1.6</grepo-osgi.executionenv>
         <eclipseplugin.addVersionToProjectName>true</eclipseplugin.addVersionToProjectName>
 
         <spring.version>3.0.5.RELEASE</spring.version>
         <slf4j.version>1.6.1</slf4j.version>
         <aspectj.version>1.6.9</aspectj.version>
+        <hibernate.version>3.3.2.GA</hibernate.version>
 
         <grepo.maillist.subscribe.baseurl>http://xircles.codehaus.org/manage_email</grepo.maillist.subscribe.baseurl>
         <grepo.maillist.unsubscribe.baseurl>http://xircles.codehaus.org/lists</grepo.maillist.unsubscribe.baseurl>
@@ -190,7 +193,25 @@
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-entitymanager</artifactId>
-                <version>3.3.2.GA</version>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${hibernate.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javassist</groupId>
+                <artifactId>javassist</artifactId>
+                <version>3.9.0.GA</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mysema.querydsl</groupId>
+                <artifactId>querydsl-jpa</artifactId>
+                <version>2.1.2</version>
             </dependency>
 
             <dependency>
@@ -303,29 +324,15 @@
                     <configuration>
                         <additionalBuildcommands>
                             <buildcommand>net.sf.eclipsecs.core.CheckstyleBuilder</buildcommand>
-                            <buildcommand>net.sourceforge.pmd.eclipse.plugin.pmdBuilder</buildcommand>
                         </additionalBuildcommands>
                         <additionalProjectnatures>
                             <projectnature>net.sf.eclipsecs.core.CheckstyleNature</projectnature>
-                            <projectnature>net.sourceforge.pmd.eclipse.plugin.pmdNature</projectnature>
                         </additionalProjectnatures>
                         <addVersionToProjectName>${eclipseplugin.addVersionToProjectName}</addVersionToProjectName>
                         <additionalConfig>
                             <file>
                                 <name>.checkstyle</name>
                                 <location>/dev/config/checkstyle/checkstyle-config.xml</location>
-                            </file>
-                            <file>
-                                <name>.pmd</name>
-                                <content>
-                                    <![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-                                        <pmd>
-                                            <useProjectRuleSet>true</useProjectRuleSet>
-                                            <ruleSetFile>${pmd.ruleset-file}</ruleSetFile>
-                                            <includeDerivedFiles>false</includeDerivedFiles>
-                                            <violationsAsErrors>true</violationsAsErrors>
-                                        </pmd>]]>
-                                </content>
                             </file>
                         </additionalConfig>
                     </configuration>
@@ -457,21 +464,6 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>cobertura-maven-plugin</artifactId>
                 <version>2.4</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <format>xml</format>
-                    <linkXref>true</linkXref>
-                    <sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-                    <minimumTokens>100</minimumTokens>
-                    <targetJdk>${build.jdk.version}</targetJdk>
-                    <rulesets>
-                        <ruleset>/dev/config/pmd/grepo-ruleset.xml</ruleset>
-                    </rulesets>
-                </configuration>
             </plugin>
         </plugins>
     </reporting>

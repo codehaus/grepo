@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.repository;  // NOPMD
+package org.codehaus.grepo.query.hibernate.repository; // NOPMD
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -25,15 +25,19 @@ import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.commons.generator.GeneratorUtils;
 import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
-import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContext;
-import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContextImpl;
+import org.codehaus.grepo.query.hibernate.context.ArgumentTypeFactory;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContextImpl;
 import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutor;
 import org.codehaus.grepo.query.hibernate.filter.FilterDescriptor;
+import org.codehaus.grepo.query.hibernate.generator.HibernateCriteriaGenerator;
+import org.codehaus.grepo.query.hibernate.generator.HibernateQueryGenerator;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
@@ -59,14 +63,12 @@ import org.springframework.transaction.support.TransactionCallback;
  */
 public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport<T> implements HibernateRepository<T> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 8484268435843778271L;
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(DefaultHibernateRepository.class);
 
     /** The session factory. */
     private SessionFactory sessionFactory;
+
+    private ArgumentTypeFactory argumentTypeFactory;
 
     /** Flag to indicate whether or not the native session should be exposed. */
     private boolean exposeNativeSession = true;
@@ -105,7 +107,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
     private SQLExceptionTranslator jdbcExceptionTranslator;
 
     /** The default jdbc exception translator. */
-    private SQLExceptionTranslator defaultJdbcExceptionTranslator; // NOPMD
+    private SQLExceptionTranslator defaultJdbcExceptionTranslator;
 
     /** The default fetch size for criteria and queries. */
     private Integer fetchSize;
@@ -148,11 +150,15 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @param genericQuery The annotation
      * @return Returns the result of the query execution.
      */
+    @SuppressWarnings("unchecked")
     protected Object executeQuery(final QueryMethodParameterInfo qmpi, final GenericQuery genericQuery) {
-        Class<? extends QueryExecutor<?>> clazz = (Class<? extends QueryExecutor<?>>)getQueryExecutorFindingStrategy()
-            .findExecutor(genericQuery.queryExecutor(), qmpi);
+        Class<? extends QueryExecutor<?>> clazz =
+            (Class<? extends QueryExecutor<?>>)getQueryExecutorFindingStrategy().findExecutor(
+                genericQuery.queryExecutor(), qmpi);
 
         final HibernateQueryExecutor executor = (HibernateQueryExecutor)getQueryExecutorFactory().createExecutor(clazz);
+        GeneratorUtils.validateQueryGenerator(genericQuery.queryGenerator(), HibernateQueryGenerator.class,
+            HibernateCriteriaGenerator.class);
 
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
 
@@ -176,7 +182,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @return Returns the newly created {@link HibernateQueryExecutionContext}.
      */
     protected HibernateQueryExecutionContext createQueryExecutionContext(CurrentSessionHolder sessionHolder,
-            boolean doExposeNativeSession) {
+                                                                         boolean doExposeNativeSession) {
         HibernateQueryExecutionContextImpl context = new HibernateQueryExecutionContextImpl();
         context.setApplicationContext(getApplicationContext());
         context.setCaching(getCaching());
@@ -184,6 +190,8 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
         context.setMaxResults(getMaxResults());
         context.setFetchSize(getFetchSize());
         context.setSessionFactory(getSessionFactory());
+        context.setQueryNamingStrategy(getQueryNamingStrategy());
+        context.setArgumentTypeFactory(getArgumentTypeFactory());
 
         if (doExposeNativeSession) {
             context.setSession(sessionHolder.getSession());
@@ -202,14 +210,14 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      */
     protected Session createSessionProxy(Session session) {
         Class<?>[] sessionIfcs = null;
-        Class<?> mainIfc = (session instanceof org.hibernate.classic.Session ? org.hibernate.classic.Session.class
-            : Session.class);
+        Class<?> mainIfc =
+            (session instanceof org.hibernate.classic.Session ? org.hibernate.classic.Session.class : Session.class);
         if (session instanceof EventSource) {
-            sessionIfcs = new Class[] { mainIfc, EventSource.class };
+            sessionIfcs = new Class[] {mainIfc, EventSource.class };
         } else if (session instanceof SessionImplementor) {
-            sessionIfcs = new Class[] { mainIfc, SessionImplementor.class };
+            sessionIfcs = new Class[] {mainIfc, SessionImplementor.class };
         } else {
-            sessionIfcs = new Class[] { mainIfc };
+            sessionIfcs = new Class[] {mainIfc };
         }
         return (Session)Proxy.newProxyInstance(session.getClass().getClassLoader(), sessionIfcs,
             new CloseSuppressingInvocationHandler(session));
@@ -237,8 +245,8 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @throws Exception in case of errors.
      */
     @SuppressWarnings("PMD")
-    protected void validateResult(Object result, QueryMethodParameterInfo qmpi, GenericQuery genericQuery)
-            throws Exception {
+    protected void validateResult(Object result, QueryMethodParameterInfo qmpi, //
+                                  GenericQuery genericQuery) throws Exception {
         GenericValidationUtils.validateResult(qmpi, genericQuery.resultValidator(), result);
     }
 
@@ -250,8 +258,9 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
         if (isAlwaysUseNewSession()) {
             session = SessionFactoryUtils.getNewSession(getSessionFactory(), getEntityInterceptor());
         } else if (isAllowCreate()) {
-            session = SessionFactoryUtils.getSession(getSessionFactory(), getEntityInterceptor(),
-                getJdbcExceptionTranslator());
+            session =
+                SessionFactoryUtils.getSession(getSessionFactory(), getEntityInterceptor(),
+                    getJdbcExceptionTranslator());
         } else if (SessionFactoryUtils.hasTransactionalSession(getSessionFactory())) {
             session = SessionFactoryUtils.getSession(getSessionFactory(), false);
         } else {
@@ -262,8 +271,9 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
             }
         }
 
-        boolean existingTransaction = (!isAlwaysUseNewSession() && (!isAllowCreate() || SessionFactoryUtils
-            .isSessionTransactional(session, getSessionFactory())));
+        boolean existingTransaction =
+            (!isAlwaysUseNewSession() && (!isAllowCreate() || SessionFactoryUtils.isSessionTransactional(session,
+                getSessionFactory())));
 
         if (!existingTransaction) {
             logger.debug("No existing transactional Hibernate Session for generic repository execution found");
@@ -304,12 +314,12 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @param queryOptions the query options.
      * @throws HibernateException in case of Hibernate flushing errors
      */
-    protected void flushIfNecessary(CurrentSessionHolder sessionHolder, HibernateQueryOptions queryOptions)
-            throws HibernateException {
+    protected void flushIfNecessary(CurrentSessionHolder sessionHolder, //
+                                    HibernateQueryOptions queryOptions) throws HibernateException {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
-        if (flushModeToUse != null && (flushModeToUse == HibernateFlushMode.EAGER
-                || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL))) {
+        if (flushModeToUse != null && (flushModeToUse == HibernateFlushMode.EAGER //
+            || (!sessionHolder.isExistingTransaction() && flushModeToUse != HibernateFlushMode.MANUAL))) {
             logger.debug("Eagerly flushing Hibernate session");
             sessionHolder.getSession().flush();
         }
@@ -482,7 +492,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
     }
 
     public void setFilter(FilterDescriptor fd) {
-        this.filters = new FilterDescriptor[] { fd };
+        this.filters = new FilterDescriptor[] {fd };
     }
 
     public void setFilters(FilterDescriptor[] fds) {
@@ -499,6 +509,14 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
+    }
+
+    public ArgumentTypeFactory getArgumentTypeFactory() {
+        return argumentTypeFactory;
+    }
+
+    public void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory) {
+        this.argumentTypeFactory = argumentTypeFactory;
     }
 
     public boolean isExposeNativeSession() {
@@ -689,7 +707,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
          * @return Returns the call back.
          */
         public TransactionCallback<Object> create(final QueryMethodParameterInfo qmpi,
-            final boolean doExposeNativeSession) {
+                                                  final boolean doExposeNativeSession) {
             return new TransactionCallback<Object>() {
 
                 public Object doInTransaction(TransactionStatus status) {

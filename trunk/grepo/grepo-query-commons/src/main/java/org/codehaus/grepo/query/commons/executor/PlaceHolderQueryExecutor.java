@@ -17,6 +17,7 @@
 package org.codehaus.grepo.query.commons.executor;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.commons.context.PlaceHolderQueryExecutionContext;
 import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
 
 /**

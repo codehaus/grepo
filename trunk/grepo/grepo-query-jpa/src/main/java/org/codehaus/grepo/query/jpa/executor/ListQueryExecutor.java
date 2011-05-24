@@ -18,25 +18,21 @@ package org.codehaus.grepo.query.jpa.executor;
 
 import javax.persistence.Query;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
- * Default "list" query executor.
- *
  * @author dguggi
  */
 public class ListQueryExecutor extends AbstractJpaQueryExecutor {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = -9187001680430949364L;
 
     /**
      * {@inheritDoc}
      */
     public Object execute(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
-        GenericQuery annotation = qmpi.getMethodAnnotation(GenericQuery.class);
-        Query query = prepareQuery(annotation, qmpi, context);
+        Query query = createQuery(qmpi, context);
         return query.getResultList();
     }
 

@@ -21,14 +21,13 @@ import java.util.List;
 import javax.persistence.NonUniqueResultException;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
- * Default "get" query executor.
- *
  * @author dguggi
  */
 public class GetQueryExecutor extends ListQueryExecutor {
-    /** SerialVersionUid. */
+
     private static final long serialVersionUID = 1363362435873145991L;
 
     /**

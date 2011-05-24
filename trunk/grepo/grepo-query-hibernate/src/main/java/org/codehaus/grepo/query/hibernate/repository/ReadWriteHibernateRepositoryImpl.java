@@ -18,25 +18,18 @@ package org.codehaus.grepo.query.hibernate.repository;
 
 import java.io.Serializable;
 
-import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutionContext;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 import org.hibernate.LockMode;
 import org.hibernate.ReplicationMode;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
-    extends ReadOnlyHibernateRepositoryImpl<T,PK> implements ReadWriteHibernateRepository<T,PK> { // NOPMD
+public class ReadWriteHibernateRepositoryImpl<T, PK extends Serializable> extends
+        ReadOnlyHibernateRepositoryImpl<T, PK> implements ReadWriteHibernateRepository<T, PK> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 3472620524994344012L;
-
-    /**
-     * Default constructor.
-     */
     public ReadWriteHibernateRepositoryImpl() {
         super();
     }
@@ -51,9 +44,11 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")  // NOPMD
+    @SuppressWarnings("unchecked")
+    // NOPMD
     public T get(final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().get(getEntityClass(), id, lockMode);
@@ -65,9 +60,11 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("unchecked")  // NOPMD
+    @SuppressWarnings("unchecked")
+    // NOPMD
     public T get(final String entityName, final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().get(entityName, id, lockMode);
@@ -83,6 +80,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T load(final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().load(getEntityClass(), id, lockMode);
@@ -97,6 +95,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T load(final String entityName, final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().load(entityName, id, lockMode);
@@ -111,6 +110,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void refresh(final T entity, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().refresh(entity, lockMode);
@@ -125,6 +125,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void lock(final T entity, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().lock(entity, lockMode);
@@ -139,6 +140,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void lock(final String entityName, final T entity, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().lock(entityName, entity, lockMode);
@@ -155,6 +157,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public PK save(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().save(entity);
@@ -169,6 +172,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public PK save(final String entityName, final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().save(entityName, entity);
@@ -182,6 +186,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void update(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().update(entity);
@@ -196,6 +201,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void update(final String entityName, final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().update(entityName, entity);
@@ -210,6 +216,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void saveOrUpdate(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().saveOrUpdate(entity);
@@ -224,6 +231,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void saveOrUpdate(final String entityName, final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().saveOrUpdate(entityName, entity);
@@ -238,6 +246,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void persist(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().persist(entity);
@@ -252,6 +261,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void persist(final String entityName, final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().persist(entityName, entity);
@@ -266,6 +276,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void delete(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().delete(entity);
@@ -280,6 +291,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void delete(final String entityName, final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().delete(entityName, entity);
@@ -295,6 +307,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T merge(final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().merge(entity);
@@ -309,6 +322,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T merge(final String entityName, final T entity) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 return context.getSession().merge(entityName, entity);
@@ -322,6 +336,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void replicate(final T entity, final ReplicationMode replicationMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().replicate(entity, replicationMode);
@@ -336,6 +351,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void replicate(final String entityName, final T entity, final ReplicationMode replicationMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().replicate(entityName, entity, replicationMode);
@@ -350,6 +366,7 @@ public class ReadWriteHibernateRepositoryImpl<T,PK extends Serializable>
      */
     public void flush() {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
+
             @Override
             protected Object doExecute(HibernateQueryExecutionContext context) {
                 context.getSession().flush();

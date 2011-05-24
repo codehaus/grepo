@@ -17,19 +17,20 @@
 package org.codehaus.grepo.query.jpa.generator;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
  * @author dguggi
  */
-public class TestJPQLGeneratorUsingDynParams extends AbstractJpaQueryGenerator {
+public class TestJPQLGeneratorUsingDynParams extends AbstractQueryGenerator {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 3722019098842698838L;
 
     /**
      * {@inheritDoc}
      */
-    public String generate(QueryMethodParameterInfo qmpi) {
+    @Override
+    protected String createQueryString(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
         addDynamicQueryParam(new JpaQueryParam("dynParamName", "username"));
         return "FROM TestEntity WHERE username = :dynParamName";
     }

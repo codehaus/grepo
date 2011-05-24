@@ -21,7 +21,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.codehaus.grepo.query.hibernate.executor.PlaceHolderType;
+import org.codehaus.grepo.query.hibernate.generator.PlaceHolderType;
 import org.hibernate.type.Type;
 
 /**

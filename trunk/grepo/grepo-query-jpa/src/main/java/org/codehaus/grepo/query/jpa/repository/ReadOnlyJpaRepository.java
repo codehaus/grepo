@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */

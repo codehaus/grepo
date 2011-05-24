@@ -19,6 +19,7 @@ package org.codehaus.grepo.query.hibernate.generator;
 import junit.framework.Assert;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
+import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.query.hibernate.AbstractHibernateRepositoryTest;
 import org.codehaus.grepo.query.hibernate.TestEntity;
 import org.junit.Before;
@@ -31,52 +32,48 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class GeneratorRepositoryTest extends AbstractHibernateRepositoryTest {
-    /** The repository to test. */
-    @Autowired
-    private GeneratorTestRepository repo; //NOPMD
 
-    /** before. */
+    @Autowired
+    private GeneratorTestRepository repo;
+
     @Before
     public void before() {
-        TestEntity entity = new TestEntity("username", 1, "firstname");  //NOPMD
+        TestEntity entity = new TestEntity("username", 1, "firstname");
         saveFlushEvict(entity);
     }
 
-    /** Tests with hql generator. */
     @Test
     public void testWithHQLGenerator() {
         Assert.assertNotNull(repo.getWithHQLGenerator("username"));
     }
 
-    /**
-     * Tests with hql generator and dynamic params.
-     */
     @Test
     public void testWithHQLGeneratorUsingDynParams() {
         Assert.assertNotNull(repo.getWithHQLGeneratorUsingDynParams());
     }
 
-    /**
-     * Tests with native generator.
-     */
     @Test
     public void testWithNativeGenerator() {
         Assert.assertNotNull(repo.getWithNativeGenerator("username"));
     }
 
-    /**
-     * Tests with native generator using dynamic params.
-     */
     @Test
     public void testWithNatvieGeneratorUsingDynParams() {
         Assert.assertNotNull(repo.getWithNativeGeneratorUsingDynParams());
     }
 
-    /**
-     * Tests with criteria generator.
-     */
     @Test
     public void testWithCriteriaGenerator() {
         Assert.assertNotNull(repo.getWithCriteriaGenerator("username", "xyz"));
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void testWithInvalidGenerator() {
+        repo.getWithInvalidGenerator();
+    }
+
+    @Test
+    public void testWithQueryDslQueryGenerator() {
+        Assert.assertNotNull(repo.getWithQueryDslQueryGenerator("firstname"));
     }
 }

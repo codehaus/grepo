@@ -19,20 +19,22 @@ package org.codehaus.grepo.query.commons.generator;
 import java.util.Collection;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.commons.context.PlaceHolderQueryExecutionContext;
 
 /**
  * QueryGenerator which is used as a placeholder. May not be extended or used.
  *
  * @author dguggi
  */
-public final class PlaceHolderQueryGenerator implements QueryGenerator<QueryParam> {
+public final class PlaceHolderQueryGenerator implements QueryGenerator<String, PlaceHolderQueryExecutionContext> {
     /** SerialVersionUid. */
     private static final long serialVersionUID = 4403126044675851070L;
+
 
     /**
      * {@inheritDoc}
      */
-    public String generate(QueryMethodParameterInfo qmpi) {
+    public String generate(QueryMethodParameterInfo qmpi, PlaceHolderQueryExecutionContext context) {
         return null;
     }
 

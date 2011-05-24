@@ -19,7 +19,7 @@ package org.codehaus.grepo.query.commons.executor;
 import java.io.Serializable;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
+import org.codehaus.grepo.query.commons.context.QueryExecutionContext;
 
 /**
  * A query executor is responsible for executing database queries for methods
@@ -46,8 +46,4 @@ public interface QueryExecutor<T extends QueryExecutionContext> extends Serializ
      */
     boolean isReadOnlyOperation();
 
-    /**
-     * @param queryNamingStrategy The strategy to set.
-     */
-    void setQueryNamingStrategy(QueryNamingStrategy queryNamingStrategy);
 }

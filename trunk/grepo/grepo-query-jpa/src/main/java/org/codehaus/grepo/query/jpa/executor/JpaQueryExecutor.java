@@ -17,6 +17,7 @@
 package org.codehaus.grepo.query.jpa.executor;
 
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
  * @author dguggi

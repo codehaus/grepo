@@ -25,10 +25,8 @@ import org.codehaus.grepo.query.commons.generator.QueryParam;
  */
 public class JpaQueryParam extends QueryParam {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 7614639774056968108L;
 
-    /** The temporal type. */
     private TemporalType temporalType;
 
     /**

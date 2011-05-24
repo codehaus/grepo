@@ -17,7 +17,6 @@
 package org.codehaus.grepo.query.commons.executor;
 
 import org.codehaus.grepo.core.util.ClassUtils;
-import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
 
 /**
  * @author dguggi
@@ -26,9 +25,6 @@ public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
 
     /** SerialVersionUid. */
     private static final long serialVersionUID = 8754550555671992432L;
-
-    /** The query naming strategy. */
-    private QueryNamingStrategy queryNamingStrategy;
 
     /**
      * {@inheritDoc}
@@ -45,15 +41,6 @@ public class QueryExecutorFactoryImpl implements QueryExecutorFactory {
      * @param executor The executor to configure.
      */
     protected void configure(QueryExecutor<?> executor) {
-        executor.setQueryNamingStrategy(getQueryNamingStrategy());
-    }
-
-    public void setQueryNamingStrategy(QueryNamingStrategy queryNamingStrategy) {
-        this.queryNamingStrategy = queryNamingStrategy;
-    }
-
-    public QueryNamingStrategy getQueryNamingStrategy() {
-        return queryNamingStrategy;
     }
 
 }

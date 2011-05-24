@@ -29,17 +29,18 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class CustomRepository2Test extends AbstractJpaRepositoryTest {
 
-    /** The custom test repository2. */
     @Autowired
-    private CustomRepository2 customRepository2; // NOPMD
+    private CustomRepository2 customRepository2;
 
     /**
-     * Demonstrates the use of a custom repository implementation for (grepo) one repository instance. In this example
-     * the {@code customRepository2} will have a method {@code doSomethingSpecial} as defined by
-     * {@link CustomRepository2} and {@link CustomRepository2Impl}.
+     * Demonstrates how to extends one of grepo's repository interfaces and provide additional functionality (for one
+     * respository bean as the {@link CustomRepository2Impl} class is annotated with {@code @Repository}).
+     *
+     * @see CustomRepository2
+     * @see CustomRepository2Impl
      */
     @Test
     public void testDoSomethingSpecial() {
-        Assert.assertEquals(CustomRepository2Impl.RESULT, customRepository2.doSomethingSpecial());
+        Assert.assertNotNull(customRepository2.doSomethingSpecial());
     }
 }

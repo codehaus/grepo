@@ -22,8 +22,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.codehaus.grepo.query.hibernate.converter.PlaceHolderResultTransformer;
-import org.codehaus.grepo.query.hibernate.generator.CriteriaGenerator;
-import org.codehaus.grepo.query.hibernate.generator.PlaceHolderCriteriaGenerator;
 
 /**
  * @author dguggi
@@ -49,9 +47,6 @@ public @interface HibernateQueryOptions {
 
     /** The result transformer. */
     Class<?> resultTransformer() default PlaceHolderResultTransformer.class;
-
-    /** The critieria generator. */
-    Class<? extends CriteriaGenerator> criteriaGenerator() default PlaceHolderCriteriaGenerator.class;
 
     /** The fetch size. */
     int fetchSize() default 0;

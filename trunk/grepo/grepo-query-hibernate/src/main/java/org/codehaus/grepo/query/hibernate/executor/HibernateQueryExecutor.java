@@ -17,15 +17,11 @@
 package org.codehaus.grepo.query.hibernate.executor;
 
 import org.codehaus.grepo.query.commons.executor.QueryExecutor;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 
 /**
  * @author dguggi
  */
 public interface HibernateQueryExecutor extends QueryExecutor<HibernateQueryExecutionContext> {
-
-    /**
-     * @param argumentTypeFactory The argument type factory to set.
-     */
-    void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory);
 
 }

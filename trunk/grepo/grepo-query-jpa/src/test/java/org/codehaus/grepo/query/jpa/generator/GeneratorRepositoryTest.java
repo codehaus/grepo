@@ -19,6 +19,7 @@ package org.codehaus.grepo.query.jpa.generator;
 import junit.framework.Assert;
 
 import org.codehaus.grepo.core.context.GrepoHsqlTestContextLoaderWithDefLoc;
+import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.query.jpa.AbstractJpaRepositoryTest;
 import org.codehaus.grepo.query.jpa.TestEntity;
 import org.junit.Before;
@@ -31,38 +32,43 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class GeneratorRepositoryTest extends AbstractJpaRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private GeneratorTestRepository repo;   //NOPMD
 
-    /** before. */
+    @Autowired
+    private GeneratorTestRepository repo;
+
     @Before
     public void before() {
         TestEntity entity = new TestEntity("username", 1, "firstname");
         saveFlush(entity);
     }
 
-    /** Test with jpql generator. */
     @Test
     public void testWithJPQLGenerator() {
         Assert.assertNotNull(repo.getWithJPQLGenerator("username"));
     }
 
-    /** Tests with jpql generator and dynamic params. */
     @Test
     public void testWithJPQLGeneratorUsingDynParams() {
         Assert.assertNotNull(repo.getWithJPQLGeneratorUsingDynParams());
     }
 
-    /** Tests with native generator. */
     @Test
     public void testWithNativeGenerator() {
         Assert.assertNotNull(repo.getWithNativeGenerator("username"));
     }
 
-    /** Tests with sql generator and dynamic params. */
     @Test
     public void testWithSQLGeneratorUsingDynParams() {
         Assert.assertNotNull(repo.getWithNativeGeneratorUsingDynParams());
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void testWithInvalidGenerator() {
+        repo.getWithInvalidGenerator();
+    }
+
+    @Test
+    public void testWithQueryDslQueryGenerator() {
+        Assert.assertNotNull(repo.getWithQueryDslQueryGenerator("firstname"));
     }
 }

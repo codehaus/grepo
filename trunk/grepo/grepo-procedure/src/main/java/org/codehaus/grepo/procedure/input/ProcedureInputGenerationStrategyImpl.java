@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.context.ProcedureExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

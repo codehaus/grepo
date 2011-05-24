@@ -22,15 +22,10 @@ import org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepository;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public interface CustomReadWriteJpaRepository<T, PK extends Serializable> //
-    extends ReadWriteJpaRepository<T, PK> {
+public interface CustomReadWriteJpaRepository<T, PK extends Serializable> extends ReadWriteJpaRepository<T, PK> {
 
-    /**
-     * @return Returns something useful :)
-     */
     String doSomethingUseful();
 }

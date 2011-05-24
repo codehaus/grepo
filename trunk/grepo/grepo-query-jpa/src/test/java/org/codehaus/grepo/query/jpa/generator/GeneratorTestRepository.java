@@ -25,33 +25,28 @@ import org.codehaus.grepo.query.jpa.TestEntity;
  * @author dguggi
  */
 public interface GeneratorTestRepository extends GenericQueryRepository<TestEntity> {
-    /**
-     * @param username The username.
-     * @return Returns the entity.
-     */
-    @GenericQuery(queryGenerator = TestJPQLGenerator.class)
-    TestEntity getWithJPQLGenerator(
-            @Param("un") String username);
 
-    /**
-     * @return Returns the entity.
-     */
+    @GenericQuery(queryGenerator = TestJPQLGenerator.class)
+    TestEntity getWithJPQLGenerator(@Param("un") String username);
+
     @GenericQuery(queryGenerator = TestJPQLGeneratorUsingDynParams.class)
     TestEntity getWithJPQLGeneratorUsingDynParams();
 
 
-    /**
-     * @param username The username.
-     * @return Returns the entity.
-     */
     @GenericQuery(queryGenerator = TestNativeGenerator.class)
-    TestEntity getWithNativeGenerator(
-        @Param("un") String username);
+    TestEntity getWithNativeGenerator(@Param("un") String username);
 
-    /**
-     * @return Returns the entity.
-     */
     @GenericQuery(queryGenerator = TestNativeGeneratorUsingDynParams.class)
     TestEntity getWithNativeGeneratorUsingDynParams();
 
+    @GenericQuery(queryGenerator = TestQueryDslQueryGenerator.class)
+    TestEntity getWithQueryDslQueryGenerator(@Param("firstname") String firstname);
+
+    /**
+     * Uses an invalid generator (does not extend from {@link JpaQueryGenerator}.
+     *
+     * @return Returns nothing as grepo will throw a {@link ConfigurationException}.
+     */
+    @GenericQuery(queryGenerator = TestInvalidGenerator.class)
+    TestEntity getWithInvalidGenerator();
 }

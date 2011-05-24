@@ -18,8 +18,6 @@ package org.codehaus.grepo.query.jpa.repository.custom;
 
 import org.codehaus.grepo.query.jpa.TestEntity;
 import org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -28,21 +26,13 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CustomRepository2Impl extends ReadWriteJpaRepositoryImpl<TestEntity, Long> implements CustomRepository2 {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = -3958784831607962107L;
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(CustomRepository2Impl.class); // NOPMD
-
-    /** The result. */
-    public static final String RESULT = "something-special";
 
     /**
      * {@inheritDoc}
      */
     public String doSomethingSpecial() {
-        logger.info("doing something special");
-        return RESULT;
+        return "somethingSpecial";
     }
 
 }

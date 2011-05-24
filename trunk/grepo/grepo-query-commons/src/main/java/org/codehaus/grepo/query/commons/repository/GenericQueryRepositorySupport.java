@@ -18,6 +18,7 @@ package org.codehaus.grepo.query.commons.repository;
 
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFactory;
 import org.codehaus.grepo.query.commons.executor.QueryExecutorFindingStrategy;
+import org.codehaus.grepo.query.commons.naming.QueryNamingStrategy;
 import org.codehaus.grepo.statistics.domain.StatisticsEntry;
 import org.codehaus.grepo.statistics.repository.GenericStatisticsRepositorySupport;
 import org.slf4j.Logger;
@@ -32,17 +33,16 @@ import org.springframework.transaction.support.TransactionTemplate;
 public abstract class GenericQueryRepositorySupport<T> extends GenericStatisticsRepositorySupport
     implements GenericQueryRepository<T> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -5997513504731997766L;
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericQueryRepositorySupport.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericQueryRepositorySupport.class);
 
     /** The executor finding strategy. */
     private QueryExecutorFindingStrategy queryExecutorFindingStrategy;
 
     /** The query executor factory. */
     private QueryExecutorFactory queryExecutorFactory;
+
+    /** The query naming strategy. */
+    private QueryNamingStrategy queryNamingStrategy;
 
     /** The entity class. */
     private Class<T> entityClass;
@@ -89,6 +89,14 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
 
     public void setQueryExecutorFactory(QueryExecutorFactory queryExecutorFactory) {
         this.queryExecutorFactory = queryExecutorFactory;
+    }
+
+    public QueryNamingStrategy getQueryNamingStrategy() {
+        return queryNamingStrategy;
+    }
+
+    public void setQueryNamingStrategy(QueryNamingStrategy queryNamingStrategy) {
+        this.queryNamingStrategy = queryNamingStrategy;
     }
 
     public Integer getMaxResults() {
