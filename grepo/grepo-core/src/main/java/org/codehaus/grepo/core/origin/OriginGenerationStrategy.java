@@ -16,12 +16,10 @@
 
 package org.codehaus.grepo.core.origin;
 
-import java.io.Serializable;
-
 /**
  * @author dguggi
  */
-public interface OriginGenerationStrategy extends Serializable {
+public interface OriginGenerationStrategy {
 
     /**
      * @return Returns the generated origin.
