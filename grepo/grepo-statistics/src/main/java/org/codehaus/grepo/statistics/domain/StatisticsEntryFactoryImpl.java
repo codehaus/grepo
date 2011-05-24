@@ -27,14 +27,8 @@ import org.codehaus.grepo.core.util.ClassUtils;
  */
 public class StatisticsEntryFactoryImpl implements StatisticsEntryFactory {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 5503513742457226315L;
-
-    /** The origin generation strategy. */
-    private OriginGenerationStrategy originGenerationStrategy; // NOPMD
-
-    /** The type of statics entry to be created by this factory instance. */
-    private Class<? extends StatisticsEntry> entryClass = DurationAwareStatisticsEntryImpl.class; // NOPMD
+    private OriginGenerationStrategy originGenerationStrategy;
+    private Class<? extends StatisticsEntry> entryClass = DurationAwareStatisticsEntryImpl.class;
 
     /**
      * {@inheritDoc}

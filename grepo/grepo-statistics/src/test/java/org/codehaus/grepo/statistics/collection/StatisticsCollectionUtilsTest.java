@@ -34,23 +34,17 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoTestContextLoader.class)
 public class StatisticsCollectionUtilsTest extends AbstractSpringTest {
 
-    /** The statistics manager. */
     @Autowired
-    private StatisticsManager manager; // NOPMD
+    private StatisticsManager manager;
 
-    /** The collection. */
     @Autowired
-    private StatisticsCollection collection; // NOPMD
+    private StatisticsCollection collection;
 
-    /** after. */
     @After
     public void after() {
         collection.clear();
     }
 
-    /**
-     * Fills the collection.
-     */
     private void fillCollection() {
         StatisticsEntry entry = manager.createStatisticsEntry("a");
         manager.completeStatisticsEntry(entry);
@@ -60,10 +54,6 @@ public class StatisticsCollectionUtilsTest extends AbstractSpringTest {
         manager.completeStatisticsEntry(entry);
     }
 
-    /**
-     * Tests {@link StatisticsCollectionUtils#getCollectionEntries(StatisticsCollection,
-     *          StatisticsCollectionEntryComparator)}.
-     */
     @Test
     public void testGetCollectionEntriesSortedByNumberOfInvocations() {
         fillCollection();

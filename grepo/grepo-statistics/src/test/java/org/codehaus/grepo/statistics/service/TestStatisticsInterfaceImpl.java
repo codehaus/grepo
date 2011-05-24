@@ -27,8 +27,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestStatisticsInterfaceImpl implements TestStatisticsInterface {
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(TestStatisticsInterfaceImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(TestStatisticsInterfaceImpl.class);
 
     /**
      * {@inheritDoc}

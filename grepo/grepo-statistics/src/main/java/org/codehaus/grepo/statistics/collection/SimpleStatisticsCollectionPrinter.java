@@ -16,7 +16,6 @@
 
 package org.codehaus.grepo.statistics.collection;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -35,43 +34,27 @@ import org.springframework.jmx.export.annotation.ManagedResource;
  * @author dguggi
  */
 @ManagedResource("Simple statistics printer")
-public class SimpleStatisticsCollectionPrinter implements Serializable {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -3476143233518456960L;
+public class SimpleStatisticsCollectionPrinter {
 
-    /**
-     * @author dguggi
-     */
+    private static final String NBSP = "&nbsp;";
+
     public enum OutputType {
-        /** The html. */
         HTML,
-        /** The txt. */
         TXT,
     };
 
-    /** NBSP. */
-    private static final String NBSP = "&nbsp;";
-
-    /** The collection. */
-    private StatisticsCollection collection; // NOPMD
-
-    /** The output type. */
+    private StatisticsCollection collection;
     private OutputType type = OutputType.TXT;
+    private SimpleDateFormat dateFormat;
 
-    /** The date format. */
-    private SimpleDateFormat dateFormat; // NOPMD
 
-    /** Default constructor. */
     public SimpleStatisticsCollectionPrinter() {
-        // default constructor
     }
 
-    /**
-     * @param collection The collection to set.
-     */
     public SimpleStatisticsCollectionPrinter(StatisticsCollection collection) {
         this.collection = collection;
     }
+
 
     /**
      * @return Returns the summary.
@@ -122,7 +105,6 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
      * @param comparator The comparator.
      * @return Returns the summary.
      */
-    @SuppressWarnings("PMD")
     public String printSummary(boolean calcAverageDuration, StatisticsCollectionEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
         sb.append("STATISTICS SUMMARY").append(nl(2));
@@ -180,7 +162,6 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
      * @param comparator The comparator.
      * @return Returns the detail.
      */
-    @SuppressWarnings("PMD")
     public String printDetail(String identifier, StatisticsEntryComparator comparator) {
         StringBuilder sb = new StringBuilder();
         StatisticsCollectionEntry entry = collection.get(identifier);
@@ -311,7 +292,6 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
      * @param sb The string builder.
      * @param calcAverageDuration The flag.
      */
-    @SuppressWarnings("PMD")
     private void printCollectionEntryRow(StatisticsCollectionEntry entry, StringBuilder sb,
             boolean calcAverageDuration) {
         if (entry != null) {
@@ -374,7 +354,6 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
      * @param entry The entry.
      * @param sb The string builder.
      */
-    @SuppressWarnings("PMD")
     private void printStatisticsEntryRow(StatisticsEntry entry, StringBuilder sb) {
         if (entry != null) {
             String duration = "";
@@ -419,7 +398,6 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
     /**
      * @return Returns the newline.
      */
-    @SuppressWarnings("PMD")
     private String nl() {
         return (isTxt() ? "\n" : "<br/>");
     }
@@ -428,7 +406,6 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
      * @param count The count.
      * @return Returns the newline.
      */
-    @SuppressWarnings("PMD")
     private String nl(int count) {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < count; i++) {
@@ -458,7 +435,7 @@ public class SimpleStatisticsCollectionPrinter implements Serializable {
     }
 
     public void setDateFormat(String pattern) {
-        dateFormat = new SimpleDateFormat(pattern); // NOPMD
+        dateFormat = new SimpleDateFormat(pattern);
     }
 
 }

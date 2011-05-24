@@ -66,7 +66,7 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
             Calendar o1c = o1.getCreation();
             Calendar o2c = o2.getCreation();
 
-            if (o1c != null && o2c != null) {  // NOPMD
+            if (o1c != null && o2c != null) {
                 return o1c.compareTo(o2c);
             } else if (o1c == null && o2c != null) {
                 return 1;
@@ -84,7 +84,7 @@ public enum StatisticsEntryComparator implements Comparator<StatisticsEntry> {
             Calendar o1c = o1.getCreation();
             Calendar o2c = o2.getCreation();
 
-            if (o1c != null && o2c != null) { // NOPMD
+            if (o1c != null && o2c != null) {
                 return -o1c.compareTo(o2c);
             } else if (o1c == null && o2c != null) {
                 return -1;
