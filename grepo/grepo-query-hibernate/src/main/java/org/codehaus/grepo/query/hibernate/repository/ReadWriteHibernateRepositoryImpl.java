@@ -34,9 +34,6 @@ public class ReadWriteHibernateRepositoryImpl<T, PK extends Serializable> extend
         super();
     }
 
-    /**
-     * @param entityType The main entity type.
-     */
     public ReadWriteHibernateRepositoryImpl(Class<T> entityType) {
         super(entityType);
     }
@@ -45,7 +42,6 @@ public class ReadWriteHibernateRepositoryImpl<T, PK extends Serializable> extend
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    // NOPMD
     public T get(final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
 
@@ -61,7 +57,6 @@ public class ReadWriteHibernateRepositoryImpl<T, PK extends Serializable> extend
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    // NOPMD
     public T get(final String entityName, final PK id, final LockMode lockMode) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
 

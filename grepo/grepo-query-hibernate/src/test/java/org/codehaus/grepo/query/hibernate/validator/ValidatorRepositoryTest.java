@@ -33,45 +33,34 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ValidatorRepositoryTest extends AbstractHibernateRepositoryTest {
-    /** The repository to test. */
-    @Autowired
-    private ValidatorTestRepository repo;   //NOPMD
 
-    /** before. */
+    @Autowired
+    private ValidatorTestRepository repo;
+
     @Before
     public void before() {
-        TestEntity testEntity = new TestEntity("username", 1, "firstname");  //NOPMD
+        TestEntity testEntity = new TestEntity("username", 1, "firstname");
         saveFlushEvict(testEntity);
-
         TestResultValidator.reset();
     }
 
-    /** Test with result validator. */
     @Test
     public void testWithResultValidator() {
         repo.getByUsername("username");
     }
 
-    /** Tests with result validator and compatible exceptions. */
     @Test(expected = RuntimeException.class)
     public void testWithResultValidatorAndCompatibleException1() {
-        TestResultValidator.setExceptionToBeThrown(new RuntimeException()); //NOPMD
+        TestResultValidator.setExceptionToBeThrown(new RuntimeException());
         repo.getByUsername("username");
     }
 
-    /**
-     * Tests with result validator and compatible checked exceptions.
-     * @throws IOException in case of errors.
-     */
     @Test(expected = IOException.class)
     public void testWithResultValidatorAndCompatibleException2() throws IOException {
         TestResultValidator.setExceptionToBeThrown(new IOException());
         repo.getByUsernameThrowsIOException("username");
     }
 
-    /**
-     * Tests with result validator and incompatible exceptions.
-     */
     @Test(expected = ValidationException.class)
     public void testWithResultValidatorAndIncompatibleException() {
         TestResultValidator.setExceptionToBeThrown(new IOException());

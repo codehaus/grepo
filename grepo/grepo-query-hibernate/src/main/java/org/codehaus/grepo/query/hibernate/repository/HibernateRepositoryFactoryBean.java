@@ -163,7 +163,6 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
      * {@inheritDoc}
      */
     @Override
-    @SuppressWarnings("PMD")
     protected void configureTarget(GenericQueryRepositorySupport<T> target) {
         super.configureTarget(target);
 

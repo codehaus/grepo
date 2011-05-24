@@ -34,41 +34,34 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class CustomRepositoryTest extends AbstractHibernateRepositoryTest {
 
-    /** Repo bean approach 1. */
     @Resource(name = "customTestRepositoryApproach1")
-    private CustomTestRepository approach1Bean; // NOPMD
+    private CustomTestRepository approach1Bean;
 
-    /** Repo bean approach 2. */
     @Resource(name = "customTestRepositoryApproach2")
-    private CustomTestRepository approach2Bean; // NOPMD
+    private CustomTestRepository approach2Bean;
 
-    /** Repo bean approach 3. */
     @Resource(name = "customTestRepositoryApproach3")
-    private CustomTestRepository approach3Bean; // NOPMD
+    private CustomTestRepository approach3Bean;
 
-    /** Repo bean approach 4. */
     @Resource(name = "customTestRepositoryImpl")
-    private CustomTestRepository approach4Bean; // NOPMD
+    private CustomTestRepository approach4Bean;
 
-    /** */
+
     @Test
     public void testConfigurationApproach1() {
         approach1Bean.doSomethingSpecial();
     }
 
-    /** */
     @Test
     public void testConfigurationApproach2() {
         approach2Bean.doSomethingSpecial();
     }
 
-    /** */
     @Test
     public void testConfigurationApproach3() {
         approach3Bean.doSomethingSpecial();
     }
 
-    /** */
     @Test
     public void testConfigurationApproach4() {
         approach4Bean.doSomethingSpecial();

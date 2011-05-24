@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.repository; // NOPMD
+package org.codehaus.grepo.query.hibernate.repository;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -129,7 +129,6 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public Object executeGenericQuery(QueryMethodParameterInfo qmpi, GenericQuery annotation) throws Exception {
         createStatisticsEntry(qmpi);
         try {
@@ -244,7 +243,6 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @param genericQuery The annotation.
      * @throws Exception in case of errors.
      */
-    @SuppressWarnings("PMD")
     protected void validateResult(Object result, QueryMethodParameterInfo qmpi, //
                                   GenericQuery genericQuery) throws Exception {
         GenericValidationUtils.validateResult(qmpi, genericQuery.resultValidator(), result);
@@ -331,7 +329,6 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      * @param sessionHolder The current session holder.
      * @param queryOptions the query options.
      */
-    @SuppressWarnings("PMD")
     protected void applyFlushMode(CurrentSessionHolder sessionHolder, HibernateQueryOptions queryOptions) {
         HibernateFlushMode flushModeToUse = getFlushMode(queryOptions);
 
@@ -638,22 +635,11 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      */
     protected class CurrentSessionHolder {
 
-        /** The session. */
         private Session session;
-
-        /** Flag to indicate whether or not we have an existing transaction. */
         private boolean existingTransaction;
-
-        /** The previous flush mode. */
         private FlushMode previousFlushMode;
-
-        /** The previous cache mode. */
         private CacheMode previousCacheMode;
 
-        /**
-         * @param session The session to set.
-         * @param existingTransaction The flag to set.
-         */
         public CurrentSessionHolder(Session session, boolean existingTransaction) {
             this.session = session;
             this.existingTransaction = existingTransaction;
@@ -754,12 +740,8 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
      */
     private class CloseSuppressingInvocationHandler implements InvocationHandler {
 
-        /** The target session. */
-        private final Session target; // NOPMD
+        private final Session target;
 
-        /**
-         * @param target The target to set.
-         */
         public CloseSuppressingInvocationHandler(Session target) {
             this.target = target;
         }

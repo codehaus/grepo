@@ -32,9 +32,6 @@ public class ReadOnlyHibernateRepositoryImpl<T, PK extends Serializable> extends
         super();
     }
 
-    /**
-     * @param entityType The main entity type.
-     */
     public ReadOnlyHibernateRepositoryImpl(Class<T> entityType) {
         super(entityType);
     }
@@ -43,7 +40,6 @@ public class ReadOnlyHibernateRepositoryImpl<T, PK extends Serializable> extends
      * {@inheritDoc}
      */
     @SuppressWarnings("unchecked")
-    // NOPMD
     public T load(final PK id) {
         HibernateCallbackCreator callback = new HibernateCallbackCreator() {
 
