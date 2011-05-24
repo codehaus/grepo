@@ -72,7 +72,6 @@ public abstract class GenericQueryRepositoryFactoryBean<E> extends
      * the {@link #proxyInterface}.
      */
     @SuppressWarnings("unchecked")
-    // NOPMD
     protected void initEntityClass() {
         if (entityClass == null) {
             // no entity class is defined, so try to retrieve entity class

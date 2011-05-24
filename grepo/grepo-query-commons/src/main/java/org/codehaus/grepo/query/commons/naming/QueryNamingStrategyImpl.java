@@ -31,11 +31,8 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class QueryNamingStrategyImpl implements QueryNamingStrategy {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 8720409194513725656L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(QueryNamingStrategyImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(QueryNamingStrategyImpl.class);
 
     /** The pattern to match method names. */
     private Pattern methodNamePattern;
@@ -43,19 +40,15 @@ public class QueryNamingStrategyImpl implements QueryNamingStrategy {
     /** Flag to indicate wether the simple entity class name should be used for query-name generation. */
     private boolean useSimpleEntityClassName = false;
 
-    /**
-     * Default constructor.
-     */
+
     public QueryNamingStrategyImpl() {
         super();
     }
 
-    /**
-     * @param methodNamePattern The pattern to set.
-     */
     public QueryNamingStrategyImpl(Pattern methodNamePattern) {
         this.methodNamePattern = methodNamePattern;
     }
+
 
     /**
      * @param methodNamePattern The pattern to set.

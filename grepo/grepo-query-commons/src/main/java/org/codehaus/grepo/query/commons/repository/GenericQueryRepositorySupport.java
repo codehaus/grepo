@@ -114,7 +114,6 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
      * @param preferReadOnlyTransactionTemplate Flag to indicate if the read-only template should be prefered.
      * @return Returns the result.
      */
-    @SuppressWarnings("PMD")
     protected Object executeCallback(TransactionCallback<Object> callback, boolean preferReadOnlyTransactionTemplate) {
         boolean isReadOnlyTemplateUsed = false;
         TransactionTemplate templateToUse = null;

@@ -44,7 +44,6 @@ public final class PlaceHolderQueryExecutor implements QueryExecutor<PlaceHolder
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public void setQueryNamingStrategy(QueryNamingStrategy queryNamingStrategy) {
     }
 

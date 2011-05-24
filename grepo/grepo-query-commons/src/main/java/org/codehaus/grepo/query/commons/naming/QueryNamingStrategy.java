@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.query.commons.naming;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 
 /**
@@ -25,7 +23,7 @@ import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
  *
  * @author dguggi
  */
-public interface QueryNamingStrategy extends Serializable {
+public interface QueryNamingStrategy {
 
     /**
      * Returns the name of the hibernate named-query.
