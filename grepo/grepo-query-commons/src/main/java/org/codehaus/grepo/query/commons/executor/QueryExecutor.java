@@ -16,22 +16,21 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.commons.context.QueryExecutionContext;
 
 /**
- * A query executor is responsible for executing database queries for methods
- * annotated with {@link org.codehaus.grepo.query.commons.annotation.GenericQuery}.
+ * A query executor is responsible for executing database queries for methods annotated with
+ * {@link org.codehaus.grepo.query.commons.annotation.GenericQuery}.
  *
  * @author dguggi
- *
  * @param <T> The type.
  */
-public interface QueryExecutor<T extends QueryExecutionContext> extends Serializable {
+public interface QueryExecutor<T extends QueryExecutionContext> {
+
     /**
      * Execute a generic query.
+     *
      * @param qmpi The query method parameter info.
      * @param obj The type.
      * @return Returns the result.
@@ -39,8 +38,7 @@ public interface QueryExecutor<T extends QueryExecutionContext> extends Serializ
     Object execute(QueryMethodParameterInfo qmpi, T obj);
 
     /**
-     * This method should return {@code true} if the execution of the
-     * queries requires read-only access.
+     * This method should return {@code true} if the execution of the queries requires read-only access.
      *
      * @return The flag.
      */

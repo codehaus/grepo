@@ -16,14 +16,12 @@
 
 package org.codehaus.grepo.query.commons.executor;
 
-import java.io.Serializable;
-
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 
 /**
  * @author dguggi
  */
-public interface QueryExecutorFindingStrategy extends Serializable {
+public interface QueryExecutorFindingStrategy {
 
     /**
      * Find a appropriate query executor class.
@@ -33,5 +31,5 @@ public interface QueryExecutorFindingStrategy extends Serializable {
      * @return Returns the appropriate class.
      */
     Class<? extends QueryExecutor<?>> findExecutor(Class<? extends QueryExecutor<?>> specifiedExecutor,
-            QueryMethodParameterInfo qmpi);
+        QueryMethodParameterInfo qmpi);
 }

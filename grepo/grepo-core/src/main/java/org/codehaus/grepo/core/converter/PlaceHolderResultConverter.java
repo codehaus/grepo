@@ -22,8 +22,6 @@ package org.codehaus.grepo.core.converter;
  * @author dguggi
  */
 public final class PlaceHolderResultConverter implements ResultConverter<Object> {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -1822230416541527290L;
 
     /**
      * {@inheritDoc}

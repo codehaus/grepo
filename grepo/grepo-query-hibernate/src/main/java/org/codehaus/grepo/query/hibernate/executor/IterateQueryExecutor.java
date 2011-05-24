@@ -25,9 +25,7 @@ import org.hibernate.Query;
  *
  * @author dguggi
  */
-public class IterateQueryExecutor extends AbstractHibernateQueryExecutor {
-
-    private static final long serialVersionUID = -3420034118202022987L;
+public class IterateQueryExecutor extends AbstractQueryExecutor {
 
     /**
      * {@inheritDoc}

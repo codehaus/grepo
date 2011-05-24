@@ -29,25 +29,15 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class QueryExecutorNamingStrategyImpl implements QueryExecutorNamingStrategy {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 3952174347677396344L;
 
     /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(QueryExecutorNamingStrategyImpl.class); // NOPMD
-
-    /** The pattern. */
+    private static final Logger logger = LoggerFactory.getLogger(QueryExecutorNamingStrategyImpl.class);
     private Pattern pattern;
 
-    /**
-     * Default constructor.
-     */
     public QueryExecutorNamingStrategyImpl() {
         super();
     }
 
-    /**
-     * @param pattern The pattern to set.
-     */
     public QueryExecutorNamingStrategyImpl(Pattern pattern) {
         this.pattern = pattern;
     }

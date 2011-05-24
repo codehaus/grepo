@@ -32,11 +32,9 @@ import org.slf4j.LoggerFactory;
 /**
  * @author dguggi
  */
-public abstract class AbstractHibernateQueryExecutor implements HibernateQueryExecutor {
+public abstract class AbstractQueryExecutor implements HibernateQueryExecutor {
 
-    private static final long serialVersionUID = 1138696235036750544L;
-
-    private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateQueryExecutor.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractQueryExecutor.class);
 
     /**
      * Creates a criteria using a {@link HibernateCriteriaGenerator} is one is specified.

@@ -24,9 +24,7 @@ import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 /**
  * @author dguggi
  */
-public class LoadQueryExecutor extends AbstractJpaQueryExecutor {
-
-    private static final long serialVersionUID = 6717720438562946614L;
+public class LoadQueryExecutor extends AbstractQueryExecutor {
 
     /**
      * {@inheritDoc}

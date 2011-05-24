@@ -16,7 +16,6 @@
 
 package org.codehaus.grepo.core.converter;
 
-import java.io.Serializable;
 
 /**
  * Interface providing a hook for converting the result of a qeneric-query or -procedure call.
@@ -25,7 +24,7 @@ import java.io.Serializable;
  *
  * @param <T> The result type of conversion.
  */
-public interface ResultConverter<T> extends Serializable {
+public interface ResultConverter<T> {
     /**
      * @param o The object to convert.
      * @return Returns the converted object.
