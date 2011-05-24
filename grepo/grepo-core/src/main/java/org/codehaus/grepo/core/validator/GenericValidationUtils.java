@@ -28,7 +28,8 @@ import org.slf4j.LoggerFactory;
  */
 public final class GenericValidationUtils {
 
-    /** Private constructor. */
+    private static final Logger logger = LoggerFactory.getLogger(GenericValidationUtils.class);
+
     private GenericValidationUtils() {
     }
 
@@ -41,7 +42,6 @@ public final class GenericValidationUtils {
         return (clazz != null && clazz != PlaceHolderResultValidator.class);
     }
 
-
     /**
      * Validates the given {@code result} using the given {@link ResultValidator} {@code clazz}.
      *
@@ -51,11 +51,8 @@ public final class GenericValidationUtils {
      * @throws Exception in case of errors (like validation errors).
      * @throws ValidationException if the given {@link ResultValidator} cannot be instantiated.
      */
-    @SuppressWarnings("PMD")
     public static void validateResult(MethodParameterInfo mpi, Class<? extends ResultValidator> clazz, Object result)
             throws Exception, ValidationException {
-        Logger logger = getLogger();
-
         if (isValidResultValidator(clazz)) {
             ResultValidator validator = null;
             try {
@@ -90,10 +87,4 @@ public final class GenericValidationUtils {
         }
     }
 
-    /**
-     * @return Returns the logger for this class.
-     */
-    private static Logger getLogger() {
-        return LoggerFactory.getLogger(GenericValidationUtils.class);
-    }
 }
