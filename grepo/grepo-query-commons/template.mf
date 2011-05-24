@@ -1,7 +1,7 @@
 Bundle-ManifestVersion: 2
 Bundle-Vendor: Generic Repository Framework
 Bundle-Version: ${grepo-osgi.version}
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: ${grepo-osgi.executionenv}
 Bundle-Name: ${project.artifactId}
 Bundle-SymbolicName: org.codehaus.grepo.query.commons
 Export-Template:

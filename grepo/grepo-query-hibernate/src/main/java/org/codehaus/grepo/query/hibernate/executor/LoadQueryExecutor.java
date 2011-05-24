@@ -17,6 +17,7 @@
 package org.codehaus.grepo.query.hibernate.executor;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 
 /**
  * This executor is used to execute generic "load" queries.

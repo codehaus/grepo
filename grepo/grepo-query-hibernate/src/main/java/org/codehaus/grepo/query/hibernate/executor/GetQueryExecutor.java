@@ -16,9 +16,8 @@
 
 package org.codehaus.grepo.query.hibernate.executor;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 
@@ -29,25 +28,18 @@ import org.hibernate.Query;
  */
 public class GetQueryExecutor extends AbstractHibernateQueryExecutor {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = -4241770095106056734L;
 
     /**
      * {@inheritDoc}
      */
     public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
-        GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
-        HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
-
-        Object result = null;
-        if (hasValidCriteriaGenerator(queryOptions)) {
-            Criteria criteria = prepareCriteria(genericQuery, qmpi, context);
-            result = criteria.uniqueResult();
-        } else {
-            Query query = prepareQuery(genericQuery, qmpi, context);
-            result = query.uniqueResult();
+        Criteria criteria = createCriteria(qmpi, context);
+        if (criteria == null) {
+            Query query = createQuery(qmpi, context);
+            return query.uniqueResult();
         }
-        return result;
+        return criteria.uniqueResult();
     }
 
     /**

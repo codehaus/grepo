@@ -38,20 +38,20 @@ import org.codehaus.grepo.query.commons.generator.QueryGenerator;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface GenericQuery {
+
     /**
      * Specifies the query to use.
      */
     String query() default "";
 
     /**
-     * Specifies whether or not the query is native. This attribute is only considered
-     * if the {@code query} property is not empty.
+     * Specifies whether or not the query is native. This attribute is only considered if the {@code query} property is
+     * not empty.
      */
     boolean isNativeQuery() default false;
 
     /**
-     * Specifies the name of the associated named-query. If empty than default query-name resolution is
-     * performed.
+     * Specifies the name of the associated named-query. If empty than default query-name resolution is performed.
      */
     String queryName() default "";
 
@@ -68,7 +68,7 @@ public @interface GenericQuery {
     /**
      * The query generator.
      */
-    Class<? extends QueryGenerator<?>> queryGenerator() default PlaceHolderQueryGenerator.class;
+    Class<? extends QueryGenerator<?, ?>> queryGenerator() default PlaceHolderQueryGenerator.class;
 
     /**
      * The result validator class.

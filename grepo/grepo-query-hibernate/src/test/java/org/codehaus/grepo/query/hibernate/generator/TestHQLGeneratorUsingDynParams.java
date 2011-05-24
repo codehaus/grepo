@@ -17,20 +17,22 @@
 package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 
 /**
  * @author dguggi
  */
-public class TestHQLGeneratorUsingDynParams extends AbstractHibernateQueryGenerator {
+public class TestHQLGeneratorUsingDynParams extends AbstractQueryGenerator {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = -2019433781964659827L;
 
     /**
      * {@inheritDoc}
      */
-    public String generate(QueryMethodParameterInfo qmpi) {
+    @Override
+    protected String createQueryString(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
         addDynamicQueryParam(new HibernateQueryParam("dynParamName", "username"));
         return "FROM TestEntity WHERE username = :dynParamName";
     }
+
 }

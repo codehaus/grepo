@@ -34,30 +34,24 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTest {
-    /** The repo to test. */
-    @Autowired
-    private ProcedureTestRepository repo;    //NOPMD
 
-    /**
-     * @throws IOException  in case of errors.
-     * @throws FileNotFoundException in case of errors.
-     */
+    @Autowired
+    private ProcedureTestRepository repo;
+
     @Before
     public void before() throws FileNotFoundException, IOException {
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-spec.sql");
         executeSqlFromFile("classpath:META-INF/grepo/db/oracle/GrepoTestPackage-body.sql");
     }
 
-    /** after. */
     @After
     public void after() {
         getJdbcTemplate().execute("DROP PACKAGE grepo_test");
     }
 
-    /** Tests repo with complex configuration. */
     @Test
     public void testSimpleProcWithComplexConfig() {
-        repo.executeSimpleProcWithComplexConfig1("value", 42);  //NOPMD
+        repo.executeSimpleProcWithComplexConfig1("value", 42);
         repo.executeSimpleProcWithComplexConfig1(null, null);
         repo.executeSimpleProcWithComplexConfig2("value", 42);
         repo.executeSimpleProcWithComplexConfig2(null, null);
@@ -65,7 +59,6 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
         repo.executeSimpleProcWithComplexConfig3(null, null);
     }
 
-    /** Tests repo with simple configuration. */
     @Test
     public void testSimpleProcWithSimpleConfig() {
         repo.executeSimpleProcWithSimpleConfig("value", 42);
@@ -74,10 +67,9 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
         repo.executeSimpleProcWithSimpleConfig(null, null);
     }
 
-    /** Tests repo with map result. */
     @Test
     public void testSimpleProcWithMapResult() {
-        Map<String,String> map = repo.executeSimpleProcWithMapResult("value", 42);
+        Map<String, String> map = repo.executeSimpleProcWithMapResult("value", 42);
         Assert.assertNotNull(map);
         Assert.assertTrue(map.containsKey("p_result"));
         Assert.assertEquals("p1=value p2=42", map.get("p_result"));

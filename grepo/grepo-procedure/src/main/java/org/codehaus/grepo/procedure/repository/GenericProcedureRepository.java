@@ -33,7 +33,6 @@ public interface GenericProcedureRepository extends GenericRepository {
      * @return Returns the result map.
      * @throws Exception in case of errors.
      */
-    @SuppressWarnings("PMD")
     Object executeGenericProcedure(ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
         throws Exception;
 }

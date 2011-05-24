@@ -19,7 +19,7 @@ package org.codehaus.grepo.procedure.compile;
 import java.io.Serializable;
 
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.context.ProcedureExecutionContext;
 import org.springframework.jdbc.object.StoredProcedure;
 
 /**

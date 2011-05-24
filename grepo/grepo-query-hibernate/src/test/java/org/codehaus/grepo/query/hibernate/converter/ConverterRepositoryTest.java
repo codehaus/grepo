@@ -37,14 +37,15 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
+
     /** The repo to test. */
     @Autowired
-    private ConverterTestRepository repo;  //NOPMD
+    private ConverterTestRepository repo; // NOPMD
 
     /** before. */
     @Before
     public void before() {
-        TestEntity te = new TestEntity("username", 1, "firstname"); //NOPMD
+        TestEntity te = new TestEntity("username", 1, "firstname"); // NOPMD
         saveFlushEvict(te);
 
         TestResultConverter.reset();
@@ -109,8 +110,8 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
      */
     @Test
     public void testWithAliasToEntityMapResultTransformer() {
-        List<Map<String,Object>> list = repo.findAllWithAliasToEntityMapResultTransformer();
-        Assert.assertTrue(list.get(0) instanceof Map<?,?>);
+        List<Map<String, Object>> list = repo.findAllWithAliasToEntityMapResultTransformer();
+        Assert.assertTrue(list.get(0) instanceof Map<?, ?>);
         Map<String, Object> map = list.get(0);
         Assert.assertEquals("username", map.get("un"));
         Assert.assertEquals("firstname", map.get("fn"));

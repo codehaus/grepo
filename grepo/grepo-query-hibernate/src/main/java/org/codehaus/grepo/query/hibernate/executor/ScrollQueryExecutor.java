@@ -16,11 +16,11 @@
 
 package org.codehaus.grepo.query.hibernate.executor;
 
-import org.codehaus.grepo.query.commons.annotation.GenericQuery;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.hibernate.annotation.GScrollMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateScrollMode;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
@@ -33,39 +33,30 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class ScrollQueryExecutor extends AbstractHibernateQueryExecutor {
-    /** SerialVersionUid. */
+
     private static final long serialVersionUID = -5208204972408289569L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ScrollQueryExecutor.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(ScrollQueryExecutor.class);
 
     /**
      * {@inheritDoc}
      */
     public Object execute(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
-        GenericQuery genericQuery = qmpi.getMethodAnnotation(GenericQuery.class);
         HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
-
         ScrollMode scrollMode = getScrollMode(qmpi, queryOptions);
 
-        Object result = null;
-        if (hasValidCriteriaGenerator(queryOptions)) {
-            Criteria criteria = prepareCriteria(genericQuery, qmpi, context);
+        Criteria criteria = createCriteria(qmpi, context);
+        if (criteria == null) {
+            Query query = createQuery(qmpi, context);
             if (scrollMode == null) {
-                result = criteria.scroll();
-            } else {
-                result = criteria.scroll(scrollMode);
+                return query.scroll();
             }
-        } else {
-            Query query = prepareQuery(genericQuery, qmpi, context);
-            if (scrollMode == null) {
-                result = query.scroll();
-            } else {
-                result = query.scroll(scrollMode);
-            }
+            return query.scroll(scrollMode);
         }
-
-        return result;
+        if (scrollMode == null) {
+            return criteria.scroll();
+        }
+        return criteria.scroll(scrollMode);
     }
 
     /**

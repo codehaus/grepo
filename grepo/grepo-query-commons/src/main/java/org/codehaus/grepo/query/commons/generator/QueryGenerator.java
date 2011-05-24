@@ -16,22 +16,26 @@
 
 package org.codehaus.grepo.query.commons.generator;
 
+import java.io.Serializable;
+
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.commons.context.QueryExecutionContext;
 
 /**
  * Interface to be implemented if a hql query should be generated dynamically.
  *
  * @author dguggi
  *
- * @param <P> The paremter type.
+ * @param <T> The query type.
+ * @param <C> The query execution context.
  */
-public interface QueryGenerator<P extends QueryParam>
-     extends DynamicQueryParamsAware<P> {
+public interface QueryGenerator<T, C extends QueryExecutionContext> extends Serializable {
 
     /**
      * @param qmpi The method parameter info.
+     * @param context The context.
      * @return Returns the generated query.
      */
-    String generate(QueryMethodParameterInfo qmpi);
+    T generate(QueryMethodParameterInfo qmpi, C context);
 
 }

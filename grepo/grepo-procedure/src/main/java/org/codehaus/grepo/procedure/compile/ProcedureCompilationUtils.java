@@ -31,7 +31,7 @@ import org.codehaus.grepo.procedure.annotation.Out;
 import org.codehaus.grepo.procedure.annotation.OutParams;
 import org.codehaus.grepo.procedure.annotation.PlaceHolderResultHandler;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.context.ProcedureExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -58,6 +58,9 @@ public final class ProcedureCompilationUtils {
 
     /** Error message for invalid result handler. */
     private static final String INVALID_RESULTHANDLER_ERROR3 = INVALID_RESULTHANDLER_ERROR1 + ", '%s', '%s'";
+
+    private ProcedureCompilationUtils() {
+    }
 
     /**
      * @param list The list to check.

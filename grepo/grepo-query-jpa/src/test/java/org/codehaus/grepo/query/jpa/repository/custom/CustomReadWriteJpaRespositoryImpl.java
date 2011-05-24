@@ -19,33 +19,22 @@ package org.codehaus.grepo.query.jpa.repository.custom;
 import java.io.Serializable;
 
 import org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepositoryImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public class CustomReadWriteJpaRespositoryImpl<T,PK extends Serializable> //
-    extends ReadWriteJpaRepositoryImpl<T, PK> implements CustomReadWriteJpaRepository<T, PK> {
+public class CustomReadWriteJpaRespositoryImpl<T, PK extends Serializable> extends ReadWriteJpaRepositoryImpl<T, PK>
+        implements CustomReadWriteJpaRepository<T, PK> {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 3560090748707528113L;
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(CustomReadWriteJpaRespositoryImpl.class); // NOPMD
-
-    /** The result. */
-    public static final String RESULT = "something-useful";
 
     /**
      * {@inheritDoc}
      */
     public String doSomethingUseful() {
-        logger.info("doing something useful");
-        return RESULT;
+        return "somethingSpecial";
     }
 
 }

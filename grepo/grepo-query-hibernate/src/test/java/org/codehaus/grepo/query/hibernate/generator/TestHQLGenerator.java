@@ -17,18 +17,20 @@
 package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 
 /**
  * @author dguggi
  */
-public class TestHQLGenerator extends AbstractHibernateQueryGenerator {
-    /** SerialVersionUid. */
+public class TestHQLGenerator extends AbstractQueryGenerator {
+
     private static final long serialVersionUID = -21420962275480549L;
 
     /**
      * {@inheritDoc}
      */
-    public String generate(QueryMethodParameterInfo qmpi) {
+    @Override
+    protected String createQueryString(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
         return "FROM TestEntity WHERE username = :un";
     }
 }

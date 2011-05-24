@@ -26,11 +26,6 @@ import java.util.Collection;
 public interface DynamicQueryParamsAware<P extends QueryParam> extends Serializable {
 
     /**
-     * @return Returns a collection of dynamic query param instances.
-     */
-    Collection<P> getDynamicQueryParams();
-
-    /**
      * @param name The name of the param.
      * @return Returns the param identified by {@code name} or {@code null}.
      */
@@ -47,5 +42,20 @@ public interface DynamicQueryParamsAware<P extends QueryParam> extends Serializa
      * @return Returns {@code true} if dynamic query params exist and {@code false} otherwise.
      */
     boolean hasDynamicQueryParams();
+
+    /**
+     * @param param The param to add.
+     */
+    void addDynamicQueryParam(P param);
+
+    /**
+     * @param param The params to add.
+     */
+    void addDynamicQueryParams(P... params);
+
+    /**
+     * @return Returns the dynamic query params.
+     */
+    Collection<P> getDynamicQueryParams();
 
 }

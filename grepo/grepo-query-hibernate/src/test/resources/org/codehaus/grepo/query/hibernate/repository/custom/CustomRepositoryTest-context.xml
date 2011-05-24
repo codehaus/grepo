@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:gquery="http://grepo.codehaus.org/schema/query-hibernate"
+    xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+      http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+      http://grepo.codehaus.org/schema/query-hibernate http://grepo.codehaus.org/schema/grepo-query-hibernate.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--
+        Approach 1: Configuration of custom implementation is done via "proxyClass" property. Using this approach
+                   the "proxyInterface" and "targetClass" property are determined automatically.
+     -->
+    <bean id="customTestRepositoryApproach1" parent="abstractRepository">
+        <property name="proxyClass" value="org.codehaus.grepo.query.hibernate.repository.custom.CustomTestRepositoryImpl" />
+    </bean>
+
+    <!--
+        Approach 2: Configuration of custom implementation is done via "proxyInterface" and "targetClass" property.
+     -->
+    <bean id="customTestRepositoryApproach2" parent="abstractRepository">
+        <property name="proxyInterface" value="org.codehaus.grepo.query.hibernate.repository.custom.CustomTestRepository" />
+        <property name="targetClass" value="org.codehaus.grepo.query.hibernate.repository.custom.CustomTestRepositoryImpl" />
+    </bean>
+
+    <!--  Approach 3: Configuration of custom implementation is done via grepo namespace ('repository' element). -->
+    <gquery:repository id="customTestRepositoryApproach3" factory="abstractRepository"
+        proxy-class="org.codehaus.grepo.query.hibernate.repository.custom.CustomTestRepositoryImpl" />
+
+    <!-- Approach 4: Configuration of custom implementation is done via grepo namespace ('repository-scan' element). -->
+    <gquery:repository-scan factory="abstractRepository" base-package="org.codehaus.grepo.query.hibernate.repository.custom" />
+
+</beans>

@@ -24,8 +24,5 @@ import org.codehaus.grepo.query.jpa.repository.ReadWriteJpaRepository;
  */
 public interface CustomRepository2 extends ReadWriteJpaRepository<TestEntity, Long> {
 
-    /**
-     * @return Returns something special.
-     */
     String doSomethingSpecial();
 }

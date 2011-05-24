@@ -30,11 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class GenericStatisticsRepositorySupport extends GenericRepositorySupport {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 3654018844187863673L;
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositorySupport.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositorySupport.class);
 
     /** The statistics enabled flag (default is false). */
     private boolean statisticsEnabled = false;

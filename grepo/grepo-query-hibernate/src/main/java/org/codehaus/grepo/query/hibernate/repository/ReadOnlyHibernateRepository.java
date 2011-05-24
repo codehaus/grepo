@@ -25,8 +25,7 @@ import java.io.Serializable;
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public interface ReadOnlyHibernateRepository<T, PK extends Serializable>
-    extends HibernateRepository<T> {
+public interface ReadOnlyHibernateRepository<T, PK extends Serializable> extends HibernateRepository<T> {
 
     /**
      * Loads the entity by primary key.

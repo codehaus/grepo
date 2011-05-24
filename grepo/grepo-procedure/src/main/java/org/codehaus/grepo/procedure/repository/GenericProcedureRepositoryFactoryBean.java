@@ -34,11 +34,10 @@ import org.springframework.util.Assert;
  *
  * @author dguggi
  */
-public class GenericProcedureRepositoryFactoryBean //
-        extends GenericStatisticsRepositoryFactoryBean<GenericProcedureRepositorySupport> {
+public class GenericProcedureRepositoryFactoryBean extends
+        GenericStatisticsRepositoryFactoryBean<GenericProcedureRepositorySupport> {
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryFactoryBean.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryFactoryBean.class);
 
     /** The mandatory datasource. */
     private DataSource dataSource;
@@ -70,8 +69,8 @@ public class GenericProcedureRepositoryFactoryBean //
     @Override
     protected void initMethodInterceptor() {
         if (getMethodInterceptor() == null && isAutoDetectBeans()) {
-            Map<String, GenericProcedureMethodInterceptor> beans = getApplicationContext().getBeansOfType(
-                GenericProcedureMethodInterceptor.class);
+            Map<String, GenericProcedureMethodInterceptor> beans =
+                getApplicationContext().getBeansOfType(GenericProcedureMethodInterceptor.class);
 
             if (beans.isEmpty()) {
                 logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, GenericProcedureMethodInterceptor.class.getName());
@@ -114,14 +113,14 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initProcedureInputGenerationStrategy() {
         if (procedureInputGenerationStrategy == null && isAutoDetectBeans()) {
-            Map<String, ProcedureInputGenerationStrategy> beans = getApplicationContext().getBeansOfType(
-                ProcedureInputGenerationStrategy.class);
+            Map<String, ProcedureInputGenerationStrategy> beans =
+                getApplicationContext().getBeansOfType(ProcedureInputGenerationStrategy.class);
 
             if (beans.isEmpty()) {
                 logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, ProcedureInputGenerationStrategy.class.getName());
             } else if (beans.size() > 1) {
-                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureInputGenerationStrategy.class.getName(),
-                    beans.keySet());
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureInputGenerationStrategy.class.getName(), beans
+                    .keySet());
             } else {
                 // we found excatly one bean...
                 Entry<String, ProcedureInputGenerationStrategy> entry = beans.entrySet().iterator().next();
@@ -137,14 +136,14 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initProcedureCachingStrategy() {
         if (procedureCachingStrategy == null && isAutoDetectBeans()) {
-            Map<String, ProcedureCachingStrategy> beans = getApplicationContext().getBeansOfType(
-                ProcedureCachingStrategy.class);
+            Map<String, ProcedureCachingStrategy> beans =
+                getApplicationContext().getBeansOfType(ProcedureCachingStrategy.class);
 
             if (beans.isEmpty()) {
                 logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, ProcedureCachingStrategy.class.getName());
             } else if (beans.size() > 1) {
-                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureCachingStrategy.class.getName(),
-                    beans.keySet());
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureCachingStrategy.class.getName(), beans
+                    .keySet());
             } else {
                 // we found excatly one bean...
                 Entry<String, ProcedureCachingStrategy> entry = beans.entrySet().iterator().next();
@@ -160,14 +159,14 @@ public class GenericProcedureRepositoryFactoryBean //
      */
     protected void initProcedureCompilationStrategy() {
         if (procedureCompilationStrategy == null && isAutoDetectBeans()) {
-            Map<String, ProcedureCompilationStrategy> beans = getApplicationContext().getBeansOfType(
-                ProcedureCompilationStrategy.class);
+            Map<String, ProcedureCompilationStrategy> beans =
+                getApplicationContext().getBeansOfType(ProcedureCompilationStrategy.class);
 
             if (beans.isEmpty()) {
-                logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, ProcedureCompilationStrategy.class .getName());
+                logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, ProcedureCompilationStrategy.class.getName());
             } else if (beans.size() > 1) {
-                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureCompilationStrategy.class.getName(),
-                    beans.keySet());
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ProcedureCompilationStrategy.class.getName(), beans
+                    .keySet());
             } else {
                 // we found excatly one bean...
                 Entry<String, ProcedureCompilationStrategy> entry = beans.entrySet().iterator().next();

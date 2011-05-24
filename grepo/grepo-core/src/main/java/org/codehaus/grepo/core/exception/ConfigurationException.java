@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.core.exception;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * General exception to be thrown when configuration errors are detected.
  *
@@ -71,11 +73,18 @@ public class ConfigurationException extends GrepoException {
      * Creates a not-assignable exception.
      *
      * @param from The from class.
-     * @param to The to class.
+     * @param toClasses The to classes.
      * @return Returns {@code true} if assignable and {@code false} otherwise.
      */
-    public static ConfigurationException notAssignableException(Class<?> from, Class<?> to) {
-        String msg = String.format("Class '%s' is not assignable from '%s'", to.getName(), from.getName());
+    public static ConfigurationException notAssignableException(Class<?> from, Class<?>[] toClasses) {
+        String toClassesString = "";
+        for (Class<?> toClass : toClasses) {
+            if (StringUtils.isNotEmpty(toClassesString)) {
+                toClassesString += ",";
+            }
+            toClassesString += toClass.getName();
+        }
+        String msg = String.format("None of '%s' is assignable from '%s'", toClassesString, from.getName());
         return new ConfigurationException(msg);
     }
 }

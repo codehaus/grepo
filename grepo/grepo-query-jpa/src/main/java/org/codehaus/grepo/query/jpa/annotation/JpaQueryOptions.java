@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 
 import javax.persistence.QueryHint;
 
-import org.codehaus.grepo.query.jpa.executor.PlaceHolderResultClass;
+import org.codehaus.grepo.query.jpa.generator.PlaceHolderResultClass;
 
 /**
  * @author dguggi

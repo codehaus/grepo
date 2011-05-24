@@ -41,7 +41,8 @@ import org.springframework.util.Assert;
  * @param <T> The target class (base) type.
  */
 public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySupport> implements FactoryBean<Object>,
-            InitializingBean, ApplicationContextAware {
+        InitializingBean, ApplicationContextAware {
+
     /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =
         "Unable to auto-detect grepo bean of type '{}' - no bean found";
@@ -71,8 +72,10 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     /** Flag to control whether or not beans should be auto-detected (default is {@code true}. */
     private boolean autoDetectBeans = true;
 
-    /** Flag to control whether or not bean validation is performed after
-     * {@link #afterPropertiesSet()} method was invoked. */
+    /**
+     * Flag to control whether or not bean validation is performed after {@link #afterPropertiesSet()} method was
+     * invoked.
+     */
     private boolean validateAfterPropertiesSet = true;
 
     /** The optional result conversion service (may be auto-detected). */
@@ -102,7 +105,7 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
         // create proxy
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTarget(target);
-        proxyFactory.setInterfaces(new Class[] { proxyInterface });
+        proxyFactory.setInterfaces(new Class[] {proxyInterface});
         proxyFactory.addAdvice(methodInterceptor);
         return proxyFactory.getProxy();
     }
@@ -151,9 +154,9 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     }
 
     /**
-     * If the {@link #methodInterceptor} is not set and {@link #autoDetectBean} is set to {@code true}, this
-     * method can try to retrieve the {@link #methodInterceptor} automatically. This implementation
-     * however does nothing and is supposed to be implemented by concrete classes.
+     * If the {@link #methodInterceptor} is not set and {@link #autoDetectBean} is set to {@code true}, this method can
+     * try to retrieve the {@link #methodInterceptor} automatically. This implementation however does nothing and is
+     * supposed to be implemented by concrete classes.
      */
     @SuppressWarnings("PMD")
     protected void initMethodInterceptor() {
@@ -165,28 +168,26 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
      */
     protected void initResultConversionService() {
         if (resultConversionService == null && autoDetectBeans) {
-            Map<String, ResultConversionService> beans = applicationContext
-                .getBeansOfType(ResultConversionService.class);
+            Map<String, ResultConversionService> beans =
+                applicationContext.getBeansOfType(ResultConversionService.class);
 
             if (beans.isEmpty()) {
                 logger.debug(AUTODETECT_MSG_UNABLE_NOTFOUND, ResultConversionService.class.getName());
             } else if (beans.size() > 1) {
-                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ResultConversionService.class.getName(),
-                    beans.keySet());
+                logger
+                    .warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ResultConversionService.class.getName(), beans.keySet());
             } else {
                 // we found excatly one bean...
                 Entry<String, ResultConversionService> entry = beans.entrySet().iterator().next();
                 resultConversionService = entry.getValue();
-                logger.debug(AUTODETECT_MSG_SUCCESS, ResultConversionService.class.getName(),
-                    entry.getKey());
+                logger.debug(AUTODETECT_MSG_SUCCESS, ResultConversionService.class.getName(), entry.getKey());
             }
         }
     }
 
     /**
-     * This method initializes the required settings for the generic repository (aop) proxy. That is setting
-     * the {@link #proxyInterface}} property and the {@link #targetClass} property based on the
-     * {@link #proxyClass} property.
+     * This method initializes the required settings for the generic repository (aop) proxy. That is setting the
+     * {@link #proxyInterface} property and the {@link #targetClass} property based on the {@link #proxyClass} property.
      */
     protected void initProxyInterfaceAndTargetClass() {
         if (getProxyInterface() == null && getProxyClass() != null) {

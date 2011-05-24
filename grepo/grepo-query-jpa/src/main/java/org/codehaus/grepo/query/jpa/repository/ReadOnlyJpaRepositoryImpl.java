@@ -18,29 +18,20 @@ package org.codehaus.grepo.query.jpa.repository;
 
 import java.io.Serializable;
 
-import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
  * @author dguggi
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends DefaultJpaRepository<T>
-    implements ReadOnlyJpaRepository<T, PK> {
+public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends DefaultJpaRepository<T> implements
+        ReadOnlyJpaRepository<T, PK> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -6817048863404465142L;
-
-    /**
-     * Default constructor.
-     */
     public ReadOnlyJpaRepositoryImpl() {
         super();
     }
 
-    /**
-     * @param entityType The main entity type.
-     */
     public ReadOnlyJpaRepositoryImpl(Class<T> entityType) {
         super(entityType);
     }
@@ -51,6 +42,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
     @SuppressWarnings("unchecked")
     public T find(final PK id) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 return context.getEntityManager().find(getEntityClass(), id);
@@ -65,6 +57,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
     @SuppressWarnings("unchecked")
     public T getReference(final PK id) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 return context.getEntityManager().getReference(getEntityClass(), id);
@@ -78,6 +71,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
      */
     public void refresh(final T entity) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 context.getEntityManager().refresh(entity);
@@ -92,6 +86,7 @@ public class ReadOnlyJpaRepositoryImpl<T, PK extends Serializable> extends Defau
      */
     public boolean contains(final T entity) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 return context.getEntityManager().contains(entity);

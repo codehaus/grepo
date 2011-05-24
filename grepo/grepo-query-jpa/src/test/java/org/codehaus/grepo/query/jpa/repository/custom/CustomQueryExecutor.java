@@ -18,27 +18,20 @@ package org.codehaus.grepo.query.jpa.repository.custom;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.jpa.TestEntity;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 import org.codehaus.grepo.query.jpa.executor.AbstractJpaQueryExecutor;
-import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author dguggi
  */
 public class CustomQueryExecutor extends AbstractJpaQueryExecutor {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 4115267235854411243L;
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(CustomQueryExecutor.class); // NOPMD
 
     /**
      * {@inheritDoc}
      */
     public Object execute(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
-        logger.info("doing something special");
         Long id = qmpi.getParameterByParamName("id", Long.class);
         return context.getEntityManager().find(TestEntity.class, id);
     }

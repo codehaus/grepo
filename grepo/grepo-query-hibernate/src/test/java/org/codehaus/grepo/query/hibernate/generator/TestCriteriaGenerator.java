@@ -18,21 +18,25 @@ package org.codehaus.grepo.query.hibernate.generator;
 
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
 import org.codehaus.grepo.query.hibernate.TestEntity;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 /**
  * @author dguggi
  */
-public class TestCriteriaGenerator implements CriteriaGenerator {
-    /** SerialVersionUid. */
+public class TestCriteriaGenerator extends CriteriaGeneratorBase {
+
     private static final long serialVersionUID = 7433111191916322566L;
 
     /**
      * {@inheritDoc}
      */
-    public DetachedCriteria generate(QueryMethodParameterInfo mpi) {
-        String[] usernames = (String[])mpi.getParameterByParamName("usernames");
+    @Override
+    protected CriteriaSpecification createCriteria(QueryMethodParameterInfo qmpi, //
+                                                   HibernateQueryExecutionContext context) {
+        String[] usernames = (String[])qmpi.getParameterByParamName("usernames");
         DetachedCriteria criteria = DetachedCriteria.forClass(TestEntity.class);
         criteria.add(Restrictions.in("username", usernames));
         return criteria;

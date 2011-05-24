@@ -20,30 +20,20 @@ import java.io.Serializable;
 
 import javax.persistence.LockModeType;
 
-import org.codehaus.grepo.query.jpa.executor.JpaQueryExecutionContext;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 
 /**
  * @author dguggi
- *
  * @param <T> The main entity type.
  * @param <PK> The primary key type.
  */
-public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
-    extends ReadOnlyJpaRepositoryImpl<T,PK> implements ReadWriteJpaRepository<T,PK> {
+public class ReadWriteJpaRepositoryImpl<T, PK extends Serializable> extends ReadOnlyJpaRepositoryImpl<T, PK> implements
+        ReadWriteJpaRepository<T, PK> {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 3694751462675284209L;
-
-    /**
-     * Default constructor.
-     */
     public ReadWriteJpaRepositoryImpl() {
         super();
     }
 
-    /**
-     * @param entityType The main entity type.
-     */
     public ReadWriteJpaRepositoryImpl(Class<T> entityType) {
         super(entityType);
     }
@@ -53,6 +43,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
      */
     public void lock(final T entity, final LockModeType lockModeType) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 context.getEntityManager().lock(entity, lockModeType);
@@ -68,6 +59,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
     @SuppressWarnings("unchecked")
     public T merge(final T entity) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 return context.getEntityManager().merge(entity);
@@ -81,6 +73,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
      */
     public void persist(final T entity) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 context.getEntityManager().persist(entity);
@@ -95,6 +88,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
      */
     public void remove(final T entity) {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 context.getEntityManager().remove(entity);
@@ -109,6 +103,7 @@ public class ReadWriteJpaRepositoryImpl<T,PK extends Serializable>
      */
     public void flush() {
         JpaCallbackCreator callback = new JpaCallbackCreator() {
+
             @Override
             protected Object doExecute(JpaQueryExecutionContext context) {
                 context.getEntityManager().flush();

@@ -26,6 +26,9 @@ import org.codehaus.grepo.core.exception.ConfigurationException;
  */
 public final class ClassUtils {
 
+    private ClassUtils() {
+    }
+
     /**
      * Map of all nine java-primitives and their associated wrapper objects.
      */

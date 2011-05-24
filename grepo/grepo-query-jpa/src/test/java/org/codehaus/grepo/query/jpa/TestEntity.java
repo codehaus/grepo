@@ -94,11 +94,11 @@ public class TestEntity implements Serializable {
     }
 
     public Date getCreationDate() {
-        return creationDate;
+        return new Date(this.creationDate.getTime());
     }
 
     public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        this.creationDate = new Date(creationDate.getTime());
     }
 
 }

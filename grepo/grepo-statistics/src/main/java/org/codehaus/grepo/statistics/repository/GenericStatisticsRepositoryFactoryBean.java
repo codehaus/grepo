@@ -33,17 +33,16 @@ import org.springframework.util.Assert;
 public abstract class GenericStatisticsRepositoryFactoryBean<T extends GenericStatisticsRepositorySupport>
                     extends GenericRepositoryFactoryBean<T> {
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositoryFactoryBean.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositoryFactoryBean.class);
 
     /** The optional statistics enabled flag (default is false). */
-    private boolean statisticsEnabled = false; // NOPMD
+    private boolean statisticsEnabled = false;
 
     /** The statistics manager (required if statisticsEnabled is true). */
-    private StatisticsManager statisticsManager; // NOPMD
+    private StatisticsManager statisticsManager;
 
     /** The statistics entry identifier generation strategy (required if statisticsEnables is true). */
-    private StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy; // NOPMD
+    private StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy;
 
     /**
      * {@inheritDoc}

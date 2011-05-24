@@ -16,8 +16,6 @@
 
 package org.codehaus.grepo.procedure.repository;
 
-import java.io.Serializable;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.time.StopWatch;
@@ -32,12 +30,9 @@ import org.slf4j.LoggerFactory;
  *
  * @author dguggi
  */
-public class GenericProcedureMethodInterceptor implements MethodInterceptor, Serializable {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = -4960735396968791415L;
+public class GenericProcedureMethodInterceptor implements MethodInterceptor {
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureMethodInterceptor.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericProcedureMethodInterceptor.class);
 
     /**
      * {@inheritDoc}

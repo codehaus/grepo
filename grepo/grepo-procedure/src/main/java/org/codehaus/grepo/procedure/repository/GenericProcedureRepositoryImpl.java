@@ -23,8 +23,8 @@ import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.core.validator.GenericValidationUtils;
 import org.codehaus.grepo.procedure.annotation.GenericProcedure;
 import org.codehaus.grepo.procedure.aop.ProcedureMethodParameterInfo;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContext;
-import org.codehaus.grepo.procedure.executor.ProcedureExecutionContextImpl;
+import org.codehaus.grepo.procedure.context.ProcedureExecutionContext;
+import org.codehaus.grepo.procedure.context.ProcedureExecutionContextImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.object.StoredProcedure;
@@ -37,16 +37,12 @@ import org.springframework.transaction.support.TransactionCallback;
  * @author dguggi
  */
 public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySupport {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 1654786866848706816L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositoryImpl.class);
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public Object executeGenericProcedure(final ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
         throws Exception {
         createStatisticsEntry(pmpi);
@@ -71,8 +67,9 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * @return Returns the result map of the procedure call.
      */
     protected Map<String, Object> executeProcedure(final ProcedureMethodParameterInfo pmpi,
-            GenericProcedure genericProcedure) {
+                                                   GenericProcedure genericProcedure) {
         TransactionCallback<Object> callback = new TransactionCallback<Object>() {
+
             public Object doInTransaction(final TransactionStatus status) {
                 ProcedureExecutionContext context = createProcedureExecutionContext();
 
@@ -85,7 +82,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
                     logger.debug("Using input map: {}", input);
                 }
 
-                Object result =  sp.execute(input);
+                Object result = sp.execute(input);
                 logger.debug("Procedure result is '{}'", result);
                 return result;
             }
@@ -101,7 +98,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * @return Returns the possibly converted result.
      */
     protected Object convertResult(Map<String, Object> resultMap, ProcedureMethodParameterInfo pmpi,
-            GenericProcedure genericProcedure) {
+                                   GenericProcedure genericProcedure) {
         Object result = resultMap;
         if (getResultConversionService() == null) {
             logger.debug("No result conversion is performed, because no resultConversionService is configured");
@@ -124,7 +121,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      */
     @SuppressWarnings("PMD")
     protected void validateResult(Object result, ProcedureMethodParameterInfo pmpi, GenericProcedure genericProcedure)
-            throws Exception {
+        throws Exception {
         GenericValidationUtils.validateResult(pmpi, genericProcedure.resultValidator(), result);
     }
 
@@ -174,8 +171,8 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * @return Returns the generated input map.
      */
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> generateInputMap(ProcedureMethodParameterInfo pmpi,
-            ProcedureExecutionContext context) {
+    protected Map<String, Object> generateInputMap(ProcedureMethodParameterInfo pmpi, //
+        ProcedureExecutionContext context) {
         Map<String, Object> input = null;
         if (pmpi.getParameters().size() == 1 && pmpi.getParameter(0) instanceof Map) {
             input = pmpi.getParameter(0, Map.class);

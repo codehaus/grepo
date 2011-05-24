@@ -28,10 +28,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomRepository3 extends ReadWriteJpaRepository<TestEntity, Long> {
 
-    /**
-     * @param id The entity id.
-     * @return Returns the entity.
-     */
     @GenericQuery(queryExecutor = CustomQueryExecutor.class)
     TestEntity doSomethingSpecial(@Param("id") long id);
 }

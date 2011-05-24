@@ -21,18 +21,15 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * This strategy generates origin based on system properties.
- *
- * The properties which should be used are set in the {@link #properties} map. The values for
- * this map are used as default-values if the associated system property does not exist.
- *
- * Values are delimited by {@link #propertyDelimiter}.
- *
- * If no properties are set then {@link #defaultOrigin} is returned.
+ * This strategy generates origin based on system properties. The properties which should be used are set in the
+ * {@link #properties} map. The values for this map are used as default-values if the associated system property does
+ * not exist. Values are delimited by {@link #propertyDelimiter}. If no properties are set then {@link #defaultOrigin}
+ * is returned.
  *
  * @author dguggi
  */
 public class SystemPropertiesOriginGenerationStrategy {
+
     /** The property delimiter. */
     private String propertyDelimiter = "-";
 
@@ -58,11 +55,11 @@ public class SystemPropertiesOriginGenerationStrategy {
         this.defaultOrigin = defaultOrigin;
     }
 
-    public Map<String,String> getPropertyDefinitions() {
+    public Map<String, String> getPropertyDefinitions() {
         return propertyDefinitions;
     }
 
-    public void setPropertyDefinitions(Map<String,String> propertyDefinitions) {
+    public void setPropertyDefinitions(Map<String, String> propertyDefinitions) {
         this.propertyDefinitions = propertyDefinitions;
     }
 
