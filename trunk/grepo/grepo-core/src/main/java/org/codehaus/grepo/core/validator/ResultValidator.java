@@ -16,19 +16,16 @@
 
 package org.codehaus.grepo.core.validator;
 
-import java.io.Serializable;
-
 /**
  * Interface providing a validation-hock for generic-query and -procedure methods.
  *
  * @author dguggi
  */
-public interface ResultValidator extends Serializable {
+public interface ResultValidator {
 
     /**
      * @param result The result to validate.
      * @throws Exception if validation is not valid.
      */
-    @SuppressWarnings("PMD")
     void validate(Object result) throws Exception;
 }
