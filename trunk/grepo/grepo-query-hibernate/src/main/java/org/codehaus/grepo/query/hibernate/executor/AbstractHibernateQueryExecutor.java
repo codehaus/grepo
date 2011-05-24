@@ -77,7 +77,11 @@ public abstract class AbstractHibernateQueryExecutor implements HibernateQueryEx
             logger.info("Generating query using queryGenerator: {}", clazz.getSimpleName());
             return generator.generate(qmpi, context);
         }
-        return new DefaultQueryGenerator().generate(qmpi, context);
+        return createDefaultQueryGenerator().generate(qmpi, context);
+    }
+
+    protected HibernateQueryGenerator createDefaultQueryGenerator() {
+        return new DefaultQueryGenerator();
     }
 
 }

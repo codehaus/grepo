@@ -57,7 +57,11 @@ public abstract class AbstractJpaQueryExecutor implements JpaQueryExecutor {
             logger.info("Generating query using queryGenerator: {}", clazz.getName());
             return generator.generate(qmpi, context);
         }
-        return new DefaultQueryGenerator().generate(qmpi, context);
+        return createDefaultQueryGenerator().generate(qmpi, context);
+    }
+
+    protected JpaQueryGenerator createDefaultQueryGenerator() {
+        return new DefaultQueryGenerator();
     }
 
 }
