@@ -28,15 +28,10 @@ import org.apache.commons.lang.StringUtils;
  *
  * @author dguggi
  */
-public class SystemPropertiesOriginGenerationStrategy {
+public class SystemPropertiesOriginGenerationStrategy implements OriginGenerationStrategy {
 
-    /** The property delimiter. */
     private String propertyDelimiter = "-";
-
-    /** The default origin. */
     private String defaultOrigin = "unknown";
-
-    /** The property definitions. */
     private Map<String, String> propertyDefinitions;
 
     public String getPropertyDelimiter() {
