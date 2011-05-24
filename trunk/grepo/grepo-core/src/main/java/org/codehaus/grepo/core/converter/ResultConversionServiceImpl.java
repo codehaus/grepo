@@ -26,19 +26,14 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class ResultConversionServiceImpl implements ResultConversionService {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 6815624987065108009L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ResultConversionServiceImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(ResultConversionServiceImpl.class);
 
-    /** The result converter finding strategy to be used. */
     private ResultConverterFindingStrategy converterFindingStrategy;
 
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public Object convert(MethodParameterInfo mpi, Class<? extends ResultConverter<?>> specifiedConverter,
         Object result) {
         Class<? extends ResultConverter<?>> converter = getConverterFindingStrategy().findConverter(specifiedConverter,

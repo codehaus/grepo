@@ -28,24 +28,10 @@ import org.slf4j.LoggerFactory;
  * @author dguggi
  */
 public class ResultConverterFindingStrategyImpl implements ResultConverterFindingStrategy {
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 2980405176589523026L;
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(ResultConverterFindingStrategyImpl.class); // NOPMD
+    private static final Logger logger = LoggerFactory.getLogger(ResultConverterFindingStrategyImpl.class);
 
-    /** The converter registry. */
     private ResultConverterRegistry converterRegistry;
-
-    /**
-     * Checks if the given {@code clazz} is a valid {@link ResultConverter}.
-     *
-     * @param clazz The class to check.
-     * @return Returns {@code true} if valid and {@code false} otherwise.
-     */
-    public static boolean isValidResultConverter(Class<? extends ResultConverter<?>> clazz) {
-        return (clazz != null && clazz != PlaceHolderResultConverter.class);
-    }
 
     /**
      * {@inheritDoc}
@@ -53,7 +39,6 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
      * @throws GrepoException if user didn't specify a {@link ResultConverter} but one is required based on the
      *             method's returntype and the result's type.
      */
-    @SuppressWarnings("PMD")
     public Class<? extends ResultConverter<?>> findConverter(Class<? extends ResultConverter<?>> specifiedConverter,
             MethodParameterInfo mpi, Object result) throws GrepoException {
 
@@ -63,7 +48,7 @@ public class ResultConverterFindingStrategyImpl implements ResultConverterFindin
         boolean resultIsNull = (result == null);
 
         // true if user has defined a valid converter via annotation...
-        boolean isValidUserConverter = isValidResultConverter(specifiedConverter);
+        boolean isValidUserConverter = ResultConverterUtils.isValidResultConverter(specifiedConverter);
 
         // check if conversion is required at all, no conversion is required/performed for void return-types
         if (ClassUtils.isVoidType(methodReturnType)) {

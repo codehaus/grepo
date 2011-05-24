@@ -30,7 +30,7 @@ import org.springframework.core.type.filter.TypeFilter;
 public class CompositeTypeFilter implements TypeFilter {
 
     /** A list of type filters. */
-    private List<TypeFilter> typeFilters = new LinkedList<TypeFilter>(); // NOPMD
+    private List<TypeFilter> typeFilters = new LinkedList<TypeFilter>();
 
     /**
      * @param filters The filters to add.

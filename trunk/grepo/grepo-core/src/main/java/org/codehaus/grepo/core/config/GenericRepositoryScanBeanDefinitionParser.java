@@ -47,34 +47,19 @@ import org.w3c.dom.NodeList;
  * @author dguggi
  */
 public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinitionParser {
-    /** The exclude-filter element. */
+
+    private static final Logger logger = LoggerFactory.getLogger(GenericRepositoryScanBeanDefinitionParser.class);
+
     private static final String EXCLUDE_FILTER_ELEMENT = "exclude-filter";
-
-    /** The include-filter element. */
     private static final String INCLUDE_FILTER_ELEMENT = "include-filter";
-
-    /** The type attribute. */
     private static final String FILTER_TYPE_ATTRIBUTE = "type";
-
-    /** The expression attribute. */
     private static final String FILTER_EXPRESSION_ATTRIBUTE = "expression";
 
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryScanBeanDefinitionParser.class); // NOPMD
 
-    /** The bean name generator. */
-    private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator(); // NOPMD
+    private BeanNameGenerator beanNameGenerator = new AnnotationBeanNameGenerator();
+    private Class<?> requiredGenericRepositoryType;
+    private Class<?> defaultGenericRepositoryFactoryType;
 
-    /** The required generic repository type. */
-    private Class<?> requiredGenericRepositoryType;   // NOPMD
-
-    /** The default generic repository factory type. */
-    private Class<?> defaultGenericRepositoryFactoryType; // NOPMD
-
-    /**
-     * @param requiredGenericRepositoryType The generic repository type.
-     * @param defaultGenericRepositoryFactoryType The generic repository factory type.
-     */
     public GenericRepositoryScanBeanDefinitionParser(Class<?> requiredGenericRepositoryType,
             Class<?> defaultGenericRepositoryFactoryType) {
         this.requiredGenericRepositoryType = requiredGenericRepositoryType;
@@ -100,17 +85,17 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = scanner.findCandidateComponents(basePackage);
             for (BeanDefinition candidate : candidates) {
-                BeanDefinitionBuilder builder = BeanDefinitionParserHelper.createBuilderFromConfigContext(
-                    configContext, source, defaultGenericRepositoryFactoryType);
+                BeanDefinitionBuilder builder =
+                    BeanDefinitionParserHelper.createBuilderFromConfigContext(configContext, source,
+                        defaultGenericRepositoryFactoryType);
 
                 delegate.parsePropertyElements(configContext.getElement(), builder.getRawBeanDefinition());
 
-                builder.addPropertyValue(GenericRepositoryConfigContext.PROXY_CLASS_PROPERTY,
-                        candidate.getBeanClassName());
+                builder.addPropertyValue(GenericRepositoryConfigContext.PROXY_CLASS_PROPERTY, candidate
+                    .getBeanClassName());
 
                 String beanName = beanNameGenerator.generateBeanName(candidate, parserContext.getRegistry());
-                parserContext.registerBeanComponent(
-                    new BeanComponentDefinition(builder.getBeanDefinition(), beanName)); // NOPMD
+                parserContext.registerBeanComponent(new BeanComponentDefinition(builder.getBeanDefinition(), beanName));
                 logger.debug("Registered generic repository bean '{}'", beanName);
             }
         }
@@ -124,9 +109,9 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
      * @return Returns the newly created scanner.
      */
     protected GenericRepositoryBeanDefinitionScanner configureScanner(GenericRepositoryConfigContext configContext,
-            ParserContext parserContext) {
-        GenericRepositoryBeanDefinitionScanner scanner = new GenericRepositoryBeanDefinitionScanner(
-            requiredGenericRepositoryType); // NOPMD
+        ParserContext parserContext) {
+        GenericRepositoryBeanDefinitionScanner scanner =
+            new GenericRepositoryBeanDefinitionScanner(requiredGenericRepositoryType);
         scanner.setResourceLoader(parserContext.getReaderContext().getResourceLoader());
 
         if (configContext.hasResourcePattern()) {
@@ -145,7 +130,7 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
      * @param readerContext The reader context.
      */
     protected void parseTypeFilters(Element element, GenericRepositoryBeanDefinitionScanner scanner,
-            XmlReaderContext readerContext) {
+        XmlReaderContext readerContext) {
 
         // Parse exclude and include filter elements.
         ClassLoader classLoader = scanner.getResourceLoader().getClassLoader();
@@ -158,8 +143,8 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
                     if (INCLUDE_FILTER_ELEMENT.equals(localName)) {
                         // Note: that we use the composite type filter for include-filter,
                         // because we always want repositories of appropriate interface type...
-                        CompositeTypeFilter typeFilter = new CompositeTypeFilter(); // NOPMD
-                        typeFilter.addTypeFilter(new AssignableTypeFilter(requiredGenericRepositoryType)); // NOPMD
+                        CompositeTypeFilter typeFilter = new CompositeTypeFilter();
+                        typeFilter.addTypeFilter(new AssignableTypeFilter(requiredGenericRepositoryType));
                         typeFilter.addTypeFilter(createTypeFilter((Element)node, classLoader));
                         scanner.addIncludeFilter(typeFilter);
                     } else if (EXCLUDE_FILTER_ELEMENT.equals(localName)) {
@@ -214,14 +199,14 @@ public class GenericRepositoryScanBeanDefinitionParser implements BeanDefinition
         XmlReaderContext readerContext = parserContext.getReaderContext();
         try {
             if (configContext.hasNameGenerator()) {
-                BeanNameGenerator generator = (BeanNameGenerator)instantiateUserDefinedStrategy(
-                    configContext.getNameGenerator(), BeanNameGenerator.class,
-                    parserContext.getReaderContext().getResourceLoader().getClassLoader());
+                BeanNameGenerator generator =
+                    (BeanNameGenerator)instantiateUserDefinedStrategy(configContext.getNameGenerator(),
+                        BeanNameGenerator.class, parserContext.getReaderContext().getResourceLoader().getClassLoader());
                 setBeanNameGenerator(generator);
             }
         } catch (Exception ex) {
-            readerContext.error(ex.getMessage(), readerContext.extractSource(configContext.getElement()),
-                ex.getCause());
+            readerContext
+                .error(ex.getMessage(), readerContext.extractSource(configContext.getElement()), ex.getCause());
         }
     }
 

@@ -22,45 +22,21 @@ import org.w3c.dom.Element;
  * @author dguggi
  */
 public class GenericRepositoryConfigContext {
-    /** The factory attribute. */
+
     private static final String FACTORY_ATTRIBUTE = "factory";
-
-    /** The factory-class attribute. */
     private static final String FACTORY_CLASS_ATTRIBUTE = "factory-class";
-
-    /** The base-package attribute. */
     private static final String BASE_PACKAGE_ATTRIBUTE = "base-package";
-
-    /** The resource-pattern attribute. */
     private static final String RESOURCE_PATTERN_ATTRIBUTE = "resource-pattern";
-
-    /** The name-generator attribute. */
     private static final String NAME_GENERATOR_ATTRIBUTE = "name-generator";
-
-    /** The proxy-class attribute. */
     private static final String PROXY_CLASS_ATTRIBUTE = "proxy-class";
-
-    /** The class attribute. */
     private static final String CLASS_ATTRIBUTE = "class";
-
-    /** The proxyClass property. */
     public static final String PROXY_CLASS_PROPERTY = "proxyClass";
-
-    /** The repository-factory element. */
     public static final String REPOSITORY_FACTORY_ELEMENT = "repository-factory";
-
-    /** The repository element. */
     public static final String REPOSITORY_ELEMENT = "repository";
-
-    /** The repository-scan element. */
     public static final String REPOSITORY_SCAN_ELEMENT = "repository-scan";
 
-    /** The element. */
-    private Element element;    //NOPMD
+    private Element element;
 
-    /**
-     * @param element The element.
-     */
     public GenericRepositoryConfigContext(Element element) {
         this.element = element;
     }

@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
 public class GenericRepositoryBeanDefinitionParser extends AbstractBeanDefinitionParser {
 
     /** The default generic repository factory type. */
-    private Class<?> defaultGenericRepositoryFactoryType; // NOPMD
+    private Class<?> defaultGenericRepositoryFactoryType;
 
     /**
      * @param defaultGenericRepositoryFactoryType The generic repository factory type.
