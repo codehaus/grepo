@@ -31,41 +31,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 /**
- * Tests the {@link UserRepository}.
- *
  * @author dguggi
  */
-@SuppressWarnings("PMD")
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({ DependencyInjectionTestExecutionListener.class })
+@TestExecutionListeners( {DependencyInjectionTestExecutionListener.class })
 @ContextConfiguration(locations = "classpath:META-INF/spring/application-context.xml")
 public class MyServiceTest {
 
-    /** The logger. */
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(MyServiceTest.class);
 
-    /** The service to test. */
     @Autowired
     private MyService myService;
 
-    /** The collection printer. */
     @Autowired
     private SimpleStatisticsCollectionPrinter collectionPrinter;
 
-    /** The statistics collection. */
     @Autowired
     private StatisticsCollection statisticsCollection;
 
-    /** Setup. */
     @Before
     public void before() {
-        // clear statistics...
         statisticsCollection.clear();
     }
 
-    /**
-     * Tests {@link MyService#doSomething1()}.
-     */
     @Test
     public void testDoSomething1() {
         for (int i = 0; i < 10; i++) {
@@ -78,9 +66,6 @@ public class MyServiceTest {
         logger.info("\n" + collectionPrinter.printDetail("demo.service.MyService.doSomething1"));
     }
 
-    /**
-     * Tests {@link MyService#doSomething2()}.
-     */
     @Test
     public void testDoSomething2() {
         for (int i = 0; i < 10; i++) {
@@ -93,7 +78,6 @@ public class MyServiceTest {
         logger.info("\n" + collectionPrinter.printDetail("customIdentifierForDoSomething2"));
     }
 
-    /** Tests several invokations of {@code doSomething1} and {@code doSomething2}. */
     @Test
     public void testSeveralInvokations() {
         for (int i = 0; i < 7; i++) {

@@ -18,7 +18,9 @@ package demo.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.hibernate.generator.CriteriaGenerator;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
+import org.codehaus.grepo.query.hibernate.generator.CriteriaGeneratorBase;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
@@ -27,15 +29,16 @@ import demo.domain.User;
 /**
  * @author dguggi
  */
-public class UserSearchCriteriaGenerator implements CriteriaGenerator {
+public class UserSearchCriteriaGenerator extends CriteriaGeneratorBase {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = 6376344505209487740L;
 
     /**
      * {@inheritDoc}
      */
-    public DetachedCriteria generate(QueryMethodParameterInfo qmpi) {
+    @Override
+    protected CriteriaSpecification createCriteria(QueryMethodParameterInfo qmpi, //
+                                                   HibernateQueryExecutionContext context) {
         String firstname = qmpi.getParameterByParamName("fn", String.class);
         String lastname = qmpi.getParameterByParamName("ln", String.class);
 

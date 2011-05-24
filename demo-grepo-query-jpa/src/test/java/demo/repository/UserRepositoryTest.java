@@ -42,26 +42,18 @@ import demo.domain.User;
  *
  * @author dguggi
  */
-@SuppressWarnings("PMD")
 @RunWith(SpringJUnit4ClassRunner.class)
-@TestExecutionListeners({
-    DependencyInjectionTestExecutionListener.class,
-    TransactionalTestExecutionListener.class })
+@TestExecutionListeners( {DependencyInjectionTestExecutionListener.class, TransactionalTestExecutionListener.class })
 @Transactional
 @ContextConfiguration(locations = "classpath:META-INF/spring/application-context.xml")
 public class UserRepositoryTest {
 
-    /** The entity manager. */
     @PersistenceContext
     private EntityManager entityManager;
 
-    /** Repository to test. */
     @Autowired
     private UserRepository repo;
 
-    /**
-     * @param entities The entities.
-     */
     private void saveFlush(Object... entities) {
         for (Object entity : entities) {
             entityManager.persist(entity);
@@ -69,7 +61,6 @@ public class UserRepositoryTest {
         entityManager.flush();
     }
 
-    /** Setup test user. */
     @Before
     public void before() {
         User u = new User();
@@ -80,18 +71,12 @@ public class UserRepositoryTest {
         saveFlush(u);
     }
 
-    /**
-     * Tests {@link UserRepository#getByUsername(String)}.
-     */
     @Test
     public void testGetByUsername() {
         Assert.assertNotNull(repo.getByUsername("max"));
         Assert.assertNull(repo.getByUsername("noexistingusername"));
     }
 
-    /**
-     * Tests {@link UserRepository#loadByUsername(String)}.
-     */
     @Test(expected = NoResultException.class)
     public void testLoadByUsername() {
         Assert.assertNotNull(repo.loadByUsername("max"));
@@ -99,18 +84,12 @@ public class UserRepositoryTest {
         repo.loadByUsername("notexistingusername");
     }
 
-    /**
-     * Tests {@link UserRepository#getByUsernameUsingSQLQuery(String)}.
-     */
     @Test
     public void testGetByUsernameUsingSQLQuery() {
         Assert.assertNotNull(repo.getByUsernameUsingSQLQuery("max"));
         Assert.assertNull(repo.getByUsernameUsingSQLQuery("notexists"));
     }
 
-    /**
-     * Tests {@link UserRepository#findByUsernames(java.util.Collection)}.
-     */
     @Test
     public void testFindByUsernames() {
         List<String> usernames = new ArrayList<String>();
@@ -120,9 +99,6 @@ public class UserRepositoryTest {
         Assert.assertEquals(1, list.size());
     }
 
-    /**
-     * Tests {@link UserRepository#findUsersByName(String, String)}.
-     */
     @Test
     public void testFindUsersByName() {
         List<User> list = repo.findUsersByName("max", null);
@@ -138,9 +114,6 @@ public class UserRepositoryTest {
         Assert.assertTrue(list.isEmpty());
     }
 
-    /**
-     * Tests {@link UserRepository#isExistingEmail(String)}.
-     */
     @Test
     public void testIsExistingEmail() {
         Assert.assertTrue(repo.isExistingEmail("max@mustermann.com"));

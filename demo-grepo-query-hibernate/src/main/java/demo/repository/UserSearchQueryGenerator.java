@@ -18,20 +18,21 @@ package demo.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.hibernate.generator.AbstractHibernateQueryGenerator;
+import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
+import org.codehaus.grepo.query.hibernate.generator.AbstractQueryGenerator;
 
 /**
  * @author dguggi
  */
-public class UserSearchQueryGenerator extends AbstractHibernateQueryGenerator {
+public class UserSearchQueryGenerator extends AbstractQueryGenerator {
 
-    /** SerialVersionUid. */
     private static final long serialVersionUID = -4836138440579849746L;
 
     /**
      * {@inheritDoc}
      */
-    public String generate(QueryMethodParameterInfo qmpi) {
+    @Override
+    protected String createQueryString(QueryMethodParameterInfo qmpi, HibernateQueryExecutionContext context) {
         String firstname = qmpi.getParameterByParamName("fn", String.class);
         String lastname = qmpi.getParameterByParamName("ln", String.class);
 

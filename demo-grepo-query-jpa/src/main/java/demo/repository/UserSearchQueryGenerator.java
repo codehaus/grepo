@@ -18,13 +18,14 @@ package demo.repository;
 
 import org.apache.commons.lang.StringUtils;
 import org.codehaus.grepo.query.commons.aop.QueryMethodParameterInfo;
-import org.codehaus.grepo.query.jpa.generator.AbstractJpaQueryGenerator;
+import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
+import org.codehaus.grepo.query.jpa.generator.AbstractQueryGenerator;
 import org.codehaus.grepo.query.jpa.generator.JpaQueryParam;
 
 /**
  * @author dguggi
  */
-public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
+public class UserSearchQueryGenerator extends AbstractQueryGenerator {
 
     /** SerialVersionUid. */
     private static final long serialVersionUID = -4836138440579849746L;
@@ -32,7 +33,8 @@ public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
     /**
      * {@inheritDoc}
      */
-    public String generate(QueryMethodParameterInfo qmpi) {
+    @Override
+    protected String createQueryString(QueryMethodParameterInfo qmpi, JpaQueryExecutionContext context) {
         String firstname = qmpi.getParameter(0, String.class);
         String lastname = qmpi.getParameter(1, String.class);
 
@@ -48,4 +50,5 @@ public class UserSearchQueryGenerator extends AbstractJpaQueryGenerator {
 
         return query.toString();
     }
+
 }
