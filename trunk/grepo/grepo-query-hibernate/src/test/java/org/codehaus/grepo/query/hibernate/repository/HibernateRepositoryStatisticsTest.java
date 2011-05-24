@@ -32,22 +32,20 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class HibernateRepositoryStatisticsTest extends AbstractHibernateRepositoryTest {
-    /** The repository to test. */
-    @Autowired
-    private HibernateTestRepository repo; //NOPMD
 
-    /** The statistics collection. */
     @Autowired
-    private StatisticsCollection collection; // NOPMD
+    private HibernateTestRepository repo;
 
-    /** before. */
+    @Autowired
+    private StatisticsCollection collection;
+
+
     @Before
     public void before() {
         TestEntity entity = new TestEntity("username", 1, "firstname");
         saveFlushEvict(entity);
     }
 
-    /** Test with named query. */
     @Test
     public void testStatisticsWithNamedQuery() {
         Assert.assertNotNull(repo.getByUsername("username"));

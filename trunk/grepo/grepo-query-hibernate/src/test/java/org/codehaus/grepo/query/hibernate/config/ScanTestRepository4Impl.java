@@ -29,13 +29,9 @@ import org.springframework.stereotype.Repository;
 public class ScanTestRepository4Impl extends ReadWriteHibernateRepositoryImpl<TestEntity, Long>
     implements ScanTestRepository4 {
 
-    /** SerialVersionUid. */
-    private static final long serialVersionUID = 7087665762060165724L;
-
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public void doSomethingSpecial() {
     }
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.executor; //NOPMD
+package org.codehaus.grepo.query.hibernate.executor;
 
 import org.codehaus.grepo.core.util.ClassUtils;
 import org.codehaus.grepo.query.commons.annotation.GenericQuery;

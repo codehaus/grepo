@@ -38,31 +38,22 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(loader = GrepoHsqlTestContextLoaderWithDefLoc.class)
 public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
 
-    /** The repo to test. */
     @Autowired
-    private ConverterTestRepository repo; // NOPMD
+    private ConverterTestRepository repo;
 
-    /** before. */
     @Before
     public void before() {
-        TestEntity te = new TestEntity("username", 1, "firstname"); // NOPMD
+        TestEntity te = new TestEntity("username", 1, "firstname");
         saveFlushEvict(te);
-
         TestResultConverter.reset();
     }
 
-    /**
-     * Tests implicit result conversion.
-     */
     @Test
     public void testWithImplicitConversion() {
         Assert.assertTrue(repo.isExistingUsername("username"));
         Assert.assertFalse(repo.isExistingUsername("xyz"));
     }
 
-    /**
-     * Tests conversion with specified converter.
-     */
     @Test
     public void testWithSpecifiedConverter() {
         TestResultConverter.setReturnValue(Boolean.TRUE);
@@ -71,9 +62,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         Assert.assertFalse(repo.isExistingUsernameWithSpecifiedConverter("username"));
     }
 
-    /**
-     * Tests method with primitive return types.
-     */
     @Test(expected = ConversionException.class)
     public void testWithPrimitveReturnType() {
         Assert.assertEquals(1, repo.getTypeByUsername("username"));
@@ -83,9 +71,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         repo.getTypeByUsername("xyz");
     }
 
-    /**
-     * Tests a method with no valid converter found.
-     */
     @Test(expected = RegistryException.class)
     public void testNoValidConverterNotFound() {
         // query returns type TestEntity, but method
@@ -94,9 +79,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         repo.getByUsername("username");
     }
 
-    /**
-     * Tests to list result transformer.
-     */
     @Test
     public void testWithToListResultTransformer() {
         List<List<Object>> list = repo.findAllWithToListResultTransformer();
@@ -105,9 +87,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         Assert.assertEquals("firstname", list.get(0).get(1));
     }
 
-    /**
-     * Tests alias to entity map result transformer.
-     */
     @Test
     public void testWithAliasToEntityMapResultTransformer() {
         List<Map<String, Object>> list = repo.findAllWithAliasToEntityMapResultTransformer();
@@ -117,9 +96,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         Assert.assertEquals("firstname", map.get("fn"));
     }
 
-    /**
-     * Tests alias to bean result transformer.
-     */
     @Test
     public void testWithAliasToBeanResultTransformer() {
         List<TestEntityDto> list = repo.findAllWithAliasToBeanResultTransformer();
@@ -127,9 +103,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         Assert.assertEquals("firstname", list.get(0).getFn());
     }
 
-    /**
-     * Tests alias to bean result transformer with native query.
-     */
     @Test
     public void testWithAliasToBeanResultTransformerAndNativeQuery() {
         List<TestEntityDto> list = repo.findAllWithAliasToBeanResultTransformerAndNativeQuery();
@@ -137,9 +110,6 @@ public class ConverterRepositoryTest extends AbstractHibernateRepositoryTest {
         Assert.assertEquals("firstname", list.get(0).getFn());
     }
 
-    /**
-     * Tests alias to bean result transformer with specified native query.
-     */
     @Test
     public void testWithAliasToBeanResultTransformerAndSpecifiedNativeQuery() {
         List<TestEntityDto> list = repo.findAllWithAliasToBeanResultTransformerAndSpecifiedNativeQuery();
