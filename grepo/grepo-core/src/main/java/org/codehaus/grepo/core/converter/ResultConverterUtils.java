@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Grepo Committers.
+ * Copyright 2011 Grepo Committers.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,20 @@
 
 package org.codehaus.grepo.core.converter;
 
-import org.codehaus.grepo.core.aop.MethodParameterInfo;
 
-/**
- * Used to convert the result of a generic-query or -procedure invocation to desired type.
- *
- * @author dguggi
- */
-public interface ResultConversionService {
+public final class ResultConverterUtils {
+
+
+    private ResultConverterUtils() {
+    }
 
     /**
-     * Converts the given {@code result} using the given {@link ResultConverter} {@code clazz}.
+     * Checks if the given {@code clazz} is a valid {@link ResultConverter}.
      *
-     * @param mpi The method parameter info.
-     * @param clazz The converter class.
-     * @param result The result to convert.
-     * @return Returns the converted result.
+     * @param clazz The class to check.
+     * @return Returns {@code true} if valid and {@code false} otherwise.
      */
-    Object convert(MethodParameterInfo mpi, Class<? extends ResultConverter<?>> clazz, Object result);
+    public static boolean isValidResultConverter(Class<? extends ResultConverter<?>> clazz) {
+        return (clazz != null && clazz != PlaceHolderResultConverter.class);
+    }
 }

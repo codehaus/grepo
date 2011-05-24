@@ -43,19 +43,13 @@ import org.springframework.util.Assert;
 public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySupport> implements FactoryBean<Object>,
         InitializingBean, ApplicationContextAware {
 
-    /** Log message for autodetection mode. */
+    private static final Logger logger = LoggerFactory.getLogger(GenericRepositoryFactoryBean.class);
+
     protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =
         "Unable to auto-detect grepo bean of type '{}' - no bean found";
-
-    /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_UNABLE_TOOMANYFOUND =
         "Unable to auto-detect grepo bean of type '{}' - too many beans found: {}";
-
-    /** Log message for autodetection mode. */
     protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected grepo bean of type '{}' (id={})";
-
-    /** The logger for this class. */
-    private final Logger logger = LoggerFactory.getLogger(GenericRepositoryFactoryBean.class); // NOPMD
 
     /** The mandatory interface to proxy. */
     private Class<?> proxyInterface;
@@ -93,7 +87,6 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public Object getObject() throws Exception {
         // validate factory configuration
         validate();
@@ -105,7 +98,7 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
         // create proxy
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTarget(target);
-        proxyFactory.setInterfaces(new Class[] {proxyInterface});
+        proxyFactory.setInterfaces(new Class[] {proxyInterface });
         proxyFactory.addAdvice(methodInterceptor);
         return proxyFactory.getProxy();
     }
@@ -120,7 +113,6 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public boolean isSingleton() {
         return true;
     }
@@ -135,7 +127,6 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     /**
      * {@inheritDoc}
      */
-    @SuppressWarnings("PMD")
     public final void afterPropertiesSet() throws Exception {
         doInitialization();
         // validate factory configuration
@@ -158,7 +149,6 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
      * try to retrieve the {@link #methodInterceptor} automatically. This implementation however does nothing and is
      * supposed to be implemented by concrete classes.
      */
-    @SuppressWarnings("PMD")
     protected void initMethodInterceptor() {
     }
 

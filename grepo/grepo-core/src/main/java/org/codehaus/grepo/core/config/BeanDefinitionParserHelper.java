@@ -37,7 +37,7 @@ public final class BeanDefinitionParserHelper {
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition();
         builder.getRawBeanDefinition().setSource(source);
 
-        if (!configContext.hasFactory() && !configContext.hasFactoryClass()) { // NOPMD
+        if (!configContext.hasFactory() && !configContext.hasFactoryClass()) {
             // neither 'factory' nor 'factory-class' attribute is set, so use default bean class...
             if (defaultGenericRepositoryFactoryType != null) {
                 builder.getRawBeanDefinition().setBeanClass(defaultGenericRepositoryFactoryType);
