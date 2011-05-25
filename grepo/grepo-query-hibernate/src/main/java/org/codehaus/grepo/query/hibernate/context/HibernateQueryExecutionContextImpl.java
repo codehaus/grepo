@@ -18,6 +18,7 @@ package org.codehaus.grepo.query.hibernate.context;
 
 import org.codehaus.grepo.query.commons.context.AbstractQueryExecutionContext;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
+import org.codehaus.grepo.query.hibernate.type.ArgumentTypeFactory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 

@@ -44,16 +44,16 @@ public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
     public void addToCache(final StoredProcedure storedProcedure, final String cacheName) {
         if (storedProcedure != null) {
             if (StringUtils.isEmpty(cacheName)) {
-                String msg = String.format("Unable to cache procedure (%s), because cacheName is empty",
+                String msg = String.format("Unable to cache procedure ('%s'), because cacheName is empty",
                     storedProcedure.getSql());
                 throw new ProcedureCachingException(msg);
             }
 
             if (cache.containsKey(cacheName)) {
                 String msg = String.format(
-                    "Unable to cache procedure (%s), because entry already exists for cacheName=%s", storedProcedure
+                    "Unable to cache procedure ('%s'), because entry already exists for cacheName '%s'", storedProcedure
                         .getSql(), cacheName);
-                throw new ProcedureCachingException(msg);
+                logger.warn(msg);
             }
 
             // add to cache
@@ -66,7 +66,9 @@ public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
      */
     public StoredProcedure getFromCache(final String cacheName) {
         StoredProcedure sp = cache.get(cacheName);
-        logger.debug("Got procedure from cache key={}, value={}", cacheName, sp);
+        if (sp != null) {
+            logger.debug("Got procedure from cache (key='{}', value='{}')", cacheName, sp);
+        }
         return sp;
     }
 
@@ -84,7 +86,7 @@ public class ProcedureCachingStrategyImpl implements ProcedureCachingStrategy {
         GenericProcedure annotation = pmpi.getMethodAnnotation(GenericProcedure.class);
         String name = null;
         if (StringUtils.isEmpty(annotation.cacheName())) {
-            name = pmpi.getMethodName() + "/" + annotation.sql();
+            name = pmpi.getDeclaringClass().getName() + "/" + pmpi.getMethodName() + "/" + annotation.sql();
         } else {
             name = annotation.cacheName();
         }

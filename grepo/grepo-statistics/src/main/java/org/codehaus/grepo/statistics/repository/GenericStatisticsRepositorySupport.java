@@ -31,16 +31,6 @@ import org.slf4j.LoggerFactory;
 public class GenericStatisticsRepositorySupport extends GenericRepositorySupport {
 
     private static final Logger logger = LoggerFactory.getLogger(GenericStatisticsRepositorySupport.class);
-
-    /** The statistics enabled flag (default is false). */
-    private boolean statisticsEnabled = false;
-
-    /** The statistics manager. */
-    private StatisticsManager statisticsManager;
-
-    /** The statistics entry identifier generation strategy. */
-    private StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy;
-
     /**
      * @param mpi Procedure method parameter info.
      * @return Returns the statistics etnry.
@@ -48,18 +38,18 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
     protected StatisticsEntry createStatisticsEntry(StatisticsMethodParameterInfo mpi) {
         StatisticsEntry entry = null;
         try {
-            if (statisticsEnabled) {
-                if (statisticsManager == null) {
+            if (isStatisticsEnabled()) {
+                if (getStatisticsManager() == null) {
                     logger.warn("Unable to collect statistics, because statisticsManager is null");
                 } else {
-                    if (statisticsEntryIdentifierGenerationStrategy == null) {
+                    if (getStatisticsEntryIdentifierGenerationStrategy() == null) {
                         logger.warn("Unable to collect statistics, because "
                             + "statisticsEntryIdentifierGenerationStrategy is null");
                     } else {
-                        String identifier = statisticsEntryIdentifierGenerationStrategy.getIdentifier(mpi, null);
+                        String identifier = getStatisticsEntryIdentifierGenerationStrategy().getIdentifier(mpi, null);
                         MethodStatistics annotation = mpi.getMethodAnnotation(MethodStatistics.class);
                         String origin = (annotation == null ? null : annotation.origin());
-                        entry = statisticsManager.createStatisticsEntry(identifier, origin);
+                        entry = getStatisticsManager().createStatisticsEntry(identifier, origin);
                         mpi.setStatisticsEntry(entry);
                     }
                 }
@@ -77,11 +67,11 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
     protected StatisticsEntry createStatisticsEntry(String identifier) {
         StatisticsEntry entry = null;
         try {
-            if (statisticsEnabled) {
-                if (statisticsManager == null) {
+            if (isStatisticsEnabled()) {
+                if (getStatisticsManager() == null) {
                     logger.warn("Unable to collect statistics, because statisticsManager is null");
                 } else {
-                    entry = statisticsManager.createStatisticsEntry(identifier);
+                    entry = getStatisticsManager().createStatisticsEntry(identifier);
                 }
             }
         } catch (Exception e) {
@@ -96,11 +86,11 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
      */
     protected void completeStatisticsEntry(StatisticsEntry entry) {
         try {
-            if (statisticsEnabled && entry != null) {
-                if (statisticsManager == null) {
+            if (isStatisticsEnabled() && entry != null) {
+                if (getStatisticsManager() == null) {
                     logger.warn("Unable to collect statistics, because statisticsManager is null");
                 } else {
-                    statisticsManager.completeStatisticsEntry(entry);
+                    getStatisticsManager().completeStatisticsEntry(entry);
                 }
             }
         } catch (Exception e) {
@@ -108,29 +98,24 @@ public class GenericStatisticsRepositorySupport extends GenericRepositorySupport
         }
     }
 
-    protected boolean isStatisticsEnabled() {
-        return statisticsEnabled;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GrepoStatisticsConfiguration getConfiguration() {
+        return (GrepoStatisticsConfiguration)super.getConfiguration();
     }
 
-    public void setStatisticsEnabled(boolean statisticsEnabled) {
-        this.statisticsEnabled = statisticsEnabled;
+    public boolean isStatisticsEnabled() {
+        return getConfiguration().isStatisticsEnabled();
     }
 
-    protected StatisticsManager getStatisticsManager() {
-        return statisticsManager;
+    public StatisticsManager getStatisticsManager() {
+        return getConfiguration().getStatisticsManager();
     }
 
-    public void setStatisticsManager(StatisticsManager statisticsManager) {
-        this.statisticsManager = statisticsManager;
-    }
-
-    protected StatisticsEntryIdentifierGenerationStrategy getStatisticsEntryIdentifierGenerationStrategy() {
-        return statisticsEntryIdentifierGenerationStrategy;
-    }
-
-    public void setStatisticsEntryIdentifierGenerationStrategy(
-            StatisticsEntryIdentifierGenerationStrategy statisticsEntryIdentifierGenerationStrategy) {
-        this.statisticsEntryIdentifierGenerationStrategy = statisticsEntryIdentifierGenerationStrategy;
+    public StatisticsEntryIdentifierGenerationStrategy getStatisticsEntryIdentifierGenerationStrategy() {
+        return getConfiguration().getStatisticsEntryIdentifierGenerationStrategy();
     }
 
 }

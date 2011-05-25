@@ -11,7 +11,11 @@
     <import resource="classpath:META-INF/grepo/grepo-statistics-default.cfg.xml"/>
 
     <bean id="procedureTestRepository" parent="abstractProcedureRepository">
-        <property name="statisticsEnabled" value="true" />
         <property name="proxyInterface" value="org.codehaus.grepo.procedure.repository.ProcedureTestRepository" />
+        <property name="configuration">
+            <bean parent="grepo.abstractProcedureConfiguration">
+                <property name="statisticsEnabled" value="true" />
+            </bean>
+        </property>
     </bean>
 </beans>

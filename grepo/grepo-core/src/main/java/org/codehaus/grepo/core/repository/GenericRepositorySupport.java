@@ -28,24 +28,23 @@ public class GenericRepositorySupport {
     /** The application context. */
     private ApplicationContext applicationContext;
 
-    /** The transaction template to use. */
+    /** The transaction template to use (optional). */
     private TransactionTemplate transactionTemplate;
 
     /** The read-only transaction template to use (optional). */
     private TransactionTemplate readOnlyTransactionTemplate;
 
-    /** The optional result conversion service (may be auto-detected). */
-    private ResultConversionService resultConversionService;
-
-    /** The proxy interface. */
+    /** The mandatory proxy interface. */
     private Class<?> proxyInterface;
+
+    private GrepoConfiguration configuration;
 
     /** Default constructor. */
     protected GenericRepositorySupport() {
         // protected in order to ensure that this class cannot be instantiated directly.
     }
 
-    protected ApplicationContext getApplicationContext() {
+    public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
@@ -57,11 +56,11 @@ public class GenericRepositorySupport {
         this.transactionTemplate = transactionTemplate;
     }
 
-    protected TransactionTemplate getTransactionTemplate() {
+    public TransactionTemplate getTransactionTemplate() {
         return transactionTemplate;
     }
 
-    protected TransactionTemplate getReadOnlyTransactionTemplate() {
+    public TransactionTemplate getReadOnlyTransactionTemplate() {
         return readOnlyTransactionTemplate;
     }
 
@@ -69,19 +68,24 @@ public class GenericRepositorySupport {
         this.readOnlyTransactionTemplate = readOnlyTransactionTemplate;
     }
 
-    protected ResultConversionService getResultConversionService() {
-        return resultConversionService;
-    }
-
-    public void setResultConversionService(ResultConversionService resultConversionService) {
-        this.resultConversionService = resultConversionService;
-    }
-
-    protected Class<?> getProxyInterface() {
+    public Class<?> getProxyInterface() {
         return proxyInterface;
     }
 
     public void setProxyInterface(Class<?> proxyInterface) {
         this.proxyInterface = proxyInterface;
     }
+
+    public void setConfiguration(GrepoConfiguration configuration) {
+        this.configuration = configuration;
+    }
+
+    public GrepoConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    protected ResultConversionService getResultConversionService() {
+        return getConfiguration().getResultConversionService();
+    }
+
 }

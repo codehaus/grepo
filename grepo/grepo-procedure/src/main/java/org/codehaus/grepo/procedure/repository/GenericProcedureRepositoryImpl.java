@@ -67,7 +67,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * @return Returns the result map of the procedure call.
      */
     protected Map<String, Object> executeProcedure(final ProcedureMethodParameterInfo pmpi,
-                                                   GenericProcedure genericProcedure) {
+        GenericProcedure genericProcedure) {
         TransactionCallback<Object> callback = new TransactionCallback<Object>() {
 
             public Object doInTransaction(final TransactionStatus status) {
@@ -98,9 +98,9 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
      * @return Returns the possibly converted result.
      */
     protected Object convertResult(Map<String, Object> resultMap, ProcedureMethodParameterInfo pmpi,
-                                   GenericProcedure genericProcedure) {
+        GenericProcedure genericProcedure) {
         Object result = resultMap;
-        if (getResultConversionService() == null) {
+        if (getConfiguration().getResultConversionService() == null) {
             logger.debug("No result conversion is performed, because no resultConversionService is configured");
         } else {
             if (!StringUtils.isEmpty(genericProcedure.returnParamName())) {
@@ -108,7 +108,8 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
                 result = resultMap.get(genericProcedure.returnParamName());
             }
 
-            result = getResultConversionService().convert(pmpi, genericProcedure.resultConverter(), result);
+            result = getConfiguration().getResultConversionService().convert(pmpi, //
+                genericProcedure.resultConverter(), result);
         }
         return result;
     }
@@ -148,16 +149,16 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
         String cacheName = null;
         if (annotation.cachingEnabled()) {
             // try to get an already compiled procedure from the cache...
-            cacheName = getProcedureCachingStrategy().generateCacheName(pmpi);
-            storedProcedure = getProcedureCachingStrategy().getFromCache(cacheName);
+            cacheName = getCachingStrategy().generateCacheName(pmpi);
+            storedProcedure = getCachingStrategy().getFromCache(cacheName);
         }
 
         if (storedProcedure == null) {
             // no procedure found in cache, so create new procedure...
-            storedProcedure = getProcedureCompilationStrategy().compile(pmpi, context);
+            storedProcedure = getCompilationStrategy().compile(pmpi, context);
             if (annotation.cachingEnabled()) {
                 // cache the newly compiled procedure...
-                getProcedureCachingStrategy().addToCache(storedProcedure, cacheName);
+                getCachingStrategy().addToCache(storedProcedure, cacheName);
             }
 
         }
@@ -176,7 +177,7 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
         if (pmpi.getParameters().size() == 1 && pmpi.getParameter(0) instanceof Map) {
             input = pmpi.getParameter(0, Map.class);
         } else {
-            input = getProcedureInputGenerationStrategy().generate(pmpi, context);
+            input = getInputGenerationStrategy().generate(pmpi, context);
         }
 
         if (input == null) {

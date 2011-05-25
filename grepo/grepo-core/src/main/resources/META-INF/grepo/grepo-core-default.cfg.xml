@@ -8,6 +8,32 @@
       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <bean id="grepo.abstractCoreConfiguration" class="org.codehaus.grepo.core.repository.GrepoCoreConfiguration" abstract="true">
+        <property name="resultConversionService">
+            <bean class="org.codehaus.grepo.core.converter.ResultConversionServiceImpl">
+                <property name="converterFindingStrategy">
+                    <bean class="org.codehaus.grepo.core.converter.ResultConverterFindingStrategyImpl">
+                        <property name="converterRegistry">
+                            <bean id="grepo.resultConverterRegistry" class="org.codehaus.grepo.core.converter.ResultConverterRegistry">
+                                <property name="registryMap">
+                                    <util:map map-class="java.util.HashMap">
+                                        <entry key="boolean" value="org.codehaus.grepo.core.converter.ResultToBooleanConverter" />
+                                        <entry key="java.lang.Boolean" value="org.codehaus.grepo.core.converter.ResultToBooleanConverter" />
+                                        <entry key="long" value="org.codehaus.grepo.core.converter.ResultToLongConverter" />
+                                        <entry key="java.lang.Long" value="org.codehaus.grepo.core.converter.ResultToLongConverter" />
+                                        <entry key="int" value="org.codehaus.grepo.core.converter.ResultToIntegerConverter" />
+                                        <entry key="java.lang.Integer" value="org.codehaus.grepo.core.converter.ResultToIntegerConverter" />
+                                    </util:map>
+                                </property>
+                            </bean>
+                        </property>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+<!--
     <bean id="grepo.resultConverterRegistry" class="org.codehaus.grepo.core.converter.ResultConverterRegistry">
         <property name="registryMap">
             <util:map map-class="java.util.HashMap">
@@ -21,13 +47,13 @@
         </property>
     </bean>
 
-    <bean id="grepo.resultConverterFindingStrategy"
-        class="org.codehaus.grepo.core.converter.ResultConverterFindingStrategyImpl">
+    <bean id="grepo.resultConverterFindingStrategy" class="org.codehaus.grepo.core.converter.ResultConverterFindingStrategyImpl">
         <property name="converterRegistry" ref="grepo.resultConverterRegistry" />
     </bean>
 
     <bean id="grepo.resultConversionService" class="org.codehaus.grepo.core.converter.ResultConversionServiceImpl">
         <property name="converterFindingStrategy" ref="grepo.resultConverterFindingStrategy" />
     </bean>
+ -->
 
 </beans>

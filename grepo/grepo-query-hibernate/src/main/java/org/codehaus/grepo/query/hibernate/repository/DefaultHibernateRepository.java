@@ -31,13 +31,13 @@ import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateQueryOptions;
-import org.codehaus.grepo.query.hibernate.context.ArgumentTypeFactory;
 import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContext;
 import org.codehaus.grepo.query.hibernate.context.HibernateQueryExecutionContextImpl;
 import org.codehaus.grepo.query.hibernate.executor.HibernateQueryExecutor;
 import org.codehaus.grepo.query.hibernate.filter.FilterDescriptor;
 import org.codehaus.grepo.query.hibernate.generator.HibernateCriteriaGenerator;
 import org.codehaus.grepo.query.hibernate.generator.HibernateQueryGenerator;
+import org.codehaus.grepo.query.hibernate.type.ArgumentTypeFactory;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
@@ -67,8 +67,6 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
 
     /** The session factory. */
     private SessionFactory sessionFactory;
-
-    private ArgumentTypeFactory argumentTypeFactory;
 
     /** Flag to indicate whether or not the native session should be exposed. */
     private boolean exposeNativeSession = true;
@@ -488,6 +486,18 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GrepoQueryHibernateConfiguration getConfiguration() {
+        return (GrepoQueryHibernateConfiguration)super.getConfiguration();
+    }
+
+    public ArgumentTypeFactory getArgumentTypeFactory() {
+        return getConfiguration().getArgumentTypeFactory();
+    }
+
     public void setFilter(FilterDescriptor fd) {
         this.filters = new FilterDescriptor[] {fd };
     }
@@ -506,14 +516,6 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
 
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
-    }
-
-    public ArgumentTypeFactory getArgumentTypeFactory() {
-        return argumentTypeFactory;
-    }
-
-    public void setArgumentTypeFactory(ArgumentTypeFactory argumentTypeFactory) {
-        this.argumentTypeFactory = argumentTypeFactory;
     }
 
     public boolean isExposeNativeSession() {
@@ -679,6 +681,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
 
     }
 
+
     /**
      * @author dguggi
      */
@@ -732,6 +735,7 @@ public class DefaultHibernateRepository<T> extends GenericQueryRepositorySupport
          */
         protected abstract Object doExecute(HibernateQueryExecutionContext context) throws HibernateException;
     }
+
 
     /**
      * Invocation handler that suppresses close calls on Hibernate session.
