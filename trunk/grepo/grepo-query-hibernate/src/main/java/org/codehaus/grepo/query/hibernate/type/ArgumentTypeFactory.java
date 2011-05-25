@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.core;
+package org.codehaus.grepo.query.hibernate.type;
 
-import org.codehaus.grepo.core.converter.ResultToBooleanConverterTest;
-import org.codehaus.grepo.core.converter.ResultToIntegerConverterTest;
-import org.codehaus.grepo.core.converter.ResultToLongConverterTest;
-import org.codehaus.grepo.core.util.ClassUtilsTest;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import java.io.Serializable;
+
+import org.hibernate.type.Type;
 
 /**
+ * Used to locate any specific type mappings that might be necessary for a dao implementation.
+ *
  * @author dguggi
  */
-@RunWith(Suite.class)
-@SuiteClasses({
-    ResultToBooleanConverterTest.class, ResultToLongConverterTest.class, ResultToIntegerConverterTest.class,
-    ClassUtilsTest.class })
-public class AllTests {
-
+public interface ArgumentTypeFactory extends Serializable {
+    /**
+     * @param value The value to check.
+     * @return Returns the desired type for the given {@code value}.
+     */
+    Type getArgumentType(Object value);
 }

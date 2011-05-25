@@ -35,7 +35,7 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The entity class type.
  */
-public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
+public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T, GrepoQueryJpaConfiguration> {
 
     private static final Logger logger = LoggerFactory.getLogger(JpaRepositoryFactoryBean.class);
 
@@ -94,7 +94,6 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
     @Override
     protected void validate() {
         super.validate();
-        // ensure that entitymanager factory is set
         Assert.notNull(entityManagerFactory, "entityManagerFactory must not be null");
     }
 
@@ -111,10 +110,17 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
      * {@inheritDoc}
      */
     @Override
+    protected Class<GrepoQueryJpaConfiguration> getRequiredConfigurationType() {
+        return GrepoQueryJpaConfiguration.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void configureTarget(GenericQueryRepositorySupport<T> target) {
         super.configureTarget(target);
 
-        // set entitymanager factory and property map...
         DefaultJpaRepository<T> jpaTarget = (DefaultJpaRepository<T>)target;
         jpaTarget.setEntityManagerFactory(entityManagerFactory);
 

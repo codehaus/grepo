@@ -24,7 +24,6 @@ import org.codehaus.grepo.query.commons.repository.GenericQueryRepositorySupport
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCacheMode;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateCaching;
 import org.codehaus.grepo.query.hibernate.annotation.HibernateFlushMode;
-import org.codehaus.grepo.query.hibernate.context.ArgumentTypeFactory;
 import org.codehaus.grepo.query.hibernate.filter.FilterDescriptor;
 import org.hibernate.Interceptor;
 import org.hibernate.SessionFactory;
@@ -39,15 +38,13 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The entity class type.
  */
-public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBean<T> {
+public class HibernateRepositoryFactoryBean<T> extends
+        GenericQueryRepositoryFactoryBean<T, GrepoQueryHibernateConfiguration> {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateRepositoryFactoryBean.class);
 
     /** The session factory. */
     private SessionFactory sessionFactory;
-
-    /** The argument type factory. */
-    private ArgumentTypeFactory argumentTypeFactory;
 
     /** Flag to indicate whether or not the native Hibernate session should be exposed. */
     private Boolean exposeNativeSession;
@@ -95,7 +92,6 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
     protected void doInitialization() {
         super.doInitialization();
         initSessionFactory();
-        initArgumentTypeFactory();
     }
 
     /**
@@ -120,33 +116,11 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
     }
 
     /**
-     * If the {@link #argumentTypeFactory} is not set and {@code isAutoDetectBeans()} returns {@code true}, this method
-     * tries to retrieve the {@link #argumentTypeFactory} automatically.
-     */
-    protected void initArgumentTypeFactory() {
-        if (argumentTypeFactory == null && isAutoDetectBeans()) {
-            Map<String, ArgumentTypeFactory> beans = getApplicationContext().getBeansOfType(ArgumentTypeFactory.class);
-
-            if (beans.isEmpty()) {
-                logger.warn(AUTODETECT_MSG_UNABLE_NOTFOUND, ArgumentTypeFactory.class.getName());
-            } else if (beans.size() > 1) {
-                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ArgumentTypeFactory.class.getName(), beans.keySet());
-            } else {
-                // we found excatly one bean...
-                Entry<String, ArgumentTypeFactory> entry = beans.entrySet().iterator().next();
-                argumentTypeFactory = entry.getValue();
-                logger.debug(AUTODETECT_MSG_SUCCESS, ArgumentTypeFactory.class.getName(), entry.getKey());
-            }
-        }
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
     protected void validate() {
         super.validate();
-        // ensure that sessionfactory is set
         Assert.notNull(sessionFactory, "sessionFactory must not be null");
     }
 
@@ -163,10 +137,17 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
      * {@inheritDoc}
      */
     @Override
+    protected Class<GrepoQueryHibernateConfiguration> getRequiredConfigurationType() {
+        return GrepoQueryHibernateConfiguration.class;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     protected void configureTarget(GenericQueryRepositorySupport<T> target) {
         super.configureTarget(target);
 
-        // set session factory...
         DefaultHibernateRepository<T> hibernateTarget = (DefaultHibernateRepository<T>)target;
         hibernateTarget.setSessionFactory(sessionFactory);
 
@@ -205,9 +186,6 @@ public class HibernateRepositoryFactoryBean<T> extends GenericQueryRepositoryFac
         }
         if (fetchSize != null) {
             hibernateTarget.setFetchSize(fetchSize);
-        }
-        if (argumentTypeFactory != null) {
-            hibernateTarget.setArgumentTypeFactory(argumentTypeFactory);
         }
     }
 

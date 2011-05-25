@@ -12,7 +12,6 @@
 
     <bean id="abstractProcedureRepository" class="org.codehaus.grepo.procedure.repository.GenericProcedureRepositoryFactoryBean"
         abstract="true">
-
     </bean>
 
 </beans>

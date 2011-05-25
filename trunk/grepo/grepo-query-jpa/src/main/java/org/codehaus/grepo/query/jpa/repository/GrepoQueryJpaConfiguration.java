@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Grepo Committers.
+ * Copyright 2011 Grepo Committers.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,13 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.context;
+package org.codehaus.grepo.query.jpa.repository;
 
-import java.io.Serializable;
-
-import org.hibernate.type.Type;
+import org.codehaus.grepo.query.commons.repository.GrepoQueryConfiguration;
 
 /**
- * Used to locate any specific type mappings that might be necessary for a dao implementation.
- *
  * @author dguggi
  */
-public interface ArgumentTypeFactory extends Serializable {
-    /**
-     * @param value The value to check.
-     * @return Returns the desired type for the given {@code value}.
-     */
-    Type getArgumentType(Object value);
+public class GrepoQueryJpaConfiguration extends GrepoQueryConfiguration {
+
 }

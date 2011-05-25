@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
-    xmlns:context="http://www.springframework.org/schema/context"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
     xmlns:util="http://www.springframework.org/schema/util"
     xsi:schemaLocation="
       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -11,18 +10,23 @@
 
     <import resource="classpath:META-INF/grepo/grepo-core-default.cfg.xml" />
 
-    <bean id="grepo.genericProcedureMethodInterceptor"
-        class="org.codehaus.grepo.procedure.repository.GenericProcedureMethodInterceptor">
+    <bean id="grepo.abstractProcedureConfiguration" class="org.codehaus.grepo.procedure.repository.GrepoProcedureConfiguration"
+        parent="grepo.abstractCoreConfiguration" abstract="true">
+        <property name="methodInterceptor">
+            <bean class="org.codehaus.grepo.procedure.repository.GenericProcedureMethodInterceptor" />
+        </property>
+        <property name="compilationStrategy">
+           <bean class="org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategyImpl" />
+        </property>
+        <property name="inputGenerationStrategy">
+            <bean class="org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategyImpl" />
+        </property>
+        <property name="cachingStrategy">
+            <bean class="org.codehaus.grepo.procedure.cache.ProcedureCachingStrategyImpl"/>
+        </property>
     </bean>
 
-    <bean id="grepo.procedureCachingStrategy"
-        class="org.codehaus.grepo.procedure.cache.ProcedureCachingStrategyImpl" scope="prototype">
+    <bean id="grepo.defaultProcedureConfiguration" parent="grepo.abstractProcedureConfiguration">
     </bean>
-
-    <bean id="grepo.procedureCompilationStrategy"
-        class="org.codehaus.grepo.procedure.compile.ProcedureCompilationStrategyImpl" />
-
-    <bean id="grepo.procedureInputGenerationStrategy"
-        class="org.codehaus.grepo.procedure.input.ProcedureInputGenerationStrategyImpl" />
 
 </beans>

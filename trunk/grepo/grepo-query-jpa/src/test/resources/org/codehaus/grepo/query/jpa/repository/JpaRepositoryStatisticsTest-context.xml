@@ -12,7 +12,11 @@
 
     <bean id="jpaTestRepository" parent="abstractRepository">
         <property name="proxyInterface" value="org.codehaus.grepo.query.jpa.repository.JpaTestRepository" />
-        <property name="statisticsEnabled" value="true" />
+        <property name="configuration">
+            <bean parent="grepo.abstractQueryJpaConfiguration">
+                <property name="statisticsEnabled" value="true" />
+            </bean>
+        </property>
     </bean>
 
 </beans>

@@ -19,8 +19,6 @@ package org.codehaus.grepo.core.repository;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.aopalliance.intercept.MethodInterceptor;
-import org.codehaus.grepo.core.converter.ResultConversionService;
 import org.codehaus.grepo.core.exception.ConfigurationException;
 import org.codehaus.grepo.core.util.ClassUtils;
 import org.slf4j.Logger;
@@ -40,16 +38,17 @@ import org.springframework.util.Assert;
  * @author dguggi
  * @param <T> The target class (base) type.
  */
-public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySupport> implements FactoryBean<Object>,
-        InitializingBean, ApplicationContextAware {
+public abstract class //
+        GenericRepositoryFactoryBean<T extends GenericRepositorySupport, C extends GrepoConfiguration> //
+        implements FactoryBean<Object>, InitializingBean, ApplicationContextAware {
 
     private static final Logger logger = LoggerFactory.getLogger(GenericRepositoryFactoryBean.class);
 
     protected static final String AUTODETECT_MSG_UNABLE_NOTFOUND =
-        "Unable to auto-detect grepo bean of type '{}' - no bean found";
+        "Unable to auto-detect bean of type '{}' - no bean found";
     protected static final String AUTODETECT_MSG_UNABLE_TOOMANYFOUND =
-        "Unable to auto-detect grepo bean of type '{}' - too many beans found: {}";
-    protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected grepo bean of type '{}' (id={})";
+        "Unable to auto-detect bean of type '{}' - too many beans found: {}";
+    protected static final String AUTODETECT_MSG_SUCCESS = "Successfully auto-detected bean of type '{}' (id={})";
 
     /** The mandatory interface to proxy. */
     private Class<?> proxyInterface;
@@ -72,17 +71,13 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
      */
     private boolean validateAfterPropertiesSet = true;
 
-    /** The optional result conversion service (may be auto-detected). */
-    private ResultConversionService resultConversionService;
-
-    /** The mandatory method interceptor (may be auto-detected). */
-    private MethodInterceptor methodInterceptor;
-
     /** The optional transaction template. */
     private TransactionTemplate transactionTemplate;
 
     /** The optional read only transaction template. */
     private TransactionTemplate readOnlyTransactionTemplate;
+
+    private C configuration;
 
     /**
      * {@inheritDoc}
@@ -99,7 +94,7 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTarget(target);
         proxyFactory.setInterfaces(new Class[] {proxyInterface });
-        proxyFactory.addAdvice(methodInterceptor);
+        proxyFactory.addAdvice(configuration.getMethodInterceptor());
         return proxyFactory.getProxy();
     }
 
@@ -140,37 +135,28 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
      */
     protected void doInitialization() {
         initProxyInterfaceAndTargetClass();
-        initMethodInterceptor();
-        initResultConversionService();
+        initGrepoConfiguration();
     }
 
     /**
-     * If the {@link #methodInterceptor} is not set and {@link #autoDetectBean} is set to {@code true}, this method can
-     * try to retrieve the {@link #methodInterceptor} automatically. This implementation however does nothing and is
-     * supposed to be implemented by concrete classes.
+     * If the {@link #configuration} is not set and {@link #autoDetectBeans} is set to {@code true}, this method
+     * tries to retrieve the {@link #configuration} automatically.
      */
-    protected void initMethodInterceptor() {
-    }
-
-    /**
-     * If the {@link #resultConversionService} is not set and {@link #autoDetectBeans} is set to {@code true}, this
-     * method tries to retrieve the {@link #resultConversionService} automatically.
-     */
-    protected void initResultConversionService() {
-        if (resultConversionService == null && autoDetectBeans) {
-            Map<String, ResultConversionService> beans =
-                applicationContext.getBeansOfType(ResultConversionService.class);
+    protected void initGrepoConfiguration() {
+        if (configuration == null && autoDetectBeans) {
+            Map<String, C> beans =
+                applicationContext.getBeansOfType(getRequiredConfigurationType());
 
             if (beans.isEmpty()) {
-                logger.debug(AUTODETECT_MSG_UNABLE_NOTFOUND, ResultConversionService.class.getName());
+                logger.debug(AUTODETECT_MSG_UNABLE_NOTFOUND, getRequiredConfigurationType().getName());
             } else if (beans.size() > 1) {
-                logger
-                    .warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, ResultConversionService.class.getName(), beans.keySet());
+                logger.warn(AUTODETECT_MSG_UNABLE_TOOMANYFOUND, getRequiredConfigurationType().getName(), //
+                    beans.keySet());
             } else {
                 // we found excatly one bean...
-                Entry<String, ResultConversionService> entry = beans.entrySet().iterator().next();
-                resultConversionService = entry.getValue();
-                logger.debug(AUTODETECT_MSG_SUCCESS, ResultConversionService.class.getName(), entry.getKey());
+                Entry<String, C> entry = beans.entrySet().iterator().next();
+                configuration = entry.getValue();
+                logger.debug(AUTODETECT_MSG_SUCCESS, getRequiredConfigurationType().getName(), entry.getKey());
             }
         }
     }
@@ -223,8 +209,12 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     protected void validate() {
         validateProxyInterface();
         validateTargetClass();
+        validateGrepoConfiguration();
+    }
 
-        Assert.notNull(methodInterceptor, "methodInterceptor must not be null");
+    protected void validateGrepoConfiguration() {
+        Assert.notNull(configuration, "configuration must not be null");
+        configuration.validate();
     }
 
     /**
@@ -261,10 +251,7 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
     protected void configureTarget(T target) {
         target.setApplicationContext(applicationContext);
         target.setProxyInterface(proxyInterface);
-
-        if (resultConversionService != null) {
-            target.setResultConversionService(resultConversionService);
-        }
+        target.setConfiguration(configuration);
         if (transactionTemplate != null) {
             target.setTransactionTemplate(transactionTemplate);
         }
@@ -277,6 +264,11 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
      * @return Returns the required {@link GenericRepository} type for this factory.
      */
     protected abstract Class<?> getRequiredGenericRepositoryType();
+
+    /**
+     * @return Returns the required {@link GrepoConfiguration} type.
+     */
+    protected abstract Class<C> getRequiredConfigurationType();
 
     /**
      * @return Returns the default target class for this factory.
@@ -303,14 +295,6 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
         this.proxyClass = proxyClass;
     }
 
-    public MethodInterceptor getMethodInterceptor() {
-        return methodInterceptor;
-    }
-
-    public void setMethodInterceptor(MethodInterceptor methodInterceptor) {
-        this.methodInterceptor = methodInterceptor;
-    }
-
     public Class<?> getTargetClass() {
         return targetClass;
     }
@@ -335,14 +319,6 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
         this.validateAfterPropertiesSet = validateAfterPropertiesSet;
     }
 
-    public ResultConversionService getResultConversionService() {
-        return resultConversionService;
-    }
-
-    public void setResultConversionService(ResultConversionService resultConversionService) {
-        this.resultConversionService = resultConversionService;
-    }
-
     public TransactionTemplate getTransactionTemplate() {
         return transactionTemplate;
     }
@@ -357,6 +333,14 @@ public abstract class GenericRepositoryFactoryBean<T extends GenericRepositorySu
 
     public void setReadOnlyTransactionTemplate(TransactionTemplate readOnlyTransactionTemplate) {
         this.readOnlyTransactionTemplate = readOnlyTransactionTemplate;
+    }
+
+    public void setConfiguration(C configuration) {
+        this.configuration = configuration;
+    }
+
+    public C getConfiguration() {
+        return configuration;
     }
 
 }

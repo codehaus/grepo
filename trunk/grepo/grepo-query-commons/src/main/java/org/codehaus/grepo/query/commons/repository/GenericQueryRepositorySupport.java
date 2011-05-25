@@ -35,31 +35,14 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
 
     private static final Logger logger = LoggerFactory.getLogger(GenericQueryRepositorySupport.class);
 
-    /** The executor finding strategy. */
-    private QueryExecutorFindingStrategy queryExecutorFindingStrategy;
-
-    /** The query executor factory. */
-    private QueryExecutorFactory queryExecutorFactory;
-
-    /** The query naming strategy. */
-    private QueryNamingStrategy queryNamingStrategy;
-
-    /** The entity class. */
     private Class<T> entityClass;
-
-    /** The default max results to use. */
     private Integer maxResults;
 
-    /**
-     * Default constructor.
-     */
+
     public GenericQueryRepositorySupport() {
         super();
     }
 
-    /**
-     * @param entityClass The entity class.
-     */
     public GenericQueryRepositorySupport(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
@@ -67,44 +50,21 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
     /**
      * {@inheritDoc}
      */
-    public Class<T> getEntityClass() {
-        return entityClass;
+    @Override
+    public GrepoQueryConfiguration getConfiguration() {
+        return (GrepoQueryConfiguration)super.getConfiguration();
     }
 
-    public void setEntityClass(Class<T> entityClass) {
-        this.entityClass = entityClass;
+    public QueryExecutorFindingStrategy getQueryExecutorFindingStrategy() {
+        return getConfiguration().getQueryExecutorFindingStrategy();
     }
 
-    protected QueryExecutorFindingStrategy getQueryExecutorFindingStrategy() {
-        return queryExecutorFindingStrategy;
-    }
-
-    public void setQueryExecutorFindingStrategy(QueryExecutorFindingStrategy queryExecutorFindingStrategy) {
-        this.queryExecutorFindingStrategy = queryExecutorFindingStrategy;
-    }
-
-    protected QueryExecutorFactory getQueryExecutorFactory() {
-        return queryExecutorFactory;
-    }
-
-    public void setQueryExecutorFactory(QueryExecutorFactory queryExecutorFactory) {
-        this.queryExecutorFactory = queryExecutorFactory;
+    public QueryExecutorFactory getQueryExecutorFactory() {
+        return getConfiguration().getQueryExecutorFactory();
     }
 
     public QueryNamingStrategy getQueryNamingStrategy() {
-        return queryNamingStrategy;
-    }
-
-    public void setQueryNamingStrategy(QueryNamingStrategy queryNamingStrategy) {
-        this.queryNamingStrategy = queryNamingStrategy;
-    }
-
-    public Integer getMaxResults() {
-        return maxResults;
-    }
-
-    public void setMaxResults(Integer maxResults) {
-        this.maxResults = maxResults;
+        return getConfiguration().getQueryNamingStrategy();
     }
 
     /**
@@ -165,5 +125,24 @@ public abstract class GenericQueryRepositorySupport<T> extends GenericStatistics
      */
     protected String createStatisticEntryIdentifier(String methodName) {
         return getProxyInterface().getName() + "." + methodName;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Class<T> getEntityClass() {
+        return entityClass;
+    }
+
+    public void setEntityClass(Class<T> entityClass) {
+        this.entityClass = entityClass;
+    }
+
+    public Integer getMaxResults() {
+        return maxResults;
+    }
+
+    public void setMaxResults(Integer maxResults) {
+        this.maxResults = maxResults;
     }
 }

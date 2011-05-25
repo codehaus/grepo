@@ -37,16 +37,6 @@ public abstract class GenericProcedureRepositorySupport extends GenericStatistic
 
     private static final Logger logger = LoggerFactory.getLogger(GenericProcedureRepositorySupport.class);
 
-    /** The caching strategy. */
-    private ProcedureCachingStrategy procedureCachingStrategy;
-
-    /** The compilation strategy. */
-    private ProcedureCompilationStrategy procedureCompilationStrategy;
-
-    /** The input generation strategy. */
-    private ProcedureInputGenerationStrategy procedureInputGenerationStrategy;
-
-    /** The datasource. */
     private DataSource dataSource;
 
     /**
@@ -81,36 +71,31 @@ public abstract class GenericProcedureRepositorySupport extends GenericStatistic
         return retVal;
     }
 
-    public void setProcedureCachingStrategy(final ProcedureCachingStrategy procedureCachingStrategy) {
-        this.procedureCachingStrategy = procedureCachingStrategy;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GrepoProcedureConfiguration getConfiguration() {
+        return (GrepoProcedureConfiguration)super.getConfiguration();
     }
 
-    protected ProcedureCachingStrategy getProcedureCachingStrategy() {
-        return procedureCachingStrategy;
+    public ProcedureCachingStrategy getCachingStrategy() {
+        return getConfiguration().getCachingStrategy();
     }
 
-    public void setProcedureCompilationStrategy(ProcedureCompilationStrategy procedureCompilationStrategy) {
-        this.procedureCompilationStrategy = procedureCompilationStrategy;
+    public ProcedureCompilationStrategy getCompilationStrategy() {
+        return getConfiguration().getCompilationStrategy();
     }
 
-    protected ProcedureCompilationStrategy getProcedureCompilationStrategy() {
-        return procedureCompilationStrategy;
-    }
-
-    public void setProcedureInputGenerationStrategy(
-                ProcedureInputGenerationStrategy procedureInputGenerationStrategy) {
-        this.procedureInputGenerationStrategy = procedureInputGenerationStrategy;
-    }
-
-    protected ProcedureInputGenerationStrategy getProcedureInputGenerationStrategy() {
-        return procedureInputGenerationStrategy;
+    public ProcedureInputGenerationStrategy getInputGenerationStrategy() {
+        return getConfiguration().getInputGenerationStrategy();
     }
 
     public void setDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    protected DataSource getDataSource() {
+    public DataSource getDataSource() {
         return dataSource;
     }
 

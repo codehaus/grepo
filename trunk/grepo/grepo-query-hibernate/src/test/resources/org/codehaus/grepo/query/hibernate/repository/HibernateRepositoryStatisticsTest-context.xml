@@ -12,7 +12,11 @@
 
     <bean id="hibernateTestRepository" parent="abstractRepository">
         <property name="proxyInterface" value="org.codehaus.grepo.query.hibernate.repository.HibernateTestRepository" />
-        <property name="statisticsEnabled" value="true" />
+        <property name="configuration">
+            <bean parent="grepo.abstractQueryHibernateConfiguration">
+                <property name="statisticsEnabled" value="true" />
+            </bean>
+        </property>
     </bean>
 
 </beans>

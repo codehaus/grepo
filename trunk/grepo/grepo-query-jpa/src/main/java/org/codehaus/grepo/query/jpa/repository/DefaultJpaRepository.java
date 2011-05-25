@@ -331,6 +331,14 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> im
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GrepoQueryJpaConfiguration getConfiguration() {
+        return (GrepoQueryJpaConfiguration)super.getConfiguration();
+    }
+
     public void setEntityManagerFactory(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
@@ -449,6 +457,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> im
 
     }
 
+
     /**
      * @author dguggi
      */
@@ -498,6 +507,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> im
          */
         protected abstract Object doExecute(JpaQueryExecutionContext context);
     }
+
 
     /**
      * Invocation handler that suppresses close calls on JPA EntityManagers.
