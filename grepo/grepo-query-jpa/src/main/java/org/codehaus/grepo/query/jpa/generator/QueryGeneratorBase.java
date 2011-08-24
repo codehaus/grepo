@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.Query;
 import javax.persistence.QueryHint;
@@ -41,6 +42,7 @@ import org.codehaus.grepo.query.jpa.annotation.JpaQueryOptions;
 import org.codehaus.grepo.query.jpa.context.JpaQueryExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 /**
  * @author dguggi
@@ -184,14 +186,26 @@ public abstract class QueryGeneratorBase implements JpaQueryGenerator, DynamicQu
 
         applyFirstResultSetting(genericQuery, qmpi, query);
         applyMaxResultsSetting(genericQuery, qmpi, context, query);
-        applyAddHintsSetting(queryOptions, query);
+        applyAddHintsSetting(queryOptions, query, context);
     }
 
-    protected void applyAddHintsSetting(JpaQueryOptions queryOptions, Query query) {
+    protected void applyAddHintsSetting(JpaQueryOptions queryOptions, Query query, JpaQueryExecutionContext context) {
+        if (!CollectionUtils.isEmpty(context.getDefaultQueryHints())) {
+            for (Entry<String, Object> entry : context.getDefaultQueryHints().entrySet()) {
+                query.setHint(entry.getKey(), entry.getValue());
+                logger.debug("Setting default hint name={} value={}", entry.getKey(), entry.getValue());
+            }
+        }
         if (queryOptions != null) {
             for (QueryHint hint : queryOptions.queryHints()) {
                 query.setHint(hint.name(), hint.value());
                 logger.debug("Setting hint name={} value={}", hint.name(), hint.value());
+            }
+        }
+        if (hasHints()) {
+            for (Entry<String, Object> entry : hints.entrySet()) {
+                query.setHint(entry.getKey(), entry.getValue());
+                logger.debug("Setting hint name={} value={}", entry.getKey(), entry.getValue());
             }
         }
     }
@@ -340,7 +354,7 @@ public abstract class QueryGeneratorBase implements JpaQueryGenerator, DynamicQu
     }
 
     protected boolean hasHints() {
-        return (hints != null && !hints.isEmpty());
+        return !CollectionUtils.isEmpty(hints);
     }
 
     private void logSetParameter(int index, Object value, TemporalType temporalType) {

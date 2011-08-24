@@ -45,6 +45,9 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
     /** A map of jpa properties. */
     private Map<String, Object> jpaPropertyMap;
 
+    /** A map of default query hints. */
+    private Map<String, Object> defaultQueryHints;
+
     /** The jpa dialect. */
     private JpaDialect jpaDialect;
 
@@ -127,6 +130,9 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
         if (jpaPropertyMap != null) {
             jpaTarget.setJpaPropertyMap(jpaPropertyMap);
         }
+        if (defaultQueryHints != null) {
+            jpaTarget.setDefaultQueryHints(defaultQueryHints);
+        }
         if (jpaDialect != null) {
             jpaTarget.setJpaDialect(jpaDialect);
         }
@@ -163,6 +169,14 @@ public class JpaRepositoryFactoryBean<T> extends GenericQueryRepositoryFactoryBe
 
     public void setJpaPropertyMap(Map<String, Object> jpaPropertyMap) {
         this.jpaPropertyMap = jpaPropertyMap;
+    }
+
+    public Map<String, Object> getDefaultQueryHints() {
+        return defaultQueryHints;
+    }
+
+    public void setDefaultQueryHints(Map<String, Object> defaultQueryHints) {
+        this.defaultQueryHints = defaultQueryHints;
     }
 
     public JpaDialect getJpaDialect() {

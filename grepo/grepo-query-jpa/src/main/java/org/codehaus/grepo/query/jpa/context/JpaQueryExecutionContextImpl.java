@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.query.jpa.context;
 
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 
 import org.codehaus.grepo.query.commons.context.AbstractQueryExecutionContext;
@@ -26,6 +28,9 @@ import org.codehaus.grepo.query.commons.context.AbstractQueryExecutionContext;
 public class JpaQueryExecutionContextImpl extends AbstractQueryExecutionContext implements JpaQueryExecutionContext {
 
     private EntityManager entityManager;
+
+    /** The default query hints. */
+    private Map<String, Object> defaultQueryHints;
 
     /**
      * {@inheritDoc}
@@ -38,4 +43,14 @@ public class JpaQueryExecutionContextImpl extends AbstractQueryExecutionContext 
         this.entityManager = entityManager;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public Map<String, Object> getDefaultQueryHints() {
+        return defaultQueryHints;
+    }
+
+    public void setDefaultQueryHints(Map<String, Object> defaultQueryHints) {
+        this.defaultQueryHints = defaultQueryHints;
+    }
 }
