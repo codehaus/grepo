@@ -16,6 +16,8 @@
 
 package org.codehaus.grepo.query.jpa.context;
 
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 
 import org.codehaus.grepo.query.commons.context.QueryExecutionContext;
@@ -31,4 +33,6 @@ public interface JpaQueryExecutionContext extends QueryExecutionContext {
      * @return Returns the entity manager.
      */
     EntityManager getEntityManager();
+
+    Map<String, Object> getDefaultQueryHints();
 }
