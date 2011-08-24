@@ -88,15 +88,15 @@ public abstract class AbstractJpaQueryExecutor
                 query = context.getEntityManager().createQuery(genericQuery.query());
             }
             // configure query options
-            configureQuery(query, queryOptions, null);
+            configureQuery(query, queryOptions, context, null);
 
             queryDesc = new JpaQueryDescriptor(query, false);
         } else {
             // resolve query-name via naming strategy...
-            // Note: configureQuery is not invoked for named-queries, this information
-            // is supposed to be provided where the named-query is defined...
             String queryName = getQueryNamingStrategy().getQueryName(qmpi);
             Query query = context.getEntityManager().createNamedQuery(queryName);
+
+            configureQuery(query, queryOptions, context, null);
             queryDesc = new JpaQueryDescriptor(query, false);
         }
 
@@ -190,18 +190,28 @@ public abstract class AbstractJpaQueryExecutor
     /**
      * @param query The query.
      * @param queryOptions The query options.
+     * @param context The execution context
      * @param generator The query generator.
      */
-    protected void configureQuery(Query query, JpaQueryOptions queryOptions, JpaQueryGenerator generator) {
-        addHints(query, queryOptions, generator);
+    protected void configureQuery(Query query, JpaQueryOptions queryOptions, JpaQueryExecutionContext context,
+        JpaQueryGenerator generator) {
+        addHints(query, queryOptions, context, generator);
     }
 
     /**
      * @param query The query.
      * @param queryOptions The query options.
+     * @param context The execution context
      * @param generator The query generator.
      */
-    protected void addHints(Query query, JpaQueryOptions queryOptions, JpaQueryGenerator generator) {
+    protected void addHints(Query query, JpaQueryOptions queryOptions, JpaQueryExecutionContext context,
+        JpaQueryGenerator generator) {
+        if (!CollectionUtils.isEmpty(context.getDefaultQueryHints())) {
+            for (Entry<String, Object> entry : context.getDefaultQueryHints().entrySet()) {
+                query.setHint(entry.getKey(), entry.getValue());
+                logger.debug("Setting default hint name={} value={}", entry.getKey(), entry.getValue());
+            }
+        }
         if (queryOptions != null) {
             for (QueryHint hint : queryOptions.queryHints()) {
                 query.setHint(hint.name(), hint.value());
@@ -256,7 +266,7 @@ public abstract class AbstractJpaQueryExecutor
         }
 
         // configure query options...
-        configureQuery(query, queryOptions, generator);
+        configureQuery(query, queryOptions, context, generator);
 
         return new JpaQueryDescriptor(query, true, generator.getDynamicQueryParams());
     }
