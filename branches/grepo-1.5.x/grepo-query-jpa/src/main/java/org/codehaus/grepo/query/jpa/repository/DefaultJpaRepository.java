@@ -81,6 +81,9 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
     /** The jpa flush mode to set. */
     private JpaFlushMode flushMode = JpaFlushMode.UNDEFINED;
 
+    /** A map of default query hints applied to jpa queries. */
+    private Map<String, Object> defaultQueryHints;
+
     /**
      * Default constructor.
      */
@@ -196,6 +199,7 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
         JpaQueryExecutionContextImpl context = new JpaQueryExecutionContextImpl();
         context.setApplicationContext(getApplicationContext());
         context.setMaxResults(getMaxResults());
+        context.setDefaultQueryHints(getDefaultQueryHints());
 
         if (doExposeNativeEntityManager) {
             context.setEntityManager(emHolder.getEntityManager());
@@ -357,6 +361,14 @@ public class DefaultJpaRepository<T> extends GenericQueryRepositorySupport<T> //
      */
     public boolean hasJpaProperties() {
         return !CollectionUtils.isEmpty(jpaPropertyMap);
+    }
+
+    public Map<String, Object> getDefaultQueryHints() {
+        return defaultQueryHints;
+    }
+
+    public void setDefaultQueryHints(Map<String, Object> defaultQueryHints) {
+        this.defaultQueryHints = defaultQueryHints;
     }
 
     public void setJpaDialect(JpaDialect jpaDialect) {
