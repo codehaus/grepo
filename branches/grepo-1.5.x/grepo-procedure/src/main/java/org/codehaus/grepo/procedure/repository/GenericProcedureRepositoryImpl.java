@@ -150,20 +150,21 @@ public class GenericProcedureRepositoryImpl extends GenericProcedureRepositorySu
 
         StoredProcedure storedProcedure = null;
         String cacheName = null;
-        if (annotation.cachingEnabled()) {
-            // try to get an already compiled procedure from the cache...
-            cacheName = getProcedureCachingStrategy().generateCacheName(pmpi);
-            storedProcedure = getProcedureCachingStrategy().getFromCache(cacheName);
-        }
-
-        if (storedProcedure == null) {
-            // no procedure found in cache, so create new procedure...
-            storedProcedure = getProcedureCompilationStrategy().compile(pmpi, context);
+        synchronized (getProcedureCachingStrategy()) {
             if (annotation.cachingEnabled()) {
-                // cache the newly compiled procedure...
-                getProcedureCachingStrategy().addToCache(storedProcedure, cacheName);
+                // try to get an already compiled procedure from the cache...
+                cacheName = getProcedureCachingStrategy().generateCacheName(pmpi);
+                storedProcedure = getProcedureCachingStrategy().getFromCache(cacheName);
             }
 
+            if (storedProcedure == null) {
+                // no procedure found in cache, so create new procedure...
+                storedProcedure = getProcedureCompilationStrategy().compile(pmpi, context);
+                if (annotation.cachingEnabled()) {
+                    // cache the newly compiled procedure...
+                    getProcedureCachingStrategy().addToCache(storedProcedure, cacheName);
+                }
+            }
         }
         return storedProcedure;
     }

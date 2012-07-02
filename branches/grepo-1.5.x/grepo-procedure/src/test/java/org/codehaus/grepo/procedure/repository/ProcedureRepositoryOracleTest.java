@@ -34,12 +34,13 @@ import org.springframework.test.context.ContextConfiguration;
  */
 @ContextConfiguration(loader = GrepoOracleTestContextLoaderWithDefLoc.class)
 public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTest {
+
     /** The repo to test. */
     @Autowired
-    private ProcedureTestRepository repo;    //NOPMD
+    private ProcedureTestRepository repo; // NOPMD
 
     /**
-     * @throws IOException  in case of errors.
+     * @throws IOException in case of errors.
      * @throws FileNotFoundException in case of errors.
      */
     @Before
@@ -57,7 +58,7 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
     /** Tests repo with complex configuration. */
     @Test
     public void testSimpleProcWithComplexConfig() {
-        repo.executeSimpleProcWithComplexConfig1("value", 42);  //NOPMD
+        repo.executeSimpleProcWithComplexConfig1("value", 42); // NOPMD
         repo.executeSimpleProcWithComplexConfig1(null, null);
         repo.executeSimpleProcWithComplexConfig2("value", 42);
         repo.executeSimpleProcWithComplexConfig2(null, null);
@@ -77,7 +78,7 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
     /** Tests repo with map result. */
     @Test
     public void testSimpleProcWithMapResult() {
-        Map<String,String> map = repo.executeSimpleProcWithMapResult("value", 42);
+        Map<String, String> map = repo.executeSimpleProcWithMapResult("value", 42);
         Assert.assertNotNull(map);
         Assert.assertTrue(map.containsKey("p_result"));
         Assert.assertEquals("p1=value p2=42", map.get("p_result"));
@@ -105,5 +106,39 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
         String result = repo.executeSimpleFunction("value", 42);
         Assert.assertNotNull(result);
         Assert.assertEquals("p1=value p2=42", result);
+    }
+
+    /**
+     * Tests simple function.
+     *
+     * @throws InterruptedException
+     */
+
+    @Test
+    public void multiThreadedExecutionShouldWorkWithChachedProcedure() throws InterruptedException {
+        TestProcThread thread1 = new TestProcThread();
+        thread1.setName("StoredProcedureTestingThread1");
+        TestProcThread thread2 = new TestProcThread();
+        thread2.setName("StoredProcedureTestingThread2");
+
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
+    }
+
+    private class TestProcThread extends Thread {
+
+        @Override
+        public void run() {
+            runAndAssertTest();
+        }
+
+        private void runAndAssertTest() {
+            String result = repo.executeSimpleFunction("value", 42);
+            Assert.assertNotNull(result);
+            Assert.assertEquals("p1=value p2=42", result);
+        }
     }
 }
