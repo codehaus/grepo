@@ -98,4 +98,38 @@ public class ProcedureRepositoryOracleTest extends AbstractProcedureRepositoryTe
         Assert.assertNotNull(result);
         Assert.assertEquals("p1=value p2=42", result);
     }
+
+    /**
+     * Tests simple function.
+     *
+     * @throws InterruptedException
+     */
+
+    @Test
+    public void multiThreadedExecutionShouldWorkWithChachedProcedure() throws InterruptedException {
+        TestProcThread thread1 = new TestProcThread();
+        thread1.setName("StoredProcedureTestingThread1");
+        TestProcThread thread2 = new TestProcThread();
+        thread2.setName("StoredProcedureTestingThread2");
+
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
+    }
+
+    private class TestProcThread extends Thread {
+
+        @Override
+        public void run() {
+            runAndAssertTest();
+        }
+
+        private void runAndAssertTest() {
+            String result = repo.executeSimpleFunction("value", 42);
+            Assert.assertNotNull(result);
+            Assert.assertEquals("p1=value p2=42", result);
+        }
+    }
 }
