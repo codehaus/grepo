@@ -12,9 +12,9 @@
     <bean id="dataSource"
         class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-        <property name="url" value="jdbc:oracle:thin:@tatstrd4.infonova.at:1521:TATSTRD4" />
+        <property name="url" value="jdbc:oracle:thin:@grzondb02.infonova.at:1521:ondev3" />
         <property name="username" value="onoper" />
-        <property name="password" value="opentst4" />
+        <property name="password" value="setPassWdHere" />
     </bean>
 
     <bean id="transactionManager"
