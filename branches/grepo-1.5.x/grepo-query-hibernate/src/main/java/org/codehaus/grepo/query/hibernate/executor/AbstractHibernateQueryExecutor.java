@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.codehaus.grepo.query.hibernate.executor;    //NOPMD
+package org.codehaus.grepo.query.hibernate.executor; //NOPMD
 
 import java.util.Collection;
 import java.util.Set;
@@ -57,7 +57,7 @@ import org.springframework.orm.hibernate3.SessionFactoryUtils;
  * @author dguggi
  */
 public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecutor<HibernateQueryExecutionContext>
-    implements HibernateQueryExecutor {
+        implements HibernateQueryExecutor {
 
     /** SerialVersionUid. */
     private static final long serialVersionUID = 1138696235036750544L;
@@ -73,8 +73,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param qmpi The query method parameter info.
      * @return Returns detached critieria object.
      */
-    protected DetachedCriteria generateCriteria(Class<? extends CriteriaGenerator> clazz,
-                QueryMethodParameterInfo qmpi) {
+    protected DetachedCriteria generateCriteria(Class<? extends CriteriaGenerator> clazz, QueryMethodParameterInfo qmpi) {
         CriteriaGenerator generator = ClassUtils.instantiateClass(clazz);
         return generator.generate(qmpi);
     }
@@ -86,7 +85,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @return Returns the prepared critiera instance.
      */
     protected Criteria prepareCriteria(GenericQuery genericQuery, QueryMethodParameterInfo qmpi,
-            HibernateQueryExecutionContext context) {
+        HibernateQueryExecutionContext context) {
         HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
         DetachedCriteria detachedCriteria = generateCriteria(queryOptions.criteriaGenerator(), qmpi);
         Criteria criteria = detachedCriteria.getExecutableCriteria(context.getSession());
@@ -126,12 +125,17 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
             }
         }
 
-        // apply transaction timeout if necessary...
-        SessionFactoryUtils.applyTransactionTimeout(criteria, context.getSessionFactory());
+        // query/session timeout (Andy)
+        if ((queryOptions != null) && (queryOptions.queryTimeout() > 0)) {
+            // apply query timeout
+            criteria.setTimeout(queryOptions.queryTimeout());
+        } else {
+            // apply transaction timeout if necessary...
+            SessionFactoryUtils.applyTransactionTimeout(criteria, context.getSessionFactory());
+        }
 
         return criteria;
     }
-
 
 
     /**
@@ -142,15 +146,15 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      */
     @SuppressWarnings("PMD")
     protected Query prepareQuery(GenericQuery genericQuery, QueryMethodParameterInfo qmpi,
-                HibernateQueryExecutionContext context) {
+        HibernateQueryExecutionContext context) {
         HibernateQueryDescriptor queryDesc = null;
 
         HibernateQueryOptions queryOptions = qmpi.getMethodAnnotation(HibernateQueryOptions.class);
         if (validateQueryGenerator(genericQuery.queryGenerator(), HibernateQueryGenerator.class)) {
             // query generator specified, so generate query dynamically...
             @SuppressWarnings("unchecked")
-            Class<? extends HibernateQueryGenerator> generator = (Class<? extends HibernateQueryGenerator>)genericQuery
-                .queryGenerator();
+            Class<? extends HibernateQueryGenerator> generator =
+                (Class<? extends HibernateQueryGenerator>)genericQuery.queryGenerator();
             queryDesc = generateQuery(generator, queryOptions, qmpi, context.getSession());
         } else if (StringUtils.isNotEmpty(genericQuery.query())) {
             // query specified, so use specified query...
@@ -205,8 +209,15 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
             }
         }
 
-        // apply transaction timeout if necessary...
-        SessionFactoryUtils.applyTransactionTimeout(queryDesc.getQuery(), context.getSessionFactory());
+
+        // query/session timeout (Andy)
+        if ((queryOptions != null) && (queryOptions.queryTimeout() > 0)) {
+            // apply query timeout
+            queryDesc.getQuery().setTimeout(queryOptions.queryTimeout());
+        } else {
+            // apply transaction timeout if necessary...
+            SessionFactoryUtils.applyTransactionTimeout(queryDesc.getQuery(), context.getSessionFactory());
+        }
 
         String[] namedParameters = queryDesc.getQuery().getNamedParameters();
         if (namedParameters.length > 0) {
@@ -218,6 +229,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         return queryDesc.getQuery();
     }
 
+
     /**
      * @param clazz The generator class.
      * @param queryOptions The query options.
@@ -226,7 +238,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @return Returns a hibernate query descriptor instance.
      */
     protected HibernateQueryDescriptor generateQuery(Class<? extends HibernateQueryGenerator> clazz,
-            HibernateQueryOptions queryOptions, QueryMethodParameterInfo qmpi, Session session) {
+        HibernateQueryOptions queryOptions, QueryMethodParameterInfo qmpi, Session session) {
         HibernateQueryGenerator generator = ClassUtils.instantiateClass(clazz);
         String queryString = generator.generate(qmpi);
 
@@ -249,10 +261,11 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param generator The native query generator (may be null).
      */
     protected void configureNativeQuery(SQLQuery query, HibernateQueryOptions queryOptions,
-            HibernateNativeQueryGenerator generator) {
+        HibernateNativeQueryGenerator generator) {
         addEntityClasses(query, queryOptions, generator);
         addScalars(query, queryOptions, generator);
         addJoins(query, queryOptions, generator);
+        addTimeout(query, queryOptions); // Andy: added Timeout
     }
 
     /**
@@ -261,7 +274,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param generator The native query generator.
      */
     protected void addEntityClasses(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
-            HibernateNativeQueryGenerator generator) {
+        HibernateNativeQueryGenerator generator) {
         if (queryOptions != null) {
             for (EntityClass ec : queryOptions.entityClasses()) {
                 if (StringUtils.isEmpty(ec.alias())) {
@@ -291,7 +304,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param generator The native query generator.
      */
     protected void addScalars(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
-            HibernateNativeQueryGenerator generator) {
+        HibernateNativeQueryGenerator generator) {
         if (queryOptions != null) {
             for (Scalar s : queryOptions.scalars()) {
                 if (isValidScalarType(s.type())) {
@@ -322,7 +335,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @param generator The native query generator.
      */
     protected void addJoins(SQLQuery sqlQuery, HibernateQueryOptions queryOptions,
-            HibernateNativeQueryGenerator generator) {
+        HibernateNativeQueryGenerator generator) {
         if (queryOptions != null) {
             for (Join j : queryOptions.joins()) {
                 sqlQuery.addJoin(j.alias(), j.path());
@@ -338,13 +351,27 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         }
     }
 
+
+    /**
+     * @param sqlQuery The sql query.
+     * @param queryOptions The query options.
+     * @param generator The native query generator.
+     */
+    protected void addTimeout(SQLQuery sqlQuery, HibernateQueryOptions queryOptions) {
+
+        if ((queryOptions != null) && (queryOptions.queryTimeout() > 0)) {
+            sqlQuery.setTimeout(queryOptions.queryTimeout());
+        }
+    }
+
+
     /**
      * @param queryDesc The query descriptor.
      * @param namedParameters The named parameters of the query.
      * @param qmpi The query method parameter info.
      */
     protected void setNamedParams(HibernateQueryDescriptor queryDesc, String[] namedParameters,
-            QueryMethodParameterInfo qmpi) {
+        QueryMethodParameterInfo qmpi) {
         for (String namedParam : namedParameters) {
             HibernateQueryParam dnp = getNamedParam(namedParam, queryDesc, qmpi);
 
@@ -488,6 +515,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
 
     /**
      * The fetch size to read from the given annotation.
+     * 
      * @param queryOptions The annotation to check.
      * @param defaultValue The default value.
      * @return Returns the fetch size or {@code null}.
@@ -509,8 +537,9 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
     }
 
     /**
-     * Checks if caching for queries should be enabled. First checks the {@code context}'s caching property. This
-     * value may be overridden via the given {@code queryOptions}'s caching property.
+     * Checks if caching for queries should be enabled. First checks the {@code context}'s caching property. This value
+     * may be overridden via the given {@code queryOptions}'s caching property.
+     * 
      * @param context The context.
      * @param queryOptions The annotation.
      * @return Returns {@code true} if caching should be enabled and {@code false} otherwise.
@@ -527,8 +556,9 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
     }
 
     /**
-     * Retrieves the cache region to use. First checks the {@code context}'s cacheRegion property. This
-     * value may be overridden via the qiven {@code queryOptions}'s property.
+     * Retrieves the cache region to use. First checks the {@code context}'s cacheRegion property. This value may be
+     * overridden via the qiven {@code queryOptions}'s property.
+     * 
      * @param context The context.
      * @param queryOptions The annotation.
      * @return Returns the cache region or {@code null} if none was specified.
@@ -545,7 +575,6 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
         }
 
         return retVal;
-
     }
 
     /**
@@ -555,7 +584,7 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
      * @return Returns the dynamic named param.
      */
     protected HibernateQueryParam getNamedParam(String name, HibernateQueryDescriptor queryDesc,
-            QueryMethodParameterInfo qmpi) {
+        QueryMethodParameterInfo qmpi) {
         HibernateQueryParam retVal = null;
         if (queryDesc.hasDynamicQueryParam(name)) {
             retVal = queryDesc.getDynamicQueryParam(name);
@@ -586,14 +615,13 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
 
     /**
      * @param queryOptions The query options.
-     * @return Returns {@code true} if a valid generator is specified within the annotation and {@code false}
-     *         otherwise.
+     * @return Returns {@code true} if a valid generator is specified within the annotation and {@code false} otherwise.
      */
     protected static boolean hasValidCriteriaGenerator(HibernateQueryOptions queryOptions) {
         boolean retVal = false;
         if (queryOptions != null) {
-            retVal = (queryOptions.criteriaGenerator() != null
-                    && queryOptions.criteriaGenerator() != PlaceHolderCriteriaGenerator.class);
+            retVal =
+                (queryOptions.criteriaGenerator() != null && queryOptions.criteriaGenerator() != PlaceHolderCriteriaGenerator.class);
         }
         return retVal;
     }
@@ -606,8 +634,8 @@ public abstract class AbstractHibernateQueryExecutor extends AbstractQueryExecut
     protected static boolean hasValidResultTransformer(HibernateQueryOptions queryOptions) {
         boolean retVal = false;
         if (queryOptions != null) {
-            retVal = (queryOptions.resultTransformer() != null
-                    && queryOptions.resultTransformer() != PlaceHolderResultTransformer.class);
+            retVal =
+                (queryOptions.resultTransformer() != null && queryOptions.resultTransformer() != PlaceHolderResultTransformer.class);
         }
         return retVal;
     }
