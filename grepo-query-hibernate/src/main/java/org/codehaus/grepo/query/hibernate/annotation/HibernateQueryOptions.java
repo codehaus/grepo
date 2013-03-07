@@ -57,11 +57,15 @@ public @interface HibernateQueryOptions {
     int fetchSize() default 0;
 
     /** Entity classes specified for native queries. */
-    EntityClass[] entityClasses() default { };
+    EntityClass[] entityClasses() default {};
 
     /** Scalars specified for native queries. */
-    Scalar[] scalars() default { };
+    Scalar[] scalars() default {};
 
     /** Joins specified for native queries. */
-    Join[] joins() default { };
+    Join[] joins() default {};
+
+    /** Query timeout is seconds. */
+    int queryTimeout() default 0;
+
 }
